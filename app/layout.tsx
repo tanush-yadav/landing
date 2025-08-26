@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Outfit } from 'next/font/google'
+import { Outfit, Plus_Jakarta_Sans, Fraunces } from 'next/font/google'
 import './globals.css'
 
 const outfit = Outfit({ 
@@ -7,6 +7,20 @@ const outfit = Outfit({
   weight: ['300', '400', '500', '600', '700', '800', '900'],
   display: 'swap',
   variable: '--font-outfit',
+})
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  display: 'swap',
+  variable: '--font-plus-jakarta-sans',
+})
+
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800', '900'],
+  display: 'swap',
+  variable: '--font-fraunces',
 })
 
 export const metadata: Metadata = {
@@ -21,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={outfit.variable}>
+    <html lang="en" className={`${outfit.variable} ${plusJakartaSans.variable} ${fraunces.variable}`}>
       <body className={`${outfit.className} min-h-screen`}>
         {children}
       </body>

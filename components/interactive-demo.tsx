@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { 
@@ -14,7 +14,9 @@ import {
   Hash,
   MoreHorizontal,
   GitPullRequest,
-  Link2
+  Link2,
+  Zap,
+  ArrowRight
 } from 'lucide-react'
 import * as Avatar from '@radix-ui/react-avatar'
 
@@ -379,6 +381,12 @@ const InteractiveDemo = ({ triggerDemo, selectedTask = 'fix-auth-bug' }: Interac
   const [showTyping, setShowTyping] = useState(false)
   const [completedSubtasks, setCompletedSubtasks] = useState<number[]>([])
   const [visibleMessages, setVisibleMessages] = useState<string[]>([])
+  const [showConnectionPulse, setShowConnectionPulse] = useState(false)
+  const [showDataFlow, setShowDataFlow] = useState(false)
+  const [connectionStatus, setConnectionStatus] = useState<'idle' | 'connecting' | 'syncing' | 'complete'>('idle')
+  
+  const linearCardRef = useRef<HTMLDivElement>(null)
+  const slackCardRef = useRef<HTMLDivElement>(null)
   
   const currentTask = taskConfigs[selectedTask] || taskConfigs['fix-auth-bug']
 
@@ -394,6 +402,9 @@ const InteractiveDemo = ({ triggerDemo, selectedTask = 'fix-auth-bug' }: Interac
     setCompletedSubtasks([])
     setVisibleMessages([])
     setShowTyping(false)
+    setShowConnectionPulse(false)
+    setShowDataFlow(false)
+    setConnectionStatus('idle')
   }, [selectedTask])
   
   // Demo animation sequence
@@ -415,25 +426,34 @@ const InteractiveDemo = ({ triggerDemo, selectedTask = 'fix-auth-bug' }: Interac
     setCompletedSubtasks([])
     setVisibleMessages([])
     setShowTyping(false)
+    setShowConnectionPulse(false)
+    setShowDataFlow(false)
+    setConnectionStatus('idle')
 
     // Phase 1: Create ticket (500ms)
     await new Promise(resolve => setTimeout(resolve, 500))
+    setConnectionStatus('connecting')
     setDemoState(prev => ({ ...prev, ticketCreated: true }))
 
     // Phase 2: Analyze requirements (1500ms)
     await new Promise(resolve => setTimeout(resolve, 1500))
     setDemoState(prev => ({ ...prev, phase: 'creating-subtasks' }))
+    setShowConnectionPulse(true)
+    setTimeout(() => setShowConnectionPulse(false), 1000)
 
     // Phase 3: Create subtasks (2500ms)
     await new Promise(resolve => setTimeout(resolve, 1000))
     setDemoState(prev => ({ ...prev, subtasksCreated: true }))
+    setConnectionStatus('syncing')
 
     // Phase 4: Working phase
     await new Promise(resolve => setTimeout(resolve, 1000))
     setDemoState(prev => ({ ...prev, phase: 'working', timeCalculated: true }))
 
-    // Phase 5: Slack notification (4500ms)
+    // Phase 5: Slack notification - trigger data flow animation
     await new Promise(resolve => setTimeout(resolve, 1000))
+    setShowDataFlow(true)
+    setTimeout(() => setShowDataFlow(false), 1500)
     setDemoState(prev => ({ ...prev, phase: 'reviewing', slackNotified: true }))
     
     // Show Slack messages progressively
@@ -453,12 +473,18 @@ const InteractiveDemo = ({ triggerDemo, selectedTask = 'fix-auth-bug' }: Interac
     // Phase 6: Complete (6000ms)
     await new Promise(resolve => setTimeout(resolve, 1500))
     setDemoState(prev => ({ ...prev, phase: 'complete' }))
+    setConnectionStatus('complete')
 
     // Start completing subtasks
     const subtasksToComplete = Math.min(3, currentTask.subtasks.length)
     for (let i = 0; i < subtasksToComplete; i++) {
       await new Promise(resolve => setTimeout(resolve, 800))
       setCompletedSubtasks(prev => [...prev, i])
+      // Pulse on each completion
+      if (i === subtasksToComplete - 1) {
+        setShowConnectionPulse(true)
+        setTimeout(() => setShowConnectionPulse(false), 1000)
+      }
     }
   }
 
@@ -466,51 +492,206 @@ const InteractiveDemo = ({ triggerDemo, selectedTask = 'fix-auth-bug' }: Interac
     const { phase } = demoState
     if (phase === 'analyzing') {
       return {
-        color: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20',
+        color: 'bg-yellow-50 text-yellow-600 border-yellow-200',
         icon: Circle,
         text: 'Analyzing'
       }
     } else if (phase === 'creating-subtasks' || phase === 'working') {
       return {
-        color: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
+        color: 'bg-blue-50 text-blue-600 border-blue-200',
         icon: AlertCircle,
         text: 'In Progress'
       }
     } else if (phase === 'reviewing' || phase === 'complete') {
       return {
-        color: 'bg-green-500/10 text-green-500 border-green-500/20',
+        color: 'bg-green-50 text-green-600 border-green-200',
         icon: CheckCircle2,
         text: 'Done'
       }
     }
     return {
-      color: 'bg-gray-500/10 text-gray-500 border-gray-500/20',
+      color: 'bg-gray-100 text-gray-600 border-gray-200',
       icon: Circle,
       text: 'Todo'
     }
   }
 
   return (
-    <section id="demo-section" className="min-h-screen bg-linear-bg-primary py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-8">
+    <section id="demo-section" className="min-h-screen bg-white py-20 relative overflow-hidden">
+      {/* Background Gradient Flow - Subtle on white background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <motion.div
+          className="absolute inset-0 opacity-10"
+          animate={{
+            background: [
+              'radial-gradient(circle at 30% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 50%)',
+              'radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 50%)',
+              'radial-gradient(circle at 70% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 50%)',
+              'radial-gradient(circle at 30% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 50%)',
+            ]
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+        />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        {/* Connection Bridge - Removed horizontal line for cleaner look */}
+
+        <div className="grid lg:grid-cols-2 gap-8 relative">
+          {/* Connection Status Indicator - Central Element */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none hidden lg:block">
+            <AnimatePresence>
+              {connectionStatus !== 'idle' && (
+                <motion.div
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0, opacity: 0 }}
+                  className="relative"
+                >
+                  {/* Connection Ring */}
+                  <motion.div
+                    className={cn(
+                      "w-16 h-16 rounded-full border-2 flex items-center justify-center bg-white shadow-lg",
+                      connectionStatus === 'connecting' && "border-yellow-500 bg-yellow-50",
+                      connectionStatus === 'syncing' && "border-blue-500 bg-blue-50",
+                      connectionStatus === 'complete' && "border-green-500 bg-green-50"
+                    )}
+                    animate={connectionStatus === 'syncing' ? {
+                      rotate: 360,
+                    } : {}}
+                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                  >
+                    {connectionStatus === 'connecting' && <Zap className="w-6 h-6 text-yellow-500" />}
+                    {connectionStatus === 'syncing' && <ArrowRight className="w-6 h-6 text-blue-500" />}
+                    {connectionStatus === 'complete' && <CheckCircle2 className="w-6 h-6 text-green-500" />}
+                  </motion.div>
+
+                  {/* Pulse Effect */}
+                  {showConnectionPulse && (
+                    <motion.div
+                      className="absolute inset-0 rounded-full border-2 border-purple-500"
+                      initial={{ scale: 1, opacity: 0.8 }}
+                      animate={{ scale: 2.5, opacity: 0 }}
+                      transition={{ duration: 1 }}
+                    />
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Animated Connection Lines */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none z-10 hidden lg:block" style={{ left: 0, top: 0 }}>
+            <defs>
+              <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="rgb(139, 92, 246)" stopOpacity="0.2" />
+                <stop offset="50%" stopColor="rgb(139, 92, 246)" stopOpacity="0.5" />
+                <stop offset="100%" stopColor="rgb(139, 92, 246)" stopOpacity="0.2" />
+              </linearGradient>
+            </defs>
+            
+            {/* Connection Path */}
+            <AnimatePresence>
+              {(demoState.phase === 'working' || demoState.phase === 'reviewing') && (
+                <motion.path
+                  d="M 50% 50% Q 50% 30%, 50% 50%"
+                  stroke="url(#connectionGradient)"
+                  strokeWidth="2"
+                  fill="none"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ pathLength: 1, opacity: 1 }}
+                  exit={{ pathLength: 0, opacity: 0 }}
+                  transition={{ duration: 1.5, ease: "easeInOut" }}
+                  className="hidden lg:block"
+                />
+              )}
+            </AnimatePresence>
+          </svg>
+
+          {/* Data Flow Particles */}
+          <AnimatePresence>
+            {showDataFlow && (
+              <>
+                {[...Array(5)].map((_, i) => (
+                  <motion.div
+                    key={`particle-${i}`}
+                    className="absolute w-2 h-2 bg-purple-500 rounded-full z-30 pointer-events-none hidden lg:block"
+                    initial={{ left: '25%', top: '50%', opacity: 0 }}
+                    animate={{ 
+                      left: '75%', 
+                      top: '50%',
+                      opacity: [0, 1, 1, 0]
+                    }}
+                    transition={{ 
+                      duration: 1.5, 
+                      delay: i * 0.2,
+                      ease: "easeInOut"
+                    }}
+                  />
+                ))}
+              </>
+            )}
+          </AnimatePresence>
+
+          {/* Floating Ambient Orbs */}
+          <AnimatePresence>
+            {connectionStatus === 'syncing' && (
+              <>
+                <motion.div
+                  className="absolute w-20 h-20 rounded-full bg-purple-400/10 blur-xl z-0 pointer-events-none hidden lg:block"
+                  initial={{ left: '20%', top: '45%' }}
+                  animate={{
+                    left: ['20%', '30%', '70%', '80%', '20%'],
+                    top: ['45%', '35%', '35%', '45%', '45%'],
+                  }}
+                  transition={{
+                    duration: 8,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                />
+                <motion.div
+                  className="absolute w-16 h-16 rounded-full bg-blue-400/10 blur-xl z-0 pointer-events-none hidden lg:block"
+                  initial={{ left: '80%', top: '55%' }}
+                  animate={{
+                    left: ['80%', '70%', '30%', '20%', '80%'],
+                    top: ['55%', '65%', '65%', '55%', '55%'],
+                  }}
+                  transition={{
+                    duration: 8,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 4
+                  }}
+                />
+              </>
+            )}
+          </AnimatePresence>
+
           {/* Linear Demo */}
           <motion.div
+            ref={linearCardRef}
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="bg-linear-bg-secondary rounded-xl border border-linear-border-subtle overflow-hidden"
+            className={cn(
+              "bg-white rounded-xl border border-gray-200 shadow-lg overflow-hidden relative",
+              showConnectionPulse && "ring-2 ring-purple-500/30 ring-offset-2 ring-offset-white"
+            )}
+            style={{
+              boxShadow: showConnectionPulse ? '0 0 40px rgba(139, 92, 246, 0.3)' : undefined
+            }}
           >
             {/* Linear Header */}
-            <div className="flex items-center justify-between p-4 border-b border-linear-border-subtle">
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-indigo-50 to-purple-50">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
                   <span className="text-white font-bold text-sm">L</span>
                 </div>
-                <span className="text-linear-text-primary font-semibold">Linear</span>
+                <span className="text-gray-900 font-semibold">Linear</span>
               </div>
-              <div className="flex items-center gap-2 text-linear-text-tertiary">
+              <div className="flex items-center gap-2 text-gray-500">
                 <Clock className="h-4 w-4" />
                 <span className="text-xs">Live</span>
               </div>
@@ -529,7 +710,7 @@ const InteractiveDemo = ({ triggerDemo, selectedTask = 'fix-auth-bug' }: Interac
                     {/* Issue Header */}
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-3">
-                        <span className="font-mono text-linear-text-secondary text-sm">{currentTask.ticketId}</span>
+                        <span className="font-mono text-gray-600 text-sm">{currentTask.ticketId}</span>
                         <div className={cn(
                           "px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border",
                           getStatusBadge().color
@@ -538,21 +719,21 @@ const InteractiveDemo = ({ triggerDemo, selectedTask = 'fix-auth-bug' }: Interac
                           {getStatusBadge().text}
                         </div>
                       </div>
-                      <MoreHorizontal className="h-4 w-4 text-linear-text-tertiary" />
+                      <MoreHorizontal className="h-4 w-4 text-gray-500" />
                     </div>
 
                     {/* Issue Title */}
-                    <h3 className="text-linear-text-primary text-lg font-semibold mb-3">
+                    <h3 className="text-gray-900 text-lg font-semibold mb-3">
                       {currentTask.title}
                     </h3>
 
                     {/* Progress Indicator */}
-                    <div className="flex items-center gap-3 text-sm text-linear-text-secondary mb-4">
+                    <div className="flex items-center gap-3 text-sm text-gray-600 mb-4">
                       <div className="flex items-center gap-1">
                         <CheckCircle2 className="h-4 w-4" />
                         <span>{completedSubtasks.length}/{currentTask.subtasks.length}</span>
                       </div>
-                      <div className="flex-1 bg-linear-bg-tertiary rounded-full h-2 overflow-hidden">
+                      <div className="flex-1 bg-gray-100 rounded-full h-2 overflow-hidden">
                         <motion.div 
                           className="bg-green-500 h-full"
                           initial={{ width: 0 }}
@@ -574,11 +755,11 @@ const InteractiveDemo = ({ triggerDemo, selectedTask = 'fix-auth-bug' }: Interac
                             <Avatar.Fallback className="text-white text-[10px] font-bold">{currentTask.agent.avatar}</Avatar.Fallback>
                           </Avatar.Root>
                           <div className="flex-1">
-                            <p className="text-linear-text-primary text-sm">
+                            <p className="text-gray-900 text-sm">
                               <span className="font-medium">{currentTask.agent.name}</span>
-                              <span className="text-linear-text-secondary"> is analyzing {currentTask.description}</span>
+                              <span className="text-gray-600"> is analyzing {currentTask.description}</span>
                             </p>
-                            <span className="text-linear-text-tertiary text-xs">Just now</span>
+                            <span className="text-gray-500 text-xs">Just now</span>
                           </div>
                         </motion.div>
                       )}
@@ -593,11 +774,11 @@ const InteractiveDemo = ({ triggerDemo, selectedTask = 'fix-auth-bug' }: Interac
                             <Avatar.Fallback className="text-white text-[10px] font-bold">{currentTask.agent.avatar}</Avatar.Fallback>
                           </Avatar.Root>
                           <div className="flex-1">
-                            <p className="text-linear-text-primary text-sm">
+                            <p className="text-gray-900 text-sm">
                               <span className="font-medium">{currentTask.agent.name}</span>
-                              <span className="text-linear-text-secondary"> created {currentTask.subtasks.length} sub-issues</span>
+                              <span className="text-gray-600"> created {currentTask.subtasks.length} sub-issues</span>
                             </p>
-                            <span className="text-linear-text-tertiary text-xs">2 seconds ago</span>
+                            <span className="text-gray-500 text-xs">2 seconds ago</span>
                           </div>
                         </motion.div>
                       )}
@@ -616,8 +797,8 @@ const InteractiveDemo = ({ triggerDemo, selectedTask = 'fix-auth-bug' }: Interac
                     className="space-y-2"
                   >
                     <div className="flex items-center gap-2 mb-3">
-                      <ChevronRight className="h-4 w-4 text-linear-text-tertiary" />
-                      <span className="text-linear-text-secondary text-sm font-medium">Sub-issues</span>
+                      <ChevronRight className="h-4 w-4 text-gray-500" />
+                      <span className="text-gray-600 text-sm font-medium">Sub-issues</span>
                     </div>
                     {currentTask.subtasks.slice(0, 4).map((task, index) => (
                       <motion.div
@@ -628,22 +809,22 @@ const InteractiveDemo = ({ triggerDemo, selectedTask = 'fix-auth-bug' }: Interac
                         className={cn(
                           "flex items-center gap-3 p-3 rounded-lg border transition-all",
                           completedSubtasks.includes(task.id)
-                            ? "bg-green-500/5 border-green-500/20"
-                            : "bg-linear-bg-primary border-linear-border-subtle hover:bg-linear-bg-tertiary"
+                            ? "bg-green-50 border-green-200"
+                            : "bg-gray-50 border-gray-200 hover:bg-gray-100"
                         )}
                       >
                         <div className="flex items-center justify-center w-4 h-4">
                           {completedSubtasks.includes(task.id) ? (
                             <CheckCircle2 className="h-4 w-4 text-green-500" />
                           ) : (
-                            <Circle className="h-4 w-4 text-linear-text-tertiary" />
+                            <Circle className="h-4 w-4 text-gray-500" />
                           )}
                         </div>
                         <span className={cn(
                           "flex-1 text-sm",
                           completedSubtasks.includes(task.id)
-                            ? "text-linear-text-tertiary line-through"
-                            : "text-linear-text-primary"
+                            ? "text-gray-500 line-through"
+                            : "text-gray-900"
                         )}>
                           {task.title}
                         </span>
@@ -654,7 +835,7 @@ const InteractiveDemo = ({ triggerDemo, selectedTask = 'fix-auth-bug' }: Interac
                     ))}
                     {currentTask.subtasks.length > 4 && (
                       <div className="text-center py-2">
-                        <span className="text-linear-text-tertiary text-xs">
+                        <span className="text-gray-500 text-xs">
                           +{currentTask.subtasks.length - 4} more sub-issues
                         </span>
                       </div>
@@ -667,11 +848,18 @@ const InteractiveDemo = ({ triggerDemo, selectedTask = 'fix-auth-bug' }: Interac
 
           {/* Slack Demo */}
           <motion.div
+            ref={slackCardRef}
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
-            className="bg-white rounded-xl overflow-hidden"
+            className={cn(
+              "bg-white rounded-xl border border-gray-200 shadow-lg overflow-hidden relative",
+              showConnectionPulse && "ring-2 ring-purple-500/30 ring-offset-2 ring-offset-white"
+            )}
+            style={{
+              boxShadow: showConnectionPulse ? '0 0 40px rgba(139, 92, 246, 0.3)' : undefined
+            }}
           >
             {/* Slack Header */}
             <div className="bg-[#4A154B] px-4 py-3 flex items-center justify-between">
@@ -686,7 +874,7 @@ const InteractiveDemo = ({ triggerDemo, selectedTask = 'fix-auth-bug' }: Interac
             </div>
 
             {/* Slack Messages */}
-            <div className="p-6 bg-white min-h-[400px]">
+            <div className="p-6 bg-gray-50 min-h-[400px]">
               <AnimatePresence>
                 {demoState.slackNotified && (
                   <motion.div
@@ -731,7 +919,7 @@ const InteractiveDemo = ({ triggerDemo, selectedTask = 'fix-auth-bug' }: Interac
                                     {message.content.text}
                                   </p>
                                   {message.content.details && (
-                                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 space-y-2">
+                                    <div className="bg-white border border-gray-200 rounded-lg p-3 space-y-2">
                                       <p className="text-sm font-medium text-gray-700">Details:</p>
                                       <ul className="text-sm text-gray-600 space-y-1">
                                         {message.content.details.slice(0, 3).map((detail, i) => (

@@ -42,7 +42,7 @@ const InteractiveDemoWrapper = ({ triggerDemoFromHero, selectedTaskFromHero }: I
   }, [triggerDemoFromHero, selectedTaskFromHero])
 
   return (
-    <section ref={demoSectionRef} id="demo-section" className="min-h-screen bg-linear-bg-primary py-20">
+    <section ref={demoSectionRef} id="demo-section" className="relative bg-white py-24 overflow-visible">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Interactive Demo Component */}
         <InteractiveDemo 
