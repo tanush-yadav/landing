@@ -88,9 +88,9 @@ const Navigation = () => {
                   'text-2xl font-bold transition-colors',
                   isScrolled ? 'text-gray-900' : 'text-white'
                 )}
-                aria-label="Codegen Home"
+                aria-label="Volition Home"
               >
-                Codegen
+                Volition
               </Link>
             </div>
 
@@ -201,7 +201,7 @@ const Navigation = () => {
               className="text-2xl font-bold text-gray-900"
               onClick={closeMobileMenu}
             >
-              Codegen
+              Volition
             </Link>
             <button
               onClick={closeMobileMenu}

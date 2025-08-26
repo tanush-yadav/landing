@@ -1,0 +1,9 @@
+- Update Font everywhere to Inter and for headings make it
+- Make it genuinely beautiful as it's already working.
+  - Research better design rules and a theme
+  - Define the spec for it and let it work.
+- Push a version with three sections
+  - Hero
+  - Demo
+  - Team
+  - CTA

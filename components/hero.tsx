@@ -2,15 +2,92 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { ArrowRight, Play } from 'lucide-react'
+import { ArrowRight, Play, Users, FileText, TrendingUp, Settings } from 'lucide-react'
+import * as RadioGroup from '@radix-ui/react-radio-group'
 import { cn } from '@/lib/utils'
+import { motion, AnimatePresence } from 'framer-motion'
 
-const Hero = () => {
+// Team data with AI names and tasks
+const teams = [
+  {
+    id: 'engineering',
+    name: 'Engineering',
+    icon: <Settings className="h-4 w-4" />,
+    aiName: 'Zoe',
+    tasks: [
+      { id: 'refactor', label: 'Refactor authentication module', time: '45 mins' },
+      { id: 'api', label: 'Build REST API endpoints', time: '2 hours' },
+      { id: 'tests', label: 'Write unit tests for payment flow', time: '30 mins' },
+    ]
+  },
+  {
+    id: 'content',
+    name: 'Content',
+    icon: <FileText className="h-4 w-4" />,
+    aiName: 'Bella',
+    tasks: [
+      { id: 'blog', label: 'Write technical blog post', time: '35 mins' },
+      { id: 'docs', label: 'Update API documentation', time: '25 mins' },
+      { id: 'copy', label: 'Create landing page copy', time: '20 mins' },
+    ]
+  },
+  {
+    id: 'sales',
+    name: 'Sales',
+    icon: <TrendingUp className="h-4 w-4" />,
+    aiName: 'Alex',
+    tasks: [
+      { id: 'prospect', label: 'Research and qualify leads', time: '1 hour' },
+      { id: 'email', label: 'Draft personalized outreach emails', time: '30 mins' },
+      { id: 'report', label: 'Generate sales pipeline report', time: '15 mins' },
+    ]
+  },
+  {
+    id: 'operations',
+    name: 'Operations',
+    icon: <Users className="h-4 w-4" />,
+    aiName: 'Morgan',
+    tasks: [
+      { id: 'process', label: 'Optimize workflow processes', time: '45 mins' },
+      { id: 'audit', label: 'Conduct security audit', time: '1.5 hours' },
+      { id: 'report', label: 'Create monthly metrics report', time: '25 mins' },
+    ]
+  },
+]
+
+interface HeroProps {
+  onDemoTrigger?: () => void
+}
+
+const Hero = ({ onDemoTrigger }: HeroProps) => {
   const [isVisible, setIsVisible] = useState(false)
+  const [selectedTeam, setSelectedTeam] = useState('engineering')
+  const [selectedTask, setSelectedTask] = useState('')
+  const [isDelegating, setIsDelegating] = useState(false)
 
   useEffect(() => {
     setIsVisible(true)
   }, [])
+
+  const currentTeam = teams.find(t => t.id === selectedTeam) || teams[0]
+  const currentTask = currentTeam.tasks.find(t => t.id === selectedTask)
+
+  const handleDelegate = () => {
+    if (selectedTask) {
+      setIsDelegating(true)
+      // Trigger the demo animation
+      if (onDemoTrigger) {
+        onDemoTrigger()
+      }
+      // Scroll to demo section
+      setTimeout(() => {
+        const demoSection = document.getElementById('demo-section')
+        if (demoSection) {
+          demoSection.scrollIntoView({ behavior: 'smooth' })
+        }
+      }, 500)
+    }
+  }
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -47,7 +124,7 @@ const Hero = () => {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
               </span>
-              Now with full codebase context
+              Live Now: Watch AI Complete Real Tasks
             </span>
           </div>
 
@@ -58,9 +135,9 @@ const Hero = () => {
               isVisible && 'animate-fade-in-up'
             )}
           >
-            Ticket to PR in
+            AI Employees That
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-white via-primary-200 to-primary-100">
-              minutes
+              Join Your Team
             </span>
           </h1>
 
@@ -71,43 +148,109 @@ const Hero = () => {
               isVisible && 'animate-fade-in-up animation-delay-200'
             )}
           >
-            Ship faster with full codebase context. Transform your development workflow with AI-powered code generation that understands your entire project.
+            Watch them complete real work autonomously. Right now.
           </p>
 
-          {/* CTA Buttons */}
+          {/* Team Selector and Task Selection */}
           <div
             className={cn(
-              'flex flex-col sm:flex-row gap-4 justify-center items-center opacity-0',
+              'w-full max-w-3xl mx-auto opacity-0',
               isVisible && 'animate-fade-in-up animation-delay-400'
             )}
           >
-            {/* Primary CTA */}
-            <Link
-              href="/get-started"
-              className={cn(
-                'group inline-flex items-center justify-center rounded-lg px-8 py-4 text-base font-medium transition-all duration-200',
-                'bg-white text-gray-900 hover:bg-gray-50 hover:scale-105',
-                'focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600',
-                'shadow-xl hover:shadow-2xl'
-              )}
-            >
-              Get Started
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Link>
+            {/* Team Tabs */}
+            <div className="flex flex-wrap justify-center gap-2 mb-6">
+              {teams.map((team) => (
+                <button
+                  key={team.id}
+                  onClick={() => {
+                    setSelectedTeam(team.id)
+                    setSelectedTask('')
+                  }}
+                  className={cn(
+                    'inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
+                    selectedTeam === team.id
+                      ? 'bg-white text-gray-900 shadow-lg'
+                      : 'bg-white/10 backdrop-blur-md text-white border border-white/20 hover:bg-white/20'
+                  )}
+                >
+                  {team.icon}
+                  {team.name}
+                </button>
+              ))}
+            </div>
 
-            {/* Secondary CTA */}
-            <Link
-              href="/demo"
-              className={cn(
-                'group inline-flex items-center justify-center rounded-lg px-8 py-4 text-base font-medium transition-all duration-200',
-                'bg-white/10 backdrop-blur-md text-white border border-white/20',
-                'hover:bg-white/20 hover:border-white/30 hover:scale-105',
-                'focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600'
-              )}
-            >
-              <Play className="mr-2 h-4 w-4" />
-              Request Demo
-            </Link>
+            {/* Task Selection */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={selectedTeam}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+                className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20"
+              >
+                <h3 className="text-white text-lg font-semibold mb-4">
+                  Select a task for {currentTeam.aiName} to complete:
+                </h3>
+                
+                <RadioGroup.Root
+                  value={selectedTask}
+                  onValueChange={setSelectedTask}
+                  className="space-y-3"
+                >
+                  {currentTeam.tasks.map((task) => (
+                    <label
+                      key={task.id}
+                      className={cn(
+                        'flex items-center justify-between p-4 rounded-lg cursor-pointer transition-all duration-200',
+                        selectedTask === task.id
+                          ? 'bg-white/20 border border-white/30'
+                          : 'bg-white/5 border border-white/10 hover:bg-white/10'
+                      )}
+                    >
+                      <div className="flex items-center gap-3">
+                        <RadioGroup.Item
+                          value={task.id}
+                          className="w-5 h-5 rounded-full border-2 border-white/40 bg-white/10 data-[state=checked]:border-white data-[state=checked]:bg-white flex items-center justify-center"
+                        >
+                          <RadioGroup.Indicator className="w-2 h-2 rounded-full bg-gray-900" />
+                        </RadioGroup.Item>
+                        <span className="text-white text-base">{task.label}</span>
+                      </div>
+                      <span className="text-white/60 text-sm">{task.time}</span>
+                    </label>
+                  ))}
+                </RadioGroup.Root>
+
+                {/* Delegate Button */}
+                <button
+                  onClick={handleDelegate}
+                  disabled={!selectedTask || isDelegating}
+                  className={cn(
+                    'w-full mt-6 py-3 px-6 rounded-lg font-semibold text-base transition-all duration-200',
+                    selectedTask && !isDelegating
+                      ? 'bg-white text-gray-900 hover:bg-gray-50 hover:scale-[1.02] shadow-xl'
+                      : 'bg-white/20 text-white/50 cursor-not-allowed'
+                  )}
+                >
+                  {isDelegating ? (
+                    <span className="inline-flex items-center">
+                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Delegating to {currentTeam.aiName}...
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center justify-center">
+                      Delegate to {currentTeam.aiName}
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </span>
+                  )}
+                </button>
+              </motion.div>
+            </AnimatePresence>
           </div>
 
           {/* Trust Indicators */}
@@ -133,7 +276,7 @@ const Hero = () => {
               <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
               </svg>
-              <span>Trusted by 10,000+ developers</span>
+              <span>Trusted by leading companies</span>
             </div>
           </div>
         </div>
