@@ -31,7 +31,14 @@ font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
 ### Base Palette
 ```css
-/* Backgrounds */
+/* Premium Light Backgrounds (Primary Mode) */
+--bg-primary: #F5F5F7; /* Apple-style soft gray */
+--bg-secondary: #FFFFFF;
+--bg-elevated: #FFFFFF;
+--bg-surface: #FAFAFA;
+--bg-gradient: linear-gradient(180deg, #F8F9FA 0%, #FFFFFF 100%);
+
+/* Dark Mode Backgrounds (Keep for dark sections) */
 --black-pure: #000000;
 --black-deep: #0A0A0B;
 --black-elevated: #111113;
@@ -43,11 +50,23 @@ font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 --glass-medium: rgba(255, 255, 255, 0.08);
 --glass-strong: rgba(255, 255, 255, 0.12);
 
-/* Text */
---text-primary: rgba(255, 255, 255, 0.95);
---text-secondary: rgba(255, 255, 255, 0.6);
---text-tertiary: rgba(255, 255, 255, 0.4);
---text-disabled: rgba(255, 255, 255, 0.25);
+/* Text - Light Mode */
+--text-primary: #1D1D1F;
+--text-secondary: #666668;
+--text-tertiary: #86868B;
+--text-muted: #A1A1A6;
+
+/* Text - Dark Mode */
+--text-primary-dark: rgba(255, 255, 255, 0.95);
+--text-secondary-dark: rgba(255, 255, 255, 0.6);
+--text-tertiary-dark: rgba(255, 255, 255, 0.4);
+--text-disabled-dark: rgba(255, 255, 255, 0.25);
+
+/* Shadows */
+--shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+--shadow-md: 0 4px 20px rgba(0, 0, 0, 0.06);
+--shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.08);
+--shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.12);
 ```
 
 ### Accent Colors
@@ -210,69 +229,193 @@ font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
 ### Premium Button
 ```css
-.btn-premium {
-  padding: 12px 24px;
-  background: linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+/* Primary Black Pill Button */
+.btn-black-pill {
+  background: #000000;
+  color: #FFFFFF;
+  padding: 14px 28px;
+  border-radius: 100px;
+  font-size: 15px;
   font-weight: 600;
-  font-size: 16px;
-  color: white;
-  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
   transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
+  border: none;
+  cursor: pointer;
 }
 
-.btn-premium::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  transition: left 600ms;
+.btn-black-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
-.btn-premium:hover::before {
-  left: 100%;
+/* Secondary Green Pill (CTA) */
+.btn-green-pill {
+  background: #00C851;
+  color: #FFFFFF;
+  padding: 14px 28px;
+  border-radius: 100px;
+  font-size: 15px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(0, 200, 81, 0.25);
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  cursor: pointer;
 }
 
-.btn-premium:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+.btn-green-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 200, 81, 0.35);
+  background: #00B548;
+}
+
+/* Ghost Button */
+.btn-ghost {
+  background: transparent;
+  color: var(--text-primary);
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.btn-ghost:hover {
+  background: rgba(0, 0, 0, 0.02);
+  border-color: rgba(0, 0, 0, 0.2);
 }
 ```
 
-### Floating Card
+### Premium Cards
 ```css
-.card-float {
+/* Elevated White Card */
+.card-elevated {
+  background: #FFFFFF;
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-elevated:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Glass Card (for dark backgrounds) */
+.card-glass {
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
   padding: 24px;
   transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
 }
 
-.card-float::after {
+.card-glass:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+/* Gradient Border Card */
+.card-gradient-border {
+  position: relative;
+  background: #FFFFFF;
+  border-radius: 24px;
+  padding: 32px;
+}
+
+.card-gradient-border::before {
   content: '';
   position: absolute;
   inset: -1px;
-  border-radius: 16px;
+  border-radius: 24px;
   padding: 1px;
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.5), transparent);
+  background: linear-gradient(135deg, #8B5CF6, #3B82F6, #10B981);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: exclude;
   mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 300ms;
+}
+```
+
+## Device Mockups
+
+### Floating Phone Presentation
+```css
+.device-mockup {
+  position: relative;
+  filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.12));
+  transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.card-float:hover::after {
-  opacity: 1;
+.device-angled-left {
+  transform: perspective(1200px) rotateY(15deg) rotateX(2deg);
+}
+
+.device-angled-right {
+  transform: perspective(1200px) rotateY(-15deg) rotateX(2deg);
+}
+
+.device-overlap {
+  position: relative;
+  z-index: 2;
+  margin-left: -80px;
+}
+
+.device-mockup:hover {
+  transform: perspective(1200px) rotateY(0deg) scale(1.05);
+  filter: drop-shadow(0 40px 80px rgba(0, 0, 0, 0.15));
+}
+```
+
+### Social Proof Components
+```css
+/* Avatar Stack */
+.avatar-stack {
+  display: flex;
+  align-items: center;
+}
+
+.avatar-stack .avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-left: -8px;
+}
+
+.avatar-stack .avatar:first-child {
+  margin-left: 0;
+}
+
+.avatar-count {
+  margin-left: 12px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Trust Badge */
+.trust-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
 }
 ```
 
@@ -286,6 +429,40 @@ font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 --container-lg: 1024px;
 --container-xl: 1280px;
 --container-2xl: 1536px;
+```
+
+### Premium Hero Section
+```css
+.hero-premium {
+  min-height: 100vh;
+  background: var(--bg-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.hero-card {
+  background: white;
+  border-radius: 32px;
+  padding: 80px;
+  max-width: 1200px;
+  box-shadow: var(--shadow-lg);
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 60px;
+}
+
+.hero-devices {
+  position: relative;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 ```
 
 ### Grid System
@@ -312,6 +489,53 @@ font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 ```
 
+## Premium Section Layouts
+
+### Alternating Light Sections
+```css
+.section-light {
+  min-height: 100vh;
+  background: #FFFFFF;
+  padding: 120px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.section-light-gray {
+  min-height: 100vh;
+  background: var(--bg-primary);
+  padding: 120px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Minimal Content Sections */
+.section-minimal {
+  min-height: 80vh;
+  padding: 10vh 5vw;
+  display: grid;
+  place-content: center;
+  text-align: center;
+}
+
+.section-minimal .headline {
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 700;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  margin-bottom: 24px;
+}
+
+.section-minimal .subtitle {
+  font-size: 20px;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+}
+```
+
 ## Motion Principles
 
 1. **Purposeful**: Every animation serves a function
@@ -319,6 +543,8 @@ font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 3. **Smooth**: Use easing functions, avoid linear
 4. **Subtle**: Small transforms (2-4px) feel premium
 5. **Consistent**: Same timing across similar elements
+6. **Elevated**: Lift elements on hover for depth
+7. **Refined**: Use drop shadows instead of borders
 
 ## Implementation Checklist
 

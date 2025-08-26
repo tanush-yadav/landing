@@ -56,7 +56,7 @@ const teams = [
 ]
 
 interface HeroProps {
-  onDemoTrigger?: () => void
+  onDemoTrigger?: (taskId?: string) => void
 }
 
 const Hero = ({ onDemoTrigger }: HeroProps) => {
@@ -75,17 +75,14 @@ const Hero = ({ onDemoTrigger }: HeroProps) => {
   const handleDelegate = () => {
     if (selectedTask) {
       setIsDelegating(true)
-      // Trigger the demo animation
+      // Trigger the demo animation and scroll with the selected task
       if (onDemoTrigger) {
-        onDemoTrigger()
+        onDemoTrigger(selectedTask)
       }
-      // Scroll to demo section
+      // Reset delegating state after animation
       setTimeout(() => {
-        const demoSection = document.getElementById('demo-section')
-        if (demoSection) {
-          demoSection.scrollIntoView({ behavior: 'smooth' })
-        }
-      }, 500)
+        setIsDelegating(false)
+      }, 2000)
     }
   }
 

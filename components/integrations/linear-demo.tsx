@@ -56,6 +56,7 @@ const statusConfig = {
   'todo': {
     label: 'Todo',
     icon: Circle,
+    iconColor: 'text-gray-400',
     color: 'text-gray-400',
     bgColor: 'bg-gray-800/50',
     borderColor: 'border-gray-700'
@@ -221,7 +222,7 @@ export default function LinearDemo({ isPlaying }: LinearDemoProps) {
                 <div className="flex items-center gap-3 mb-3">
                   <span className="text-xs font-mono text-[#9CA3AF]">VOL-12</span>
                   <div className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full border ${statusConfig[status].bgColor} ${statusConfig[status].borderColor}`}>
-                    <StatusIcon className={`w-3 h-3 ${statusConfig[status].iconColor || statusConfig[status].color}`} />
+                    <StatusIcon className={`w-3 h-3 ${statusConfig[status].iconColor}`} />
                     <span className={`text-xs font-medium ${statusConfig[status].color}`}>
                       {statusConfig[status].label}
                     </span>
