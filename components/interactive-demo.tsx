@@ -109,7 +109,7 @@ function workflowToConfig(workflow: TaskWorkflow): DemoConfig | null {
           text: step.slackMessage.content,
           details: step.slackMessage.attachments.content.slice(0, 4)
         } : step.slackMessage.content,
-        timestamp: new Date(step.timestamp || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        timestamp: new Date(step.slackMessage.timestamp || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         delay: msgIndex * 500
       })
     }
@@ -129,9 +129,9 @@ function workflowToConfig(workflow: TaskWorkflow): DemoConfig | null {
   // Get the final step for completion message
   const finalStep = workflow.steps[workflow.steps.length - 1]
   const completionMessage = finalStep?.slackMessage ? {
-    type: workflow.completionType || 'complete' as const,
+    type: 'complete' as const,
     content: finalStep.slackMessage.content || `${workflow.title} task completed`,
-    link: workflow.completionLink || '#'
+    link: '#'
   } : null
 
   return {
@@ -805,13 +805,7 @@ const InteractiveDemo = memo(({
                     <div className="border-t border-gray-100 pt-4">
                       <h4 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">Sub-issues</h4>
                       <div className="space-y-2">
-                        {(currentTask?.subtasks || [
-                          workflow.steps.slice(0, 5).map((step, idx) => ({
-                            id: idx,
-                            title: step.description || step.phase || 'Unnamed task',
-                            assignee: agent.avatar
-                          }))
-                        ]).map((task, index) => {
+                        {(currentTask?.subtasks || []).map((task, index) => {
                           const isCompleted = completedSubtasks.includes(task.id) || demoState.phase === 'complete'
                           return (
                             <motion.div
