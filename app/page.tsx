@@ -3,63 +3,77 @@
 import { useState } from 'react'
 import Navigation from '@/components/navigation'
 import Hero from '@/components/hero'
-import IntegrationShowcase from '@/components/integration-showcase'
 import InteractiveDemoWrapper from '@/components/interactive-demo-wrapper'
 
 export default function Home() {
   const [demoTrigger, setDemoTrigger] = useState(false)
   const [selectedTask, setSelectedTask] = useState('')
-  const [integrationDemoTrigger, setIntegrationDemoTrigger] = useState(false)
-  const [integrationDemoType, setIntegrationDemoType] = useState<'slack' | 'linear' | null>(null)
+  const [isDemoRunning, setIsDemoRunning] = useState(false)
 
-  // Map hero task IDs to demo task IDs
+  // Map hero task IDs to demo workflow IDs
   const taskMapping: Record<string, string> = {
-    'refactor': 'refactor',
-    'api': 'fix-auth-bug',
-    'tests': 'fix-auth-bug',
-    'blog': 'blog',
-    'docs': 'blog',
-    'copy': 'blog',
-    'prospect': 'prospect',
-    'email': 'prospect',
-    'report': 'prospect',
-    'process': 'process',
-    'audit': 'process',
+    // Engineering tasks
+    'auth-bug-fix': 'fix-auth-bug',
+    'payment-api-error': 'payment-api-error',
+    'user-service-tests': 'unit-tests',
+    // Content tasks
+    'blog-post': 'blog-post',
+    'email-campaign': 'email-campaign',
+    'api-docs': 'api-docs',
+    // Sales tasks
+    'qualify-leads': 'qualify-leads',
+    'competitor-research': 'competitor-research',
+    'crm-update': 'crm-updates',
+    // Operations tasks
+    'aws-audit': 'aws-audit',
+    'monitoring-setup': 'api-monitoring',
+    'deployment-docs': 'deployment-docs',
   }
 
   const handleDemoTrigger = (heroTaskId?: string) => {
-    // Map the hero task to a demo task
-    const demoTaskId = heroTaskId && taskMapping[heroTaskId] ? taskMapping[heroTaskId] : 'fix-auth-bug'
-    setSelectedTask(demoTaskId)
-    setDemoTrigger(true)
+    // Don't allow new demo if one is already running
+    if (isDemoRunning) {
+      return
+    }
     
-    // Reset trigger after a short delay
-    setTimeout(() => setDemoTrigger(false), 100)
+    // Map the hero task to a demo task
+    const demoTaskId =
+      heroTaskId && taskMapping[heroTaskId]
+        ? taskMapping[heroTaskId]
+        : 'fix-auth-bug'
+    
+    // Force a reset by changing task to empty then back
+    // This ensures the demo component fully resets
+    setSelectedTask('')
+    setDemoTrigger(false)
+    setIsDemoRunning(true)
+    
+    // Then set the new task and trigger after a brief delay
+    setTimeout(() => {
+      setSelectedTask(demoTaskId)
+      setDemoTrigger(true)
+    }, 100)
   }
 
-  const handleIntegrationDemoTrigger = (demoType: 'slack' | 'linear') => {
-    setIntegrationDemoType(demoType)
-    setIntegrationDemoTrigger(true)
-    
-    // Reset trigger after a short delay
-    setTimeout(() => setIntegrationDemoTrigger(false), 100)
+  const handleDemoComplete = () => {
+    setIsDemoRunning(false)
+    // Ensure trigger is reset when demo completes
+    setDemoTrigger(false)
   }
+
 
   return (
     <main className="min-h-screen">
       <Navigation />
-      <Hero
-        onDemoTrigger={handleDemoTrigger}
-      />
+      <Hero onDemoTrigger={handleDemoTrigger} isDemoRunning={isDemoRunning} />
 
       {/* Interactive Demo Section - Clean Professional UI */}
-      <InteractiveDemoWrapper 
+      <InteractiveDemoWrapper
         triggerDemoFromHero={demoTrigger}
         selectedTaskFromHero={selectedTask}
+        onDemoComplete={handleDemoComplete}
+        isDemoRunning={isDemoRunning}
       />
-
-      {/* Integration Showcase Section */}
-      <IntegrationShowcase onDemoTrigger={handleIntegrationDemoTrigger} />
     </main>
   )
 }

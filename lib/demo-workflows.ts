@@ -7,9 +7,7 @@ export interface WorkflowStep {
   phase: string
   description: string
   duration: number // in milliseconds
-  points: number
   actions: WorkflowAction[]
-  achievement?: Achievement
   slackMessage?: SlackMessage
   linearUpdate?: LinearUpdate
 }
@@ -19,13 +17,6 @@ export interface WorkflowAction {
   target: 'linear' | 'slack' | 'code' | 'docs' | 'aws' | 'hubspot' | 'datadog'
   content: string
   delay?: number
-}
-
-export interface Achievement {
-  id: string
-  icon: string
-  name: string
-  description: string
 }
 
 export interface SlackMessage {
@@ -52,7 +43,6 @@ export interface LinearSubtask {
   id: string
   title: string
   completed: boolean
-  points: number
 }
 
 export interface TaskWorkflow {
@@ -62,95 +52,7 @@ export interface TaskWorkflow {
   title: string
   description: string
   estimatedTime: string
-  totalPoints: number
   steps: WorkflowStep[]
-  achievements: Achievement[]
-  finalScore: {
-    points: number
-    timeSaved: string
-  }
-}
-
-// Achievement definitions
-export const ACHIEVEMENTS: Record<string, Achievement> = {
-  bugDetective: {
-    id: 'bug-detective',
-    icon: '🔍',
-    name: 'Bug Detective',
-    description: 'Found root cause quickly',
-  },
-  speedDemon: {
-    id: 'speed-demon',
-    icon: '⚡',
-    name: 'Speed Demon',
-    description: 'Completed under estimated time',
-  },
-  briefMaster: {
-    id: 'brief-master',
-    icon: '📝',
-    name: 'Brief Master',
-    description: 'Perfect brief on first try',
-  },
-  coverageChampion: {
-    id: 'coverage-champion',
-    icon: '🎯',
-    name: 'Coverage Champion',
-    description: 'Achieved >95% test coverage',
-  },
-  costCutter: {
-    id: 'cost-cutter',
-    icon: '💰',
-    name: 'Cost Cutter',
-    description: 'Saved >$5000/month',
-  },
-  dataHygienist: {
-    id: 'data-hygienist',
-    icon: '📊',
-    name: 'Data Hygienist',
-    description: 'Perfect CRM updates',
-  },
-  competitiveIntel: {
-    id: 'competitive-intel',
-    icon: '🛡️',
-    name: 'Competitive Intel',
-    description: 'Complete battle card',
-  },
-  paymentGuardian: {
-    id: 'payment-guardian',
-    icon: '💳',
-    name: 'Payment Guardian',
-    description: 'Protected payment flow',
-  },
-  campaignArchitect: {
-    id: 'campaign-architect',
-    icon: '📧',
-    name: 'Campaign Architect',
-    description: 'Perfect email campaign',
-  },
-  docChampion: {
-    id: 'doc-champion',
-    icon: '📚',
-    name: 'Doc Champion',
-    description: 'Comprehensive documentation',
-  },
-  leadHunter: {
-    id: 'lead-hunter',
-    icon: '🎯',
-    name: 'Lead Hunter',
-    description: 'Qualified 40+ leads',
-  },
-  monitoringMaster: {
-    id: 'monitoring-master',
-    icon: '📊',
-    name: 'Monitoring Master',
-    description: 'Complete observability',
-  },
-  processPro: {
-    id: 'process-pro',
-    icon: '📝',
-    name: 'Process Pro',
-    description: 'Automated manual process',
-  },
 }
 
 // Engineering workflows
@@ -162,14 +64,12 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
     title: 'Fix the authentication bug in production',
     description: 'Customer screenshot showing login failure after 2FA',
     estimatedTime: '45 minutes',
-    totalPoints: 280,
     steps: [
       {
         id: 'investigation',
         phase: 'Investigation',
         description: 'Analyzing customer screenshot and error patterns',
         duration: 3000,
-        points: 50,
         actions: [
           {
             type: 'analyze',
@@ -196,18 +96,18 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Root Cause Analysis',
         description: 'Found JWT token refresh logic issue',
         duration: 3000,
-        points: 70,
         actions: [
           {
             type: 'notify',
             target: 'slack',
-            content: 'Found it! JWT refresh token expires 2 hours early due to timezone mismatch in auth/jwt-handler.ts:142',
+            content:
+              'Found it! JWT refresh token expires 2 hours early due to timezone mismatch in auth/jwt-handler.ts:142',
           },
         ],
-        achievement: ACHIEVEMENTS.bugDetective,
         slackMessage: {
           author: 'Zoe',
-          content: 'Found it! JWT refresh token expires 2 hours early due to timezone mismatch in `auth/jwt-handler.ts:142`',
+          content:
+            'Found it! JWT refresh token expires 2 hours early due to timezone mismatch in `auth/jwt-handler.ts:142`',
           attachments: {
             type: 'code',
             content: [
@@ -227,7 +127,6 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Planning',
         description: 'Creating subtasks and implementation plan',
         duration: 3000,
-        points: 30,
         actions: [
           {
             type: 'create',
@@ -242,11 +141,31 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
           assignee: 'ZA',
           progress: 30,
           subtasks: [
-            { id: 's1', title: 'Fix timezone calculation in JWT handler', completed: false, points: 25 },
-            { id: 's2', title: 'Add unit tests for token expiry edge cases', completed: false, points: 25 },
-            { id: 's3', title: 'Update error messages for better debugging', completed: false, points: 25 },
-            { id: 's4', title: 'Add monitoring for auth failures', completed: false, points: 25 },
-            { id: 's5', title: 'Migration script for existing sessions', completed: false, points: 25 },
+            {
+              id: 's1',
+              title: 'Fix timezone calculation in JWT handler',
+              completed: false,
+            },
+            {
+              id: 's2',
+              title: 'Add unit tests for token expiry edge cases',
+              completed: false,
+            },
+            {
+              id: 's3',
+              title: 'Update error messages for better debugging',
+              completed: false,
+            },
+            {
+              id: 's4',
+              title: 'Add monitoring for auth failures',
+              completed: false,
+            },
+            {
+              id: 's5',
+              title: 'Migration script for existing sessions',
+              completed: false,
+            },
           ],
         },
       },
@@ -255,7 +174,6 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Review & Refinement',
         description: 'Incorporating feedback on backward compatibility',
         duration: 3000,
-        points: 20,
         actions: [
           {
             type: 'update',
@@ -273,7 +191,6 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Implementation',
         description: 'Working through subtasks',
         duration: 6000,
-        points: 60,
         actions: [
           {
             type: 'update',
@@ -294,11 +211,31 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
           assignee: 'ZA',
           progress: 80,
           subtasks: [
-            { id: 's1', title: 'Fix timezone calculation in JWT handler', completed: true, points: 25 },
-            { id: 's2', title: 'Add unit tests for token expiry edge cases', completed: true, points: 25 },
-            { id: 's3', title: 'Update error messages for better debugging', completed: true, points: 25 },
-            { id: 's4', title: 'Add monitoring for auth failures', completed: false, points: 25 },
-            { id: 's5', title: 'Migration script for existing sessions', completed: false, points: 25 },
+            {
+              id: 's1',
+              title: 'Fix timezone calculation in JWT handler',
+              completed: true,
+            },
+            {
+              id: 's2',
+              title: 'Add unit tests for token expiry edge cases',
+              completed: true,
+            },
+            {
+              id: 's3',
+              title: 'Update error messages for better debugging',
+              completed: true,
+            },
+            {
+              id: 's4',
+              title: 'Add monitoring for auth failures',
+              completed: false,
+            },
+            {
+              id: 's5',
+              title: 'Migration script for existing sessions',
+              completed: false,
+            },
           ],
         },
       },
@@ -307,7 +244,6 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Code Review',
         description: 'PR ready for review',
         duration: 3000,
-        points: 50,
         actions: [
           {
             type: 'notify',
@@ -328,16 +264,37 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
           assignee: 'ZA',
           progress: 100,
           subtasks: [
-            { id: 's1', title: 'Fix timezone calculation in JWT handler', completed: true, points: 25 },
-            { id: 's2', title: 'Add unit tests for token expiry edge cases', completed: true, points: 25 },
-            { id: 's3', title: 'Update error messages for better debugging', completed: true, points: 25 },
-            { id: 's4', title: 'Add monitoring for auth failures', completed: true, points: 25 },
-            { id: 's5', title: 'Migration script for existing sessions', completed: true, points: 25 },
+            {
+              id: 's1',
+              title: 'Fix timezone calculation in JWT handler',
+              completed: true,
+            },
+            {
+              id: 's2',
+              title: 'Add unit tests for token expiry edge cases',
+              completed: true,
+            },
+            {
+              id: 's3',
+              title: 'Update error messages for better debugging',
+              completed: true,
+            },
+            {
+              id: 's4',
+              title: 'Add monitoring for auth failures',
+              completed: true,
+            },
+            {
+              id: 's5',
+              title: 'Migration script for existing sessions',
+              completed: true,
+            },
           ],
         },
         slackMessage: {
           author: 'Zoe',
-          content: '✅ PR #1247 ready for review - Fix JWT timezone bug affecting 2FA users',
+          content:
+            '✅ PR #1247 ready for review - Fix JWT timezone bug affecting 2FA users',
           attachments: {
             type: 'status',
             content: [
@@ -351,27 +308,21 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
         },
       },
     ],
-    achievements: [ACHIEVEMENTS.bugDetective, ACHIEVEMENTS.speedDemon],
-    finalScore: {
-      points: 280,
-      timeSaved: '4 hours',
-    },
   },
   {
     id: 'payment-api-error',
     category: 'engineering',
     employee: 'Zoe',
     title: 'Add error handling to the payment API',
-    description: 'Stripe webhooks are failing silently, causing missed payments',
+    description:
+      'Stripe webhooks are failing silently, causing missed payments',
     estimatedTime: '30 minutes',
-    totalPoints: 320,
     steps: [
       {
         id: 'analysis',
         phase: 'Analysis',
         description: 'Reviewing payment webhook code',
         duration: 3000,
-        points: 40,
         actions: [
           {
             type: 'analyze',
@@ -398,12 +349,12 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Strategy Planning',
         description: 'Creating comprehensive error handling plan',
         duration: 3000,
-        points: 50,
         actions: [
           {
             type: 'notify',
             target: 'slack',
-            content: 'Found 7 unhandled webhook scenarios. Creating comprehensive error handling',
+            content:
+              'Found 7 unhandled webhook scenarios. Creating comprehensive error handling',
           },
           {
             type: 'create',
@@ -419,16 +370,37 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
           assignee: 'ZA',
           progress: 30,
           subtasks: [
-            { id: 'p1', title: 'Add retry logic with exponential backoff', completed: false, points: 40 },
-            { id: 'p2', title: 'Implement webhook signature validation', completed: false, points: 40 },
-            { id: 'p3', title: 'Add error queue for failed payments', completed: false, points: 40 },
-            { id: 'p4', title: 'Create alerting for payment failures', completed: false, points: 40 },
-            { id: 'p5', title: 'Add detailed logging', completed: false, points: 40 },
+            {
+              id: 'p1',
+              title: 'Add retry logic with exponential backoff',
+              completed: false,
+            },
+            {
+              id: 'p2',
+              title: 'Implement webhook signature validation',
+              completed: false,
+            },
+            {
+              id: 'p3',
+              title: 'Add error queue for failed payments',
+              completed: false,
+            },
+            {
+              id: 'p4',
+              title: 'Create alerting for payment failures',
+              completed: false,
+            },
+            {
+              id: 'p5',
+              title: 'Add detailed logging',
+              completed: false,
+            },
           ],
         },
         slackMessage: {
           author: 'Zoe',
-          content: 'Found 7 unhandled webhook scenarios. Creating comprehensive error handling:',
+          content:
+            'Found 7 unhandled webhook scenarios. Creating comprehensive error handling:',
           attachments: {
             type: 'list',
             content: [
@@ -448,7 +420,6 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Implementation',
         description: 'Implementing error handling logic',
         duration: 6000,
-        points: 100,
         actions: [
           {
             type: 'update',
@@ -468,7 +439,6 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
             delay: 4000,
           },
         ],
-        achievement: ACHIEVEMENTS.paymentGuardian,
         linearUpdate: {
           ticketId: 'VOL-102',
           title: 'Add error handling to payment API',
@@ -476,11 +446,31 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
           assignee: 'ZA',
           progress: 70,
           subtasks: [
-            { id: 'p1', title: 'Add retry logic with exponential backoff', completed: true, points: 40 },
-            { id: 'p2', title: 'Implement webhook signature validation', completed: true, points: 40 },
-            { id: 'p3', title: 'Add error queue for failed payments', completed: true, points: 40 },
-            { id: 'p4', title: 'Create alerting for payment failures', completed: false, points: 40 },
-            { id: 'p5', title: 'Add detailed logging', completed: false, points: 40 },
+            {
+              id: 'p1',
+              title: 'Add retry logic with exponential backoff',
+              completed: true,
+            },
+            {
+              id: 'p2',
+              title: 'Implement webhook signature validation',
+              completed: true,
+            },
+            {
+              id: 'p3',
+              title: 'Add error queue for failed payments',
+              completed: true,
+            },
+            {
+              id: 'p4',
+              title: 'Create alerting for payment failures',
+              completed: false,
+            },
+            {
+              id: 'p5',
+              title: 'Add detailed logging',
+              completed: false,
+            },
           ],
         },
       },
@@ -489,7 +479,6 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Testing & Validation',
         description: 'Testing error scenarios',
         duration: 3000,
-        points: 80,
         actions: [
           {
             type: 'update',
@@ -510,11 +499,31 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
           assignee: 'ZA',
           progress: 90,
           subtasks: [
-            { id: 'p1', title: 'Add retry logic with exponential backoff', completed: true, points: 40 },
-            { id: 'p2', title: 'Implement webhook signature validation', completed: true, points: 40 },
-            { id: 'p3', title: 'Add error queue for failed payments', completed: true, points: 40 },
-            { id: 'p4', title: 'Create alerting for payment failures', completed: true, points: 40 },
-            { id: 'p5', title: 'Add detailed logging', completed: true, points: 40 },
+            {
+              id: 'p1',
+              title: 'Add retry logic with exponential backoff',
+              completed: true,
+            },
+            {
+              id: 'p2',
+              title: 'Implement webhook signature validation',
+              completed: true,
+            },
+            {
+              id: 'p3',
+              title: 'Add error queue for failed payments',
+              completed: true,
+            },
+            {
+              id: 'p4',
+              title: 'Create alerting for payment failures',
+              completed: true,
+            },
+            {
+              id: 'p5',
+              title: 'Add detailed logging',
+              completed: true,
+            },
           ],
         },
       },
@@ -523,7 +532,6 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Deployment',
         description: 'Deploying to production',
         duration: 3000,
-        points: 50,
         actions: [
           {
             type: 'create',
@@ -559,11 +567,6 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
         },
       },
     ],
-    achievements: [ACHIEVEMENTS.paymentGuardian, ACHIEVEMENTS.speedDemon],
-    finalScore: {
-      points: 320,
-      timeSaved: '3 hours',
-    },
   },
   {
     id: 'unit-tests',
@@ -572,14 +575,12 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
     title: 'Write unit tests for the user service',
     description: 'User service has 0% test coverage, causing production bugs',
     estimatedTime: '40 minutes',
-    totalPoints: 280,
     steps: [
       {
         id: 'coverage-analysis',
         phase: 'Coverage Analysis',
         description: 'Scanning user service for untested methods',
         duration: 2000,
-        points: 30,
         actions: [
           {
             type: 'analyze',
@@ -600,7 +601,6 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Test Planning',
         description: 'Creating comprehensive test suite plan',
         duration: 3000,
-        points: 50,
         actions: [
           {
             type: 'notify',
@@ -621,10 +621,26 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
           assignee: 'ZA',
           progress: 25,
           subtasks: [
-            { id: 't1', title: 'CRUD operations (8 tests)', completed: false, points: 40 },
-            { id: 't2', title: 'Authentication (6 tests)', completed: false, points: 40 },
-            { id: 't3', title: 'Permissions (5 tests)', completed: false, points: 40 },
-            { id: 't4', title: 'Data validation (4 tests)', completed: false, points: 40 },
+            {
+              id: 't1',
+              title: 'CRUD operations (8 tests)',
+              completed: false,
+            },
+            {
+              id: 't2',
+              title: 'Authentication (6 tests)',
+              completed: false,
+            },
+            {
+              id: 't3',
+              title: 'Permissions (5 tests)',
+              completed: false,
+            },
+            {
+              id: 't4',
+              title: 'Data validation (4 tests)',
+              completed: false,
+            },
           ],
         },
         slackMessage: {
@@ -648,7 +664,6 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Test Implementation',
         description: 'Writing tests with proper mocking',
         duration: 7000,
-        points: 100,
         actions: [
           {
             type: 'update',
@@ -662,7 +677,6 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
             delay: 2000,
           },
         ],
-        achievement: ACHIEVEMENTS.coverageChampion,
         linearUpdate: {
           ticketId: 'VOL-103',
           title: 'Write unit tests for user service',
@@ -670,10 +684,26 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
           assignee: 'ZA',
           progress: 60,
           subtasks: [
-            { id: 't1', title: 'CRUD operations (8 tests)', completed: true, points: 40 },
-            { id: 't2', title: 'Authentication (6 tests)', completed: true, points: 40 },
-            { id: 't3', title: 'Permissions (5 tests)', completed: false, points: 40 },
-            { id: 't4', title: 'Data validation (4 tests)', completed: false, points: 40 },
+            {
+              id: 't1',
+              title: 'CRUD operations (8 tests)',
+              completed: true,
+            },
+            {
+              id: 't2',
+              title: 'Authentication (6 tests)',
+              completed: true,
+            },
+            {
+              id: 't3',
+              title: 'Permissions (5 tests)',
+              completed: false,
+            },
+            {
+              id: 't4',
+              title: 'Data validation (4 tests)',
+              completed: false,
+            },
           ],
         },
       },
@@ -682,7 +712,6 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Edge Cases',
         description: 'Adding edge case tests',
         duration: 3000,
-        points: 60,
         actions: [
           {
             type: 'update',
@@ -703,10 +732,26 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
           assignee: 'ZA',
           progress: 85,
           subtasks: [
-            { id: 't1', title: 'CRUD operations (8 tests)', completed: true, points: 40 },
-            { id: 't2', title: 'Authentication (6 tests)', completed: true, points: 40 },
-            { id: 't3', title: 'Permissions (5 tests)', completed: true, points: 40 },
-            { id: 't4', title: 'Data validation (4 tests)', completed: true, points: 40 },
+            {
+              id: 't1',
+              title: 'CRUD operations (8 tests)',
+              completed: true,
+            },
+            {
+              id: 't2',
+              title: 'Authentication (6 tests)',
+              completed: true,
+            },
+            {
+              id: 't3',
+              title: 'Permissions (5 tests)',
+              completed: true,
+            },
+            {
+              id: 't4',
+              title: 'Data validation (4 tests)',
+              completed: true,
+            },
           ],
         },
       },
@@ -715,7 +760,6 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Review',
         description: 'Running full test suite',
         duration: 3000,
-        points: 40,
         actions: [
           {
             type: 'update',
@@ -752,11 +796,6 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
         },
       },
     ],
-    achievements: [ACHIEVEMENTS.coverageChampion],
-    finalScore: {
-      points: 280,
-      timeSaved: '3.5 hours',
-    },
   },
 ]
 
@@ -769,14 +808,12 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
     title: 'Write blog post about Q4 product updates',
     description: 'Q4 launches need announcement blog for 5 new features',
     estimatedTime: '25 minutes',
-    totalPoints: 380,
     steps: [
       {
         id: 'research',
         phase: 'Research',
         description: 'Analyzing product knowledge base',
         duration: 3000,
-        points: 40,
         actions: [
           {
             type: 'analyze',
@@ -786,7 +823,8 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
           {
             type: 'notify',
             target: 'slack',
-            content: "I've identified 5 key features. Which angle resonates most: technical deep-dive or business value?",
+            content:
+              "I've identified 5 key features. Which angle resonates most: technical deep-dive or business value?",
             delay: 2000,
           },
         ],
@@ -799,7 +837,8 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
         },
         slackMessage: {
           author: 'Bella',
-          content: "I've identified 5 key features. Which angle resonates most: technical deep-dive or business value?",
+          content:
+            "I've identified 5 key features. Which angle resonates most: technical deep-dive or business value?",
         },
       },
       {
@@ -807,7 +846,6 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Brief Creation',
         description: 'Creating content brief',
         duration: 3000,
-        points: 60,
         actions: [
           {
             type: 'create',
@@ -815,7 +853,6 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
             content: 'Creating brief with target audience and SEO focus',
           },
         ],
-        achievement: ACHIEVEMENTS.briefMaster,
         linearUpdate: {
           ticketId: 'VOL-201',
           title: 'Write blog post about Q4 product updates',
@@ -833,7 +870,6 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Reference Validation',
         description: 'Verifying statistics and benchmarks',
         duration: 3000,
-        points: 40,
         actions: [
           {
             type: 'analyze',
@@ -860,7 +896,6 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Review & Refinement',
         description: 'Incorporating feedback',
         duration: 3000,
-        points: 40,
         actions: [
           {
             type: 'update',
@@ -878,7 +913,6 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Content Generation',
         description: 'Writing full post',
         duration: 6000,
-        points: 100,
         actions: [
           {
             type: 'create',
@@ -905,7 +939,6 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Style Review',
         description: 'Checking brand consistency',
         duration: 3000,
-        points: 60,
         actions: [
           {
             type: 'analyze',
@@ -945,7 +978,6 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Publishing',
         description: 'Publishing to blog',
         duration: 2000,
-        points: 40,
         actions: [
           {
             type: 'complete',
@@ -975,11 +1007,6 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
         },
       },
     ],
-    achievements: [ACHIEVEMENTS.briefMaster],
-    finalScore: {
-      points: 380,
-      timeSaved: '6 hours',
-    },
   },
   {
     id: 'email-campaign',
@@ -988,14 +1015,12 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
     title: 'Create email campaign for new feature launch',
     description: 'AI Code Review feature launching next week',
     estimatedTime: '20 minutes',
-    totalPoints: 240,
     steps: [
       {
         id: 'segmentation',
         phase: 'Audience Segmentation',
         description: 'Analyzing customer database',
         duration: 3000,
-        points: 30,
         actions: [
           {
             type: 'analyze',
@@ -1016,7 +1041,6 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Campaign Strategy',
         description: 'Creating multi-touch sequence',
         duration: 3000,
-        points: 50,
         actions: [
           {
             type: 'notify',
@@ -1060,7 +1084,6 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Content Creation',
         description: 'Writing personalized content',
         duration: 6000,
-        points: 80,
         actions: [
           {
             type: 'create',
@@ -1080,7 +1103,6 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
             delay: 4000,
           },
         ],
-        achievement: ACHIEVEMENTS.campaignArchitect,
         linearUpdate: {
           ticketId: 'VOL-202',
           title: 'Create email campaign for feature launch',
@@ -1094,7 +1116,6 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
         phase: 'A/B Testing Setup',
         description: 'Configuring test variants',
         duration: 3000,
-        points: 40,
         actions: [
           {
             type: 'create',
@@ -1121,7 +1142,6 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Review & Launch',
         description: 'Scheduling campaign',
         duration: 3000,
-        points: 40,
         actions: [
           {
             type: 'complete',
@@ -1152,11 +1172,6 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
         },
       },
     ],
-    achievements: [ACHIEVEMENTS.campaignArchitect],
-    finalScore: {
-      points: 240,
-      timeSaved: '4 hours',
-    },
   },
   {
     id: 'api-docs',
@@ -1165,14 +1180,12 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
     title: 'Update help documentation for API changes',
     description: 'v2.0 API has 15 breaking changes',
     estimatedTime: '30 minutes',
-    totalPoints: 290,
     steps: [
       {
         id: 'analysis',
         phase: 'Change Analysis',
         description: 'Reviewing API changelog',
         duration: 3000,
-        points: 50,
         actions: [
           {
             type: 'analyze',
@@ -1193,17 +1206,18 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Documentation Planning',
         description: 'Creating doc structure',
         duration: 3000,
-        points: 40,
         actions: [
           {
             type: 'notify',
             target: 'slack',
-            content: 'Found 15 breaking changes, 23 new endpoints. Creating migration guide',
+            content:
+              'Found 15 breaking changes, 23 new endpoints. Creating migration guide',
           },
         ],
         slackMessage: {
           author: 'Bella',
-          content: 'Found 15 breaking changes, 23 new endpoints. Creating migration guide',
+          content:
+            'Found 15 breaking changes, 23 new endpoints. Creating migration guide',
           attachments: {
             type: 'list',
             content: [
@@ -1228,7 +1242,6 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Content Update',
         description: 'Updating documentation pages',
         duration: 6000,
-        points: 100,
         actions: [
           {
             type: 'update',
@@ -1242,7 +1255,6 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
             delay: 3000,
           },
         ],
-        achievement: ACHIEVEMENTS.docChampion,
         linearUpdate: {
           ticketId: 'VOL-203',
           title: 'Update API documentation',
@@ -1256,7 +1268,6 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Technical Review',
         description: 'Engineering validation',
         duration: 3000,
-        points: 60,
         actions: [
           {
             type: 'update',
@@ -1277,7 +1288,6 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Publishing',
         description: 'Deploying documentation',
         duration: 3000,
-        points: 40,
         actions: [
           {
             type: 'complete',
@@ -1308,11 +1318,6 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
         },
       },
     ],
-    achievements: [ACHIEVEMENTS.docChampion],
-    finalScore: {
-      points: 290,
-      timeSaved: '5 hours',
-    },
   },
 ]
 
@@ -1322,17 +1327,15 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
     id: 'qualify-leads',
     category: 'sales',
     employee: 'Alex',
-    title: 'Qualify leads from yesterday\'s webinar',
+    title: "Qualify leads from yesterday's webinar",
     description: '247 attendees from "AI in DevOps" webinar',
     estimatedTime: '15 minutes',
-    totalPoints: 220,
     steps: [
       {
         id: 'import',
         phase: 'Lead Import',
         description: 'Importing attendee list',
         duration: 2000,
-        points: 30,
         actions: [
           {
             type: 'update',
@@ -1353,7 +1356,6 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Scoring Analysis',
         description: 'Applying BANT criteria',
         duration: 4000,
-        points: 60,
         actions: [
           {
             type: 'analyze',
@@ -1367,7 +1369,6 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
             delay: 2500,
           },
         ],
-        achievement: ACHIEVEMENTS.leadHunter,
         slackMessage: {
           author: 'Alex',
           content: 'Found 43 MQLs from webinar analysis',
@@ -1396,7 +1397,6 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Segmentation',
         description: 'Creating targeted lists',
         duration: 3000,
-        points: 40,
         actions: [
           {
             type: 'create',
@@ -1417,7 +1417,6 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Personalized Outreach',
         description: 'Drafting personalized emails',
         duration: 3000,
-        points: 50,
         actions: [
           {
             type: 'create',
@@ -1444,7 +1443,6 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
         phase: 'CRM Update',
         description: 'Updating lead scores',
         duration: 3000,
-        points: 40,
         actions: [
           {
             type: 'update',
@@ -1474,11 +1472,6 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
         },
       },
     ],
-    achievements: [ACHIEVEMENTS.leadHunter],
-    finalScore: {
-      points: 220,
-      timeSaved: '3 hours',
-    },
   },
   {
     id: 'competitor-research',
@@ -1487,14 +1480,12 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
     title: 'Research competitor pricing for Enterprise deals',
     description: 'Prospect asking for comparison with GitHub Copilot, Tabnine',
     estimatedTime: '20 minutes',
-    totalPoints: 260,
     steps: [
       {
         id: 'collection',
         phase: 'Data Collection',
         description: 'Gathering competitor data',
         duration: 4000,
-        points: 60,
         actions: [
           {
             type: 'analyze',
@@ -1521,7 +1512,6 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Comparison Matrix',
         description: 'Creating detailed comparison',
         duration: 4000,
-        points: 70,
         actions: [
           {
             type: 'create',
@@ -1563,7 +1553,6 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Battle Card Creation',
         description: 'Building sales battle card',
         duration: 4000,
-        points: 60,
         actions: [
           {
             type: 'create',
@@ -1577,7 +1566,6 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
             delay: 2000,
           },
         ],
-        achievement: ACHIEVEMENTS.competitiveIntel,
         linearUpdate: {
           ticketId: 'VOL-302',
           title: 'Competitor pricing research',
@@ -1591,7 +1579,6 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Presentation Prep',
         description: 'Creating exec materials',
         duration: 3000,
-        points: 40,
         actions: [
           {
             type: 'create',
@@ -1612,7 +1599,6 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Delivery',
         description: 'Sharing with sales team',
         duration: 2000,
-        points: 30,
         actions: [
           {
             type: 'complete',
@@ -1642,11 +1628,6 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
         },
       },
     ],
-    achievements: [ACHIEVEMENTS.competitiveIntel],
-    finalScore: {
-      points: 260,
-      timeSaved: '4 hours',
-    },
   },
   {
     id: 'crm-updates',
@@ -1655,14 +1636,12 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
     title: 'Update CRM with meeting notes from demos',
     description: '8 demos completed yesterday',
     estimatedTime: '12 minutes',
-    totalPoints: 200,
     steps: [
       {
         id: 'collection',
         phase: 'Note Collection',
         description: 'Gathering meeting notes',
         duration: 3000,
-        points: 40,
         actions: [
           {
             type: 'analyze',
@@ -1683,7 +1662,6 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Data Extraction',
         description: 'Extracting key points',
         duration: 3000,
-        points: 50,
         actions: [
           {
             type: 'analyze',
@@ -1704,7 +1682,6 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
         phase: 'CRM Updates',
         description: 'Updating opportunities',
         duration: 6000,
-        points: 60,
         actions: [
           {
             type: 'update',
@@ -1718,7 +1695,6 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
             delay: 3000,
           },
         ],
-        achievement: ACHIEVEMENTS.dataHygienist,
         linearUpdate: {
           ticketId: 'VOL-303',
           title: 'Update CRM with demo notes',
@@ -1732,7 +1708,6 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Action Items',
         description: 'Creating follow-up tasks',
         duration: 3000,
-        points: 30,
         actions: [
           {
             type: 'create',
@@ -1753,7 +1728,6 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Analytics',
         description: 'Updating pipeline forecast',
         duration: 2000,
-        points: 20,
         actions: [
           {
             type: 'complete',
@@ -1784,11 +1758,6 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
         },
       },
     ],
-    achievements: [ACHIEVEMENTS.dataHygienist],
-    finalScore: {
-      points: 200,
-      timeSaved: '2.5 hours',
-    },
   },
 ]
 
@@ -1801,14 +1770,12 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
     title: 'Audit AWS costs and identify savings',
     description: 'AWS bill increased 40% last month',
     estimatedTime: '25 minutes',
-    totalPoints: 340,
     steps: [
       {
         id: 'analysis',
         phase: 'Cost Analysis',
         description: 'Analyzing AWS Cost Explorer',
         duration: 3000,
-        points: 70,
         actions: [
           {
             type: 'analyze',
@@ -1818,7 +1785,8 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
           {
             type: 'notify',
             target: 'slack',
-            content: 'Found it! 67% of increase from forgotten dev environments',
+            content:
+              'Found it! 67% of increase from forgotten dev environments',
             delay: 2000,
           },
         ],
@@ -1839,7 +1807,6 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Waste Identification',
         description: 'Identifying unused resources',
         duration: 3000,
-        points: 80,
         actions: [
           {
             type: 'analyze',
@@ -1847,7 +1814,6 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
             content: 'Scanning for unused EC2, EBS, and RDS resources',
           },
         ],
-        achievement: ACHIEVEMENTS.costCutter,
         slackMessage: {
           author: 'Morgan',
           content: 'Identified significant waste:',
@@ -1874,7 +1840,6 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Savings Plan',
         description: 'Creating action plan',
         duration: 3000,
-        points: 50,
         actions: [
           {
             type: 'create',
@@ -1895,7 +1860,6 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Implementation',
         description: 'Terminating unused resources',
         duration: 6000,
-        points: 80,
         actions: [
           {
             type: 'update',
@@ -1928,7 +1892,6 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Monitoring Setup',
         description: 'Creating cost alerts',
         duration: 3000,
-        points: 40,
         actions: [
           {
             type: 'create',
@@ -1949,7 +1912,6 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Documentation',
         description: 'Documenting changes',
         duration: 2000,
-        points: 20,
         actions: [
           {
             type: 'complete',
@@ -1980,11 +1942,6 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
         },
       },
     ],
-    achievements: [ACHIEVEMENTS.costCutter],
-    finalScore: {
-      points: 340,
-      timeSaved: '6 hours',
-    },
   },
   {
     id: 'api-monitoring',
@@ -1993,14 +1950,12 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
     title: 'Set up monitoring alerts for the API',
     description: 'API experiencing intermittent issues',
     estimatedTime: '20 minutes',
-    totalPoints: 280,
     steps: [
       {
         id: 'metrics',
         phase: 'Metrics Definition',
         description: 'Identifying key metrics',
         duration: 3000,
-        points: 50,
         actions: [
           {
             type: 'analyze',
@@ -2021,7 +1976,6 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
         phase: 'DataDog Configuration',
         description: 'Setting up monitors',
         duration: 6000,
-        points: 80,
         actions: [
           {
             type: 'create',
@@ -2068,7 +2022,6 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Dashboard Creation',
         description: 'Building monitoring dashboard',
         duration: 3000,
-        points: 60,
         actions: [
           {
             type: 'create',
@@ -2076,7 +2029,6 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
             content: 'Building real-time dashboard with SLO tracking',
           },
         ],
-        achievement: ACHIEVEMENTS.monitoringMaster,
         linearUpdate: {
           ticketId: 'VOL-402',
           title: 'Set up API monitoring',
@@ -2090,7 +2042,6 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Alert Routing',
         description: 'Configuring PagerDuty',
         duration: 3000,
-        points: 50,
         actions: [
           {
             type: 'update',
@@ -2111,7 +2062,6 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Documentation',
         description: 'Creating runbooks',
         duration: 3000,
-        points: 40,
         actions: [
           {
             type: 'complete',
@@ -2142,11 +2092,6 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
         },
       },
     ],
-    achievements: [ACHIEVEMENTS.monitoringMaster],
-    finalScore: {
-      points: 280,
-      timeSaved: '4 hours',
-    },
   },
   {
     id: 'deployment-docs',
@@ -2155,14 +2100,12 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
     title: 'Document the deployment process',
     description: 'New engineers struggling with deployment',
     estimatedTime: '18 minutes',
-    totalPoints: 240,
     steps: [
       {
         id: 'mapping',
         phase: 'Process Mapping',
         description: 'Mapping deployment flow',
         duration: 3000,
-        points: 40,
         actions: [
           {
             type: 'analyze',
@@ -2183,7 +2126,6 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Documentation Creation',
         description: 'Writing step-by-step guide',
         duration: 6000,
-        points: 80,
         actions: [
           {
             type: 'create',
@@ -2225,7 +2167,6 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Automation Opportunities',
         description: 'Identifying manual steps',
         duration: 3000,
-        points: 60,
         actions: [
           {
             type: 'create',
@@ -2233,7 +2174,6 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
             content: 'Creating deployment scripts and validation checks',
           },
         ],
-        achievement: ACHIEVEMENTS.processPro,
         linearUpdate: {
           ticketId: 'VOL-403',
           title: 'Document deployment process',
@@ -2247,7 +2187,6 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Review & Testing',
         description: 'Team validation',
         duration: 3000,
-        points: 40,
         actions: [
           {
             type: 'update',
@@ -2268,7 +2207,6 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
         phase: 'Publishing',
         description: 'Publishing to wiki',
         duration: 2000,
-        points: 20,
         actions: [
           {
             type: 'complete',
@@ -2299,11 +2237,6 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
         },
       },
     ],
-    achievements: [ACHIEVEMENTS.processPro],
-    finalScore: {
-      points: 240,
-      timeSaved: '3 hours',
-    },
   },
 ]
 
@@ -2317,60 +2250,33 @@ export const ALL_WORKFLOWS: TaskWorkflow[] = [
 
 // Helper function to get workflow by ID
 export function getWorkflowById(id: string): TaskWorkflow | undefined {
-  return ALL_WORKFLOWS.find(workflow => workflow.id === id)
+  return ALL_WORKFLOWS.find((workflow) => workflow.id === id)
 }
 
 // Helper function to get workflows by category
 export function getWorkflowsByCategory(category: TaskCategory): TaskWorkflow[] {
-  return ALL_WORKFLOWS.filter(workflow => workflow.category === category)
+  return ALL_WORKFLOWS.filter((workflow) => workflow.category === category)
 }
 
 // Helper function to get workflows by employee
 export function getWorkflowsByEmployee(employee: EmployeeName): TaskWorkflow[] {
-  return ALL_WORKFLOWS.filter(workflow => workflow.employee === employee)
+  return ALL_WORKFLOWS.filter((workflow) => workflow.employee === employee)
 }
 
-// Leaderboard data
+// Achievement and leaderboard types
+export interface Achievement {
+  id: string
+  name: string
+  description: string
+  icon: string
+  unlocked: boolean
+}
+
 export interface LeaderboardEntry {
-  employee: EmployeeName
+  employee: string
   avatar: string
   points: number
   tasksToday: number
   streak: number
   topAchievement: Achievement
 }
-
-export const LEADERBOARD: LeaderboardEntry[] = [
-  {
-    employee: 'Morgan',
-    avatar: 'M',
-    points: 1301,
-    tasksToday: 4,
-    streak: 12,
-    topAchievement: ACHIEVEMENTS.costCutter,
-  },
-  {
-    employee: 'Zoe',
-    avatar: 'Z',
-    points: 1247,
-    tasksToday: 5,
-    streak: 8,
-    topAchievement: ACHIEVEMENTS.bugDetective,
-  },
-  {
-    employee: 'Bella',
-    avatar: 'B',
-    points: 1189,
-    tasksToday: 4,
-    streak: 10,
-    topAchievement: ACHIEVEMENTS.briefMaster,
-  },
-  {
-    employee: 'Alex',
-    avatar: 'A',
-    points: 1098,
-    tasksToday: 6,
-    streak: 5,
-    topAchievement: ACHIEVEMENTS.leadHunter,
-  },
-]

@@ -1,11 +1,26 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Outfit, Plus_Jakarta_Sans, Fraunces } from 'next/font/google'
 import './globals.css'
 
-const inter = Inter({ 
+const outfit = Outfit({ 
   subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700', '800', '900'],
   display: 'swap',
-  variable: '--font-inter',
+  variable: '--font-outfit',
+})
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  display: 'swap',
+  variable: '--font-plus-jakarta-sans',
+})
+
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800', '900'],
+  display: 'swap',
+  variable: '--font-fraunces',
 })
 
 export const metadata: Metadata = {
@@ -20,8 +35,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className={`${inter.className} min-h-screen`}>
+    <html lang="en" className={`${outfit.variable} ${plusJakartaSans.variable} ${fraunces.variable}`}>
+      <body className={`${outfit.className} min-h-screen`}>
         {children}
       </body>
     </html>
