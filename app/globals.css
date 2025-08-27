@@ -50,6 +50,21 @@
 }
 
 @layer utilities {
+  @keyframes shine {
+    from {
+      transform: translateX(-100%) skewX(-12deg);
+    }
+    to {
+      transform: translateX(200%) skewX(-12deg);
+    }
+  }
+  
+  .animate-shine {
+    animation: shine 0.8s ease-out;
+  }
+}
+
+@layer utilities {
   .animation-delay-200 {
     animation-delay: 200ms;
   }

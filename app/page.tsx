@@ -4,11 +4,14 @@ import { useState } from 'react'
 import Navigation from '@/components/navigation'
 import Hero from '@/components/hero'
 import InteractiveDemoWrapper from '@/components/interactive-demo-wrapper'
+import TeamsSection from '@/components/teams-section'
+import { CTASection } from '@/components/cta-section'
 
 export default function Home() {
   const [demoTrigger, setDemoTrigger] = useState(false)
   const [selectedTask, setSelectedTask] = useState('')
   const [isDemoRunning, setIsDemoRunning] = useState(false)
+  const [teamsDelegation, setTeamsDelegation] = useState<{ task: string; memberId: string } | null>(null)
 
   // Map hero task IDs to demo workflow IDs
   const taskMapping: Record<string, string> = {
@@ -59,6 +62,32 @@ export default function Home() {
     setIsDemoRunning(false)
     // Ensure trigger is reset when demo completes
     setDemoTrigger(false)
+    setTeamsDelegation(null)
+  }
+
+  const handleTeamsDelegation = (task: string, memberId: string) => {
+    // Map team member tasks to demo workflows
+    const teamTaskMapping: Record<string, string> = {
+      'Fix authentication bug in login flow': 'fix-auth-bug',
+      'Write blog post about new product features': 'blog-post',
+      'Analyze Q4 marketing campaign metrics': 'competitor-research',
+      'Run automated test suite for release': 'unit-tests',
+      'Qualify and follow up with new leads': 'qualify-leads',
+      "Organize tomorrow's stakeholder meeting": 'crm-updates',
+    }
+    
+    const demoTaskId = teamTaskMapping[task] || 'fix-auth-bug'
+    
+    setTeamsDelegation({ task, memberId })
+    setSelectedTask('')
+    setDemoTrigger(false)
+    setIsDemoRunning(true)
+    
+    // Trigger demo after a brief delay
+    setTimeout(() => {
+      setSelectedTask(demoTaskId)
+      setDemoTrigger(true)
+    }, 100)
   }
 
 
@@ -74,6 +103,15 @@ export default function Home() {
         onDemoComplete={handleDemoComplete}
         isDemoRunning={isDemoRunning}
       />
+
+      {/* AI Teams Section */}
+      <TeamsSection 
+        onDelegation={handleTeamsDelegation}
+        isDemoRunning={isDemoRunning}
+      />
+
+      {/* CTA Section */}
+      <CTASection />
     </main>
   )
 }
