@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Navigation from '@/components/navigation'
 import Hero from '@/components/hero'
 import InteractiveDemoWrapper from '@/components/interactive-demo-wrapper'
+import TeamsSection from '@/components/teams-section'
 
 export default function Home() {
   const [demoTrigger, setDemoTrigger] = useState(false)
@@ -74,6 +75,9 @@ export default function Home() {
         onDemoComplete={handleDemoComplete}
         isDemoRunning={isDemoRunning}
       />
+
+      {/* AI Teams Section */}
+      <TeamsSection />
     </main>
   )
 }
