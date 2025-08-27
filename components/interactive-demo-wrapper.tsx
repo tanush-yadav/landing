@@ -6,11 +6,15 @@ import InteractiveDemo from './interactive-demo'
 interface InteractiveDemoWrapperProps {
   triggerDemoFromHero?: boolean
   selectedTaskFromHero?: string
+  onDemoComplete?: () => void
+  isDemoRunning?: boolean
 }
 
 const InteractiveDemoWrapper = ({
   triggerDemoFromHero,
   selectedTaskFromHero,
+  onDemoComplete,
+  isDemoRunning,
 }: InteractiveDemoWrapperProps) => {
   const [demoTrigger, setDemoTrigger] = useState(false)
   const [isUserScrolling, setIsUserScrolling] = useState(false)
@@ -22,6 +26,9 @@ const InteractiveDemoWrapper = ({
   useEffect(() => {
     if (triggerDemoFromHero && selectedTaskFromHero) {
       setIsUserScrolling(true)
+      
+      // Reset the trigger first to ensure clean state
+      setDemoTrigger(false)
 
       // Scroll to demo section
       setTimeout(() => {
@@ -36,8 +43,15 @@ const InteractiveDemoWrapper = ({
       // Trigger demo animation after scroll
       setTimeout(() => {
         setDemoTrigger(true)
-        // Don't reset key - let the demo manage its own state
       }, 1000)
+      
+      // Reset trigger after a delay to prepare for next run
+      setTimeout(() => {
+        setDemoTrigger(false)
+      }, 1500)
+    } else if (!triggerDemoFromHero) {
+      // When hero trigger is false, ensure demo trigger is also false
+      setDemoTrigger(false)
     }
   }, [triggerDemoFromHero, selectedTaskFromHero])
 
@@ -79,6 +93,8 @@ const InteractiveDemoWrapper = ({
         selectedTask={selectedTaskFromHero}
         isUserInteracting={isUserScrolling}
         isAutoPlaying={false}
+        onDemoComplete={onDemoComplete}
+        isDemoRunning={isDemoRunning}
       />
     </section>
   )

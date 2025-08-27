@@ -1,6 +1,7 @@
 # Volition Labs Landing Page - Engineering Documentation
 
 ## 📋 Table of Contents
+
 1. [Project Overview](#project-overview)
 2. [Architecture & Stack](#architecture--stack)
 3. [Design System](#design-system)
@@ -19,6 +20,7 @@
 This is the official landing page for Volition Labs Inc, showcasing our AI automation platform that integrates with Linear and Slack for seamless workflow automation.
 
 ### Key Features
+
 - **Interactive Demo**: Live demonstration of AI agents automating Linear tickets
 - **Real-time Animations**: Framer Motion-powered smooth transitions
 - **Responsive Design**: Mobile-first approach with Tailwind CSS
@@ -30,6 +32,7 @@ This is the official landing page for Volition Labs Inc, showcasing our AI autom
 ## 🏗 Architecture & Stack
 
 ### Core Technologies
+
 ```typescript
 {
   "framework": "Next.js 15.5.0",
@@ -42,6 +45,7 @@ This is the official landing page for Volition Labs Inc, showcasing our AI autom
 ```
 
 ### Project Structure Philosophy
+
 ```
 landing/
 ├── app/                    # Next.js App Router pages
@@ -60,6 +64,7 @@ landing/
 ## 🎨 Design System
 
 ### Theme Configuration
+
 Located in `/lib/design-system/theme.ts`
 
 ```typescript
@@ -89,17 +94,34 @@ theme.spacing = {
 ```
 
 ### Component Patterns
+
 Located in `/lib/design-system/patterns.ts`
 
 ```typescript
 // Standard Variants
-variants = 'primary' | 'secondary' | 'tertiary' | 'ghost' | 'outline' | 'danger' | 'success' | 'warning'
+variants =
+  'primary' |
+  'secondary' |
+  'tertiary' |
+  'ghost' |
+  'outline' |
+  'danger' |
+  'success' |
+  'warning'
 
 // Standard Sizes
 sizes = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
 // Standard States
-states = 'default' | 'hover' | 'active' | 'focus' | 'disabled' | 'loading' | 'error' | 'success'
+states =
+  'default' |
+  'hover' |
+  'active' |
+  'focus' |
+  'disabled' |
+  'loading' |
+  'error' |
+  'success'
 ```
 
 ---
@@ -107,14 +129,15 @@ states = 'default' | 'hover' | 'active' | 'focus' | 'disabled' | 'loading' | 'er
 ## 🧩 Component Patterns
 
 ### Component Structure Template
+
 Every component follows this structure:
 
-```typescript
+````typescript
 /**
  * ComponentName
- * 
+ *
  * Brief description of component purpose
- * 
+ *
  * @example
  * ```tsx
  * <ComponentName prop="value">
@@ -123,41 +146,46 @@ Every component follows this structure:
  * ```
  */
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { cn } from '@/lib/design-system';
+import React from 'react'
+import { motion } from 'framer-motion'
+import { cn } from '@/lib/design-system'
 
 export interface ComponentNameProps extends BaseComponentProps {
   // Specific props with JSDoc comments
-  variant?: Variant;
-  size?: Size;
+  variant?: Variant
+  size?: Size
 }
 
 export const ComponentName = React.forwardRef<HTMLElement, ComponentNameProps>(
-  ({ children, variant = 'primary', size = 'md', className, ...props }, ref) => {
+  (
+    { children, variant = 'primary', size = 'md', className, ...props },
+    ref
+  ) => {
     // Component logic
-    
+
     return (
       <motion.div
         ref={ref}
-        className={cn(
+        className={
+          cn()
           // Base styles
           // Variant styles
           // Size styles
           // Custom className
-        )}
+        }
         {...props}
       >
         {children}
       </motion.div>
-    );
+    )
   }
-);
+)
 
-ComponentName.displayName = 'ComponentName';
-```
+ComponentName.displayName = 'ComponentName'
+````
 
 ### Composition Pattern
+
 Components support composition through subcomponents:
 
 ```typescript
@@ -167,12 +195,8 @@ Components support composition through subcomponents:
     <Card.Title>Title</Card.Title>
     <Card.Description>Description</Card.Description>
   </Card.Header>
-  <Card.Content>
-    Content goes here
-  </Card.Content>
-  <Card.Footer>
-    Footer content
-  </Card.Footer>
+  <Card.Content>Content goes here</Card.Content>
+  <Card.Footer>Footer content</Card.Footer>
 </Card>
 ```
 
@@ -181,6 +205,7 @@ Components support composition through subcomponents:
 ## 📁 File Structure
 
 ### Naming Conventions
+
 - **Components**: PascalCase (`Button.tsx`, `InteractiveDemo.tsx`)
 - **Utilities**: camelCase (`utils.ts`, `demoWorkflows.ts`)
 - **Types**: PascalCase with `.types.ts` or in `/lib/types/`
@@ -188,31 +213,33 @@ Components support composition through subcomponents:
 - **Constants**: SCREAMING_SNAKE_CASE in dedicated files
 
 ### Import Organization
+
 Follow this order in all files:
+
 ```typescript
 // 1. React and core libraries
-import React, { useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useCallback } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 // 2. Next.js specific
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from 'next/image'
+import Link from 'next/link'
 
 // 3. UI Components
-import { Button, Card, Input } from '@/components/ui';
+import { Button, Card, Input } from '@/components/ui'
 
 // 4. Feature Components
-import { InteractiveDemo } from '@/components/interactive-demo';
+import { InteractiveDemo } from '@/components/interactive-demo'
 
 // 5. Utilities and helpers
-import { cn } from '@/lib/design-system';
-import { demoWorkflows } from '@/lib/demo-workflows';
+import { cn } from '@/lib/design-system'
+import { demoWorkflows } from '@/lib/demo-workflows'
 
 // 6. Types
-import type { DemoState, Agent, Task } from '@/lib/types';
+import type { DemoState, Agent, Task } from '@/lib/types'
 
 // 7. Styles (if any CSS modules)
-import styles from './component.module.css';
+import styles from './component.module.css'
 ```
 
 ---
@@ -220,6 +247,7 @@ import styles from './component.module.css';
 ## 💻 Development Guidelines
 
 ### 1. Component Development Checklist
+
 - [ ] TypeScript interfaces defined
 - [ ] Props documented with JSDoc
 - [ ] Follows design system patterns
@@ -231,20 +259,21 @@ import styles from './component.module.css';
 - [ ] Example usage in comments
 
 ### 2. State Management Rules
+
 ```typescript
 // ✅ DO: Use local state for UI-only concerns
-const [isOpen, setIsOpen] = useState(false);
+const [isOpen, setIsOpen] = useState(false)
 
 // ✅ DO: Use useReducer for complex state
-const [state, dispatch] = useReducer(demoReducer, initialState);
+const [state, dispatch] = useReducer(demoReducer, initialState)
 
 // ✅ DO: Memoize expensive computations
-const computedValue = useMemo(() => expensiveOperation(data), [data]);
+const computedValue = useMemo(() => expensiveOperation(data), [data])
 
 // ✅ DO: Memoize callbacks passed to children
 const handleClick = useCallback(() => {
   // handler logic
-}, [dependency]);
+}, [dependency])
 
 // ❌ DON'T: Mutate state directly
 // ❌ DON'T: Use state for derived values
@@ -252,22 +281,24 @@ const handleClick = useCallback(() => {
 ```
 
 ### 3. Performance Patterns
+
 ```typescript
 // Lazy load heavy components
 const HeavyComponent = dynamic(() => import('./HeavyComponent'), {
   loading: () => <Skeleton />,
-  ssr: false // if not needed on server
-});
+  ssr: false, // if not needed on server
+})
 
 // Virtualize long lists
-import { FixedSizeList } from 'react-window';
+import { FixedSizeList } from 'react-window'
 
 // Debounce expensive operations
-import { debounce } from '@/lib/utils';
-const debouncedSearch = debounce(search, 300);
+import { debounce } from '@/lib/utils'
+const debouncedSearch = debounce(search, 300)
 ```
 
 ### 4. Accessibility Requirements
+
 ```typescript
 // Every interactive element needs:
 - Keyboard navigation (Tab, Enter, Escape)
@@ -283,19 +314,19 @@ const debouncedSearch = debounce(search, 300);
 ## 📏 Code Standards
 
 ### TypeScript Best Practices
+
 ```typescript
 // ✅ DO: Use explicit types
 export interface ButtonProps {
-  variant: 'primary' | 'secondary';
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  variant: 'primary' | 'secondary'
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 // ✅ DO: Use type guards
 function isValidTask(task: unknown): task is Task {
-  return typeof task === 'object' && 
-         task !== null && 
-         'id' in task && 
-         'title' in task;
+  return (
+    typeof task === 'object' && task !== null && 'id' in task && 'title' in task
+  )
 }
 
 // ✅ DO: Use generics for reusable logic
@@ -309,22 +340,23 @@ function useState<T>(initial: T): [T, (value: T) => void] {
 ```
 
 ### React Best Practices
+
 ```typescript
 // ✅ DO: Use functional components
 export const Component: React.FC<Props> = ({ prop }) => {
-  return <div>{prop}</div>;
-};
+  return <div>{prop}</div>
+}
 
 // ✅ DO: Handle loading and error states
-if (isLoading) return <Spinner />;
-if (error) return <ErrorMessage error={error} />;
-return <Content data={data} />;
+if (isLoading) return <Spinner />
+if (error) return <ErrorMessage error={error} />
+return <Content data={data} />
 
 // ✅ DO: Clean up side effects
 useEffect(() => {
-  const timer = setTimeout(callback, 1000);
-  return () => clearTimeout(timer); // Cleanup
-}, [callback]);
+  const timer = setTimeout(callback, 1000)
+  return () => clearTimeout(timer) // Cleanup
+}, [callback])
 
 // ❌ DON'T: Use index as key in dynamic lists
 // ❌ DON'T: Call hooks conditionally
@@ -332,6 +364,7 @@ useEffect(() => {
 ```
 
 ### CSS/Tailwind Standards
+
 ```typescript
 // ✅ DO: Use design system classes
 className="text-primary-600 bg-neutral-100"
@@ -367,26 +400,28 @@ className="
 ## 🧪 Testing Strategy
 
 ### Unit Testing
+
 ```typescript
 // Component testing with React Testing Library
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react'
 
 describe('Button', () => {
   it('renders with correct text', () => {
-    render(<Button>Click me</Button>);
-    expect(screen.getByText('Click me')).toBeInTheDocument();
-  });
+    render(<Button>Click me</Button>)
+    expect(screen.getByText('Click me')).toBeInTheDocument()
+  })
 
   it('handles click events', () => {
-    const handleClick = jest.fn();
-    render(<Button onClick={handleClick}>Click</Button>);
-    fireEvent.click(screen.getByText('Click'));
-    expect(handleClick).toHaveBeenCalledTimes(1);
-  });
-});
+    const handleClick = jest.fn()
+    render(<Button onClick={handleClick}>Click</Button>)
+    fireEvent.click(screen.getByText('Click'))
+    expect(handleClick).toHaveBeenCalledTimes(1)
+  })
+})
 ```
 
 ### Integration Testing
+
 ```typescript
 // Test user flows
 describe('Demo Workflow', () => {
@@ -395,18 +430,19 @@ describe('Demo Workflow', () => {
     // User action
     // Assert state changes
     // Verify UI updates
-  });
-});
+  })
+})
 ```
 
 ### E2E Testing
+
 ```typescript
 // Playwright for end-to-end testing
 test('landing page demo interaction', async ({ page }) => {
-  await page.goto('/');
-  await page.click('[data-testid="start-demo"]');
-  await expect(page.locator('.demo-animation')).toBeVisible();
-});
+  await page.goto('/')
+  await page.click('[data-testid="start-demo"]')
+  await expect(page.locator('.demo-animation')).toBeVisible()
+})
 ```
 
 ---
@@ -414,6 +450,7 @@ test('landing page demo interaction', async ({ page }) => {
 ## ⚡ Performance Optimization
 
 ### Build-Time Optimizations
+
 ```javascript
 // next.config.js
 module.exports = {
@@ -427,10 +464,11 @@ module.exports = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
-};
+}
 ```
 
 ### Runtime Optimizations
+
 1. **Code Splitting**: Automatic with Next.js App Router
 2. **Image Optimization**: Using next/image with lazy loading
 3. **Font Optimization**: Using next/font for automatic optimization
@@ -438,6 +476,7 @@ module.exports = {
 5. **Caching Strategy**: Leveraging Next.js ISR and client-side caching
 
 ### Performance Metrics Targets
+
 ```typescript
 {
   "LCP": "< 2.5s",    // Largest Contentful Paint
@@ -453,6 +492,7 @@ module.exports = {
 ## 🚀 Deployment
 
 ### Environment Variables
+
 ```bash
 # .env.local
 NEXT_PUBLIC_API_URL=https://api.volitionlabs.com
@@ -460,6 +500,7 @@ NEXT_PUBLIC_ANALYTICS_ID=UA-XXXXXXXXX
 ```
 
 ### Build Commands
+
 ```bash
 # Development
 npm run dev
@@ -479,6 +520,7 @@ npm run format
 ```
 
 ### Deployment Checklist
+
 - [ ] All TypeScript errors resolved
 - [ ] Linting passes
 - [ ] Build successful
@@ -494,24 +536,28 @@ npm run format
 ## 📚 Quick Reference
 
 ### Commonly Used Patterns
+
 ```typescript
 // Glass morphism effect
-className="backdrop-blur-md bg-white/80 border border-white/20"
+className = 'backdrop-blur-md bg-white/80 border border-white/20'
 
 // Gradient text
-className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
+className =
+  'bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent'
 
 // Smooth scroll
-className="scroll-smooth"
+className = 'scroll-smooth'
 
 // Focus ring
-className="focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+className =
+  'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500'
 
 // Truncate text
-className="truncate" // or "line-clamp-3" for multi-line
+className = 'truncate' // or "line-clamp-3" for multi-line
 ```
 
 ### Animation Presets
+
 ```typescript
 import { animations } from '@/lib/design-system';
 
@@ -526,18 +572,19 @@ import { animations } from '@/lib/design-system';
 ```
 
 ### Responsive Helpers
+
 ```typescript
 // Hide on mobile
-className="hidden sm:block"
+className = 'hidden sm:block'
 
 // Stack on mobile, row on desktop
-className="flex flex-col sm:flex-row"
+className = 'flex flex-col sm:flex-row'
 
 // Responsive text
-className="text-sm md:text-base lg:text-lg"
+className = 'text-sm md:text-base lg:text-lg'
 
 // Responsive spacing
-className="p-4 md:p-6 lg:p-8"
+className = 'p-4 md:p-6 lg:p-8'
 ```
 
 ---
@@ -545,12 +592,14 @@ className="p-4 md:p-6 lg:p-8"
 ## 🤝 Contributing
 
 ### Before Starting
+
 1. Read this document completely
 2. Check existing components in `/components/ui/`
 3. Review the design system in `/lib/design-system/`
 4. Follow the established patterns
 
 ### Pull Request Checklist
+
 - [ ] Code follows style guidelines
 - [ ] TypeScript types are properly defined
 - [ ] Components are accessible
@@ -560,16 +609,3 @@ className="p-4 md:p-6 lg:p-8"
 - [ ] Build passes locally
 
 ---
-
-## 📞 Support
-
-For questions about the codebase:
-1. Check this documentation
-2. Review existing implementations
-3. Check AGENTS.md for AI assistance
-4. Contact the development team
-
----
-
-*Last updated: January 2025*
-*Version: 2.0.0*

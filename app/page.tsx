@@ -8,6 +8,7 @@ import InteractiveDemoWrapper from '@/components/interactive-demo-wrapper'
 export default function Home() {
   const [demoTrigger, setDemoTrigger] = useState(false)
   const [selectedTask, setSelectedTask] = useState('')
+  const [isDemoRunning, setIsDemoRunning] = useState(false)
 
   // Map hero task IDs to demo workflow IDs
   const taskMapping: Record<string, string> = {
@@ -30,28 +31,48 @@ export default function Home() {
   }
 
   const handleDemoTrigger = (heroTaskId?: string) => {
+    // Don't allow new demo if one is already running
+    if (isDemoRunning) {
+      return
+    }
+    
     // Map the hero task to a demo task
     const demoTaskId =
       heroTaskId && taskMapping[heroTaskId]
         ? taskMapping[heroTaskId]
         : 'fix-auth-bug'
-    setSelectedTask(demoTaskId)
-    setDemoTrigger(true)
+    
+    // Force a reset by changing task to empty then back
+    // This ensures the demo component fully resets
+    setSelectedTask('')
+    setDemoTrigger(false)
+    setIsDemoRunning(true)
+    
+    // Then set the new task and trigger after a brief delay
+    setTimeout(() => {
+      setSelectedTask(demoTaskId)
+      setDemoTrigger(true)
+    }, 100)
+  }
 
-    // Reset trigger after demo has had time to start
-    setTimeout(() => setDemoTrigger(false), 1500)
+  const handleDemoComplete = () => {
+    setIsDemoRunning(false)
+    // Ensure trigger is reset when demo completes
+    setDemoTrigger(false)
   }
 
 
   return (
     <main className="min-h-screen">
       <Navigation />
-      <Hero onDemoTrigger={handleDemoTrigger} />
+      <Hero onDemoTrigger={handleDemoTrigger} isDemoRunning={isDemoRunning} />
 
       {/* Interactive Demo Section - Clean Professional UI */}
       <InteractiveDemoWrapper
         triggerDemoFromHero={demoTrigger}
         selectedTaskFromHero={selectedTask}
+        onDemoComplete={handleDemoComplete}
+        isDemoRunning={isDemoRunning}
       />
     </main>
   )

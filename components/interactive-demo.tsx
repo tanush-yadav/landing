@@ -149,6 +149,8 @@ interface InteractiveDemoProps {
   selectedTask?: string
   isUserInteracting?: boolean
   isAutoPlaying?: boolean
+  onDemoComplete?: () => void
+  isDemoRunning?: boolean
 }
 
 // Memoized components for performance
@@ -341,6 +343,8 @@ const InteractiveDemo = memo(({
   selectedTask = 'fix-auth-bug',
   isUserInteracting = false,
   isAutoPlaying = false,
+  onDemoComplete,
+  isDemoRunning = false,
 }: InteractiveDemoProps) => {
   // Optimized state management
   const [demoState, setDemoState] = useState<DemoState>({
@@ -436,10 +440,15 @@ const InteractiveDemo = memo(({
           slackNotified: true,
           timeCalculated: true,
         })
-        setCompletedSubtasks([0, 1, 2])
+        // Complete ALL subtasks in reduced motion mode
+        setCompletedSubtasks(currentTask?.subtasks.map(st => st.id) || [0, 1, 2, 3, 4])
         setVisibleMessages(currentTask?.slackMessages.map(msg => msg.id) || [])
         setConnectionStatus('complete')
         setIsLoading(false)
+        // Call the onDemoComplete callback if provided
+        if (onDemoComplete) {
+          onDemoComplete()
+        }
         return
       }
 
@@ -502,25 +511,38 @@ const InteractiveDemo = memo(({
         }
       }
 
-      // Complete phase
-      safeSetTimeout(() => {
-        setDemoState(prev => ({ ...prev, phase: 'complete' as const }))
-        setConnectionStatus('complete')
-      }, messageDelay + 800)
-
-      // Complete subtasks
+      // Complete subtasks first
       if (currentTask?.subtasks) {
-        const subtasksToComplete = Math.min(3, currentTask.subtasks.length)
-        let subtaskDelay = messageDelay + 1400
+        const subtasksToComplete = currentTask.subtasks.length // Complete ALL subtasks
+        let subtaskDelay = messageDelay + 400 // Start subtasks sooner
         for (let i = 0; i < subtasksToComplete; i++) {
           safeSetTimeout(() => {
-            setCompletedSubtasks(prev => [...prev, i])
+            setCompletedSubtasks(prev => [...prev, currentTask.subtasks[i].id])
             if (i === subtasksToComplete - 1) {
               setShowConnectionPulse(true)
               safeSetTimeout(() => setShowConnectionPulse(false), 1000)
+              
+              // Set complete phase AFTER all subtasks are done
+              safeSetTimeout(() => {
+                setDemoState(prev => ({ ...prev, phase: 'complete' as const }))
+                setConnectionStatus('complete')
+                // Call the onDemoComplete callback if provided
+                if (onDemoComplete) {
+                  onDemoComplete()
+                }
+              }, 500)
             }
-          }, subtaskDelay + (i * 600))
+          }, subtaskDelay + (i * 300)) // Faster subtask completion
         }
+      } else {
+        // If no subtasks, complete immediately
+        safeSetTimeout(() => {
+          setDemoState(prev => ({ ...prev, phase: 'complete' as const }))
+          setConnectionStatus('complete')
+          if (onDemoComplete) {
+            onDemoComplete()
+          }
+        }, messageDelay + 800)
       }
 
     } catch (err) {
@@ -528,19 +550,43 @@ const InteractiveDemo = memo(({
       setError('Demo failed to load. Please try again.')
       setIsLoading(false)
     }
-  }, [currentTask, clearAllTimeouts, safeSetTimeout, shouldReduceMotion, isLoading])
+  }, [currentTask, clearAllTimeouts, safeSetTimeout, shouldReduceMotion, isLoading, onDemoComplete])
+
+  // Track previous trigger state to detect changes
+  const prevTriggerRef = useRef(triggerDemo)
 
   // Effect for demo trigger - simplified to avoid race conditions
   useEffect(() => {
-    console.log('Demo trigger effect:', { triggerDemo, isLoading, phase: demoState.phase, ticketCreated: demoState.ticketCreated })
-    if (triggerDemo && !isLoading) {
-      // Only start if we're in idle state and haven't started yet
+    console.log('Demo trigger effect:', { 
+      triggerDemo, 
+      prevTrigger: prevTriggerRef.current, 
+      isLoading, 
+      phase: demoState.phase, 
+      ticketCreated: demoState.ticketCreated 
+    })
+    
+    // Only process if trigger changed from false to true
+    const triggerChanged = triggerDemo && !prevTriggerRef.current
+    
+    if (triggerChanged && !isLoading) {
+      // Start if we're in idle state OR if we need to restart from complete state
       if (demoState.phase === 'idle' && !demoState.ticketCreated) {
-        console.log('Starting demo sequence...')
+        console.log('Starting demo sequence from idle...')
         startDemoSequence()
+      } else if (demoState.phase === 'complete') {
+        console.log('Restarting demo sequence from complete...')
+        // Reset and restart for a fresh demo
+        resetDemo()
+        // Start after a brief delay to ensure state is cleared
+        setTimeout(() => {
+          startDemoSequence()
+        }, 100)
       }
     }
-  }, [triggerDemo, startDemoSequence, isLoading, demoState.phase, demoState.ticketCreated])
+    
+    // Update the previous trigger ref
+    prevTriggerRef.current = triggerDemo
+  }, [triggerDemo, startDemoSequence, isLoading, demoState.phase, demoState.ticketCreated, resetDemo])
 
   // Reset when task changes
   useEffect(() => {
@@ -593,7 +639,18 @@ const InteractiveDemo = memo(({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="grid lg:grid-cols-2 gap-6">
           {/* Linear Demo */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <motion.div 
+            className={cn(
+              "bg-white rounded-xl shadow-sm border overflow-hidden transition-all",
+              demoState.phase === 'complete' 
+                ? "border-green-200 shadow-green-100/50" 
+                : "border-gray-100"
+            )}
+            animate={demoState.phase === 'complete' ? {
+              borderColor: ["#d1fae5", "#a7f3d0", "#d1fae5"],
+            } : {}}
+            transition={{ duration: 2, repeat: demoState.phase === 'complete' ? Infinity : 0 }}
+          >
             {/* Linear Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
               <div className="flex items-center gap-3">
@@ -623,14 +680,23 @@ const InteractiveDemo = memo(({
                         <span className="text-sm text-gray-500 font-medium">
                           {currentTask?.ticketId || 'VOL-101'}
                         </span>
-                        <span className={cn(
-                          "inline-flex items-center px-2 py-0.5 rounded text-xs font-medium",
-                          demoState.phase === 'complete' 
-                            ? "bg-green-100 text-green-800" 
-                            : "bg-yellow-100 text-yellow-800"
-                        )}>
-                          {demoState.phase === 'complete' ? 'DONE' : 'IN PROGRESS'}
-                        </span>
+                        <motion.span 
+                          className={cn(
+                            "inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wide",
+                            demoState.phase === 'complete' 
+                              ? "bg-green-100 text-green-700 border border-green-200" 
+                              : "bg-yellow-100 text-yellow-700 border border-yellow-200"
+                          )}
+                          animate={demoState.phase === 'complete' ? {
+                            scale: [1, 1.05, 1],
+                          } : {}}
+                          transition={{ duration: 0.5 }}
+                        >
+                          {demoState.phase === 'complete' && (
+                            <CheckCircle2 className="h-3 w-3 mr-1" />
+                          )}
+                          {demoState.phase === 'complete' ? 'Done' : 'In Progress'}
+                        </motion.span>
                       </div>
                       <MoreHorizontal className="h-4 w-4 text-gray-400" />
                     </div>
@@ -644,15 +710,28 @@ const InteractiveDemo = memo(({
                     <div className="mb-5">
                       <div className="flex items-center justify-between mb-1.5">
                         <span className="text-xs text-gray-500 font-medium">Progress</span>
-                        <span className="text-xs text-gray-600 font-medium">
-                          {completedSubtasks.length}/{currentTask?.subtasks.length || 5}
+                        <span className={cn(
+                          "text-xs font-medium",
+                          demoState.phase === 'complete' ? "text-green-600" : "text-gray-600"
+                        )}>
+                          {demoState.phase === 'complete' 
+                            ? `${currentTask?.subtasks.length || 5}/${currentTask?.subtasks.length || 5}`
+                            : `${completedSubtasks.length}/${currentTask?.subtasks.length || 5}`
+                          }
                         </span>
                       </div>
                       <div className="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
                         <motion.div
-                          className="h-full bg-green-500"
+                          className={cn(
+                            "h-full",
+                            demoState.phase === 'complete' ? "bg-green-500" : "bg-blue-500"
+                          )}
                           initial={{ width: 0 }}
-                          animate={{ width: `${(completedSubtasks.length / (currentTask?.subtasks.length || 5)) * 100}%` }}
+                          animate={{ 
+                            width: demoState.phase === 'complete' 
+                              ? '100%' 
+                              : `${(completedSubtasks.length / (currentTask?.subtasks.length || 5)) * 100}%` 
+                          }}
                           transition={{ type: "spring", stiffness: 400, damping: 30 }}
                         />
                       </div>
@@ -719,39 +798,56 @@ const InteractiveDemo = memo(({
                           { id: 2, title: "Add retry logic with exponential backoff", assignee: "Z" },
                           { id: 3, title: "Log errors to monitoring service", assignee: "Z" },
                           { id: 4, title: "Add unit tests for error scenarios", assignee: "Z" }
-                        ]).map((task, index) => (
-                          <motion.div
-                            key={task.id}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: index * 0.05 }}
-                            className="flex items-center gap-3 py-2"
-                          >
-                            <div className="flex items-center justify-center w-4 h-4">
-                              {completedSubtasks.includes(task.id) ? (
-                                <CheckCircle2 className="h-4 w-4 text-green-600" />
-                              ) : (
-                                <Circle className="h-4 w-4 text-gray-300" />
+                        ]).map((task, index) => {
+                          const isCompleted = completedSubtasks.includes(task.id) || demoState.phase === 'complete'
+                          return (
+                            <motion.div
+                              key={task.id}
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: index * 0.05 }}
+                              className={cn(
+                                "flex items-center gap-3 py-2 rounded-md px-2 transition-all",
+                                isCompleted && "bg-green-50/50"
                               )}
-                            </div>
-                            <span className={cn(
-                              'text-sm',
-                              completedSubtasks.includes(task.id) ? 'text-gray-500 line-through' : 'text-gray-700'
-                            )}>
-                              {task.title}
-                            </span>
-                            {completedSubtasks.includes(task.id) && (
-                              <span className="ml-auto text-xs text-green-600 font-medium">✓</span>
-                            )}
-                          </motion.div>
-                        ))}
+                            >
+                              <motion.div 
+                                className="flex items-center justify-center w-4 h-4"
+                                animate={isCompleted ? { scale: [1, 1.2, 1] } : {}}
+                                transition={{ duration: 0.3 }}
+                              >
+                                {isCompleted ? (
+                                  <CheckCircle2 className="h-4 w-4 text-green-600" />
+                                ) : (
+                                  <Circle className="h-4 w-4 text-gray-300" />
+                                )}
+                              </motion.div>
+                              <span className={cn(
+                                'text-sm flex-1',
+                                isCompleted ? 'text-gray-500 line-through' : 'text-gray-700'
+                              )}>
+                                {task.title}
+                              </span>
+                              {isCompleted && (
+                                <motion.span 
+                                  initial={{ opacity: 0, scale: 0 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  transition={{ delay: 0.1 }}
+                                  className="text-xs text-green-600 font-bold"
+                                >
+                                  DONE
+                                </motion.span>
+                              )}
+                            </motion.div>
+                          )
+                        })}
                       </div>
                     </div>
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
-          </div>
+          </motion.div>
 
           {/* Slack Demo */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
@@ -776,60 +872,77 @@ const InteractiveDemo = memo(({
                     animate={{ opacity: 1, y: 0 }}
                     className="space-y-4"
                   >
-                    {/* First Message - Zoe analyzing */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="flex items-start gap-3"
-                    >
-                      <div className="w-9 h-9 bg-purple-500 rounded flex items-center justify-center flex-shrink-0">
-                        <span className="text-white text-sm font-semibold">Z</span>
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-baseline gap-2 mb-1">
-                          <span className="font-semibold text-gray-900 text-sm">Zoe</span>
-                          <span className="text-xs text-gray-500">2:34 PM</span>
-                        </div>
-                        <div className="text-gray-700 text-sm">
-                          <p>I've identified potential webhook handling scenarios that need error handling:</p>
-                          <div className="mt-2 bg-gray-50 border border-gray-200 rounded-md p-3">
-                            <p className="text-xs font-medium text-gray-600 mb-2">Details:</p>
-                            <ul className="text-xs text-gray-600 space-y-1">
-                              <li>• Invalid payment amount format</li>
-                              <li>• Network timeout during API call</li>
-                              <li>• Third-party service unavailable</li>
-                              <li>• Rate limit exceeded</li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-
-                    {/* Second Message - Implementation */}
-                    {visibleMessages.length > 0 && (
+                    {/* Dynamic Messages from Current Task */}
+                    {currentTask?.slackMessages && currentTask.slackMessages.length > 0 ? (
+                      <>
+                        {currentTask.slackMessages.map((message, index) => (
+                          visibleMessages.includes(message.id) && (
+                            <motion.div
+                              key={message.id}
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: index * 0.2 }}
+                              className="flex items-start gap-3"
+                            >
+                              <div className={cn(
+                                "w-9 h-9 rounded flex items-center justify-center flex-shrink-0",
+                                message.type === 'ai' ? "bg-purple-500" : "bg-gray-500"
+                              )}>
+                                <span className="text-white text-sm font-semibold">{message.avatar}</span>
+                              </div>
+                              <div className="flex-1">
+                                <div className="flex items-baseline gap-2 mb-1">
+                                  <span className="font-semibold text-gray-900 text-sm">{message.author}</span>
+                                  <span className="text-xs text-gray-500">{message.timestamp}</span>
+                                </div>
+                                <div className="text-gray-700 text-sm">
+                                  {typeof message.content === 'string' ? (
+                                    <p>{message.content}</p>
+                                  ) : (
+                                    <>
+                                      <p>{message.content.text}</p>
+                                      {message.content.details && (
+                                        <div className="mt-2 bg-gray-50 border border-gray-200 rounded-md p-3">
+                                          <p className="text-xs font-medium text-gray-600 mb-2">Details:</p>
+                                          <ul className="text-xs text-gray-600 space-y-1">
+                                            {message.content.details.map((detail, idx) => (
+                                              <li key={idx}>{detail}</li>
+                                            ))}
+                                          </ul>
+                                        </div>
+                                      )}
+                                    </>
+                                  )}
+                                </div>
+                              </div>
+                            </motion.div>
+                          )
+                        ))}
+                      </>
+                    ) : (
+                      // Fallback for tasks without Slack messages
                       <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 }}
                         className="flex items-start gap-3"
                       >
                         <div className="w-9 h-9 bg-purple-500 rounded flex items-center justify-center flex-shrink-0">
-                          <span className="text-white text-sm font-semibold">Z</span>
+                          <span className="text-white text-sm font-semibold">{currentTask?.agent.avatar || 'Z'}</span>
                         </div>
                         <div className="flex-1">
                           <div className="flex items-baseline gap-2 mb-1">
-                            <span className="font-semibold text-gray-900 text-sm">Zoe</span>
-                            <span className="text-xs text-gray-500">2:35 PM</span>
+                            <span className="font-semibold text-gray-900 text-sm">{currentTask?.agent.name || 'Zoe'}</span>
+                            <span className="text-xs text-gray-500">2:34 PM</span>
                           </div>
                           <div className="text-gray-700 text-sm">
-                            <p>I'm implementing comprehensive error handling for the payment API with retry logic and proper logging.</p>
+                            <p>I'm analyzing {currentTask?.description || 'the requirements'}...</p>
                           </div>
                         </div>
                       </motion.div>
                     )}
 
-                    {/* Third Message - Deployment Ready */}
-                    {demoState.phase === 'complete' && (
+                    {/* Completion Message */}
+                    {demoState.phase === 'complete' && currentTask?.completionMessage && (
                       <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -837,20 +950,20 @@ const InteractiveDemo = memo(({
                         className="flex items-start gap-3"
                       >
                         <div className="w-9 h-9 bg-purple-500 rounded flex items-center justify-center flex-shrink-0">
-                          <span className="text-white text-sm font-semibold">Z</span>
+                          <span className="text-white text-sm font-semibold">{currentTask.agent.avatar}</span>
                         </div>
                         <div className="flex-1">
                           <div className="flex items-baseline gap-2 mb-1">
-                            <span className="font-semibold text-gray-900 text-sm">Zoe</span>
+                            <span className="font-semibold text-gray-900 text-sm">{currentTask.agent.name}</span>
                             <span className="text-xs text-gray-500">2:36 PM</span>
                           </div>
                           <div className="text-gray-700 text-sm">
                             <p className="mb-2">
-                              <span className="text-green-600">✅</span> Payment API error handling is complete and ready for deployment!
+                              <span className="text-green-600">✅</span> {currentTask.completionMessage.content}
                             </p>
                             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-purple-50 text-purple-700 rounded-md text-xs font-medium">
                               <GitPullRequest className="h-3.5 w-3.5" />
-                              <span>Pull Request #234 Ready for Review</span>
+                              <span>Task Complete</span>
                             </div>
                           </div>
                         </div>
@@ -866,7 +979,7 @@ const InteractiveDemo = memo(({
                         className="flex items-start gap-3"
                       >
                         <div className="w-9 h-9 bg-purple-500 rounded flex items-center justify-center flex-shrink-0">
-                          <span className="text-white text-sm font-semibold">Z</span>
+                          <span className="text-white text-sm font-semibold">{currentTask?.agent.avatar || 'Z'}</span>
                         </div>
                         <div className="bg-gray-100 rounded-md px-3 py-2 flex items-center gap-1.5">
                           {[0, 0.2, 0.4].map((delay, i) => (

@@ -80,9 +80,10 @@ const teams = [
 
 interface HeroProps {
   onDemoTrigger?: (taskId?: string) => void
+  isDemoRunning?: boolean
 }
 
-const Hero = ({ onDemoTrigger }: HeroProps) => {
+const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
   const [isVisible, setIsVisible] = useState(false)
   const [selectedTeam, setSelectedTeam] = useState('engineering')
   const [selectedTask, setSelectedTask] = useState('')
@@ -96,7 +97,7 @@ const Hero = ({ onDemoTrigger }: HeroProps) => {
   const currentTask = currentTeam.tasks.find((t) => t.id === selectedTask)
 
   const handleDelegate = () => {
-    if (selectedTask) {
+    if (selectedTask && !isDemoRunning) {
       setIsDelegating(true)
       // Trigger the demo animation and scroll with the selected task
       if (onDemoTrigger) {
@@ -231,14 +232,16 @@ const Hero = ({ onDemoTrigger }: HeroProps) => {
 
                 <RadioGroup.Root
                   value={selectedTask}
-                  onValueChange={setSelectedTask}
+                  onValueChange={(value) => !isDemoRunning && setSelectedTask(value)}
                   className="space-y-3"
                 >
                   {currentTeam.tasks.map((task) => (
                     <label
                       key={task.id}
                       className={cn(
-                        'flex items-center justify-between p-4 rounded-lg cursor-pointer transition-all duration-200',
+                        'flex items-center justify-between p-4 rounded-lg transition-all duration-200',
+                        isDemoRunning && 'cursor-not-allowed opacity-60',
+                        !isDemoRunning && 'cursor-pointer',
                         selectedTask === task.id
                           ? 'bg-gray-100 border border-gray-300'
                           : 'bg-gray-50 border border-gray-200 hover:bg-gray-100'
@@ -247,7 +250,14 @@ const Hero = ({ onDemoTrigger }: HeroProps) => {
                       <div className="flex items-center gap-3">
                         <RadioGroup.Item
                           value={task.id}
-                          className="w-5 h-5 rounded-full border-2 border-gray-300 bg-white data-[state=checked]:border-gray-900 data-[state=checked]:bg-gray-900 flex items-center justify-center"
+                          disabled={isDemoRunning}
+                          className={cn(
+                            "w-5 h-5 rounded-full border-2 bg-white flex items-center justify-center",
+                            "data-[state=checked]:border-gray-900 data-[state=checked]:bg-gray-900",
+                            isDemoRunning 
+                              ? "cursor-not-allowed opacity-50"
+                              : "border-gray-300"
+                          )}
                         >
                           <RadioGroup.Indicator className="w-2 h-2 rounded-full bg-white" />
                         </RadioGroup.Item>
@@ -263,15 +273,19 @@ const Hero = ({ onDemoTrigger }: HeroProps) => {
                 {/* Delegate Button */}
                 <button
                   onClick={handleDelegate}
-                  disabled={!selectedTask || isDelegating}
+                  disabled={!selectedTask || isDelegating || isDemoRunning}
                   className={cn(
                     'w-full mt-6 py-3 px-6 rounded-full font-semibold text-base transition-all duration-200',
-                    selectedTask && !isDelegating
+                    selectedTask && !isDelegating && !isDemoRunning
                       ? 'bg-gray-900 text-white hover:bg-gray-800 hover:scale-[1.02] shadow-lg'
                       : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                   )}
                 >
-                  {isDelegating ? (
+                  {isDemoRunning ? (
+                    <span className="inline-flex items-center">
+                      Demo in Progress...
+                    </span>
+                  ) : isDelegating ? (
                     <span className="inline-flex items-center">
                       <svg
                         className="animate-spin -ml-1 mr-3 h-5 w-5"
