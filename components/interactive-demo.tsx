@@ -115,6 +115,17 @@ function workflowToConfig(workflow: TaskWorkflow): DemoConfig | null {
     }
   })
 
+  // If no subtasks were found from linear updates, create them from workflow steps
+  if (subtasks.length === 0 && workflow.steps.length > 0) {
+    workflow.steps.slice(0, 5).forEach((step, idx) => {
+      subtasks.push({
+        id: idx,
+        title: step.phase || step.description,
+        assignee: agent.avatar
+      })
+    })
+  }
+
   // Get the final step for completion message
   const finalStep = workflow.steps[workflow.steps.length - 1]
   const completionMessage = finalStep?.slackMessage ? {
@@ -512,7 +523,7 @@ const InteractiveDemo = memo(({
       }
 
       // Complete subtasks first
-      if (currentTask?.subtasks) {
+      if (currentTask?.subtasks && currentTask.subtasks.length > 0) {
         const subtasksToComplete = currentTask.subtasks.length // Complete ALL subtasks
         let subtaskDelay = messageDelay + 400 // Start subtasks sooner
         for (let i = 0; i < subtasksToComplete; i++) {
@@ -524,6 +535,7 @@ const InteractiveDemo = memo(({
               
               // Set complete phase AFTER all subtasks are done
               safeSetTimeout(() => {
+                console.log('Setting demo to complete phase after all subtasks')
                 setDemoState(prev => ({ ...prev, phase: 'complete' as const }))
                 setConnectionStatus('complete')
                 // Call the onDemoComplete callback if provided
@@ -535,7 +547,8 @@ const InteractiveDemo = memo(({
           }, subtaskDelay + (i * 300)) // Faster subtask completion
         }
       } else {
-        // If no subtasks, complete immediately
+        // If no subtasks or empty subtasks array, complete after messages
+        console.log('No subtasks found, completing demo after messages')
         safeSetTimeout(() => {
           setDemoState(prev => ({ ...prev, phase: 'complete' as const }))
           setConnectionStatus('complete')
