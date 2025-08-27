@@ -3,30 +3,30 @@
 import { useState } from 'react'
 import Navigation from '@/components/navigation'
 import Hero from '@/components/hero'
-import IntegrationShowcase from '@/components/integration-showcase'
 import InteractiveDemoWrapper from '@/components/interactive-demo-wrapper'
 
 export default function Home() {
   const [demoTrigger, setDemoTrigger] = useState(false)
   const [selectedTask, setSelectedTask] = useState('')
-  const [integrationDemoTrigger, setIntegrationDemoTrigger] = useState(false)
-  const [integrationDemoType, setIntegrationDemoType] = useState<
-    'slack' | 'linear' | null
-  >(null)
 
-  // Map hero task IDs to demo task IDs
+  // Map hero task IDs to demo workflow IDs
   const taskMapping: Record<string, string> = {
-    refactor: 'refactor',
-    api: 'fix-auth-bug',
-    tests: 'fix-auth-bug',
-    blog: 'blog',
-    docs: 'blog',
-    copy: 'blog',
-    prospect: 'prospect',
-    email: 'prospect',
-    report: 'prospect',
-    process: 'process',
-    audit: 'process',
+    // Engineering tasks
+    'auth-bug-fix': 'fix-auth-bug',
+    'payment-api-error': 'payment-api-error',
+    'user-service-tests': 'unit-tests',
+    // Content tasks
+    'blog-post': 'blog-post',
+    'email-campaign': 'email-campaign',
+    'api-docs': 'api-docs',
+    // Sales tasks
+    'qualify-leads': 'qualify-leads',
+    'competitor-research': 'competitor-research',
+    'crm-update': 'crm-updates',
+    // Operations tasks
+    'aws-audit': 'aws-audit',
+    'monitoring-setup': 'api-monitoring',
+    'deployment-docs': 'deployment-docs',
   }
 
   const handleDemoTrigger = (heroTaskId?: string) => {
@@ -38,17 +38,10 @@ export default function Home() {
     setSelectedTask(demoTaskId)
     setDemoTrigger(true)
 
-    // Reset trigger after a short delay
-    setTimeout(() => setDemoTrigger(false), 100)
+    // Reset trigger after demo has had time to start
+    setTimeout(() => setDemoTrigger(false), 1500)
   }
 
-  const handleIntegrationDemoTrigger = (demoType: 'slack' | 'linear') => {
-    setIntegrationDemoType(demoType)
-    setIntegrationDemoTrigger(true)
-
-    // Reset trigger after a short delay
-    setTimeout(() => setIntegrationDemoTrigger(false), 100)
-  }
 
   return (
     <main className="min-h-screen">

@@ -23,15 +23,15 @@ const teams = [
     aiName: 'Zoe',
     tasks: [
       {
-        id: 'refactor',
-        label: 'Refactor authentication module',
-        time: '45 mins',
+        id: 'auth-bug-fix',
+        label: 'Fix authentication bug in production',
+        time: '3.5 mins',
       },
-      { id: 'api', label: 'Build REST API endpoints', time: '2 hours' },
+      { id: 'payment-api-error', label: 'Add error handling to payment API', time: '3 mins' },
       {
-        id: 'tests',
-        label: 'Write unit tests for payment flow',
-        time: '30 mins',
+        id: 'user-service-tests',
+        label: 'Write unit tests for user service',
+        time: '3 mins',
       },
     ],
   },
@@ -41,9 +41,9 @@ const teams = [
     icon: <FileText className="h-4 w-4" />,
     aiName: 'Bella',
     tasks: [
-      { id: 'blog', label: 'Write technical blog post', time: '35 mins' },
-      { id: 'docs', label: 'Update API documentation', time: '25 mins' },
-      { id: 'copy', label: 'Create landing page copy', time: '20 mins' },
+      { id: 'blog-post', label: 'Write blog post about Q4 product updates', time: '4 mins' },
+      { id: 'email-campaign', label: 'Create email campaign for new feature launch', time: '3 mins' },
+      { id: 'api-docs', label: 'Update help documentation for API changes', time: '3 mins' },
     ],
   },
   {
@@ -52,16 +52,16 @@ const teams = [
     icon: <TrendingUp className="h-4 w-4" />,
     aiName: 'Alex',
     tasks: [
-      { id: 'prospect', label: 'Research and qualify leads', time: '1 hour' },
+      { id: 'qualify-leads', label: 'Qualify leads from yesterday\'s webinar', time: '2.5 mins' },
       {
-        id: 'email',
-        label: 'Draft personalized outreach emails',
-        time: '30 mins',
+        id: 'competitor-research',
+        label: 'Research competitor pricing for Enterprise deals',
+        time: '3 mins',
       },
       {
-        id: 'report',
-        label: 'Generate sales pipeline report',
-        time: '15 mins',
+        id: 'crm-update',
+        label: 'Update CRM with meeting notes from demos',
+        time: '3 mins',
       },
     ],
   },
@@ -71,9 +71,9 @@ const teams = [
     icon: <Users className="h-4 w-4" />,
     aiName: 'Morgan',
     tasks: [
-      { id: 'process', label: 'Optimize workflow processes', time: '45 mins' },
-      { id: 'audit', label: 'Conduct security audit', time: '1.5 hours' },
-      { id: 'report', label: 'Create monthly metrics report', time: '25 mins' },
+      { id: 'aws-audit', label: 'Audit AWS costs and identify savings', time: '3 mins' },
+      { id: 'monitoring-setup', label: 'Set up monitoring alerts for the API', time: '3 mins' },
+      { id: 'deployment-docs', label: 'Document the deployment process', time: '3 mins' },
     ],
   },
 ]

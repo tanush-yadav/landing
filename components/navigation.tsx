@@ -1,11 +1,11 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, memo } from 'react'
 import Link from 'next/link'
 import { Menu, X, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-const Navigation = () => {
+const Navigation = memo(() => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isVisible, setIsVisible] = useState(true)
   const [lastScrollY, setLastScrollY] = useState(0)
@@ -276,6 +276,8 @@ const Navigation = () => {
       </div>
     </>
   )
-}
+})
+
+Navigation.displayName = 'Navigation'
 
 export default Navigation
