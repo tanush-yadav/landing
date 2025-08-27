@@ -109,7 +109,7 @@ function workflowToConfig(workflow: TaskWorkflow): DemoConfig | null {
           text: step.slackMessage.content,
           details: step.slackMessage.attachments.content.slice(0, 4)
         } : step.slackMessage.content,
-        timestamp: `${2 + msgIndex}:${34 + msgIndex} PM`,
+        timestamp: new Date(step.timestamp || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         delay: msgIndex * 500
       })
     }
@@ -129,9 +129,9 @@ function workflowToConfig(workflow: TaskWorkflow): DemoConfig | null {
   // Get the final step for completion message
   const finalStep = workflow.steps[workflow.steps.length - 1]
   const completionMessage = finalStep?.slackMessage ? {
-    type: 'complete' as const,
-    content: finalStep.slackMessage.content,
-    link: '#'
+    type: workflow.completionType || 'complete' as const,
+    content: finalStep.slackMessage.content || `${workflow.title} task completed`,
+    link: workflow.completionLink || '#'
   } : null
 
   return {
@@ -806,11 +806,11 @@ const InteractiveDemo = memo(({
                       <h4 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">Sub-issues</h4>
                       <div className="space-y-2">
                         {(currentTask?.subtasks || [
-                          { id: 0, title: "Add input validation for payment amount", assignee: "Z" },
-                          { id: 1, title: "Handle network timeout errors", assignee: "Z" },
-                          { id: 2, title: "Add retry logic with exponential backoff", assignee: "Z" },
-                          { id: 3, title: "Log errors to monitoring service", assignee: "Z" },
-                          { id: 4, title: "Add unit tests for error scenarios", assignee: "Z" }
+                          workflow.steps.slice(0, 5).map((step, idx) => ({
+                            id: idx,
+                            title: step.description || step.phase || 'Unnamed task',
+                            assignee: agent.avatar
+                          }))
                         ]).map((task, index) => {
                           const isCompleted = completedSubtasks.includes(task.id) || demoState.phase === 'complete'
                           return (
