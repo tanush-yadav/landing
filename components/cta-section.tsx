@@ -83,15 +83,21 @@ export function CTASection() {
                 transition={{ delay: 0.5, duration: 0.4 }}
                 className="pt-4"
               >
-                <Button
-                  size="lg"
-                  className="relative group bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium px-6 py-3 text-base rounded-xl shadow-md transition-all duration-200 hover:shadow-lg"
+                <a
+                  href="https://cal.com/tanushyadav/quick-chat"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  <span className="flex items-center gap-2">
-                    Book an Appointment
-                    <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
-                  </span>
-                </Button>
+                  <Button
+                    size="lg"
+                    className="relative group bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium px-6 py-3 text-base rounded-xl shadow-md transition-all duration-200 hover:shadow-lg"
+                  >
+                    <span className="flex items-center gap-2">
+                      Book an Appointment
+                      <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+                    </span>
+                  </Button>
+                </a>
               </motion.div>
 
               {/* Simple trust indicators */}
