@@ -19,16 +19,21 @@ interface SkeletonProps {
   children?: React.ReactNode;
 }
 
-// Base skeleton component
-export const Skeleton = ({ className, ...props }: SkeletonProps) => {
+// Base skeleton component with accessible loading text
+export const Skeleton = ({ className, children, ...props }: SkeletonProps) => {
   return (
     <div
       className={cn(
-        'animate-pulse bg-gray-200 rounded-md',
+        'animate-pulse bg-gray-200 rounded-md relative',
         className
       )}
+      role="status"
+      aria-live="polite"
       {...props}
-    />
+    >
+      <span className="sr-only">Loading...</span>
+      {children}
+    </div>
   );
 };
 
@@ -40,7 +45,8 @@ interface SkeletonTextProps {
 
 export const SkeletonText = ({ lines = 1, className }: SkeletonTextProps) => {
   return (
-    <div className={cn('space-y-2', className)}>
+    <div className={cn('space-y-2', className)} role="status" aria-live="polite">
+      <span className="sr-only">Loading text content...</span>
       {Array.from({ length: lines }).map((_, i) => (
         <div
           key={i}
@@ -62,7 +68,11 @@ export const SkeletonButton = ({ className }: SkeletonProps) => {
         'h-10 px-4 bg-gray-200 rounded-lg animate-pulse inline-block',
         className
       )}
-    />
+      role="status"
+      aria-live="polite"
+    >
+      <span className="sr-only">Loading button...</span>
+    </div>
   );
 };
 
@@ -74,7 +84,10 @@ export const SkeletonCard = ({ className }: SkeletonProps) => {
         'rounded-xl border border-gray-200 p-6 space-y-4',
         className
       )}
+      role="status"
+      aria-live="polite"
     >
+      <span className="sr-only">Loading card content...</span>
       <Skeleton className="h-12 w-3/4" />
       <SkeletonText lines={3} />
       <div className="flex gap-2">
@@ -93,7 +106,11 @@ export const SkeletonAvatar = ({ className }: SkeletonProps) => {
         'h-10 w-10 bg-gray-200 rounded-full animate-pulse',
         className
       )}
-    />
+      role="status"
+      aria-live="polite"
+    >
+      <span className="sr-only">Loading avatar...</span>
+    </div>
   );
 };
 
@@ -105,7 +122,10 @@ export const SkeletonImage = ({ className }: SkeletonProps) => {
         'relative overflow-hidden bg-gray-200 rounded-lg animate-pulse',
         className
       )}
+      role="status"
+      aria-live="polite"
     >
+      <span className="sr-only">Loading image...</span>
       <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200" />
     </div>
   );
@@ -119,7 +139,10 @@ export const SkeletonDemoCard = ({ className }: SkeletonProps) => {
         'rounded-xl border border-gray-200 bg-white p-6 space-y-4',
         className
       )}
+      role="status"
+      aria-live="polite"
     >
+      <span className="sr-only">Loading demo card...</span>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <SkeletonAvatar />
@@ -141,7 +164,8 @@ export const SkeletonDemoCard = ({ className }: SkeletonProps) => {
 // Table skeleton
 export const SkeletonTable = ({ rows = 5 }: { rows?: number }) => {
   return (
-    <div className="space-y-2">
+    <div className="space-y-2" role="status" aria-live="polite">
+      <span className="sr-only">Loading table data...</span>
       {/* Header */}
       <div className="flex gap-4 p-4 bg-gray-50 rounded-t-lg">
         <Skeleton className="h-4 w-1/4" />

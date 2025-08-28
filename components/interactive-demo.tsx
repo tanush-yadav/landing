@@ -314,7 +314,7 @@ const DemoSkeleton = memo(() => (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {[0, 1].map((i) => (
-          <div key={i} className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden max-w-full">
+          <div key={i} className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden max-w-full transition-all duration-200 hover:-translate-y-1 hover:shadow-xl will-change-transform">
             <div className="h-14 bg-gray-100 animate-pulse" />
             <div className="p-6 space-y-4">
               <div className="h-4 bg-gray-200 rounded animate-pulse" />
@@ -654,7 +654,7 @@ const InteractiveDemo = memo(({
           {/* Linear Demo */}
           <motion.div 
             className={cn(
-              "bg-white rounded-xl shadow-sm border overflow-hidden transition-all",
+              "bg-white rounded-xl shadow-sm border overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-xl will-change-transform",
               demoState.phase === 'complete' 
                 ? "border-green-200 shadow-green-100/50" 
                 : "border-gray-100"
@@ -857,7 +857,7 @@ const InteractiveDemo = memo(({
           </motion.div>
 
           {/* Slack Demo */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-xl will-change-transform">
             {/* Slack Header */}
             <div className="bg-[#4A154B] px-6 py-4 flex items-center justify-between">
               <div className="flex items-center gap-2">

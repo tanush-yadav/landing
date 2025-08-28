@@ -213,7 +213,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-600',
                     selectedTeam === team.id
                       ? 'bg-gradient-to-r from-gray-800 to-gray-900 text-white shadow-lg transform scale-105'
-                      : 'bg-white/60 backdrop-blur-sm text-gray-700 border border-white/50 hover:bg-white/80 hover:border-gray-300 shadow-md ring-1 ring-gray-200/10'
+                      : 'bg-white/60 backdrop-blur-sm text-gray-700 border border-gray-600 hover:bg-white/80 hover:border-gray-700 shadow-md ring-1 ring-gray-200/10'
                   )}
                 >
                   {team.icon}
@@ -249,7 +249,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                         isDemoRunning && 'cursor-not-allowed opacity-60',
                         !isDemoRunning && 'cursor-pointer',
                         selectedTask === task.id
-                          ? 'bg-gray-100 border border-gray-300'
+                          ? 'bg-gray-100 border border-gray-600'
                           : 'bg-gray-50 border border-gray-200 hover:bg-gray-100'
                       )}
                     >
@@ -262,7 +262,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                             "data-[state=checked]:border-gray-900 data-[state=checked]:bg-gray-900",
                             isDemoRunning 
                               ? "cursor-not-allowed opacity-50"
-                              : "border-gray-300"
+                              : "border-gray-600"
                           )}
                         >
                           <RadioGroup.Indicator className="w-2 h-2 rounded-full bg-white" />

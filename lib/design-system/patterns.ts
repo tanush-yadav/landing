@@ -160,21 +160,21 @@ export const buttonStyles = {
   },
   variants: {
     primary: 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 shadow-lg hover:shadow-xl focus-visible:ring-indigo-500',
-    secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200 focus-visible:ring-gray-400',
-    outline: 'border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 focus-visible:ring-gray-400',
-    ghost: 'hover:bg-gray-100 focus-visible:ring-gray-400',
+    secondary: 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-800 focus-visible:ring-gray-500 border border-gray-600',
+    outline: 'border-2 border-gray-600 text-gray-700 hover:border-gray-700 hover:bg-gray-50 hover:text-gray-800 focus-visible:ring-gray-500',
+    ghost: 'text-gray-700 hover:bg-gray-100 hover:text-gray-800 focus-visible:ring-gray-500',
     danger: 'bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800 shadow-lg hover:shadow-xl focus-visible:ring-red-500',
   },
 } as const;
 
-// Card Styles Pattern
+// Card Styles Pattern - Enhanced with better hover effects
 export const cardStyles = {
-  base: 'rounded-lg border bg-white shadow-sm',
+  base: 'rounded-lg border bg-white shadow-sm transition-all duration-200 will-change-transform hover:-translate-y-1',
   variants: {
-    default: 'border-neutral-200',
-    elevated: 'border-transparent shadow-lg',
-    ghost: 'border-transparent shadow-none',
-    glass: 'border-white/20 bg-white/80 backdrop-blur-md',
+    default: 'border-neutral-200 hover:shadow-xl',
+    elevated: 'border-transparent shadow-lg hover:shadow-xl hover:-translate-y-1',
+    ghost: 'border-transparent shadow-none hover:shadow-xl hover:-translate-y-1',
+    glass: 'border-white/20 bg-white/80 backdrop-blur-md hover:shadow-xl hover:-translate-y-1',
   },
   padding: {
     none: '',
@@ -182,6 +182,10 @@ export const cardStyles = {
     md: 'p-6',
     lg: 'p-8',
   },
+  hover: {
+    transform: 'hover:-translate-y-1',
+    shadow: 'hover:shadow-xl',
+  }
 } as const;
 
 // Input Styles Pattern
