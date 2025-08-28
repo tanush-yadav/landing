@@ -81,7 +81,7 @@ export function TrustSignals() {
               >
                 <div className="text-center p-4 rounded-xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-1">
                   <div className={`inline-flex p-3 rounded-lg ${item.bgColor} mb-3`}>
-                    <Icon className={`h-6 w-6 ${item.color}`} />
+                    <Icon className={`h-6 w-6 ${item.color}`} aria-hidden="true" focusable="false" />
                   </div>
                   <h3 className="font-semibold text-gray-900 text-sm mb-1">
                     {item.label}
@@ -109,7 +109,6 @@ export function TrustSignals() {
               <div
                 key={company}
                 className="text-2xl font-bold text-gray-400"
-                aria-label={`${company} logo`}
               >
                 {company}
               </div>

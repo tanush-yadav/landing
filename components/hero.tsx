@@ -1,10 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import Link from 'next/link'
+import { useEffect, useRef, useState } from 'react'
+// import Link from 'next/link'
 import {
   ArrowRight,
-  Play,
   Users,
   FileText,
   TrendingUp,
@@ -95,6 +94,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
 
   const currentTeam = teams.find((t) => t.id === selectedTeam) || teams[0]
   const currentTask = currentTeam.tasks.find((t) => t.id === selectedTask)
+  const delegatingTimerRef = useRef<number | null>(null)
 
   const handleDelegate = () => {
     if (selectedTask && !isDemoRunning) {
@@ -104,11 +104,19 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
         onDemoTrigger(selectedTask)
       }
       // Reset delegating state after animation
-      setTimeout(() => {
+      delegatingTimerRef.current = window.setTimeout(() => {
         setIsDelegating(false)
       }, 2000)
     }
   }
+
+  useEffect(() => {
+    return () => {
+      if (delegatingTimerRef.current) {
+        clearTimeout(delegatingTimerRef.current)
+      }
+    }
+  }, [])
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 py-16 sm:py-20">
@@ -197,17 +205,20 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
             )}
           >
             {/* Team Tabs - Enhanced for mobile touch targets */}
-            <div className="flex flex-wrap justify-center gap-2 mb-6 px-2">
+            <div className="flex flex-wrap justify-center gap-2 mb-6 px-2" role="tablist" aria-label="Teams">
               {teams.map((team) => (
                 <button
                   key={team.id}
                   onClick={() => {
                     setSelectedTeam(team.id)
-                    setSelectedTask('')
+                    setSelectedTask(team.tasks?.[0]?.id ?? '')
                   }}
                   aria-label={`Select ${team.name} team`}
-                  aria-pressed={selectedTeam === team.id}
                   role="tab"
+                  aria-selected={selectedTeam === team.id}
+                  aria-controls={`panel-${team.id}`} 
+                  id={`tab-${team.id}`}
+                  tabIndex={selectedTeam === team.id ? 0 : -1}
                   className={cn(
                     'inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-3 sm:py-2 min-w-[80px] rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap',
                     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-600',
@@ -231,8 +242,11 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
                 className="bg-white/70 backdrop-blur-md rounded-2xl p-6 border border-white/30 shadow-xl ring-1 ring-gray-200/20"
+                role="tabpanel"
+                id={`panel-${selectedTeam}`}
+                aria-labelledby={`tab-${selectedTeam}`}
               >
-                <h3 className="text-gray-900 text-lg font-heading font-semibold mb-4">
+                <h3 id={`task-heading-${currentTeam.id}`} className="text-gray-900 text-lg font-heading font-semibold mb-4">
                   Select a task for {currentTeam.aiName} to complete:
                 </h3>
 
@@ -240,6 +254,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                   value={selectedTask}
                   onValueChange={(value) => !isDemoRunning && setSelectedTask(value)}
                   className="space-y-3"
+                  aria-labelledby={`task-heading-${currentTeam.id}`}
                 >
                   {currentTeam.tasks.map((task) => (
                     <label

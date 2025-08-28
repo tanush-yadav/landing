@@ -234,7 +234,7 @@ const StatusBadge = memo(({
           ease: 'linear',
         }}
       >
-        <badgeConfig.icon className="h-3 w-3" />
+        {(() => { const Icon = badgeConfig.icon; return <Icon className="h-3 w-3" /> })()}
       </motion.span>
       <span className="font-semibold tracking-wide uppercase">
         {badgeConfig.text}
@@ -375,7 +375,7 @@ const InteractiveDemo = memo(({
   const [error, setError] = useState<string | null>(null)
 
   // Refs for performance
-  const animationTimeoutRefs = useRef<Set<NodeJS.Timeout>>(new Set())
+  const animationTimeoutRefs = useRef<Set<ReturnType<typeof setTimeout>>>(new Set())
   const shouldReduceMotion = useReducedMotion()
 
   // Memoized current task from workflow
@@ -525,7 +525,7 @@ const InteractiveDemo = memo(({
       // Complete subtasks first
       if (currentTask?.subtasks && currentTask.subtasks.length > 0) {
         const subtasksToComplete = currentTask.subtasks.length // Complete ALL subtasks
-        let subtaskDelay = messageDelay + 400 // Start subtasks sooner
+        const subtaskDelay = messageDelay + 400 // Start subtasks sooner
         for (let i = 0; i < subtasksToComplete; i++) {
           safeSetTimeout(() => {
             setCompletedSubtasks(prev => [...prev, currentTask.subtasks[i].id])
@@ -871,7 +871,7 @@ const InteractiveDemo = memo(({
             </div>
 
             {/* Slack Messages */}
-            <div className="px-6 py-5 bg-white min-h-[420px]">
+            <div className="px-6 py-5 bg-white min-h-[420px]" role="log" aria-live="polite">
               <AnimatePresence>
                 {demoState.slackNotified ? (
                   <motion.div
@@ -942,7 +942,7 @@ const InteractiveDemo = memo(({
                             <span className="text-xs text-gray-500">2:34 PM</span>
                           </div>
                           <div className="text-gray-700 text-sm">
-                            <p>I'm analyzing {currentTask?.description || 'the requirements'}...</p>
+                            <p>I&apos;m analyzing {currentTask?.description || 'the requirements'}...</p>
                           </div>
                         </div>
                       </motion.div>

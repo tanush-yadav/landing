@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Outfit, Plus_Jakarta_Sans, Fraunces } from 'next/font/google'
 import './globals.css'
+import { a11y } from '@/lib/design-system'
 
 const outfit = Outfit({ 
   subsets: ['latin'],
@@ -40,7 +41,7 @@ export default function RootLayout({
         {/* Skip Navigation Link - Accessible but visually hidden until focused */}
         <a 
           href="#main" 
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-indigo-600 focus:text-white focus:rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:shadow-lg"
+          className={`${a11y.skipToContent} focus:px-4 focus:py-2 focus:bg-indigo-600 focus:text-white focus:rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:shadow-lg`}
         >
           Skip to main content
         </a>

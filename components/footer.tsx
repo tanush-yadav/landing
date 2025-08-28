@@ -87,7 +87,7 @@ export function Footer() {
               {/* Tagline */}
               <p className="text-gray-600 mt-4 leading-relaxed">
                 Building the future of work with AI agents that understand your business 
-                and amplify your team's potential.
+                and amplify your team&apos;s potential.
               </p>
               
               {/* Contact Info */}

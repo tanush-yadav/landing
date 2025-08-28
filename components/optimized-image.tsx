@@ -71,7 +71,7 @@ export function OptimizedImage({
           'duration-300 ease-in-out',
           isLoading ? 'scale-105 blur-sm' : 'scale-100 blur-0'
         )}
-        onLoad={() => setIsLoading(false)}
+        onLoadingComplete={() => setIsLoading(false)}
         onError={() => {
           setIsLoading(false)
           setHasError(true)

@@ -58,13 +58,13 @@
     @apply antialiased;
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
-    overflow-x: hidden;
     min-width: 320px;
   }
 
-  html {
-    scroll-behavior: smooth;
-    overflow-x: hidden;
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
   
   /* Mobile-first responsive containers */
@@ -89,9 +89,13 @@
     }
   }
   
-  /* Prevent horizontal overflow on mobile */
-  * {
-    max-width: 100vw;
+  /* Constrain replaced elements; allow content to overflow as needed */
+  img, video, canvas, svg {
+    max-width: 100%;
+    height: auto;
+  }
+  pre {
+    overflow-x: auto;
   }
   
   /* Responsive typography */
