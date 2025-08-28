@@ -3,6 +3,8 @@ import { Outfit, Plus_Jakarta_Sans, Fraunces } from 'next/font/google'
 import './globals.css'
 import Script from 'next/script'
 import { a11y } from '@/lib/design-system'
+import GARouteTracking from './ga-route-tracking'
+import PostHogAnalytics from './posthog-analytics'
 
 const outfit = Outfit({
   subsets: ['latin'],
@@ -51,9 +53,10 @@ export const metadata: Metadata = {
   },
 }
 
+// Allow explicit control via env flag, fallback to production check
+const analyticsFlag = process.env.NEXT_PUBLIC_ENABLE_ANALYTICS
 const analyticsEnabled =
-  process.env.NEXT_PUBLIC_ENABLE_ANALYTICS === 'true' ||
-  process.env.NODE_ENV === 'production'
+  analyticsFlag ? analyticsFlag === 'true' : process.env.NODE_ENV === 'production'
 
 export default function RootLayout({
   children,
@@ -69,8 +72,7 @@ export default function RootLayout({
         {analyticsEnabled && (
           <>
             <Script
-              defer
-              data-domain="cintra.run"
+              data-domain={process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN || 'cintra.run'}
               src="https://plausible.io/js/script.file-downloads.hash.outbound-links.pageview-props.revenue.tagged-events.js"
               strategy="afterInteractive"
             />
@@ -86,7 +88,8 @@ export default function RootLayout({
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
-                gtag('config', 'G-PRENL31DQR');
+                // GA4: disable automatic first pageview for SPA routing
+                gtag('config', 'G-PRENL31DQR', { send_page_view: false });
               `}
             </Script>
           </>
@@ -99,6 +102,11 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
+        
+        {/* Analytics Components */}
+        <PostHogAnalytics />
+        <GARouteTracking />
+        
         {children}
       </body>
     </html>
