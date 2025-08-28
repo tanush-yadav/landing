@@ -51,6 +51,10 @@ export const metadata: Metadata = {
   },
 }
 
+const analyticsEnabled =
+  process.env.NEXT_PUBLIC_ENABLE_ANALYTICS === 'true' ||
+  process.env.NODE_ENV === 'production'
+
 export default function RootLayout({
   children,
 }: {
@@ -62,27 +66,31 @@ export default function RootLayout({
       className={`${outfit.variable} ${plusJakartaSans.variable} ${fraunces.variable}`}
     >
       <body className={`${outfit.className} min-h-screen`}>
-        <Script
-          defer
-          data-domain="cintra.run"
-          src="https://plausible.io/js/script.file-downloads.hash.outbound-links.pageview-props.revenue.tagged-events.js"
-          strategy="afterInteractive"
-        />
-        <Script id="plausible-init" strategy="afterInteractive">
-          {`window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }`}
-        </Script>
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-PRENL31DQR"
-          strategy="afterInteractive"
-        />
-        <Script id="ga-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-PRENL31DQR');
-          `}
-        </Script>
+        {analyticsEnabled && (
+          <>
+            <Script
+              defer
+              data-domain="cintra.run"
+              src="https://plausible.io/js/script.file-downloads.hash.outbound-links.pageview-props.revenue.tagged-events.js"
+              strategy="afterInteractive"
+            />
+            <Script id="plausible-init" strategy="afterInteractive">
+              {`window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }`}
+            </Script>
+            <Script
+              src="https://www.googletagmanager.com/gtag/js?id=G-PRENL31DQR"
+              strategy="afterInteractive"
+            />
+            <Script id="ga-init" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-PRENL31DQR');
+              `}
+            </Script>
+          </>
+        )}
 
         {/* Skip Navigation Link - Accessible but visually hidden until focused */}
         <a

@@ -1,6 +1,10 @@
 import posthog from 'posthog-js'
 
-if (typeof window !== 'undefined') {
+const analyticsEnabled =
+  process.env.NEXT_PUBLIC_ENABLE_ANALYTICS === 'true' ||
+  process.env.NODE_ENV === 'production'
+
+if (typeof window !== 'undefined' && analyticsEnabled) {
   const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY
   if (posthogKey) {
     posthog.init(posthogKey, {
