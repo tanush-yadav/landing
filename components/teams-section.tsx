@@ -19,7 +19,7 @@ import {
   GitBranch,
   Zap,
 } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { cn, incrementDelegationClickCount, redirectToCalIfThresholdMet } from '@/lib/utils'
 
 // AI Team Member Data with Avatar Images
 const teamMembers = [
@@ -527,7 +527,13 @@ const TeamMemberCard = ({
 
           {/* Action Button */}
           <motion.button
-            onClick={() => onDelegate(member.id)}
+            onClick={() => {
+              const newCount = incrementDelegationClickCount()
+              if (redirectToCalIfThresholdMet(newCount)) {
+                return
+              }
+              onDelegate(member.id)
+            }}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             disabled={isAutoDelegating}
