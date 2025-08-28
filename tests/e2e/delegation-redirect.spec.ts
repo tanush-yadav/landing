@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test'
 
 test.describe('Delegation click tracking and redirect', () => {
-  test('third delegate click redirects to Cal.com', async ({ page }) => {
+  test('second delegate click redirects to Cal.com', async ({ page }) => {
     await page.goto('/')
 
     await page.addInitScript(() => {
-      window.localStorage.setItem('delegationClickCount', '2')
+      window.localStorage.setItem('delegationClickCount', '1')
     })
 
     await page.reload()

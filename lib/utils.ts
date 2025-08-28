@@ -32,7 +32,7 @@ export function resetDelegationClickCount(): void {
 // Returns true if redirected (caller should early-return)
 export function redirectToCalIfThresholdMet(newCount: number): boolean {
   if (typeof window === 'undefined') return false
-  if (newCount === 3) {
+  if (newCount === 2) {
     window.location.href = CAL_COM_URL
     return true
   }
