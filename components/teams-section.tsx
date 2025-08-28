@@ -257,7 +257,7 @@ const AgentAvatar = ({
               style={{
                 objectPosition: '50% 1%',
               }}
-              onLoadingComplete={() => setImageLoaded(true)}
+              onLoad={() => setImageLoaded(true)}
               onError={() => setImageError(true)}
             />
 

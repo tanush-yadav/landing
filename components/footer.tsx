@@ -84,25 +84,23 @@ export function Footer() {
                     <Sparkles className="w-6 h-6" />
                   </div>
                 </div>
-                <span className="text-2xl font-bold text-gray-900">
-                  Volition
-                </span>
+                <span className="text-2xl font-bold text-gray-900">Cintra</span>
               </Link>
 
               {/* Tagline */}
               <p className="text-gray-600 mt-4 leading-relaxed">
-                Building the future of work with AI agents that understand your
-                business and amplify your team&apos;s potential.
+                AI employees that join your team and get work done with agentic
+                workflows.
               </p>
 
               {/* Contact Info */}
               <div className="space-y-3 text-sm">
                 <a
-                  href="mailto:hello@volition.ai"
+                  href="mailto:hello@cintra.run"
                   className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors"
                 >
                   <Mail className="w-4 h-4" />
-                  hello@volition.ai
+                  hello@cintra.run
                 </a>
                 <a
                   href="tel:+1234567890"
@@ -255,8 +253,7 @@ export function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             {/* Copyright */}
             <div className="text-sm text-gray-600">
-              © {new Date().getFullYear()} Volition Labs Inc. All rights
-              reserved.
+              © {new Date().getFullYear()} Cintra. All rights reserved.
             </div>
 
             {/* Legal Links */}

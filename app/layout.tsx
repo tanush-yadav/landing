@@ -25,10 +25,29 @@ const fraunces = Fraunces({
 })
 
 export const metadata: Metadata = {
-  title: 'Codegen - Ticket to PR in minutes',
+  metadataBase: new URL('https://cintra.run'),
+  title: 'Cintra – AI Employees That Join Your Team',
   description:
-    'Ship faster with full codebase context. Transform tickets into pull requests with AI-powered code generation.',
-  keywords: 'code generation, AI, development tools, pull requests, automation',
+    'Cintra builds agentic workflows that actually ship work across engineering, content, sales, and operations.',
+  keywords:
+    'Cintra, agentic workflows, AI agents, automation, engineering automation, sales automation, content automation, operations automation',
+  alternates: {
+    canonical: 'https://cintra.run',
+  },
+  openGraph: {
+    title: 'Cintra – AI Employees That Join Your Team',
+    description:
+      'Agentic workflows that execute and deliver. Bring AI employees into your team.',
+    url: 'https://cintra.run',
+    siteName: 'Cintra',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Cintra – AI Employees That Join Your Team',
+    description:
+      'Agentic workflows that execute and deliver. Bring AI employees into your team.',
+  },
 }
 
 export default function RootLayout({

@@ -1,35 +1,35 @@
 /**
  * Pattern Showcase Component
- * 
+ *
  * This file demonstrates the standardized patterns for building components
- * in the Volition Labs codebase. Use these as reference when creating new components.
+ * in the Cintra codebase. Use these as reference when creating new components.
  */
 
-import React, { useState, useCallback, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  cn, 
-  animations, 
-  glassMorphism, 
+import React, { useState, useCallback, useMemo } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import {
+  cn,
+  animations,
+  glassMorphism,
   gradients,
   typography,
   layouts,
   buttonStyles,
   type Size,
-  type Variant 
-} from '@/lib/design-system';
-import { Button, Card, Input } from '@/components/ui';
-import type { BaseComponentProps, DemoState, Task } from '@/lib/types';
+  type Variant,
+} from '@/lib/design-system'
+import { Button, Card, Input } from '@/components/ui'
+import type { BaseComponentProps, DemoState, Task } from '@/lib/types'
 
 // ==============================================================================
 // PATTERN 1: Basic Component Structure
 // ==============================================================================
 
 interface ExampleComponentProps extends BaseComponentProps {
-  title: string;
-  variant?: Variant;
-  size?: Size;
-  onAction?: () => void;
+  title: string
+  variant?: Variant
+  size?: Size
+  onAction?: () => void
 }
 
 export const ExampleComponent: React.FC<ExampleComponentProps> = ({
@@ -42,19 +42,19 @@ export const ExampleComponent: React.FC<ExampleComponentProps> = ({
   ...props
 }) => {
   // State management
-  const [isActive, setIsActive] = useState(false);
-  
+  const [isActive, setIsActive] = useState(false)
+
   // Memoized values
   const computedValue = useMemo(() => {
-    return `${title}-${variant}-${size}`;
-  }, [title, variant, size]);
-  
+    return `${title}-${variant}-${size}`
+  }, [title, variant, size])
+
   // Callbacks
   const handleClick = useCallback(() => {
-    setIsActive(prev => !prev);
-    onAction?.();
-  }, [onAction]);
-  
+    setIsActive((prev) => !prev)
+    onAction?.()
+  }, [onAction])
+
   return (
     <motion.div
       className={cn(
@@ -72,67 +72,76 @@ export const ExampleComponent: React.FC<ExampleComponentProps> = ({
       <p className={typography.body}>{computedValue}</p>
       {children}
     </motion.div>
-  );
-};
+  )
+}
 
 // ==============================================================================
 // PATTERN 2: Compound Component Pattern
 // ==============================================================================
 
 interface CompoundComponentProps extends BaseComponentProps {
-  title?: string;
+  title?: string
 }
 
 interface CompoundComponent extends React.FC<CompoundComponentProps> {
-  Header: typeof CompoundHeader;
-  Body: typeof CompoundBody;
-  Footer: typeof CompoundFooter;
+  Header: typeof CompoundHeader
+  Body: typeof CompoundBody
+  Footer: typeof CompoundFooter
 }
 
-const CompoundHeader: React.FC<BaseComponentProps> = ({ children, className }) => (
+const CompoundHeader: React.FC<BaseComponentProps> = ({
+  children,
+  className,
+}) => (
   <div className={cn('mb-4 pb-4 border-b border-neutral-200', className)}>
     {children}
   </div>
-);
+)
 
-const CompoundBody: React.FC<BaseComponentProps> = ({ children, className }) => (
-  <div className={cn('mb-4', className)}>
-    {children}
-  </div>
-);
+const CompoundBody: React.FC<BaseComponentProps> = ({
+  children,
+  className,
+}) => <div className={cn('mb-4', className)}>{children}</div>
 
-const CompoundFooter: React.FC<BaseComponentProps> = ({ children, className }) => (
+const CompoundFooter: React.FC<BaseComponentProps> = ({
+  children,
+  className,
+}) => (
   <div className={cn('mt-4 pt-4 border-t border-neutral-200', className)}>
     {children}
   </div>
-);
+)
 
-export const CompoundComponent: CompoundComponent = ({ title, children, className }) => {
+export const CompoundComponent: CompoundComponent = ({
+  title,
+  children,
+  className,
+}) => {
   return (
     <div className={cn('p-6 bg-white rounded-lg shadow-md', className)}>
       {title && <h2 className={typography.h2}>{title}</h2>}
       {children}
     </div>
-  );
-};
+  )
+}
 
-CompoundComponent.Header = CompoundHeader;
-CompoundComponent.Body = CompoundBody;
-CompoundComponent.Footer = CompoundFooter;
+CompoundComponent.Header = CompoundHeader
+CompoundComponent.Body = CompoundBody
+CompoundComponent.Footer = CompoundFooter
 
 // ==============================================================================
 // PATTERN 3: Animation Pattern
 // ==============================================================================
 
-export const AnimatedCard: React.FC<BaseComponentProps> = ({ children, className }) => {
-  const [isHovered, setIsHovered] = useState(false);
-  
+export const AnimatedCard: React.FC<BaseComponentProps> = ({
+  children,
+  className,
+}) => {
+  const [isHovered, setIsHovered] = useState(false)
+
   return (
     <motion.div
-      className={cn(
-        'relative overflow-hidden rounded-xl',
-        className
-      )}
+      className={cn('relative overflow-hidden rounded-xl', className)}
       style={glassMorphism.light}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
@@ -146,80 +155,86 @@ export const AnimatedCard: React.FC<BaseComponentProps> = ({ children, className
         animate={{ opacity: isHovered ? 0.1 : 0 }}
         transition={{ duration: 0.3 }}
       />
-      
-      <div className="relative z-10 p-6">
-        {children}
-      </div>
+
+      <div className="relative z-10 p-6">{children}</div>
     </motion.div>
-  );
-};
+  )
+}
 
 // ==============================================================================
 // PATTERN 4: Form Pattern with Validation
 // ==============================================================================
 
 interface FormExampleProps extends BaseComponentProps {
-  onSubmit?: (data: FormData) => void;
+  onSubmit?: (data: FormData) => void
 }
 
 interface FormData {
-  email: string;
-  message: string;
+  email: string
+  message: string
 }
 
-export const FormExample: React.FC<FormExampleProps> = ({ onSubmit, className }) => {
+export const FormExample: React.FC<FormExampleProps> = ({
+  onSubmit,
+  className,
+}) => {
   const [formData, setFormData] = useState<FormData>({
     email: '',
-    message: ''
-  });
-  
-  const [errors, setErrors] = useState<Partial<FormData>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  
+    message: '',
+  })
+
+  const [errors, setErrors] = useState<Partial<FormData>>({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
   const validateForm = useCallback((): boolean => {
-    const newErrors: Partial<FormData> = {};
-    
+    const newErrors: Partial<FormData> = {}
+
     if (!formData.email) {
-      newErrors.email = 'Email is required';
+      newErrors.email = 'Email is required'
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Invalid email format';
+      newErrors.email = 'Invalid email format'
     }
-    
+
     if (!formData.message) {
-      newErrors.message = 'Message is required';
+      newErrors.message = 'Message is required'
     }
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  }, [formData]);
-  
-  const handleSubmit = useCallback(async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!validateForm()) return;
-    
-    setIsSubmitting(true);
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      onSubmit?.(formData);
-      setFormData({ email: '', message: '' });
-    } finally {
-      setIsSubmitting(false);
-    }
-  }, [formData, validateForm, onSubmit]);
-  
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }, [formData])
+
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault()
+
+      if (!validateForm()) return
+
+      setIsSubmitting(true)
+      try {
+        // Simulate API call
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+        onSubmit?.(formData)
+        setFormData({ email: '', message: '' })
+      } finally {
+        setIsSubmitting(false)
+      }
+    },
+    [formData, validateForm, onSubmit]
+  )
+
   return (
     <form onSubmit={handleSubmit} className={cn('space-y-4', className)}>
       <Input
         label="Email"
         type="email"
         value={formData.email}
-        onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+        onChange={(e) =>
+          setFormData((prev) => ({ ...prev, email: e.target.value }))
+        }
         error={errors.email}
         placeholder="your@email.com"
       />
-      
+
       <div>
         <label className="block text-sm font-medium text-neutral-700 mb-1.5">
           Message
@@ -233,14 +248,16 @@ export const FormExample: React.FC<FormExampleProps> = ({ onSubmit, className })
           )}
           rows={4}
           value={formData.message}
-          onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, message: e.target.value }))
+          }
           placeholder="Your message..."
         />
         {errors.message && (
           <p className="mt-1.5 text-sm text-red-600">{errors.message}</p>
         )}
       </div>
-      
+
       <Button
         type="submit"
         variant="primary"
@@ -251,29 +268,29 @@ export const FormExample: React.FC<FormExampleProps> = ({ onSubmit, className })
         Submit
       </Button>
     </form>
-  );
-};
+  )
+}
 
 // ==============================================================================
 // PATTERN 5: List with Animation Pattern
 // ==============================================================================
 
 interface ListItem {
-  id: string;
-  title: string;
-  description: string;
-  status: 'pending' | 'active' | 'completed';
+  id: string
+  title: string
+  description: string
+  status: 'pending' | 'active' | 'completed'
 }
 
 interface AnimatedListProps extends BaseComponentProps {
-  items: ListItem[];
-  onItemClick?: (item: ListItem) => void;
+  items: ListItem[]
+  onItemClick?: (item: ListItem) => void
 }
 
-export const AnimatedList: React.FC<AnimatedListProps> = ({ 
-  items, 
+export const AnimatedList: React.FC<AnimatedListProps> = ({
+  items,
   onItemClick,
-  className 
+  className,
 }) => {
   return (
     <div className={cn('space-y-2', className)}>
@@ -284,11 +301,11 @@ export const AnimatedList: React.FC<AnimatedListProps> = ({
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
-            transition={{ 
+            transition={{
               delay: index * 0.05,
               type: 'spring',
               stiffness: 200,
-              damping: 20
+              damping: 20,
             }}
             whileHover={{ x: 4 }}
             onClick={() => onItemClick?.(item)}
@@ -302,7 +319,9 @@ export const AnimatedList: React.FC<AnimatedListProps> = ({
             <div className="flex items-center justify-between">
               <div>
                 <h4 className="font-medium text-neutral-900">{item.title}</h4>
-                <p className="text-sm text-neutral-600 mt-1">{item.description}</p>
+                <p className="text-sm text-neutral-600 mt-1">
+                  {item.description}
+                </p>
               </div>
               <StatusIndicator status={item.status} />
             </div>
@@ -310,69 +329,73 @@ export const AnimatedList: React.FC<AnimatedListProps> = ({
         ))}
       </AnimatePresence>
     </div>
-  );
-};
+  )
+}
 
-const StatusIndicator: React.FC<{ status: ListItem['status'] }> = ({ status }) => {
+const StatusIndicator: React.FC<{ status: ListItem['status'] }> = ({
+  status,
+}) => {
   const statusConfig = {
     pending: { color: 'bg-gray-400', label: 'Pending', pulse: false },
     active: { color: 'bg-blue-500', label: 'Active', pulse: true },
-    completed: { color: 'bg-green-500', label: 'Completed', pulse: false }
-  };
-  
-  const config = statusConfig[status];
-  
+    completed: { color: 'bg-green-500', label: 'Completed', pulse: false },
+  }
+
+  const config = statusConfig[status]
+
   return (
     <div className="flex items-center gap-2">
       <div className="relative">
         <div className={cn('w-2 h-2 rounded-full', config.color)} />
         {config.pulse && (
-          <div className={cn(
-            'absolute inset-0 w-2 h-2 rounded-full animate-ping',
-            config.color,
-            'opacity-75'
-          )} />
+          <div
+            className={cn(
+              'absolute inset-0 w-2 h-2 rounded-full animate-ping',
+              config.color,
+              'opacity-75'
+            )}
+          />
         )}
       </div>
       <span className="text-xs text-neutral-600">{config.label}</span>
     </div>
-  );
-};
+  )
+}
 
 // ==============================================================================
 // PATTERN 6: Modal/Dialog Pattern
 // ==============================================================================
 
 interface ModalProps extends BaseComponentProps {
-  isOpen: boolean;
-  onClose: () => void;
-  title?: string;
+  isOpen: boolean
+  onClose: () => void
+  title?: string
 }
 
-export const Modal: React.FC<ModalProps> = ({ 
-  isOpen, 
-  onClose, 
+export const Modal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
   title,
   children,
-  className 
+  className,
 }) => {
   // Handle escape key
   React.useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'hidden';
+      if (e.key === 'Escape') onClose()
     }
-    
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape)
+      document.body.style.overflow = 'hidden'
+    }
+
     return () => {
-      document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen, onClose]);
-  
+      document.removeEventListener('keydown', handleEscape)
+      document.body.style.overflow = 'unset'
+    }
+  }, [isOpen, onClose])
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -385,7 +408,7 @@ export const Modal: React.FC<ModalProps> = ({
             onClick={onClose}
             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
           />
-          
+
           {/* Modal */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -401,12 +424,12 @@ export const Modal: React.FC<ModalProps> = ({
           >
             {title && (
               <div className="px-6 py-4 border-b border-neutral-200">
-                <h2 className="text-xl font-semibold text-neutral-900">{title}</h2>
+                <h2 className="text-xl font-semibold text-neutral-900">
+                  {title}
+                </h2>
               </div>
             )}
-            <div className="px-6 py-4">
-              {children}
-            </div>
+            <div className="px-6 py-4">{children}</div>
             <div className="px-6 py-4 border-t border-neutral-200 flex justify-end gap-3">
               <Button variant="ghost" size="sm" onClick={onClose}>
                 Cancel
@@ -419,14 +442,14 @@ export const Modal: React.FC<ModalProps> = ({
         </>
       )}
     </AnimatePresence>
-  );
-};
+  )
+}
 
 // Display names for debugging
-ExampleComponent.displayName = 'ExampleComponent';
-CompoundComponent.displayName = 'CompoundComponent';
-AnimatedCard.displayName = 'AnimatedCard';
-FormExample.displayName = 'FormExample';
-AnimatedList.displayName = 'AnimatedList';
-Modal.displayName = 'Modal';
-StatusIndicator.displayName = 'StatusIndicator';
+ExampleComponent.displayName = 'ExampleComponent'
+CompoundComponent.displayName = 'CompoundComponent'
+AnimatedCard.displayName = 'AnimatedCard'
+FormExample.displayName = 'FormExample'
+AnimatedList.displayName = 'AnimatedList'
+Modal.displayName = 'Modal'
+StatusIndicator.displayName = 'StatusIndicator'
