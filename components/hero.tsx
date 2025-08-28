@@ -1,17 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import Link from 'next/link'
-import {
-  ArrowRight,
-  Play,
-  Users,
-  FileText,
-  TrendingUp,
-  Settings,
-} from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+// import Link from 'next/link'
+import { ArrowRight, Users, FileText, TrendingUp, Settings } from 'lucide-react'
 import * as RadioGroup from '@radix-ui/react-radio-group'
-import { cn } from '@/lib/utils'
+import { cn, incrementDelegationClickCount, redirectToCalIfThresholdMet } from '@/lib/utils'
 import { motion, AnimatePresence } from 'framer-motion'
 
 // Team data with AI names and tasks
@@ -27,7 +20,11 @@ const teams = [
         label: 'Fix authentication bug in production',
         time: '3.5 mins',
       },
-      { id: 'payment-api-error', label: 'Add error handling to payment API', time: '3 mins' },
+      {
+        id: 'payment-api-error',
+        label: 'Add error handling to payment API',
+        time: '3 mins',
+      },
       {
         id: 'user-service-tests',
         label: 'Write unit tests for user service',
@@ -41,9 +38,21 @@ const teams = [
     icon: <FileText className="h-4 w-4" />,
     aiName: 'Sophia',
     tasks: [
-      { id: 'blog-post', label: 'Write blog post about Q4 product updates', time: '4 mins' },
-      { id: 'email-campaign', label: 'Create email campaign for new feature launch', time: '3 mins' },
-      { id: 'api-docs', label: 'Update help documentation for API changes', time: '3 mins' },
+      {
+        id: 'blog-post',
+        label: 'Write blog post about Q4 product updates',
+        time: '4 mins',
+      },
+      {
+        id: 'email-campaign',
+        label: 'Create email campaign for new feature launch',
+        time: '3 mins',
+      },
+      {
+        id: 'api-docs',
+        label: 'Update help documentation for API changes',
+        time: '3 mins',
+      },
     ],
   },
   {
@@ -52,7 +61,11 @@ const teams = [
     icon: <TrendingUp className="h-4 w-4" />,
     aiName: 'Jordan',
     tasks: [
-      { id: 'qualify-leads', label: 'Qualify leads from yesterday\'s webinar', time: '2.5 mins' },
+      {
+        id: 'qualify-leads',
+        label: "Qualify leads from yesterday's webinar",
+        time: '2.5 mins',
+      },
       {
         id: 'competitor-research',
         label: 'Research competitor pricing for Enterprise deals',
@@ -71,9 +84,21 @@ const teams = [
     icon: <Users className="h-4 w-4" />,
     aiName: 'Quinn',
     tasks: [
-      { id: 'aws-audit', label: 'Audit AWS costs and identify savings', time: '3 mins' },
-      { id: 'monitoring-setup', label: 'Set up monitoring alerts for the API', time: '3 mins' },
-      { id: 'deployment-docs', label: 'Document the deployment process', time: '3 mins' },
+      {
+        id: 'aws-audit',
+        label: 'Audit AWS costs and identify savings',
+        time: '3 mins',
+      },
+      {
+        id: 'monitoring-setup',
+        label: 'Set up monitoring alerts for the API',
+        time: '3 mins',
+      },
+      {
+        id: 'deployment-docs',
+        label: 'Document the deployment process',
+        time: '3 mins',
+      },
     ],
   },
 ]
@@ -86,7 +111,7 @@ interface HeroProps {
 const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
   const [isVisible, setIsVisible] = useState(false)
   const [selectedTeam, setSelectedTeam] = useState('engineering')
-  const [selectedTask, setSelectedTask] = useState('')
+  const [selectedTask, setSelectedTask] = useState('auth-bug-fix') // Auto-select first task
   const [isDelegating, setIsDelegating] = useState(false)
 
   useEffect(() => {
@@ -95,23 +120,36 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
 
   const currentTeam = teams.find((t) => t.id === selectedTeam) || teams[0]
   const currentTask = currentTeam.tasks.find((t) => t.id === selectedTask)
+  const delegatingTimerRef = useRef<number | null>(null)
 
   const handleDelegate = () => {
     if (selectedTask && !isDemoRunning) {
+      const newCount = incrementDelegationClickCount()
+      if (redirectToCalIfThresholdMet(newCount)) {
+        return
+      }
       setIsDelegating(true)
       // Trigger the demo animation and scroll with the selected task
       if (onDemoTrigger) {
         onDemoTrigger(selectedTask)
       }
       // Reset delegating state after animation
-      setTimeout(() => {
+      delegatingTimerRef.current = window.setTimeout(() => {
         setIsDelegating(false)
       }, 2000)
     }
   }
 
+  useEffect(() => {
+    return () => {
+      if (delegatingTimerRef.current) {
+        clearTimeout(delegatingTimerRef.current)
+      }
+    }
+  }, [])
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 py-16 sm:py-20">
       {/* Enhanced Gradient Mesh Background with Glass Effect */}
       <div className="absolute inset-0">
         {/* Primary gradient background */}
@@ -153,6 +191,8 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
               'inline-flex items-center justify-center mb-8 opacity-0',
               isVisible && 'animate-fade-in-down'
             )}
+            role="status"
+            aria-live="polite"
           >
             <span className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-md px-4 py-1.5 text-sm font-medium text-gray-700 border border-white/40 shadow-lg ring-1 ring-gray-200/10">
               <span className="relative flex h-2 w-2 mr-2">
@@ -166,7 +206,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
           {/* Main Headline */}
           <h1
             className={cn(
-              'text-5xl sm:text-6xl md:text-7xl font-display font-bold text-gray-900 mb-6 opacity-0',
+              'text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-display font-bold text-gray-900 mb-6 opacity-0 leading-tight',
               isVisible && 'animate-fade-in-up'
             )}
             style={{ letterSpacing: '-0.02em' }}
@@ -180,7 +220,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
           {/* Subheadline */}
           <p
             className={cn(
-              'text-lg sm:text-xl text-gray-600 mb-10 max-w-2xl mx-auto opacity-0',
+              'text-base sm:text-lg md:text-xl text-gray-600 mb-8 sm:mb-10 max-w-2xl mx-auto opacity-0 px-4',
               isVisible && 'animate-fade-in-up animation-delay-200'
             )}
           >
@@ -194,24 +234,35 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
               isVisible && 'animate-fade-in-up animation-delay-400'
             )}
           >
-            {/* Team Tabs */}
-            <div className="flex flex-wrap justify-center gap-2 mb-6">
+            {/* Team Tabs - Enhanced for mobile touch targets */}
+            <div
+              className="flex flex-wrap justify-center gap-2 mb-6 px-2"
+              role="tablist"
+              aria-label="Teams"
+            >
               {teams.map((team) => (
                 <button
                   key={team.id}
                   onClick={() => {
                     setSelectedTeam(team.id)
-                    setSelectedTask('')
+                    setSelectedTask(team.tasks?.[0]?.id ?? '')
                   }}
+                  aria-label={`Select ${team.name} team`}
+                  role="tab"
+                  aria-selected={selectedTeam === team.id}
+                  aria-controls={`panel-${team.id}`}
+                  id={`tab-${team.id}`}
+                  tabIndex={selectedTeam === team.id ? 0 : -1}
                   className={cn(
-                    'inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
+                    'inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-3 sm:py-2 min-w-[80px] rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap',
+                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-600',
                     selectedTeam === team.id
-                      ? 'bg-gray-900 text-white shadow-lg'
-                      : 'bg-white/40 backdrop-blur-sm text-gray-700 border border-white/50 hover:bg-white/60 shadow-md ring-1 ring-gray-200/10'
+                      ? 'bg-gradient-to-r from-gray-800 to-gray-900 text-white shadow-lg transform scale-105'
+                      : 'bg-white/60 backdrop-blur-sm text-gray-700 border border-gray-600 hover:bg-white/80 hover:border-gray-700 shadow-md ring-1 ring-gray-200/10'
                   )}
                 >
                   {team.icon}
-                  {team.name}
+                  <span>{team.name}</span>
                 </button>
               ))}
             </div>
@@ -225,15 +276,24 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
                 className="bg-white/70 backdrop-blur-md rounded-2xl p-6 border border-white/30 shadow-xl ring-1 ring-gray-200/20"
+                role="tabpanel"
+                id={`panel-${selectedTeam}`}
+                aria-labelledby={`tab-${selectedTeam}`}
               >
-                <h3 className="text-gray-900 text-lg font-heading font-semibold mb-4">
+                <h3
+                  id={`task-heading-${currentTeam.id}`}
+                  className="text-gray-900 text-lg font-heading font-semibold mb-4"
+                >
                   Select a task for {currentTeam.aiName} to complete:
                 </h3>
 
                 <RadioGroup.Root
                   value={selectedTask}
-                  onValueChange={(value) => !isDemoRunning && setSelectedTask(value)}
+                  onValueChange={(value) =>
+                    !isDemoRunning && setSelectedTask(value)
+                  }
                   className="space-y-3"
+                  aria-labelledby={`task-heading-${currentTeam.id}`}
                 >
                   {currentTeam.tasks.map((task) => (
                     <label
@@ -243,7 +303,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                         isDemoRunning && 'cursor-not-allowed opacity-60',
                         !isDemoRunning && 'cursor-pointer',
                         selectedTask === task.id
-                          ? 'bg-gray-100 border border-gray-300'
+                          ? 'bg-gray-100 border border-gray-600'
                           : 'bg-gray-50 border border-gray-200 hover:bg-gray-100'
                       )}
                     >
@@ -252,11 +312,11 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                           value={task.id}
                           disabled={isDemoRunning}
                           className={cn(
-                            "w-5 h-5 rounded-full border-2 bg-white flex items-center justify-center",
-                            "data-[state=checked]:border-gray-900 data-[state=checked]:bg-gray-900",
-                            isDemoRunning 
-                              ? "cursor-not-allowed opacity-50"
-                              : "border-gray-300"
+                            'w-5 h-5 rounded-full border-2 bg-white flex items-center justify-center',
+                            'data-[state=checked]:border-gray-900 data-[state=checked]:bg-gray-900',
+                            isDemoRunning
+                              ? 'cursor-not-allowed opacity-50'
+                              : 'border-gray-600'
                           )}
                         >
                           <RadioGroup.Indicator className="w-2 h-2 rounded-full bg-white" />
@@ -270,15 +330,18 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                   ))}
                 </RadioGroup.Root>
 
-                {/* Delegate Button */}
+                {/* Delegate Button - Enhanced with gradient background */}
                 <button
                   onClick={handleDelegate}
                   disabled={!selectedTask || isDelegating || isDemoRunning}
+                  aria-label={`Delegate task to ${currentTeam.aiName}`}
+                  aria-busy={isDelegating}
                   className={cn(
-                    'w-full mt-6 py-3 px-6 rounded-full font-semibold text-base transition-all duration-200',
+                    'w-full mt-6 py-4 px-6 rounded-full font-semibold text-base transition-all duration-200 transform',
+                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-600',
                     selectedTask && !isDelegating && !isDemoRunning
-                      ? 'bg-gray-900 text-white hover:bg-gray-800 hover:scale-[1.02] shadow-lg'
-                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 hover:scale-[1.02] shadow-lg hover:shadow-xl'
+                      : 'bg-gray-200 text-gray-400 cursor-not-allowed opacity-60'
                   )}
                 >
                   {isDemoRunning ? (

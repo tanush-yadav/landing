@@ -74,34 +74,42 @@ const Navigation = memo(() => {
       <header
         className={cn(
           'fixed top-0 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ease-out',
-          isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
+          isVisible
+            ? 'translate-y-0 opacity-100'
+            : '-translate-y-full opacity-0'
         )}
       >
-        <nav className={cn(
-          'transition-all duration-500 ease-out',
-          // Enhanced glassy card styling that changes on scroll
-          isScrolled 
-            ? 'mt-4 mx-4 rounded-2xl bg-white/90 backdrop-blur-xl border border-white/60 shadow-2xl shadow-black/10 ring-1 ring-gray-200/20' 
-            : 'mt-6 mx-4 rounded-2xl bg-white/20 backdrop-blur-xl border border-white/40 shadow-xl shadow-black/5 ring-1 ring-white/20',
-          // Responsive width
-          'w-[calc(100vw-2rem)] max-w-5xl'
-        )}>
-          <div className={cn(
-            'flex items-center justify-between transition-all duration-300',
-            // Adaptive padding based on scroll state
-            isScrolled ? 'h-14 px-6' : 'h-16 px-6'
-          )}>
+        <nav
+          className={cn(
+            'transition-all duration-500 ease-out',
+            // Enhanced glassy card styling that changes on scroll
+            isScrolled
+              ? 'mt-4 mx-4 rounded-2xl bg-white/90 backdrop-blur-xl border border-white/60 shadow-2xl shadow-black/10 ring-1 ring-gray-200/20'
+              : 'mt-6 mx-4 rounded-2xl bg-white/20 backdrop-blur-xl border border-white/40 shadow-xl shadow-black/5 ring-1 ring-white/20',
+            // Responsive width
+            'w-[calc(100vw-2rem)] max-w-5xl'
+          )}
+        >
+          <div
+            className={cn(
+              'flex items-center justify-between transition-all duration-300',
+              // Adaptive padding based on scroll state
+              isScrolled ? 'h-14 px-6' : 'h-16 px-6'
+            )}
+          >
             {/* Logo */}
             <div className="flex items-center">
               <Link
                 href="/"
                 className={cn(
                   'text-xl font-bold transition-all duration-300 hover:scale-105',
-                  isScrolled ? 'text-gray-900' : 'text-gray-900 drop-shadow-sm font-semibold'
+                  isScrolled
+                    ? 'text-gray-900'
+                    : 'text-gray-900 drop-shadow-sm font-semibold'
                 )}
-                aria-label="Volition Home"
+                aria-label="Cintra Home"
               >
-                Volition
+                Cintra
               </Link>
             </div>
 
@@ -115,8 +123,8 @@ const Navigation = memo(() => {
                     href={item.href}
                     className={cn(
                       'text-sm font-medium transition-all duration-300 px-3 py-2 rounded-lg hover:scale-105',
-                      isScrolled 
-                        ? 'text-gray-700 hover:text-gray-900 hover:bg-gray-100/60' 
+                      isScrolled
+                        ? 'text-gray-700 hover:text-gray-900 hover:bg-gray-100/60'
                         : 'text-gray-700 hover:text-gray-900 hover:bg-white/20 drop-shadow-sm font-medium'
                     )}
                   >
@@ -126,10 +134,12 @@ const Navigation = memo(() => {
               </div>
 
               {/* Glassy Divider */}
-              <div className={cn(
-                'mx-4 h-5 w-px transition-colors duration-300',
-                isScrolled ? 'bg-gray-300/60' : 'bg-gray-400/40'
-              )} />
+              <div
+                className={cn(
+                  'mx-4 h-5 w-px transition-colors duration-300',
+                  isScrolled ? 'bg-gray-300/60' : 'bg-gray-400/40'
+                )}
+              />
 
               {/* Secondary Nav */}
               <div className="flex items-center space-x-1 mr-4">
@@ -139,8 +149,8 @@ const Navigation = memo(() => {
                     href={item.href}
                     className={cn(
                       'text-sm font-medium transition-all duration-300 px-3 py-2 rounded-lg hover:scale-105',
-                      isScrolled 
-                        ? 'text-gray-700 hover:text-gray-900 hover:bg-gray-100/60' 
+                      isScrolled
+                        ? 'text-gray-700 hover:text-gray-900 hover:bg-gray-100/60'
                         : 'text-gray-700 hover:text-gray-900 hover:bg-white/20 drop-shadow-sm font-medium'
                     )}
                   >
@@ -148,7 +158,7 @@ const Navigation = memo(() => {
                   </Link>
                 ))}
               </div>
-                
+
               {/* Login Button with Glassy Effect */}
               <Link
                 href="/login"
@@ -193,7 +203,9 @@ const Navigation = memo(() => {
       <div
         className={cn(
           'fixed inset-0 z-40 md:hidden transition-all duration-300',
-          isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          isMobileMenuOpen
+            ? 'opacity-100 pointer-events-auto'
+            : 'opacity-0 pointer-events-none'
         )}
       >
         {/* Enhanced Backdrop with stronger blur */}
@@ -209,7 +221,9 @@ const Navigation = memo(() => {
             'absolute right-4 top-4 bottom-4 w-full max-w-sm transition-all duration-300',
             'bg-white/90 backdrop-blur-xl border border-gray-200/50 shadow-2xl shadow-black/10',
             'rounded-2xl overflow-hidden',
-            isMobileMenuOpen ? 'translate-x-0 scale-100' : 'translate-x-full scale-95'
+            isMobileMenuOpen
+              ? 'translate-x-0 scale-100'
+              : 'translate-x-full scale-95'
           )}
         >
           {/* Header with glassy effect */}
@@ -219,7 +233,7 @@ const Navigation = memo(() => {
               className="text-xl font-bold text-gray-900 hover:scale-105 transition-transform duration-200"
               onClick={closeMobileMenu}
             >
-              Volition
+              Cintra
             </Link>
             <button
               onClick={closeMobileMenu}

@@ -1,17 +1,37 @@
 'use client'
 
 import { useState } from 'react'
+import dynamic from 'next/dynamic'
 import Navigation from '@/components/navigation'
 import Hero from '@/components/hero'
-import InteractiveDemoWrapper from '@/components/interactive-demo-wrapper'
-import TeamsSection from '@/components/teams-section'
 import { CTASection } from '@/components/cta-section'
+
+// Lazy load heavy components
+const InteractiveDemoWrapper = dynamic(
+  () => import('@/components/interactive-demo-wrapper'),
+  {
+    loading: () => (
+      <div className="min-h-[600px] flex items-center justify-center">
+        <div className="animate-pulse text-gray-500">Loading demo...</div>
+      </div>
+    ),
+    ssr: false,
+  }
+)
+
+const TeamsSection = dynamic(() => import('@/components/teams-section'), {
+  loading: () => (
+    <div className="min-h-[400px] flex items-center justify-center">
+      <div className="animate-pulse text-gray-500">Loading team...</div>
+    </div>
+  ),
+})
 
 export default function Home() {
   const [demoTrigger, setDemoTrigger] = useState(false)
   const [selectedTask, setSelectedTask] = useState('')
   const [isDemoRunning, setIsDemoRunning] = useState(false)
-  const [teamsDelegation, setTeamsDelegation] = useState<{ task: string; memberId: string } | null>(null)
+  // removed unused teamsDelegation state
 
   // Map hero task IDs to demo workflow IDs
   const taskMapping: Record<string, string> = {
@@ -38,19 +58,19 @@ export default function Home() {
     if (isDemoRunning) {
       return
     }
-    
+
     // Map the hero task to a demo task
     const demoTaskId =
       heroTaskId && taskMapping[heroTaskId]
         ? taskMapping[heroTaskId]
         : 'fix-auth-bug'
-    
+
     // Force a reset by changing task to empty then back
     // This ensures the demo component fully resets
     setSelectedTask('')
     setDemoTrigger(false)
     setIsDemoRunning(true)
-    
+
     // Then set the new task and trigger after a brief delay
     setTimeout(() => {
       setSelectedTask(demoTaskId)
@@ -62,10 +82,10 @@ export default function Home() {
     setIsDemoRunning(false)
     // Ensure trigger is reset when demo completes
     setDemoTrigger(false)
-    setTeamsDelegation(null)
+    // no-op
   }
 
-  const handleTeamsDelegation = (task: string, memberId: string) => {
+  const handleTeamsDelegation = (task: string, _memberId: string) => {
     // Map team member tasks to demo workflows
     const teamTaskMapping: Record<string, string> = {
       'Fix authentication bug in login flow': 'fix-auth-bug',
@@ -75,14 +95,14 @@ export default function Home() {
       'Qualify and follow up with new leads': 'qualify-leads',
       "Organize tomorrow's stakeholder meeting": 'crm-updates',
     }
-    
+
     const demoTaskId = teamTaskMapping[task] || 'fix-auth-bug'
-    
-    setTeamsDelegation({ task, memberId })
+
+    // no-op
     setSelectedTask('')
     setDemoTrigger(false)
     setIsDemoRunning(true)
-    
+
     // Trigger demo after a brief delay
     setTimeout(() => {
       setSelectedTask(demoTaskId)
@@ -90,9 +110,8 @@ export default function Home() {
     }, 100)
   }
 
-
   return (
-    <main className="min-h-screen">
+    <main id="main" className="min-h-screen">
       <Navigation />
       <Hero onDemoTrigger={handleDemoTrigger} isDemoRunning={isDemoRunning} />
 
@@ -105,7 +124,7 @@ export default function Home() {
       />
 
       {/* AI Teams Section */}
-      <TeamsSection 
+      <TeamsSection
         onDelegation={handleTeamsDelegation}
         isDemoRunning={isDemoRunning}
       />

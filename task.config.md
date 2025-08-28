@@ -1,4 +1,4 @@
-# Task Configuration - Volition AI Employees Demo Workflows
+# Task Configuration - Cintra AI Employees Demo Workflows
 
 ## Engineering Tasks (Zoe - AI Engineer)
 
@@ -343,7 +343,7 @@
      - Feature availability
      - Support levels
      - Integration options
-   - Messages: "Volition offers 40% more value at Enterprise tier"
+   - Messages: "Cintra offers 40% more value at Enterprise tier"
 
 3. **Battle Card Creation** (80-120s)
 

@@ -1521,13 +1521,13 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
           {
             type: 'notify',
             target: 'slack',
-            content: 'Volition offers 40% more value at Enterprise tier',
+            content: 'Cintra offers 40% more value at Enterprise tier',
             delay: 2500,
           },
         ],
         slackMessage: {
           author: 'Jordan',
-          content: 'Volition offers 40% more value at Enterprise tier',
+          content: 'Cintra offers 40% more value at Enterprise tier',
           attachments: {
             type: 'list',
             content: [
