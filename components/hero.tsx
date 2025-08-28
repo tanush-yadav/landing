@@ -2,13 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 // import Link from 'next/link'
-import {
-  ArrowRight,
-  Users,
-  FileText,
-  TrendingUp,
-  Settings,
-} from 'lucide-react'
+import { ArrowRight, Users, FileText, TrendingUp, Settings } from 'lucide-react'
 import * as RadioGroup from '@radix-ui/react-radio-group'
 import { cn } from '@/lib/utils'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -26,7 +20,11 @@ const teams = [
         label: 'Fix authentication bug in production',
         time: '3.5 mins',
       },
-      { id: 'payment-api-error', label: 'Add error handling to payment API', time: '3 mins' },
+      {
+        id: 'payment-api-error',
+        label: 'Add error handling to payment API',
+        time: '3 mins',
+      },
       {
         id: 'user-service-tests',
         label: 'Write unit tests for user service',
@@ -40,9 +38,21 @@ const teams = [
     icon: <FileText className="h-4 w-4" />,
     aiName: 'Sophia',
     tasks: [
-      { id: 'blog-post', label: 'Write blog post about Q4 product updates', time: '4 mins' },
-      { id: 'email-campaign', label: 'Create email campaign for new feature launch', time: '3 mins' },
-      { id: 'api-docs', label: 'Update help documentation for API changes', time: '3 mins' },
+      {
+        id: 'blog-post',
+        label: 'Write blog post about Q4 product updates',
+        time: '4 mins',
+      },
+      {
+        id: 'email-campaign',
+        label: 'Create email campaign for new feature launch',
+        time: '3 mins',
+      },
+      {
+        id: 'api-docs',
+        label: 'Update help documentation for API changes',
+        time: '3 mins',
+      },
     ],
   },
   {
@@ -51,7 +61,11 @@ const teams = [
     icon: <TrendingUp className="h-4 w-4" />,
     aiName: 'Jordan',
     tasks: [
-      { id: 'qualify-leads', label: 'Qualify leads from yesterday\'s webinar', time: '2.5 mins' },
+      {
+        id: 'qualify-leads',
+        label: "Qualify leads from yesterday's webinar",
+        time: '2.5 mins',
+      },
       {
         id: 'competitor-research',
         label: 'Research competitor pricing for Enterprise deals',
@@ -70,9 +84,21 @@ const teams = [
     icon: <Users className="h-4 w-4" />,
     aiName: 'Quinn',
     tasks: [
-      { id: 'aws-audit', label: 'Audit AWS costs and identify savings', time: '3 mins' },
-      { id: 'monitoring-setup', label: 'Set up monitoring alerts for the API', time: '3 mins' },
-      { id: 'deployment-docs', label: 'Document the deployment process', time: '3 mins' },
+      {
+        id: 'aws-audit',
+        label: 'Audit AWS costs and identify savings',
+        time: '3 mins',
+      },
+      {
+        id: 'monitoring-setup',
+        label: 'Set up monitoring alerts for the API',
+        time: '3 mins',
+      },
+      {
+        id: 'deployment-docs',
+        label: 'Document the deployment process',
+        time: '3 mins',
+      },
     ],
   },
 ]
@@ -205,7 +231,11 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
             )}
           >
             {/* Team Tabs - Enhanced for mobile touch targets */}
-            <div className="flex flex-wrap justify-center gap-2 mb-6 px-2" role="tablist" aria-label="Teams">
+            <div
+              className="flex flex-wrap justify-center gap-2 mb-6 px-2"
+              role="tablist"
+              aria-label="Teams"
+            >
               {teams.map((team) => (
                 <button
                   key={team.id}
@@ -216,7 +246,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                   aria-label={`Select ${team.name} team`}
                   role="tab"
                   aria-selected={selectedTeam === team.id}
-                  aria-controls={`panel-${team.id}`} 
+                  aria-controls={`panel-${team.id}`}
                   id={`tab-${team.id}`}
                   tabIndex={selectedTeam === team.id ? 0 : -1}
                   className={cn(
@@ -246,13 +276,18 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                 id={`panel-${selectedTeam}`}
                 aria-labelledby={`tab-${selectedTeam}`}
               >
-                <h3 id={`task-heading-${currentTeam.id}`} className="text-gray-900 text-lg font-heading font-semibold mb-4">
+                <h3
+                  id={`task-heading-${currentTeam.id}`}
+                  className="text-gray-900 text-lg font-heading font-semibold mb-4"
+                >
                   Select a task for {currentTeam.aiName} to complete:
                 </h3>
 
                 <RadioGroup.Root
                   value={selectedTask}
-                  onValueChange={(value) => !isDemoRunning && setSelectedTask(value)}
+                  onValueChange={(value) =>
+                    !isDemoRunning && setSelectedTask(value)
+                  }
                   className="space-y-3"
                   aria-labelledby={`task-heading-${currentTeam.id}`}
                 >
@@ -273,11 +308,11 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                           value={task.id}
                           disabled={isDemoRunning}
                           className={cn(
-                            "w-5 h-5 rounded-full border-2 bg-white flex items-center justify-center",
-                            "data-[state=checked]:border-gray-900 data-[state=checked]:bg-gray-900",
-                            isDemoRunning 
-                              ? "cursor-not-allowed opacity-50"
-                              : "border-gray-600"
+                            'w-5 h-5 rounded-full border-2 bg-white flex items-center justify-center',
+                            'data-[state=checked]:border-gray-900 data-[state=checked]:bg-gray-900',
+                            isDemoRunning
+                              ? 'cursor-not-allowed opacity-50'
+                              : 'border-gray-600'
                           )}
                         >
                           <RadioGroup.Indicator className="w-2 h-2 rounded-full bg-white" />

@@ -2,15 +2,15 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { 
-  Github, 
-  Twitter, 
-  Linkedin, 
-  Mail, 
-  MapPin, 
+import {
+  Github,
+  Twitter,
+  Linkedin,
+  Mail,
+  MapPin,
   Phone,
   ArrowUpRight,
-  Sparkles
+  Sparkles,
 } from 'lucide-react'
 
 const navigation = {
@@ -55,14 +55,17 @@ export function Footer() {
     <footer className="relative bg-gradient-to-b from-gray-50 to-white border-t border-gray-200">
       {/* Background pattern */}
       <div className="absolute inset-0 opacity-[0.03]">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.5'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-        }} />
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.5'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }}
+        />
       </div>
-      
+
       {/* Gradient accent */}
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
-      
+
       <div className="relative container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-6 gap-8 lg:gap-12">
           {/* Brand Column */}
@@ -81,34 +84,43 @@ export function Footer() {
                     <Sparkles className="w-6 h-6" />
                   </div>
                 </div>
-                <span className="text-2xl font-bold text-gray-900">Volition</span>
+                <span className="text-2xl font-bold text-gray-900">
+                  Volition
+                </span>
               </Link>
-              
+
               {/* Tagline */}
               <p className="text-gray-600 mt-4 leading-relaxed">
-                Building the future of work with AI agents that understand your business 
-                and amplify your team&apos;s potential.
+                Building the future of work with AI agents that understand your
+                business and amplify your team&apos;s potential.
               </p>
-              
+
               {/* Contact Info */}
               <div className="space-y-3 text-sm">
-                <a href="mailto:hello@volition.ai" className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors">
+                <a
+                  href="mailto:hello@volition.ai"
+                  className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors"
+                >
                   <Mail className="w-4 h-4" />
                   hello@volition.ai
                 </a>
-                <a href="tel:+1234567890" className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors">
+                <a
+                  href="tel:+1234567890"
+                  className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors"
+                >
                   <Phone className="w-4 h-4" />
                   +1 (234) 567-890
                 </a>
                 <div className="flex items-start gap-2 text-gray-600">
                   <MapPin className="w-4 h-4 mt-0.5" />
                   <span>
-                    123 Innovation Drive<br />
+                    123 Innovation Drive
+                    <br />
                     San Francisco, CA 94105
                   </span>
                 </div>
               </div>
-              
+
               {/* Social Links */}
               <div className="flex gap-4 pt-4">
                 {socialLinks.map((social) => (
@@ -128,7 +140,7 @@ export function Footer() {
               </div>
             </motion.div>
           </div>
-          
+
           {/* Navigation Columns */}
           <div className="lg:col-span-4 grid grid-cols-2 md:grid-cols-4 gap-8">
             {/* Product */}
@@ -142,7 +154,7 @@ export function Footer() {
               <ul className="space-y-3">
                 {navigation.product.map((item) => (
                   <li key={item.name}>
-                    <Link 
+                    <Link
                       href={item.href}
                       className="text-gray-600 hover:text-blue-600 text-sm transition-colors inline-flex items-center gap-1 group"
                     >
@@ -153,7 +165,7 @@ export function Footer() {
                 ))}
               </ul>
             </motion.div>
-            
+
             {/* Solutions */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -165,7 +177,7 @@ export function Footer() {
               <ul className="space-y-3">
                 {navigation.solutions.map((item) => (
                   <li key={item.name}>
-                    <Link 
+                    <Link
                       href={item.href}
                       className="text-gray-600 hover:text-blue-600 text-sm transition-colors inline-flex items-center gap-1 group"
                     >
@@ -176,7 +188,7 @@ export function Footer() {
                 ))}
               </ul>
             </motion.div>
-            
+
             {/* Resources */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -188,7 +200,7 @@ export function Footer() {
               <ul className="space-y-3">
                 {navigation.resources.map((item) => (
                   <li key={item.name}>
-                    <Link 
+                    <Link
                       href={item.href}
                       className="text-gray-600 hover:text-blue-600 text-sm transition-colors inline-flex items-center gap-1 group"
                     >
@@ -199,7 +211,7 @@ export function Footer() {
                 ))}
               </ul>
             </motion.div>
-            
+
             {/* Company */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -211,7 +223,7 @@ export function Footer() {
               <ul className="space-y-3">
                 {navigation.company.map((item) => (
                   <li key={item.name}>
-                    <Link 
+                    <Link
                       href={item.href}
                       className="text-gray-600 hover:text-blue-600 text-sm transition-colors inline-flex items-center gap-2 group"
                     >
@@ -231,7 +243,7 @@ export function Footer() {
             </motion.div>
           </div>
         </div>
-        
+
         {/* Bottom Bar */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -243,29 +255,45 @@ export function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             {/* Copyright */}
             <div className="text-sm text-gray-600">
-              © {new Date().getFullYear()} Volition Labs Inc. All rights reserved.
+              © {new Date().getFullYear()} Volition Labs Inc. All rights
+              reserved.
             </div>
-            
+
             {/* Legal Links */}
             <div className="flex flex-wrap gap-6 text-sm">
-              <Link href="#privacy" className="text-gray-600 hover:text-blue-600 transition-colors">
+              <Link
+                href="#privacy"
+                className="text-gray-600 hover:text-blue-600 transition-colors"
+              >
                 Privacy Policy
               </Link>
-              <Link href="#terms" className="text-gray-600 hover:text-blue-600 transition-colors">
+              <Link
+                href="#terms"
+                className="text-gray-600 hover:text-blue-600 transition-colors"
+              >
                 Terms of Service
               </Link>
-              <Link href="#cookies" className="text-gray-600 hover:text-blue-600 transition-colors">
+              <Link
+                href="#cookies"
+                className="text-gray-600 hover:text-blue-600 transition-colors"
+              >
                 Cookie Policy
               </Link>
-              <Link href="#security" className="text-gray-600 hover:text-blue-600 transition-colors">
+              <Link
+                href="#security"
+                className="text-gray-600 hover:text-blue-600 transition-colors"
+              >
                 Security
               </Link>
-              <Link href="#accessibility" className="text-gray-600 hover:text-blue-600 transition-colors">
+              <Link
+                href="#accessibility"
+                className="text-gray-600 hover:text-blue-600 transition-colors"
+              >
                 Accessibility
               </Link>
             </div>
           </div>
-          
+
           {/* Status Badge */}
           <div className="mt-6 flex items-center justify-center md:justify-start gap-2 text-sm">
             <div className="flex items-center gap-2">
