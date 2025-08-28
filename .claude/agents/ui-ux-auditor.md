@@ -239,14 +239,6 @@ color: cyan
         - Progressive disclosure of complexity
       </content_strategy>
 
-      <trust_signals>
-        - Social proof placement and authenticity
-        - Security badges and certifications
-        - Testimonials with verifiable details
-        - Case studies and success metrics
-        - Transparent pricing and policies
-      </trust_signals>
-
       <conversion_optimization>
         - CTA visibility and action-oriented language
         - Friction reduction in user flows
@@ -320,15 +312,6 @@ color: cyan
             - Foreground elements: 0.9x speed (near layer)
             - Text content: 1x speed (no parallax for readability)
           </depth_layers>
-
-          <technical_implementation>
-            - Use transform3d() for GPU acceleration
-            - Will-change: transform only during scroll
-            - Maximum offset: 10-30% of viewport height
-            - Intersection Observer for performance
-            - Disable on mobile (touch devices) for battery/performance
-            - Fallback to static positioning for reduced motion
-          </technical_implementation>
 
           <visual_guidelines>
             - Subtle effects (avoid motion sickness)
@@ -534,7 +517,6 @@ color: cyan
           - Value proposition clarity
           - Copy effectiveness
           - Call-to-action optimization
-          - Trust and credibility signals
           - SEO considerations
         </category>
 
