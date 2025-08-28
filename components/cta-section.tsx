@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { ArrowRight, Sparkles, Trophy } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+// import { Button } from '@/components/ui/button'
 
 export function CTASection() {
   return (
@@ -87,16 +87,12 @@ export function CTASection() {
                   href="https://cal.com/tanushyadav/quick-chat"
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center relative group bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium px-6 py-4 min-h-[48px] text-base rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-purple-600"
                 >
-                  <Button
-                    size="lg"
-                    className="relative group bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium px-6 py-3 text-base rounded-xl shadow-md transition-all duration-200 hover:shadow-lg"
-                  >
-                    <span className="flex items-center gap-2">
-                      Book an Appointment
-                      <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
-                    </span>
-                  </Button>
+                  <span className="flex items-center gap-2">
+                    Book an Appointment
+                    <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+                  </span>
                 </a>
               </motion.div>
 

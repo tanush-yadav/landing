@@ -2,8 +2,9 @@
 
 import React from 'react'
 import Image from 'next/image'
-import { motion, AnimatePresence, useAnimation } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { getAgentAvatar } from './agent-avatars'
+// import { AgentCardSkeleton } from './agent-card-skeleton'
 import {
   Code2,
   FileText,
@@ -18,7 +19,7 @@ import {
   GitBranch,
   Zap,
 } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { cn, incrementDelegationClickCount, redirectToCalIfThresholdMet } from '@/lib/utils'
 
 // AI Team Member Data with Avatar Images
 const teamMembers = [
@@ -256,20 +257,8 @@ const AgentAvatar = ({
               style={{
                 objectPosition: '50% 1%',
               }}
-              onLoad={() => {
-                console.log(
-                  `Image loaded for ${member.name}: ${member.avatarUrl}`
-                )
-                setImageLoaded(true)
-              }}
-              onError={(e) => {
-                console.error(
-                  `Failed to load image for ${member.name}: ${member.avatarUrl}`,
-                  e
-                )
-                setImageError(true)
-              }}
-              priority={true}
+              onLoad={() => setImageLoaded(true)}
+              onError={() => setImageError(true)}
             />
 
             {/* Overlay Gradient */}
@@ -526,7 +515,13 @@ const TeamMemberCard = ({
 
           {/* Action Button */}
           <motion.button
-            onClick={() => onDelegate(member.id)}
+            onClick={() => {
+              const newCount = incrementDelegationClickCount()
+              if (redirectToCalIfThresholdMet(newCount)) {
+                return
+              }
+              onDelegate(member.id)
+            }}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             disabled={isAutoDelegating}
@@ -592,25 +587,25 @@ export default function TeamsSection({
   const [countdown, setCountdown] = React.useState<number | null>(null)
   const [hasUserInteracted, setHasUserInteracted] = React.useState(false)
   const [delegationInProgress, setDelegationInProgress] = React.useState(false)
-  const countdownRef = React.useRef<NodeJS.Timeout | null>(null)
-  const autoDelegateRef = React.useRef<NodeJS.Timeout | null>(null)
+  const countdownRef = React.useRef<number | null>(null)
+  const autoDelegateRef = React.useRef<number[]>([])
 
   // Start countdown after component mounts
   React.useEffect(() => {
     if (!hasUserInteracted && !selectedMember) {
       // Start countdown after a brief delay to ensure component is fully loaded
-      const startTimer = setTimeout(() => {
+      const startTimer = window.setTimeout(() => {
         setCountdown(7)
       }, 1000)
 
-      return () => clearTimeout(startTimer)
+      return () => window.clearTimeout(startTimer)
     }
   }, [])
 
   // Handle countdown
   React.useEffect(() => {
     if (countdown !== null && countdown > 0 && !hasUserInteracted) {
-      countdownRef.current = setTimeout(() => {
+      countdownRef.current = window.setTimeout(() => {
         setCountdown(countdown - 1)
       }, 1000)
     } else if (countdown === 0 && !hasUserInteracted) {
@@ -620,7 +615,7 @@ export default function TeamsSection({
 
     return () => {
       if (countdownRef.current) {
-        clearTimeout(countdownRef.current)
+        window.clearTimeout(countdownRef.current)
       }
     }
   }, [countdown, hasUserInteracted])
@@ -628,8 +623,9 @@ export default function TeamsSection({
   // Clean up timers on unmount
   React.useEffect(() => {
     return () => {
-      if (countdownRef.current) clearTimeout(countdownRef.current)
-      if (autoDelegateRef.current) clearTimeout(autoDelegateRef.current)
+      if (countdownRef.current) window.clearTimeout(countdownRef.current)
+      autoDelegateRef.current.forEach((id) => window.clearTimeout(id))
+      autoDelegateRef.current = []
     }
   }, [])
 
@@ -649,7 +645,7 @@ export default function TeamsSection({
     setSelectedTask(randomTask)
 
     // Step 2: After 1 second, select appropriate team member based on task
-    setTimeout(() => {
+    const t1 = window.setTimeout(() => {
       // Choose member based on task type (simple matching logic)
       let selectedMemberId = 'junior-engineer' // default
 
@@ -683,10 +679,12 @@ export default function TeamsSection({
       setSelectedMember(selectedMemberId)
 
       // Step 3: After another second, trigger delegation
-      setTimeout(() => {
+      const t2 = window.setTimeout(() => {
         performDelegation(selectedMemberId, randomTask)
       }, 1000)
+      autoDelegateRef.current.push(t2)
     }, 1000)
+    autoDelegateRef.current.push(t1)
   }
 
   const performDelegation = (memberId: string, task: string) => {
@@ -700,19 +698,11 @@ export default function TeamsSection({
       onDelegation(task, memberId)
     }
 
-    // After delegation animation, scroll to demo section
+    // Reset states after animation; scroll is handled by InteractiveDemoWrapper
     setTimeout(() => {
-      const demoSection = document.getElementById('demo-section')
-      if (demoSection) {
-        demoSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      }
-
-      // Reset states after animation
-      setTimeout(() => {
-        setIsAutoDelegating(false)
-        setDelegationInProgress(false)
-      }, 500)
-    }, 1500)
+      setIsAutoDelegating(false)
+      setDelegationInProgress(false)
+    }, 2000)
   }
 
   const handleManualDelegate = (memberId: string) => {
@@ -724,12 +714,9 @@ export default function TeamsSection({
     // Cancel auto-delegation if user manually selects
     setHasUserInteracted(true)
     setCountdown(null)
-    if (countdownRef.current) {
-      clearTimeout(countdownRef.current)
-    }
-    if (autoDelegateRef.current) {
-      clearTimeout(autoDelegateRef.current)
-    }
+    if (countdownRef.current) clearTimeout(countdownRef.current)
+    autoDelegateRef.current.forEach(clearTimeout)
+    autoDelegateRef.current = []
 
     // Let user select a task or use a default one
     const task =
@@ -819,7 +806,7 @@ export default function TeamsSection({
             >
               <CheckCircle2 className="w-4 h-4 text-blue-600" />
               <span className="text-sm font-medium text-blue-900">
-                Task: "{selectedTask}"
+                Task: &quot;{selectedTask}&quot;
               </span>
             </motion.div>
           )}
@@ -866,7 +853,7 @@ export default function TeamsSection({
         </motion.div>
 
         {/* Team Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 px-2 sm:px-0">
           {teamMembers.map((member, index) => (
             <motion.div
               key={member.id}
@@ -916,7 +903,7 @@ export default function TeamsSection({
                             Task Assigned!
                           </p>
                           <p className="text-xs text-neutral-700 mt-1">
-                            "{selectedTask}"
+                            &quot;{selectedTask}&quot;
                           </p>
                         </div>
                       </div>

@@ -47,11 +47,11 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
           cardStyles.base,
           variantClass,
           paddingClass,
-          hoverable && 'transition-shadow hover:shadow-lg',
+          hoverable && 'hover:-translate-y-1 hover:shadow-xl transition-all duration-200 will-change-transform',
           clickable && 'cursor-pointer',
           className
         )}
-        whileHover={hoverable ? { y: -2 } : undefined}
+        whileHover={hoverable ? { y: -4, transition: { duration: 0.2, ease: 'easeOut' } } : undefined}
         transition={{ duration: 0.2 }}
         {...props}
       >
