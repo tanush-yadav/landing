@@ -1,10 +1,10 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Image from 'next/image'
-import { motion, AnimatePresence, useAnimation } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { getAgentAvatar } from './agent-avatars'
-import { AgentCardSkeleton } from './agent-card-skeleton'
+// import { AgentCardSkeleton } from './agent-card-skeleton'
 import {
   Code2,
   FileText,
@@ -257,20 +257,8 @@ const AgentAvatar = ({
               style={{
                 objectPosition: '50% 1%',
               }}
-              onLoad={() => {
-                console.log(
-                  `Image loaded for ${member.name}: ${member.avatarUrl}`
-                )
-                setImageLoaded(true)
-              }}
-              onError={(e) => {
-                console.error(
-                  `Failed to load image for ${member.name}: ${member.avatarUrl}`,
-                  e
-                )
-                setImageError(true)
-              }}
-              priority={true}
+              onLoadingComplete={() => setImageLoaded(true)}
+              onError={() => setImageError(true)}
             />
 
             {/* Overlay Gradient */}
@@ -599,8 +587,8 @@ export default function TeamsSection({
   const [countdown, setCountdown] = React.useState<number | null>(null)
   const [hasUserInteracted, setHasUserInteracted] = React.useState(false)
   const [delegationInProgress, setDelegationInProgress] = React.useState(false)
-  const countdownRef = React.useRef<NodeJS.Timeout | null>(null)
-  const autoDelegateRef = React.useRef<NodeJS.Timeout | null>(null)
+  const countdownRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+  const autoDelegateRef = React.useRef<ReturnType<typeof setTimeout>[]>([])
 
   // Start countdown after component mounts
   React.useEffect(() => {
@@ -636,7 +624,8 @@ export default function TeamsSection({
   React.useEffect(() => {
     return () => {
       if (countdownRef.current) clearTimeout(countdownRef.current)
-      if (autoDelegateRef.current) clearTimeout(autoDelegateRef.current)
+      autoDelegateRef.current.forEach(clearTimeout)
+      autoDelegateRef.current = []
     }
   }, [])
 
@@ -656,7 +645,7 @@ export default function TeamsSection({
     setSelectedTask(randomTask)
 
     // Step 2: After 1 second, select appropriate team member based on task
-    setTimeout(() => {
+    const t1 = window.setTimeout(() => {
       // Choose member based on task type (simple matching logic)
       let selectedMemberId = 'junior-engineer' // default
 
@@ -690,10 +679,12 @@ export default function TeamsSection({
       setSelectedMember(selectedMemberId)
 
       // Step 3: After another second, trigger delegation
-      setTimeout(() => {
+      const t2 = window.setTimeout(() => {
         performDelegation(selectedMemberId, randomTask)
       }, 1000)
+      autoDelegateRef.current.push(t2)
     }, 1000)
+    autoDelegateRef.current.push(t1)
   }
 
   const performDelegation = (memberId: string, task: string) => {
@@ -707,19 +698,11 @@ export default function TeamsSection({
       onDelegation(task, memberId)
     }
 
-    // After delegation animation, scroll to demo section
+    // Reset states after animation; scroll is handled by InteractiveDemoWrapper
     setTimeout(() => {
-      const demoSection = document.getElementById('demo-section')
-      if (demoSection) {
-        demoSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      }
-
-      // Reset states after animation
-      setTimeout(() => {
-        setIsAutoDelegating(false)
-        setDelegationInProgress(false)
-      }, 500)
-    }, 1500)
+      setIsAutoDelegating(false)
+      setDelegationInProgress(false)
+    }, 2000)
   }
 
   const handleManualDelegate = (memberId: string) => {
@@ -731,12 +714,9 @@ export default function TeamsSection({
     // Cancel auto-delegation if user manually selects
     setHasUserInteracted(true)
     setCountdown(null)
-    if (countdownRef.current) {
-      clearTimeout(countdownRef.current)
-    }
-    if (autoDelegateRef.current) {
-      clearTimeout(autoDelegateRef.current)
-    }
+    if (countdownRef.current) clearTimeout(countdownRef.current)
+    autoDelegateRef.current.forEach(clearTimeout)
+    autoDelegateRef.current = []
 
     // Let user select a task or use a default one
     const task =
@@ -826,7 +806,7 @@ export default function TeamsSection({
             >
               <CheckCircle2 className="w-4 h-4 text-blue-600" />
               <span className="text-sm font-medium text-blue-900">
-                Task: "{selectedTask}"
+                Task: &quot;{selectedTask}&quot;
               </span>
             </motion.div>
           )}
@@ -923,7 +903,7 @@ export default function TeamsSection({
                             Task Assigned!
                           </p>
                           <p className="text-xs text-neutral-700 mt-1">
-                            "{selectedTask}"
+                            &quot;{selectedTask}&quot;
                           </p>
                         </div>
                       </div>
