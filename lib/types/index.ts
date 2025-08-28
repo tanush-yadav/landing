@@ -163,7 +163,7 @@ export interface DemoConfig {
 // API Types
 // ============================================================================
 
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   data: T;
   status: number;
   message?: string;
@@ -174,7 +174,7 @@ export interface ApiResponse<T = any> {
 export interface ApiError {
   code: string;
   message: string;
-  details?: Record<string, any>;
+  details?: Record<string, unknown>;
   timestamp: Timestamp;
 }
 
@@ -200,7 +200,7 @@ export interface FormField {
   disabled?: boolean;
   readOnly?: boolean;
   validation?: ValidationRule[];
-  defaultValue?: any;
+  defaultValue?: unknown;
   options?: SelectOption[];
 }
 
@@ -213,9 +213,9 @@ export interface SelectOption {
 
 export interface ValidationRule {
   type: 'required' | 'minLength' | 'maxLength' | 'min' | 'max' | 'pattern' | 'email' | 'url' | 'custom';
-  value?: any;
+  value?: unknown;
   message: string;
-  validator?: (value: any) => boolean;
+  validator?: (value: unknown) => boolean;
 }
 
 export interface FormErrors {
@@ -248,23 +248,23 @@ export interface BreadcrumbItem {
 // Table Types
 // ============================================================================
 
-export interface TableColumn<T = any> {
+export interface TableColumn<T = unknown> {
   key: string;
   header: string;
-  accessor?: (row: T) => any;
+  accessor?: (row: T) => unknown;
   sortable?: boolean;
   filterable?: boolean;
   width?: string | number;
   align?: 'left' | 'center' | 'right';
-  render?: (value: any, row: T) => React.ReactNode;
+  render?: (value: unknown, row: T) => React.ReactNode;
 }
 
-export interface TableData<T = any> {
+export interface TableData<T = unknown> {
   columns: TableColumn<T>[];
   rows: T[];
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
-  filterBy?: Record<string, any>;
+  filterBy?: Record<string, unknown>;
 }
 
 // ============================================================================

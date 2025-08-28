@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 // import Link from 'next/link'
 import { ArrowRight, Users, FileText, TrendingUp, Settings } from 'lucide-react'
 import * as RadioGroup from '@radix-ui/react-radio-group'
-import { cn } from '@/lib/utils'
+import { cn, incrementDelegationClickCount, redirectToCalIfThresholdMet } from '@/lib/utils'
 import { motion, AnimatePresence } from 'framer-motion'
 
 // Team data with AI names and tasks
@@ -124,6 +124,10 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
 
   const handleDelegate = () => {
     if (selectedTask && !isDemoRunning) {
+      const newCount = incrementDelegationClickCount()
+      if (redirectToCalIfThresholdMet(newCount)) {
+        return
+      }
       setIsDelegating(true)
       // Trigger the demo animation and scroll with the selected task
       if (onDemoTrigger) {

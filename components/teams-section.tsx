@@ -19,7 +19,7 @@ import {
   GitBranch,
   Zap,
 } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { cn, incrementDelegationClickCount, redirectToCalIfThresholdMet } from '@/lib/utils'
 
 // AI Team Member Data with Avatar Images
 const teamMembers = [
@@ -515,7 +515,13 @@ const TeamMemberCard = ({
 
           {/* Action Button */}
           <motion.button
-            onClick={() => onDelegate(member.id)}
+            onClick={() => {
+              const newCount = incrementDelegationClickCount()
+              if (redirectToCalIfThresholdMet(newCount)) {
+                return
+              }
+              onDelegate(member.id)
+            }}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             disabled={isAutoDelegating}
@@ -581,25 +587,25 @@ export default function TeamsSection({
   const [countdown, setCountdown] = React.useState<number | null>(null)
   const [hasUserInteracted, setHasUserInteracted] = React.useState(false)
   const [delegationInProgress, setDelegationInProgress] = React.useState(false)
-  const countdownRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
-  const autoDelegateRef = React.useRef<ReturnType<typeof setTimeout>[]>([])
+  const countdownRef = React.useRef<number | null>(null)
+  const autoDelegateRef = React.useRef<number[]>([])
 
   // Start countdown after component mounts
   React.useEffect(() => {
     if (!hasUserInteracted && !selectedMember) {
       // Start countdown after a brief delay to ensure component is fully loaded
-      const startTimer = setTimeout(() => {
+      const startTimer = window.setTimeout(() => {
         setCountdown(7)
       }, 1000)
 
-      return () => clearTimeout(startTimer)
+      return () => window.clearTimeout(startTimer)
     }
   }, [])
 
   // Handle countdown
   React.useEffect(() => {
     if (countdown !== null && countdown > 0 && !hasUserInteracted) {
-      countdownRef.current = setTimeout(() => {
+      countdownRef.current = window.setTimeout(() => {
         setCountdown(countdown - 1)
       }, 1000)
     } else if (countdown === 0 && !hasUserInteracted) {
@@ -609,7 +615,7 @@ export default function TeamsSection({
 
     return () => {
       if (countdownRef.current) {
-        clearTimeout(countdownRef.current)
+        window.clearTimeout(countdownRef.current)
       }
     }
   }, [countdown, hasUserInteracted])
@@ -617,8 +623,8 @@ export default function TeamsSection({
   // Clean up timers on unmount
   React.useEffect(() => {
     return () => {
-      if (countdownRef.current) clearTimeout(countdownRef.current)
-      autoDelegateRef.current.forEach(clearTimeout)
+      if (countdownRef.current) window.clearTimeout(countdownRef.current)
+      autoDelegateRef.current.forEach((id) => window.clearTimeout(id))
       autoDelegateRef.current = []
     }
   }, [])
