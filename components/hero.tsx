@@ -86,7 +86,7 @@ interface HeroProps {
 const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
   const [isVisible, setIsVisible] = useState(false)
   const [selectedTeam, setSelectedTeam] = useState('engineering')
-  const [selectedTask, setSelectedTask] = useState('')
+  const [selectedTask, setSelectedTask] = useState('auth-bug-fix') // Auto-select first task
   const [isDelegating, setIsDelegating] = useState(false)
 
   useEffect(() => {
@@ -111,7 +111,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
   }
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 py-16 sm:py-20">
       {/* Enhanced Gradient Mesh Background with Glass Effect */}
       <div className="absolute inset-0">
         {/* Primary gradient background */}
@@ -153,6 +153,8 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
               'inline-flex items-center justify-center mb-8 opacity-0',
               isVisible && 'animate-fade-in-down'
             )}
+            role="status"
+            aria-live="polite"
           >
             <span className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-md px-4 py-1.5 text-sm font-medium text-gray-700 border border-white/40 shadow-lg ring-1 ring-gray-200/10">
               <span className="relative flex h-2 w-2 mr-2">
@@ -166,7 +168,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
           {/* Main Headline */}
           <h1
             className={cn(
-              'text-5xl sm:text-6xl md:text-7xl font-display font-bold text-gray-900 mb-6 opacity-0',
+              'text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-display font-bold text-gray-900 mb-6 opacity-0 leading-tight',
               isVisible && 'animate-fade-in-up'
             )}
             style={{ letterSpacing: '-0.02em' }}
@@ -180,7 +182,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
           {/* Subheadline */}
           <p
             className={cn(
-              'text-lg sm:text-xl text-gray-600 mb-10 max-w-2xl mx-auto opacity-0',
+              'text-base sm:text-lg md:text-xl text-gray-600 mb-8 sm:mb-10 max-w-2xl mx-auto opacity-0 px-4',
               isVisible && 'animate-fade-in-up animation-delay-200'
             )}
           >
@@ -195,7 +197,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
             )}
           >
             {/* Team Tabs */}
-            <div className="flex flex-wrap justify-center gap-2 mb-6">
+            <div className="flex flex-wrap justify-center gap-2 mb-6 px-2">
               {teams.map((team) => (
                 <button
                   key={team.id}
@@ -203,8 +205,11 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                     setSelectedTeam(team.id)
                     setSelectedTask('')
                   }}
+                  aria-label={`Select ${team.name} team`}
+                  aria-pressed={selectedTeam === team.id}
+                  role="tab"
                   className={cn(
-                    'inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
+                    'inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap',
                     selectedTeam === team.id
                       ? 'bg-gray-900 text-white shadow-lg'
                       : 'bg-white/40 backdrop-blur-sm text-gray-700 border border-white/50 hover:bg-white/60 shadow-md ring-1 ring-gray-200/10'
@@ -274,6 +279,8 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                 <button
                   onClick={handleDelegate}
                   disabled={!selectedTask || isDelegating || isDemoRunning}
+                  aria-label={`Delegate task to ${currentTeam.aiName}`}
+                  aria-busy={isDelegating}
                   className={cn(
                     'w-full mt-6 py-3 px-6 rounded-full font-semibold text-base transition-all duration-200',
                     selectedTask && !isDelegating && !isDemoRunning

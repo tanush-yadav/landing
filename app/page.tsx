@@ -1,11 +1,26 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, lazy, Suspense } from 'react'
+import dynamic from 'next/dynamic'
 import Navigation from '@/components/navigation'
 import Hero from '@/components/hero'
-import InteractiveDemoWrapper from '@/components/interactive-demo-wrapper'
-import TeamsSection from '@/components/teams-section'
 import { CTASection } from '@/components/cta-section'
+
+// Lazy load heavy components
+const InteractiveDemoWrapper = dynamic(
+  () => import('@/components/interactive-demo-wrapper'),
+  { 
+    loading: () => <div className="min-h-[600px] flex items-center justify-center"><div className="animate-pulse text-gray-500">Loading demo...</div></div>,
+    ssr: false 
+  }
+)
+
+const TeamsSection = dynamic(
+  () => import('@/components/teams-section'),
+  { 
+    loading: () => <div className="min-h-[400px] flex items-center justify-center"><div className="animate-pulse text-gray-500">Loading team...</div></div>
+  }
+)
 
 export default function Home() {
   const [demoTrigger, setDemoTrigger] = useState(false)

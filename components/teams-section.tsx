@@ -1,9 +1,10 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence, useAnimation } from 'framer-motion'
 import { getAgentAvatar } from './agent-avatars'
+import { AgentCardSkeleton } from './agent-card-skeleton'
 import {
   Code2,
   FileText,
