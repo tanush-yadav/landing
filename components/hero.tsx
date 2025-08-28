@@ -196,7 +196,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
               isVisible && 'animate-fade-in-up animation-delay-400'
             )}
           >
-            {/* Team Tabs */}
+            {/* Team Tabs - Enhanced for mobile touch targets */}
             <div className="flex flex-wrap justify-center gap-2 mb-6 px-2">
               {teams.map((team) => (
                 <button
@@ -209,14 +209,15 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                   aria-pressed={selectedTeam === team.id}
                   role="tab"
                   className={cn(
-                    'inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap',
+                    'inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-3 sm:py-2 min-w-[80px] rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap',
+                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-600',
                     selectedTeam === team.id
-                      ? 'bg-gray-900 text-white shadow-lg'
-                      : 'bg-white/40 backdrop-blur-sm text-gray-700 border border-white/50 hover:bg-white/60 shadow-md ring-1 ring-gray-200/10'
+                      ? 'bg-gradient-to-r from-gray-800 to-gray-900 text-white shadow-lg transform scale-105'
+                      : 'bg-white/60 backdrop-blur-sm text-gray-700 border border-white/50 hover:bg-white/80 hover:border-gray-300 shadow-md ring-1 ring-gray-200/10'
                   )}
                 >
                   {team.icon}
-                  {team.name}
+                  <span>{team.name}</span>
                 </button>
               ))}
             </div>
@@ -275,17 +276,18 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                   ))}
                 </RadioGroup.Root>
 
-                {/* Delegate Button */}
+                {/* Delegate Button - Enhanced with gradient background */}
                 <button
                   onClick={handleDelegate}
                   disabled={!selectedTask || isDelegating || isDemoRunning}
                   aria-label={`Delegate task to ${currentTeam.aiName}`}
                   aria-busy={isDelegating}
                   className={cn(
-                    'w-full mt-6 py-3 px-6 rounded-full font-semibold text-base transition-all duration-200',
+                    'w-full mt-6 py-4 px-6 rounded-full font-semibold text-base transition-all duration-200 transform',
+                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-600',
                     selectedTask && !isDelegating && !isDemoRunning
-                      ? 'bg-gray-900 text-white hover:bg-gray-800 hover:scale-[1.02] shadow-lg'
-                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 hover:scale-[1.02] shadow-lg hover:shadow-xl'
+                      : 'bg-gray-200 text-gray-400 cursor-not-allowed opacity-60'
                   )}
                 >
                   {isDemoRunning ? (

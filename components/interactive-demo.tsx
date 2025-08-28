@@ -312,9 +312,9 @@ const ProgressBar = memo(({
 const DemoSkeleton = memo(() => (
   <div className="bg-gray-50/50 py-16">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="grid lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {[0, 1].map((i) => (
-          <div key={i} className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+          <div key={i} className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden max-w-full">
             <div className="h-14 bg-gray-100 animate-pulse" />
             <div className="p-6 space-y-4">
               <div className="h-4 bg-gray-200 rounded animate-pulse" />
@@ -650,7 +650,7 @@ const InteractiveDemo = memo(({
       aria-label="Interactive demonstration of AI automation workflow"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="grid lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           {/* Linear Demo */}
           <motion.div 
             className={cn(

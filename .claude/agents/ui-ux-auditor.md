@@ -637,7 +637,9 @@ color: cyan
 </thinking>
 
     <audit_results>
-      <overall_score>[0-100 with breakdown by category]</overall_score>
+      <important_output>
+      <overall_score criticality="important">[0-100 with breakdown by category]</overall_score>
+        </important_output>
 
       <strengths>
         • [What exemplifies design excellence]
