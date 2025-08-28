@@ -1,6 +1,6 @@
 // Dynamic workflow configurations for each AI employee and task
 export type TaskCategory = 'engineering' | 'content' | 'sales' | 'operations'
-export type EmployeeName = 'Zoe' | 'Bella' | 'Alex' | 'Morgan'
+export type EmployeeName = 'Alex' | 'Sophia' | 'Jordan' | 'Quinn'
 
 export interface WorkflowStep {
   id: string
@@ -60,7 +60,7 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
   {
     id: 'fix-auth-bug',
     category: 'engineering',
-    employee: 'Zoe',
+    employee: 'Alex',
     title: 'Fix the authentication bug in production',
     description: 'Customer screenshot showing login failure after 2FA',
     estimatedTime: '45 minutes',
@@ -105,7 +105,7 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
           },
         ],
         slackMessage: {
-          author: 'Zoe',
+          author: 'Alex',
           content:
             'Found it! JWT refresh token expires 2 hours early due to timezone mismatch in `auth/jwt-handler.ts:142`',
           attachments: {
@@ -292,7 +292,7 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
           ],
         },
         slackMessage: {
-          author: 'Zoe',
+          author: 'Alex',
           content:
             '✅ PR #1247 ready for review - Fix JWT timezone bug affecting 2FA users',
           attachments: {
@@ -312,7 +312,7 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
   {
     id: 'payment-api-error',
     category: 'engineering',
-    employee: 'Zoe',
+    employee: 'Alex',
     title: 'Add error handling to the payment API',
     description:
       'Stripe webhooks are failing silently, causing missed payments',
@@ -398,7 +398,7 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
           ],
         },
         slackMessage: {
-          author: 'Zoe',
+          author: 'Alex',
           content:
             'Found 7 unhandled webhook scenarios. Creating comprehensive error handling:',
           attachments: {
@@ -553,7 +553,7 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
           progress: 100,
         },
         slackMessage: {
-          author: 'Zoe',
+          author: 'Alex',
           content: '✅ Payment API error handling deployed!',
           attachments: {
             type: 'metrics',
@@ -571,7 +571,7 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
   {
     id: 'unit-tests',
     category: 'engineering',
-    employee: 'Zoe',
+    employee: 'Alex',
     title: 'Write unit tests for the user service',
     description: 'User service has 0% test coverage, causing production bugs',
     estimatedTime: '40 minutes',
@@ -644,7 +644,7 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
           ],
         },
         slackMessage: {
-          author: 'Zoe',
+          author: 'Alex',
           content: 'Creating comprehensive test suite. Target: 95% coverage',
           attachments: {
             type: 'list',
@@ -781,7 +781,7 @@ export const ENGINEERING_WORKFLOWS: TaskWorkflow[] = [
           progress: 100,
         },
         slackMessage: {
-          author: 'Zoe',
+          author: 'Alex',
           content: '✅ Test suite complete! 23 tests added',
           attachments: {
             type: 'metrics',
@@ -804,7 +804,7 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
   {
     id: 'blog-post',
     category: 'content',
-    employee: 'Bella',
+    employee: 'Sophia',
     title: 'Write blog post about Q4 product updates',
     description: 'Q4 launches need announcement blog for 5 new features',
     estimatedTime: '25 minutes',
@@ -836,7 +836,7 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
           progress: 15,
         },
         slackMessage: {
-          author: 'Bella',
+          author: 'Sophia',
           content:
             "I've identified 5 key features. Which angle resonates most: technical deep-dive or business value?",
         },
@@ -960,7 +960,7 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
           progress: 90,
         },
         slackMessage: {
-          author: 'Bella',
+          author: 'Sophia',
           content: 'Draft complete. Flesch reading score: 62 (target range)',
           attachments: {
             type: 'metrics',
@@ -993,7 +993,7 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
           progress: 100,
         },
         slackMessage: {
-          author: 'Bella',
+          author: 'Sophia',
           content: '✅ Published: blog.volition.ai/q4-updates',
           attachments: {
             type: 'status',
@@ -1011,7 +1011,7 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
   {
     id: 'email-campaign',
     category: 'content',
-    employee: 'Bella',
+    employee: 'Sophia',
     title: 'Create email campaign for new feature launch',
     description: 'AI Code Review feature launching next week',
     estimatedTime: '20 minutes',
@@ -1055,7 +1055,7 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
           },
         ],
         slackMessage: {
-          author: 'Bella',
+          author: 'Sophia',
           content: 'Creating 3-email sequence for each segment',
           attachments: {
             type: 'list',
@@ -1157,7 +1157,7 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
           progress: 100,
         },
         slackMessage: {
-          author: 'Bella',
+          author: 'Sophia',
           content: '✅ Email campaign scheduled!',
           attachments: {
             type: 'metrics',
@@ -1176,7 +1176,7 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
   {
     id: 'api-docs',
     category: 'content',
-    employee: 'Bella',
+    employee: 'Sophia',
     title: 'Update help documentation for API changes',
     description: 'v2.0 API has 15 breaking changes',
     estimatedTime: '30 minutes',
@@ -1215,7 +1215,7 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
           },
         ],
         slackMessage: {
-          author: 'Bella',
+          author: 'Sophia',
           content:
             'Found 15 breaking changes, 23 new endpoints. Creating migration guide',
           attachments: {
@@ -1303,7 +1303,7 @@ export const CONTENT_WORKFLOWS: TaskWorkflow[] = [
           progress: 100,
         },
         slackMessage: {
-          author: 'Bella',
+          author: 'Sophia',
           content: '✅ API v2.0 documentation live!',
           attachments: {
             type: 'status',
@@ -1326,7 +1326,7 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
   {
     id: 'qualify-leads',
     category: 'sales',
-    employee: 'Alex',
+    employee: 'Jordan',
     title: "Qualify leads from yesterday's webinar",
     description: '247 attendees from "AI in DevOps" webinar',
     estimatedTime: '15 minutes',
@@ -1370,7 +1370,7 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
           },
         ],
         slackMessage: {
-          author: 'Alex',
+          author: 'Jordan',
           content: 'Found 43 MQLs from webinar analysis',
           attachments: {
             type: 'metrics',
@@ -1458,7 +1458,7 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
           progress: 100,
         },
         slackMessage: {
-          author: 'Alex',
+          author: 'Jordan',
           content: '✅ Webinar leads qualified and assigned!',
           attachments: {
             type: 'status',
@@ -1476,7 +1476,7 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
   {
     id: 'competitor-research',
     category: 'sales',
-    employee: 'Alex',
+    employee: 'Jordan',
     title: 'Research competitor pricing for Enterprise deals',
     description: 'Prospect asking for comparison with GitHub Copilot, Tabnine',
     estimatedTime: '20 minutes',
@@ -1526,7 +1526,7 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
           },
         ],
         slackMessage: {
-          author: 'Alex',
+          author: 'Jordan',
           content: 'Volition offers 40% more value at Enterprise tier',
           attachments: {
             type: 'list',
@@ -1614,7 +1614,7 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
           progress: 100,
         },
         slackMessage: {
-          author: 'Alex',
+          author: 'Jordan',
           content: '✅ Competitive analysis complete!',
           attachments: {
             type: 'status',
@@ -1632,7 +1632,7 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
   {
     id: 'crm-updates',
     category: 'sales',
-    employee: 'Alex',
+    employee: 'Jordan',
     title: 'Update CRM with meeting notes from demos',
     description: '8 demos completed yesterday',
     estimatedTime: '12 minutes',
@@ -1743,7 +1743,7 @@ export const SALES_WORKFLOWS: TaskWorkflow[] = [
           progress: 100,
         },
         slackMessage: {
-          author: 'Alex',
+          author: 'Jordan',
           content: '✅ CRM fully updated with demo insights!',
           attachments: {
             type: 'metrics',
@@ -1766,7 +1766,7 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
   {
     id: 'aws-audit',
     category: 'operations',
-    employee: 'Morgan',
+    employee: 'Quinn',
     title: 'Audit AWS costs and identify savings',
     description: 'AWS bill increased 40% last month',
     estimatedTime: '25 minutes',
@@ -1791,7 +1791,7 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
           },
         ],
         slackMessage: {
-          author: 'Morgan',
+          author: 'Quinn',
           content: 'Found it! 67% of increase from forgotten dev environments',
         },
         linearUpdate: {
@@ -1815,7 +1815,7 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
           },
         ],
         slackMessage: {
-          author: 'Morgan',
+          author: 'Quinn',
           content: 'Identified significant waste:',
           attachments: {
             type: 'metrics',
@@ -1927,7 +1927,7 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
           progress: 100,
         },
         slackMessage: {
-          author: 'Morgan',
+          author: 'Quinn',
           content: '✅ AWS cost optimization complete!',
           attachments: {
             type: 'metrics',
@@ -1946,7 +1946,7 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
   {
     id: 'api-monitoring',
     category: 'operations',
-    employee: 'Morgan',
+    employee: 'Quinn',
     title: 'Set up monitoring alerts for the API',
     description: 'API experiencing intermittent issues',
     estimatedTime: '20 minutes',
@@ -1996,7 +1996,7 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
           },
         ],
         slackMessage: {
-          author: 'Morgan',
+          author: 'Quinn',
           content: 'Configured 12 monitors covering all critical paths',
           attachments: {
             type: 'list',
@@ -2077,7 +2077,7 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
           progress: 100,
         },
         slackMessage: {
-          author: 'Morgan',
+          author: 'Quinn',
           content: '✅ API monitoring fully configured!',
           attachments: {
             type: 'status',
@@ -2096,7 +2096,7 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
   {
     id: 'deployment-docs',
     category: 'operations',
-    employee: 'Morgan',
+    employee: 'Quinn',
     title: 'Document the deployment process',
     description: 'New engineers struggling with deployment',
     estimatedTime: '18 minutes',
@@ -2140,7 +2140,7 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
           },
         ],
         slackMessage: {
-          author: 'Morgan',
+          author: 'Quinn',
           content: 'Created 20-page deployment guide with diagrams',
           attachments: {
             type: 'list',
@@ -2222,7 +2222,7 @@ export const OPERATIONS_WORKFLOWS: TaskWorkflow[] = [
           progress: 100,
         },
         slackMessage: {
-          author: 'Morgan',
+          author: 'Quinn',
           content: '✅ Deployment documentation complete!',
           attachments: {
             type: 'status',

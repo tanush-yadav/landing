@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 
 export function CTASection() {
   return (
-    <section className="relative w-full py-24 overflow-hidden bg-gradient-to-b from-white via-purple-50/20 to-white">
+    <section className="relative w-full py-20 overflow-visible bg-gradient-to-b from-white via-purple-50/20 to-white">
       {/* Very subtle gradient background */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-purple-50/20 to-transparent" />
@@ -21,20 +21,20 @@ export function CTASection() {
           className="max-w-4xl mx-auto"
         >
           {/* Clean CTA Card */}
-          <div className="relative rounded-2xl bg-white/80 backdrop-blur-sm border border-gray-100 p-12 md:p-16 shadow-lg">
+          <div className="relative isolate rounded-2xl bg-white/80 backdrop-blur-sm border border-gray-100 p-12 md:p-16 shadow-lg">
             {/* Subtle trophy decoration on the right */}
-            <div className="absolute top-1/2 -translate-y-1/2 right-12 md:right-16 opacity-5">
+            <div className="absolute top-1/2 -translate-y-1/2 right-12 md:right-16 opacity-5 z-0 pointer-events-none select-none">
               <Trophy className="w-32 h-32 md:w-40 md:h-40 text-purple-600" />
             </div>
 
-            <div className="relative text-center space-y-6">
+            <div className="relative z-10 text-center space-y-6">
               {/* Clean label */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.2, duration: 0.4 }}
-                className="inline-flex"
+                className="relative z-0 inline-flex pointer-events-none select-none"
               >
                 <div className="px-3 py-1.5 bg-purple-50 rounded-full border border-purple-100">
                   <div className="flex items-center gap-1.5">
@@ -52,12 +52,12 @@ export function CTASection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.3, duration: 0.5 }}
-                className="text-3xl md:text-4xl lg:text-5xl font-bold font-display leading-relaxed"
+                className="relative z-10 text-3xl md:text-4xl lg:text-5xl font-bold font-display leading-[1.3] md:leading-[1.25] lg:leading-[1.2] tracking-tight"
               >
-                <span className="text-gray-900 block">
+                <span className="text-gray-900 block pb-[2px] -mb-[2px]">
                   Each agent we train becomes
                 </span>
-                <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent block mt-1">
+                <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent block mt-3 pb-[2px] -mb-[2px]">
                   employee of the month.
                 </span>
               </motion.h2>
@@ -72,7 +72,7 @@ export function CTASection() {
               >
                 Ready to hire and train your next employee of the month with
                 your own hands? AI that only thinks about your data and its
-                work. No mixed feelings!
+                work.
               </motion.p>
 
               {/* Leaner CTA Button */}
@@ -101,7 +101,7 @@ export function CTASection() {
               </motion.div>
 
               {/* Simple trust indicators */}
-              <motion.div
+              {/* <motion.div
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
@@ -150,7 +150,7 @@ export function CTASection() {
                   </svg>
                   Cancel anytime
                 </span>
-              </motion.div>
+              </motion.div> */}
             </div>
           </div>
         </motion.div>

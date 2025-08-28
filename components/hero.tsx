@@ -20,7 +20,7 @@ const teams = [
     id: 'engineering',
     name: 'Engineering',
     icon: <Settings className="h-4 w-4" />,
-    aiName: 'Zoe',
+    aiName: 'Alex',
     tasks: [
       {
         id: 'auth-bug-fix',
@@ -39,7 +39,7 @@ const teams = [
     id: 'content',
     name: 'Content',
     icon: <FileText className="h-4 w-4" />,
-    aiName: 'Bella',
+    aiName: 'Sophia',
     tasks: [
       { id: 'blog-post', label: 'Write blog post about Q4 product updates', time: '4 mins' },
       { id: 'email-campaign', label: 'Create email campaign for new feature launch', time: '3 mins' },
@@ -50,7 +50,7 @@ const teams = [
     id: 'sales',
     name: 'Sales',
     icon: <TrendingUp className="h-4 w-4" />,
-    aiName: 'Alex',
+    aiName: 'Jordan',
     tasks: [
       { id: 'qualify-leads', label: 'Qualify leads from yesterday\'s webinar', time: '2.5 mins' },
       {
@@ -69,7 +69,7 @@ const teams = [
     id: 'operations',
     name: 'Operations',
     icon: <Users className="h-4 w-4" />,
-    aiName: 'Morgan',
+    aiName: 'Quinn',
     tasks: [
       { id: 'aws-audit', label: 'Audit AWS costs and identify savings', time: '3 mins' },
       { id: 'monitoring-setup', label: 'Set up monitoring alerts for the API', time: '3 mins' },
