@@ -13,13 +13,11 @@ import {
   glassMorphism,
   gradients,
   typography,
-  layouts,
-  buttonStyles,
   type Size,
   type Variant,
 } from '@/lib/design-system'
-import { Button, Card, Input } from '@/components/ui'
-import type { BaseComponentProps, DemoState, Task } from '@/lib/types'
+import { Button, Input } from '@/components/ui'
+import type { BaseComponentProps } from '@/lib/types'
 
 // ==============================================================================
 // PATTERN 1: Basic Component Structure

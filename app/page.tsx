@@ -85,7 +85,7 @@ export default function Home() {
     // no-op
   }
 
-  const handleTeamsDelegation = (task: string, _memberId: string) => {
+  const handleTeamsDelegation = (task: string) => {
     // Map team member tasks to demo workflows
     const teamTaskMapping: Record<string, string> = {
       'Fix authentication bug in login flow': 'fix-auth-bug',
@@ -120,7 +120,6 @@ export default function Home() {
         triggerDemoFromHero={demoTrigger}
         selectedTaskFromHero={selectedTask}
         onDemoComplete={handleDemoComplete}
-        isDemoRunning={isDemoRunning}
       />
 
       {/* AI Teams Section */}

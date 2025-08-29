@@ -13,10 +13,8 @@ import {
   Users,
   Calendar,
   Sparkles,
-  Circle,
   CheckCircle2,
   Activity,
-  GitBranch,
   Zap,
 } from 'lucide-react'
 import { cn, incrementDelegationClickCount, redirectToCalIfThresholdMet } from '@/lib/utils'
@@ -396,7 +394,6 @@ const TeamMemberCard = ({
   onDelegate: (memberId: string) => void
   isAutoDelegating: boolean
 }) => {
-  const Icon = member.icon
   const [currentActivity, setCurrentActivity] = React.useState(0)
 
   React.useEffect(() => {
@@ -498,7 +495,7 @@ const TeamMemberCard = ({
 
           {/* Stats Section */}
           <div className="grid grid-cols-3 gap-2 pt-3 border-t border-neutral-100">
-            {Object.entries(member.stats).map(([key, value], i) => (
+            {Object.entries(member.stats).map(([key, value]) => (
               <div key={key} className="text-center">
                 <p className="text-xs text-neutral-400 capitalize">
                   {key
@@ -571,7 +568,7 @@ const availableTasks = [
 ]
 
 interface TeamsSectionProps {
-  onDelegation?: (task: string, memberId: string) => void
+  onDelegation?: (task: string) => void
   isDemoRunning?: boolean
 }
 
@@ -600,7 +597,7 @@ export default function TeamsSection({
 
       return () => window.clearTimeout(startTimer)
     }
-  }, [])
+  }, [hasUserInteracted, selectedMember])
 
   // Handle countdown
   React.useEffect(() => {
@@ -618,6 +615,7 @@ export default function TeamsSection({
         window.clearTimeout(countdownRef.current)
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [countdown, hasUserInteracted])
 
   // Clean up timers on unmount
@@ -629,7 +627,25 @@ export default function TeamsSection({
     }
   }, [])
 
-  const handleAutoDelegate = () => {
+  const performDelegation = React.useCallback((memberId: string, task: string) => {
+    setDelegationInProgress(true)
+
+    // Simulate delegation process
+    console.log(`Delegating task: "${task}" to ${memberId}`)
+
+    // Trigger the demo through the parent component
+    if (onDelegation) {
+      onDelegation(task)
+    }
+
+    // Reset states after animation; scroll is handled by InteractiveDemoWrapper
+    setTimeout(() => {
+      setIsAutoDelegating(false)
+      setDelegationInProgress(false)
+    }, 2000)
+  }, [onDelegation])
+
+  const handleAutoDelegate = React.useCallback(() => {
     // Don't auto-delegate if demo is already running
     if (isDemoRunning) {
       setCountdown(null)
@@ -685,25 +701,7 @@ export default function TeamsSection({
       autoDelegateRef.current.push(t2)
     }, 1000)
     autoDelegateRef.current.push(t1)
-  }
-
-  const performDelegation = (memberId: string, task: string) => {
-    setDelegationInProgress(true)
-
-    // Simulate delegation process
-    console.log(`Delegating task: "${task}" to ${memberId}`)
-
-    // Trigger the demo through the parent component
-    if (onDelegation) {
-      onDelegation(task, memberId)
-    }
-
-    // Reset states after animation; scroll is handled by InteractiveDemoWrapper
-    setTimeout(() => {
-      setIsAutoDelegating(false)
-      setDelegationInProgress(false)
-    }, 2000)
-  }
+  }, [isDemoRunning, performDelegation])
 
   const handleManualDelegate = (memberId: string) => {
     // Don't allow manual delegation if demo is already running

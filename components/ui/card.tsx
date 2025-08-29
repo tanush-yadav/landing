@@ -18,7 +18,7 @@
 
 import React from 'react';
 import { motion, type HTMLMotionProps } from 'framer-motion';
-import { cn, cardStyles, animations } from '@/lib/design-system';
+import { cn, cardStyles } from '@/lib/design-system';
 
 interface CardProps extends HTMLMotionProps<'div'> {
   variant?: keyof typeof cardStyles.variants;

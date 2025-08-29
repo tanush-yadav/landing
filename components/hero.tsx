@@ -119,7 +119,6 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
   }, [])
 
   const currentTeam = teams.find((t) => t.id === selectedTeam) || teams[0]
-  const currentTask = currentTeam.tasks.find((t) => t.id === selectedTask)
   const delegatingTimerRef = useRef<number | null>(null)
 
   const handleDelegate = () => {

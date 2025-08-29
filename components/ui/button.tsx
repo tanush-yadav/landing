@@ -13,7 +13,7 @@
 
 import React from 'react';
 import { motion, type HTMLMotionProps } from 'framer-motion';
-import { cn, buttonStyles, animations, type Size, type Variant } from '@/lib/design-system';
+import { cn, buttonStyles, type Size, type Variant } from '@/lib/design-system';
 
 export interface ButtonProps extends Omit<HTMLMotionProps<'button'>, 'size'> {
   variant?: Variant;

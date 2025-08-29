@@ -7,26 +7,19 @@ import React, {
   useCallback,
   memo,
   useMemo,
-  Suspense,
-  lazy,
 } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import {
-  ChevronRight,
   Circle,
   CheckCircle2,
   MessageSquare,
   Users,
-  Clock,
   AlertCircle,
   Hash,
   MoreHorizontal,
   GitPullRequest,
-  Zap,
-  ArrowRight,
 } from 'lucide-react'
-import * as Avatar from '@radix-ui/react-avatar'
 import { getWorkflowById, type TaskWorkflow } from '@/lib/demo-workflows'
 
 // Type definitions
@@ -177,10 +170,7 @@ interface DemoState {
 interface InteractiveDemoProps {
   triggerDemo?: boolean
   selectedTask?: string
-  isUserInteracting?: boolean
-  isAutoPlaying?: boolean
   onDemoComplete?: () => void
-  isDemoRunning?: boolean
 }
 
 // Memoized components for performance
@@ -376,10 +366,7 @@ const InteractiveDemo = memo(
   ({
     triggerDemo = false,
     selectedTask = 'fix-auth-bug',
-    isUserInteracting = false,
-    isAutoPlaying = false,
     onDemoComplete,
-    isDemoRunning = false,
   }: InteractiveDemoProps) => {
     // Optimized state management
     const [demoState, setDemoState] = useState<DemoState>({
@@ -393,10 +380,6 @@ const InteractiveDemo = memo(
     const [completedSubtasks, setCompletedSubtasks] = useState<number[]>([])
     const [visibleMessages, setVisibleMessages] = useState<string[]>([])
     const [showTyping, setShowTyping] = useState(false)
-    const [showConnectionPulse, setShowConnectionPulse] = useState(false)
-    const [connectionStatus, setConnectionStatus] = useState<
-      'idle' | 'connecting' | 'syncing' | 'complete'
-    >('idle')
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
 
@@ -455,8 +438,6 @@ const InteractiveDemo = memo(
       setCompletedSubtasks([])
       setVisibleMessages([])
       setShowTyping(false)
-      setShowConnectionPulse(false)
-      setConnectionStatus('idle')
       setError(null)
     }, [clearAllTimeouts])
 
@@ -489,7 +470,6 @@ const InteractiveDemo = memo(
           setVisibleMessages(
             currentTask?.slackMessages.map((msg) => msg.id) || []
           )
-          setConnectionStatus('complete')
           setIsLoading(false)
           // Call the onDemoComplete callback if provided
           if (onDemoComplete) {
@@ -500,7 +480,6 @@ const InteractiveDemo = memo(
 
         // Start the sequence without resetting to idle
         console.log('Setting initial demo state - ticketCreated: true')
-        setConnectionStatus('connecting')
         setDemoState((prev) => {
           const newState: DemoState = {
             ...prev,
@@ -518,13 +497,10 @@ const InteractiveDemo = memo(
             ...prev,
             phase: 'creating-subtasks' as const,
           }))
-          setShowConnectionPulse(true)
-          safeSetTimeout(() => setShowConnectionPulse(false), 1000)
         }, 800)
 
         safeSetTimeout(() => {
           setDemoState((prev) => ({ ...prev, subtasksCreated: true }))
-          setConnectionStatus('syncing')
         }, 1200)
 
         safeSetTimeout(() => {
@@ -575,8 +551,6 @@ const InteractiveDemo = memo(
                 currentTask.subtasks[i].id,
               ])
               if (i === subtasksToComplete - 1) {
-                setShowConnectionPulse(true)
-                safeSetTimeout(() => setShowConnectionPulse(false), 1000)
 
                 // Set complete phase AFTER all subtasks are done
                 safeSetTimeout(() => {
@@ -587,8 +561,7 @@ const InteractiveDemo = memo(
                     ...prev,
                     phase: 'complete' as const,
                   }))
-                  setConnectionStatus('complete')
-                  // Call the onDemoComplete callback if provided
+                          // Call the onDemoComplete callback if provided
                   if (onDemoComplete) {
                     onDemoComplete()
                   }
@@ -601,8 +574,7 @@ const InteractiveDemo = memo(
           console.log('No subtasks found, completing demo after messages')
           safeSetTimeout(() => {
             setDemoState((prev) => ({ ...prev, phase: 'complete' as const }))
-            setConnectionStatus('complete')
-            if (onDemoComplete) {
+              if (onDemoComplete) {
               onDemoComplete()
             }
           }, messageDelay + 800)
