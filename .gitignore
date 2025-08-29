@@ -62,3 +62,5 @@ claude-flow.ps1
 hive-mind-prompt-*.txt
 
 .playwright-mcp
+
+.env.local
