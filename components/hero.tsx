@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 // import Link from 'next/link'
 import { ArrowRight, Users, FileText, TrendingUp, Settings } from 'lucide-react'
 import * as RadioGroup from '@radix-ui/react-radio-group'
+import * as Label from '@radix-ui/react-label'
 import {
   cn,
   incrementDelegationClickCount,
@@ -278,7 +279,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
-                className="bg-white/70 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/30 shadow-xl ring-1 ring-gray-200/20"
+                className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-sm md:backdrop-blur-md motion-reduce:!backdrop-blur-0 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/30 dark:border-white/10 shadow-xl ring-1 ring-gray-200/20 dark:ring-white/10"
                 role="tabpanel"
                 id={`panel-${selectedTeam}`}
                 aria-labelledby={`tab-${selectedTeam}`}
@@ -299,39 +300,46 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                   aria-labelledby={`task-heading-${currentTeam.id}`}
                 >
                   {currentTeam.tasks.map((task) => (
-                    <label
+                    <div
                       key={task.id}
                       className={cn(
-                        'flex items-center justify-between gap-2 p-2.5 sm:p-4 rounded-md sm:rounded-lg transition-all duration-200',
+                        'flex flex-col items-start sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 p-3 sm:p-4 rounded-lg transition-all duration-200',
                         isDemoRunning && 'cursor-not-allowed opacity-60',
                         !isDemoRunning && 'cursor-pointer',
                         selectedTask === task.id
                           ? 'bg-gray-100 border border-gray-600'
                           : 'bg-gray-50 border border-gray-200 hover:bg-gray-100'
                       )}
+                      role="group"
+                      aria-disabled={isDemoRunning}
+                      aria-labelledby={`task-label-${task.id}`}
                     >
-                      <div className="flex items-center gap-2 sm:gap-3 flex-1">
+                      <div className="flex items-center gap-3 flex-1">
                         <RadioGroup.Item
+                          id={`task-${task.id}`}
                           value={task.id}
                           disabled={isDemoRunning}
                           className={cn(
-                            'w-2.5 h-2.5 sm:w-5 sm:h-5 rounded-full border sm:border-2 bg-white flex items-center justify-center align-middle',
+                            'w-5 h-5 rounded-full border-2 bg-white flex items-center justify-center',
                             'data-[state=checked]:border-gray-900 data-[state=checked]:bg-gray-900',
                             isDemoRunning
                               ? 'cursor-not-allowed opacity-50'
-                              : 'border-gray-600'
+                              : 'border-gray-600',
+                            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-600'
                           )}
                         >
                           <RadioGroup.Indicator className="w-2 h-2 rounded-full bg-white" />
                         </RadioGroup.Item>
-                        <span className="text-gray-900 text-sm sm:text-base leading-snug">
+                        <Label.Root
+                          id={`task-label-${task.id}`}
+                          htmlFor={`task-${task.id}`}
+                          className="text-gray-900 text-sm sm:text-base leading-snug cursor-pointer"
+                        >
                           {task.label}
-                        </span>
+                        </Label.Root>
                       </div>
-                      <span className="hidden sm:block text-gray-500 text-xs">
-                        {task.time}
-                      </span>
-                    </label>
+                      <span className="text-gray-500 text-[13px] sm:text-sm">{task.time}</span>
+                    </div>
                   ))}
                 </RadioGroup.Root>
 
@@ -350,11 +358,11 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                   )}
                 >
                   {isDemoRunning ? (
-                    <span className="inline-flex items-center">
+                    <span className="inline-flex items-center" role="status" aria-live="polite" aria-atomic="true">
                       Demo in Progress...
                     </span>
                   ) : isDelegating ? (
-                    <span className="inline-flex items-center">
+                    <span className="inline-flex items-center" role="status" aria-live="polite" aria-atomic="true">
                       <svg
                         className="animate-spin -ml-1 mr-3 h-5 w-5"
                         xmlns="http://www.w3.org/2000/svg"

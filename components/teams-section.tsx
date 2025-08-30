@@ -644,10 +644,11 @@ export default function TeamsSection({
       }
 
       // Reset states after animation; scroll is handled by InteractiveDemoWrapper
-      setTimeout(() => {
+      const t3 = window.setTimeout(() => {
         setIsAutoDelegating(false)
         setDelegationInProgress(false)
       }, 2000)
+      autoDelegateRef.current.push(t3)
     },
     [onDelegation]
   )
