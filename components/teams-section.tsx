@@ -17,7 +17,11 @@ import {
   Activity,
   Zap,
 } from 'lucide-react'
-import { cn, incrementDelegationClickCount, redirectToCalIfThresholdMet } from '@/lib/utils'
+import {
+  cn,
+  incrementDelegationClickCount,
+  redirectToCalIfThresholdMet,
+} from '@/lib/utils'
 
 // AI Team Member Data with Avatar Images
 const teamMembers = [
@@ -627,23 +631,27 @@ export default function TeamsSection({
     }
   }, [])
 
-  const performDelegation = React.useCallback((memberId: string, task: string) => {
-    setDelegationInProgress(true)
+  const performDelegation = React.useCallback(
+    (memberId: string, task: string) => {
+      setDelegationInProgress(true)
 
-    // Simulate delegation process
-    console.log(`Delegating task: "${task}" to ${memberId}`)
+      // Simulate delegation process
+      console.log(`Delegating task: "${task}" to ${memberId}`)
 
-    // Trigger the demo through the parent component
-    if (onDelegation) {
-      onDelegation(task)
-    }
+      // Trigger the demo through the parent component
+      if (onDelegation) {
+        onDelegation(task)
+      }
 
-    // Reset states after animation; scroll is handled by InteractiveDemoWrapper
-    setTimeout(() => {
-      setIsAutoDelegating(false)
-      setDelegationInProgress(false)
-    }, 2000)
-  }, [onDelegation])
+      // Reset states after animation; scroll is handled by InteractiveDemoWrapper
+      const t3 = window.setTimeout(() => {
+        setIsAutoDelegating(false)
+        setDelegationInProgress(false)
+      }, 2000)
+      autoDelegateRef.current.push(t3)
+    },
+    [onDelegation]
+  )
 
   const handleAutoDelegate = React.useCallback(() => {
     // Don't auto-delegate if demo is already running
@@ -727,7 +735,7 @@ export default function TeamsSection({
   }
 
   return (
-    <section className="relative py-20 sm:py-24 lg:py-32 overflow-hidden">
+    <section className="relative pt-20 sm:pt-24 lg:pt-28 pb-10 sm:pb-12 lg:pb-14 overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-gradient-to-b from-neutral-50/50 via-white to-white pointer-events-none" />
 
