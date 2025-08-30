@@ -298,7 +298,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                     <label
                       key={task.id}
                       className={cn(
-                        'flex flex-col items-start sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 p-3 sm:p-4 rounded-lg transition-all duration-200',
+                        'flex items-center justify-between gap-2 p-2.5 sm:p-4 rounded-md sm:rounded-lg transition-all duration-200',
                         isDemoRunning && 'cursor-not-allowed opacity-60',
                         !isDemoRunning && 'cursor-pointer',
                         selectedTask === task.id
@@ -306,7 +306,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                           : 'bg-gray-50 border border-gray-200 hover:bg-gray-100'
                       )}
                     >
-                      <div className="flex items-center gap-3 flex-1">
+                      <div className="flex items-center gap-2 sm:gap-3 flex-1">
                         <RadioGroup.Item
                           value={task.id}
                           disabled={isDemoRunning}
@@ -324,7 +324,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                           {task.label}
                         </span>
                       </div>
-                      <span className="hidden sm:block text-gray-500 text-sm">{task.time}</span>
+                      <span className="hidden sm:block text-gray-500 text-xs">{task.time}</span>
                     </label>
                   ))}
                 </RadioGroup.Root>
