@@ -4,7 +4,11 @@ import { useEffect, useRef, useState } from 'react'
 // import Link from 'next/link'
 import { ArrowRight, Users, FileText, TrendingUp, Settings } from 'lucide-react'
 import * as RadioGroup from '@radix-ui/react-radio-group'
-import { cn, incrementDelegationClickCount, redirectToCalIfThresholdMet } from '@/lib/utils'
+import {
+  cn,
+  incrementDelegationClickCount,
+  redirectToCalIfThresholdMet,
+} from '@/lib/utils'
 import { motion, AnimatePresence } from 'framer-motion'
 
 // Team data with AI names and tasks
@@ -318,13 +322,15 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                               : 'border-gray-600'
                           )}
                         >
-                          <RadioGroup.Indicator className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-white" />
+                          <RadioGroup.Indicator className="w-2 h-2 rounded-full bg-white" />
                         </RadioGroup.Item>
                         <span className="text-gray-900 text-sm sm:text-base leading-snug">
                           {task.label}
                         </span>
                       </div>
-                      <span className="hidden sm:block text-gray-500 text-xs">{task.time}</span>
+                      <span className="hidden sm:block text-gray-500 text-xs">
+                        {task.time}
+                      </span>
                     </label>
                   ))}
                 </RadioGroup.Root>
