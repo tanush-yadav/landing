@@ -274,14 +274,14 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
-                className="bg-white/70 backdrop-blur-md rounded-2xl p-6 border border-white/30 shadow-xl ring-1 ring-gray-200/20"
+                className="bg-white/70 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/30 shadow-xl ring-1 ring-gray-200/20"
                 role="tabpanel"
                 id={`panel-${selectedTeam}`}
                 aria-labelledby={`tab-${selectedTeam}`}
               >
                 <h3
                   id={`task-heading-${currentTeam.id}`}
-                  className="text-gray-900 text-lg font-heading font-semibold mb-4"
+                  className="text-gray-900 text-base sm:text-lg font-heading font-semibold leading-snug mb-3 sm:mb-4"
                 >
                   Select a task for {currentTeam.aiName} to complete:
                 </h3>
@@ -291,14 +291,14 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                   onValueChange={(value) =>
                     !isDemoRunning && setSelectedTask(value)
                   }
-                  className="space-y-3"
+                  className="space-y-2 sm:space-y-3"
                   aria-labelledby={`task-heading-${currentTeam.id}`}
                 >
                   {currentTeam.tasks.map((task) => (
                     <label
                       key={task.id}
                       className={cn(
-                        'flex items-center justify-between p-4 rounded-lg transition-all duration-200',
+                        'flex flex-col items-start sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 p-3 sm:p-4 rounded-lg transition-all duration-200',
                         isDemoRunning && 'cursor-not-allowed opacity-60',
                         !isDemoRunning && 'cursor-pointer',
                         selectedTask === task.id
@@ -306,7 +306,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                           : 'bg-gray-50 border border-gray-200 hover:bg-gray-100'
                       )}
                     >
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-3 flex-1">
                         <RadioGroup.Item
                           value={task.id}
                           disabled={isDemoRunning}
@@ -320,11 +320,11 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                         >
                           <RadioGroup.Indicator className="w-2 h-2 rounded-full bg-white" />
                         </RadioGroup.Item>
-                        <span className="text-gray-900 text-base">
+                        <span className="text-gray-900 text-sm sm:text-base leading-snug">
                           {task.label}
                         </span>
                       </div>
-                      <span className="text-gray-500 text-sm">{task.time}</span>
+                      <span className="text-gray-500 text-xs sm:text-sm">{task.time}</span>
                     </label>
                   ))}
                 </RadioGroup.Root>
@@ -336,7 +336,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                   aria-label={`Delegate task to ${currentTeam.aiName}`}
                   aria-busy={isDelegating}
                   className={cn(
-                    'w-full mt-6 py-4 px-6 rounded-full font-semibold text-base transition-all duration-200 transform',
+                    'w-full mt-4 sm:mt-6 py-3 sm:py-4 px-5 sm:px-6 rounded-xl sm:rounded-full font-semibold text-sm sm:text-base transition-all duration-200 transform',
                     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-600',
                     selectedTask && !isDelegating && !isDemoRunning
                       ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 hover:scale-[1.02] shadow-lg hover:shadow-xl'
