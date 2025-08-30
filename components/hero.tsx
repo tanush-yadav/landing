@@ -311,20 +311,20 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                           value={task.id}
                           disabled={isDemoRunning}
                           className={cn(
-                            'w-5 h-5 rounded-full border-2 bg-white flex items-center justify-center',
+                            'w-3 h-3 sm:w-5 sm:h-5 rounded-full border sm:border-2 bg-white flex items-center justify-center',
                             'data-[state=checked]:border-gray-900 data-[state=checked]:bg-gray-900',
                             isDemoRunning
                               ? 'cursor-not-allowed opacity-50'
                               : 'border-gray-600'
                           )}
                         >
-                          <RadioGroup.Indicator className="w-2 h-2 rounded-full bg-white" />
+                          <RadioGroup.Indicator className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-white" />
                         </RadioGroup.Item>
                         <span className="text-gray-900 text-sm sm:text-base leading-snug">
                           {task.label}
                         </span>
                       </div>
-                      <span className="text-gray-500 text-xs sm:text-sm">{task.time}</span>
+                      <span className="hidden sm:block text-gray-500 text-sm">{task.time}</span>
                     </label>
                   ))}
                 </RadioGroup.Root>
@@ -385,7 +385,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
           {/* Trust Indicators */}
           <div
             className={cn(
-              'mt-12 flex flex-wrap justify-center items-center gap-8 text-gray-500 text-sm opacity-0',
+              'mt-12 mb-16 sm:mb-0 flex flex-wrap justify-center items-center gap-6 sm:gap-8 text-gray-500 text-xs sm:text-sm opacity-0',
               isVisible && 'animate-fade-in animation-delay-600'
             )}
           >
@@ -432,7 +432,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
+      <div className="absolute bottom-5 sm:bottom-8 left-1/2 -translate-x-1/2">
         <div
           className={cn(
             'flex flex-col items-center text-gray-400 transition-all duration-300 hover:text-gray-600 cursor-pointer opacity-0',
