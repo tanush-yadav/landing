@@ -311,7 +311,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                           value={task.id}
                           disabled={isDemoRunning}
                           className={cn(
-                            'w-3 h-3 sm:w-5 sm:h-5 rounded-full border sm:border-2 bg-white flex items-center justify-center',
+                            'w-2.5 h-2.5 sm:w-5 sm:h-5 rounded-full border sm:border-2 bg-white flex items-center justify-center align-middle',
                             'data-[state=checked]:border-gray-900 data-[state=checked]:bg-gray-900',
                             isDemoRunning
                               ? 'cursor-not-allowed opacity-50'
