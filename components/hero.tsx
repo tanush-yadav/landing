@@ -302,6 +302,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                   {currentTeam.tasks.map((task) => (
                     <div
                       key={task.id}
+                      onClick={() => { if (!isDemoRunning) setSelectedTask(task.id) }}
                       className={cn(
                         'flex flex-col items-start sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 p-3 sm:p-4 rounded-lg transition-all duration-200',
                         isDemoRunning && 'cursor-not-allowed opacity-60',
@@ -310,9 +311,6 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                           ? 'bg-gray-100 border border-gray-600'
                           : 'bg-gray-50 border border-gray-200 hover:bg-gray-100'
                       )}
-                      role="group"
-                      aria-disabled={isDemoRunning}
-                      aria-labelledby={`task-label-${task.id}`}
                     >
                       <div className="flex items-center gap-3 flex-1">
                         <RadioGroup.Item
@@ -325,7 +323,8 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                             isDemoRunning
                               ? 'cursor-not-allowed opacity-50'
                               : 'border-gray-600',
-                            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-600'
+                            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-600',
+                            'focus-visible:ring-offset-gray-100 dark:focus-visible:ring-offset-gray-900'
                           )}
                         >
                           <RadioGroup.Indicator className="w-2 h-2 rounded-full bg-white" />
@@ -350,7 +349,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                   aria-label={`Delegate task to ${currentTeam.aiName}`}
                   aria-busy={isDelegating}
                   className={cn(
-                    'w-full mt-4 sm:mt-6 py-3 sm:py-4 px-5 sm:px-6 rounded-xl sm:rounded-full font-semibold text-sm sm:text-base transition-all duration-200 transform',
+                    'w-full mt-4 sm:mt-6 min-h-[44px] py-3 sm:py-4 px-5 sm:px-6 rounded-xl sm:rounded-full font-semibold text-sm sm:text-base transition-all duration-200 transform',
                     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-600',
                     selectedTask && !isDelegating && !isDemoRunning
                       ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 hover:scale-[1.02] shadow-lg hover:shadow-xl'
@@ -405,6 +404,8 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
           >
             <div className="flex items-center gap-2">
               <svg
+                aria-hidden="true"
+                focusable="false"
                 className="h-5 w-5 text-green-500"
                 fill="currentColor"
                 viewBox="0 0 20 20"
@@ -419,6 +420,8 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
             </div>
             <div className="flex items-center gap-2">
               <svg
+                aria-hidden="true"
+                focusable="false"
                 className="h-5 w-5 text-blue-500"
                 fill="currentColor"
                 viewBox="0 0 20 20"
@@ -433,6 +436,8 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
             </div>
             <div className="flex items-center gap-2">
               <svg
+                aria-hidden="true"
+                focusable="false"
                 className="h-5 w-5 text-purple-500"
                 fill="currentColor"
                 viewBox="0 0 20 20"
@@ -460,7 +465,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
           }}
         >
           <span className="text-sm font-medium mb-3">Scroll to explore</span>
-          <div className="animate-bounce">
+          <div className="motion-safe:animate-bounce motion-reduce:animate-none">
             <svg
               className="h-6 w-6"
               fill="none"
