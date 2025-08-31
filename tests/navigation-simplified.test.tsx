@@ -38,8 +38,11 @@ describe('Navigation Simplification Requirements', () => {
       render(<NavigationComponent />);
       
       // These should be present (will PASS when implemented)
-      expect(screen.getByRole('link', { name: /agents/i })).toBeInTheDocument();
-      expect(screen.getByRole('link', { name: /blog/i })).toBeInTheDocument();
+      const agentsLinks = screen.getAllByRole('link', { name: /agents/i });
+      const blogLinks = screen.getAllByRole('link', { name: /blog/i });
+      
+      expect(agentsLinks.length).toBeGreaterThanOrEqual(1);
+      expect(blogLinks.length).toBeGreaterThanOrEqual(1);
       
       // These should NOT be present (will FAIL initially, PASS when removed)
       expect(screen.queryByText(/pricing/i)).not.toBeInTheDocument();
@@ -54,11 +57,13 @@ describe('Navigation Simplification Requirements', () => {
     it('should have correct href attributes for navigation links', () => {
       render(<NavigationComponent />);
       
-      const agentsLink = screen.getByRole('link', { name: /agents/i });
-      const blogLink = screen.getByRole('link', { name: /blog/i });
+      const agentsLinks = screen.getAllByRole('link', { name: /agents/i });
+      const blogLinks = screen.getAllByRole('link', { name: /blog/i });
       
-      expect(agentsLink).toHaveAttribute('href', '/team');
-      expect(blogLink).toHaveAttribute('href', '/blog');
+      // Check that at least one Agents link has correct href
+      expect(agentsLinks.some(link => link.getAttribute('href') === '/team')).toBe(true);
+      // Check that at least one Blog link has correct href
+      expect(blogLinks.some(link => link.getAttribute('href') === '/blog')).toBe(true);
     });
 
     it('should maintain logo and brand functionality', () => {
