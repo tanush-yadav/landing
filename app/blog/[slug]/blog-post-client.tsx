@@ -1,49 +1,67 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { ArrowLeft, Clock } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
-import Navigation from '@/components/navigation';
-import { animations } from '@/lib/design-system';
-import '@/styles/blog-post.css';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowLeft, Bookmark, Heart, Share2 } from 'lucide-react';
+import { getDefaultBlogImage } from '@/lib/blog-defaults';
+interface BlogPostData {
+  title: string;
+  description?: string;
+  excerpt?: string;
+  date: string;
+  author: string;
+  slug: string;
+  category?: string;
+  featuredImage?: string;
+  readTime?: number;
+  content: string;
+  htmlContent: string;
+  authorAvatar?: string;
+  image?: string;
+  tags?: string[];
+  contentHtml?: string;
+}
 
 interface BlogPostClientProps {
-  post: {
-    title: string;
-    description?: string;
-    excerpt?: string;
-    date: string;
-    author: string;
-    slug: string;
-    category?: string;
-    featuredImage?: string;
-    readTime?: number;
-    content: string;
-    htmlContent: string;
-  };
+  post: BlogPostData;
 }
 
 export default function BlogPostClient({ post }: BlogPostClientProps) {
-  const router = useRouter();
-  const [readingProgress, setReadingProgress] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [showHeader, setShowHeader] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [bookmarked, setBookmarked] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const lastScrollY = useRef(0);
 
-  // Reading progress indicator
-  const handleScroll = useCallback(() => {
-    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const currentProgress = (window.scrollY / totalHeight) * 100;
-    setReadingProgress(Math.min(100, Math.max(0, currentProgress)));
-  }, []);
+  // Get hero image URL - use featured image if available, otherwise use random default
+  const heroImageUrl = post.featuredImage || post.image || getDefaultBlogImage();
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (currentScrollY / scrollHeight) * 100;
+      setScrollProgress(Math.min(progress, 100));
+
+      // Show/hide header based on scroll direction
+      if (currentScrollY > 200) {
+        if (currentScrollY < lastScrollY.current) {
+          setShowHeader(true);
+        } else {
+          setShowHeader(false);
+        }
+      } else {
+        setShowHeader(false);
+      }
+      lastScrollY.current = currentScrollY;
     };
-  }, [handleScroll]);
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -54,158 +72,245 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
     });
   };
 
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: post.title,
+          text: post.excerpt,
+          url: window.location.href,
+        });
+      } catch (err) {
+        console.log('Error sharing:', err);
+      }
+    } else {
+      // Fallback to copying URL
+      navigator.clipboard.writeText(window.location.href);
+      alert('Link copied to clipboard!');
+    }
+  };
+
   return (
-    <main className="min-h-screen bg-white">
-      <Navigation />
-      
-      {/* Reading Progress Bar */}
-      <div className="fixed top-0 left-0 right-0 h-0.5 bg-gray-100 z-50">
-        <div 
-          className="h-full bg-indigo-600 transition-all duration-150 ease-out"
-          style={{ width: `${readingProgress}%` }}
+    <>
+      {/* Progress Bar */}
+      <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-gray-200">
+        <motion.div
+          className="h-full bg-gradient-to-r from-blue-600 to-purple-600"
+          style={{ width: `${scrollProgress}%` }}
+          transition={{ duration: 0.1 }}
         />
       </div>
 
-      {/* Back Button */}
-      <div className="pt-24 md:pt-28 pb-6">
-        <div className="max-w-[680px] mx-auto px-5 sm:px-6">
-          <button
-            onClick={() => router.push('/blog')}
-            className="inline-flex items-center text-sm text-gray-500 hover:text-gray-900 transition-colors group"
+      {/* Sticky Header */}
+      <AnimatePresence>
+        {showHeader && (
+          <motion.header
+            initial={{ y: -100 }}
+            animate={{ y: 0 }}
+            exit={{ y: -100 }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-100"
           >
-            <ArrowLeft className="h-3.5 w-3.5 mr-1.5 transition-transform group-hover:-translate-x-1" />
-            <span>Back to blog</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Article Header */}
-      <header>
-        <div className="max-w-[680px] mx-auto px-5 sm:px-6">
-          <motion.div
-            initial={animations.fadeIn.initial}
-            animate={animations.fadeIn.animate}
-            transition={{ duration: 0.6 }}
-          >
-            {/* Category Badge */}
-            {post.category && (
-              <div className="mb-4">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700 uppercase tracking-wider">
-                  {post.category}
-                </span>
+            <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <Link
+                  href="/blog"
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                >
+                  <ArrowLeft size={20} />
+                </Link>
+                <div>
+                  <h1 className="font-display text-lg font-semibold line-clamp-1">
+                    {post.title}
+                  </h1>
+                  <p className="text-sm text-gray-500">
+                    {post.author} · {post.readTime} min read
+                  </p>
+                </div>
               </div>
-            )}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setBookmarked(!bookmarked)}
+                  className={`p-2 rounded-full transition-colors ${
+                    bookmarked ? 'bg-gray-900 text-white' : 'hover:bg-gray-100'
+                  }`}
+                >
+                  <Bookmark size={20} fill={bookmarked ? 'currentColor' : 'none'} />
+                </button>
+                <button
+                  onClick={handleShare}
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                >
+                  <Share2 size={20} />
+                </button>
+              </div>
+            </div>
+          </motion.header>
+        )}
+      </AnimatePresence>
 
-            {/* Title - Medium-style large font */}
-            <h1 className="font-display text-[2rem] sm:text-[2.5rem] md:text-[3rem] leading-[1.1] text-gray-900 mb-6 tracking-tight">
+      {/* Main Content */}
+      <article className="min-h-screen bg-white">
+        <div className="max-w-4xl mx-auto px-6 py-12">
+          {/* Back Button */}
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-8 transition-colors"
+          >
+            <ArrowLeft size={20} />
+            <span>Back to Blog</span>
+          </Link>
+
+          {/* Article Header */}
+          <header className="mb-12">
+            <h1 className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
               {post.title}
             </h1>
+            
+            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+              {post.excerpt}
+            </p>
 
-            {/* Subtitle/Excerpt - Medium-style */}
-            {(post.excerpt || post.description) && (
-              <p className="text-[1.25rem] sm:text-[1.375rem] text-gray-600 mb-8 leading-[1.5] font-light">
-                {post.excerpt || post.description}
-              </p>
-            )}
-
-            {/* Author Info Row - Medium-style */}
-            <div className="flex items-center gap-4 pb-8 border-b border-gray-200">
-              <div className="relative h-12 w-12 overflow-hidden rounded-full bg-gradient-to-br from-indigo-400 to-purple-400">
-                <div className="flex items-center justify-center h-full text-white font-medium text-lg">
-                  {post.author.charAt(0).toUpperCase()}
+            {/* Author Section */}
+            <div className="flex items-center justify-between pb-8 border-b border-gray-200">
+              <div className="flex items-center gap-4">
+                {post.authorAvatar ? (
+                  <div className="relative w-12 h-12 rounded-full overflow-hidden bg-gray-200">
+                    <Image
+                      src={post.authorAvatar}
+                      alt={post.author}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                    <span className="text-white font-medium text-lg">
+                      {post.author.charAt(0).toUpperCase()}
+                    </span>
+                  </div>
+                )}
+                <div>
+                  <p className="font-medium text-gray-900">{post.author}</p>
+                  <p className="text-sm text-gray-500">
+                    {formatDate(post.date)} · {post.readTime} min read
+                  </p>
                 </div>
               </div>
               
-              <div className="flex-1">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="font-medium text-gray-900">{post.author}</span>
-                  <span className="text-gray-400">·</span>
-                  <span className="text-gray-600 text-sm">{formatDate(post.date)}</span>
-                  {post.readTime && (
-                    <>
-                      <span className="text-gray-400">·</span>
-                      <span className="text-gray-600 text-sm flex items-center gap-1">
-                        <Clock className="h-3.5 w-3.5" />
-                        {post.readTime} min read
-                      </span>
-                    </>
-                  )}
-                </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setBookmarked(!bookmarked)}
+                  className={`p-2 rounded-full transition-colors ${
+                    bookmarked ? 'bg-gray-900 text-white' : 'hover:bg-gray-100'
+                  }`}
+                  aria-label="Bookmark"
+                >
+                  <Bookmark size={24} fill={bookmarked ? 'currentColor' : 'none'} />
+                </button>
+                <button
+                  onClick={handleShare}
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  aria-label="Share"
+                >
+                  <Share2 size={24} />
+                </button>
               </div>
             </div>
-          </motion.div>
-        </div>
-      </header>
+          </header>
 
-      {/* Featured Image - Full width on mobile, constrained on desktop */}
-      {post.featuredImage && (
-        <motion.div 
-          className="mt-8 mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <div className="max-w-[860px] mx-auto px-0 sm:px-6">
-            <div className="relative h-[280px] sm:h-[400px] md:h-[480px] sm:rounded-xl overflow-hidden bg-gray-100">
-              <Image
-                src={post.featuredImage}
-                alt={post.title}
-                fill
-                className="object-cover"
-                priority
-                sizes="(max-width: 640px) 100vw, (max-width: 860px) 860px, 860px"
-              />
-            </div>
+          {/* Hero Image - Always show, use default if needed */}
+          <div className="relative w-full h-[400px] md:h-[500px] mb-12 rounded-lg overflow-hidden">
+            <Image
+              src={heroImageUrl}
+              alt={post.title}
+              fill
+              className="object-cover"
+              priority
+            />
           </div>
-        </motion.div>
-      )}
 
-      {/* Article Content - Medium-style Typography */}
-      <article className="pb-16 sm:pb-24">
-        <motion.div 
-          className="max-w-[680px] mx-auto px-5 sm:px-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-        >
+          {/* Article Content */}
           <div 
-            className="medium-content prose prose-lg prose-gray max-w-none"
-            dangerouslySetInnerHTML={{ __html: post.htmlContent }}
+            ref={contentRef}
+            className="prose prose-lg prose-gray max-w-none"
+            dangerouslySetInnerHTML={{ __html: post.htmlContent || '' }}
           />
-        </motion.div>
-      </article>
 
-      {/* Author Bio Section */}
-      <section className="py-12 border-t border-gray-200">
-        <div className="max-w-[680px] mx-auto px-5 sm:px-6">
-          <div className="flex items-start gap-4">
-            <div className="relative h-16 w-16 overflow-hidden rounded-full bg-gradient-to-br from-indigo-400 to-purple-400 flex-shrink-0">
-              <div className="flex items-center justify-center h-full text-white font-medium text-2xl">
-                {post.author.charAt(0).toUpperCase()}
-              </div>
+          {/* Tags */}
+          {post.tags && post.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-12 pt-8 border-t border-gray-200">
+              {post.tags.map((tag) => (
+                <Link
+                  key={tag}
+                  href={`/blog?tag=${tag}`}
+                  className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-full text-sm text-gray-700 transition-colors"
+                >
+                  {tag}
+                </Link>
+              ))}
             </div>
-            <div className="flex-1">
-              <h3 className="font-semibold text-gray-900 mb-1">Written by {post.author}</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                Building the future of AI-powered automation at Volition Labs.
-              </p>
+          )}
+
+          {/* Interaction Bar */}
+          <div className="flex items-center justify-between mt-12 p-6 bg-gray-50 rounded-lg">
+            <div className="flex items-center gap-6">
+              <button
+                onClick={() => setLiked(!liked)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${
+                  liked 
+                    ? 'bg-red-500 text-white' 
+                    : 'bg-white hover:bg-gray-100 text-gray-700'
+                }`}
+              >
+                <Heart size={20} fill={liked ? 'currentColor' : 'none'} />
+                <span className="font-medium">
+                  {liked ? 'Liked' : 'Like'}
+                </span>
+              </button>
+              
+              <button
+                onClick={handleShare}
+                className="flex items-center gap-2 px-4 py-2 bg-white hover:bg-gray-100 rounded-full text-gray-700 transition-colors"
+              >
+                <Share2 size={20} />
+                <span className="font-medium">Share</span>
+              </button>
             </div>
+            
+            <button
+              onClick={() => setBookmarked(!bookmarked)}
+              className={`p-3 rounded-full transition-all ${
+                bookmarked 
+                  ? 'bg-gray-900 text-white' 
+                  : 'bg-white hover:bg-gray-100 text-gray-700'
+              }`}
+              aria-label="Bookmark"
+            >
+              <Bookmark size={24} fill={bookmarked ? 'currentColor' : 'none'} />
+            </button>
           </div>
-        </div>
-      </section>
 
-      {/* Back to Blog - Bottom */}
-      <section className="py-12 sm:py-16 border-t border-gray-100">
-        <div className="max-w-[680px] mx-auto px-5 sm:px-6 text-center">
-          <button
-            onClick={() => router.push('/blog')}
-            className="inline-flex items-center px-6 py-3 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors group font-medium"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2 transition-transform group-hover:-translate-x-1" />
-            <span>Back to All Articles</span>
-          </button>
+
+          {/* Navigation */}
+          <nav className="flex justify-between items-center mt-16 pt-12 border-t border-gray-200">
+            <Link
+              href="/blog"
+              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              <ArrowLeft size={20} />
+              <span>Back to Blog</span>
+            </Link>
+            
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-full text-sm text-gray-700 transition-colors"
+            >
+              Back to top
+            </button>
+          </nav>
         </div>
-      </section>
-    </main>
+      </article>
+    </>
   );
 }

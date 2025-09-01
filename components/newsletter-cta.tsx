@@ -184,7 +184,7 @@ export function NewsletterCTA() {
                             `}
                             placeholder="Enter your email"
                             aria-label="Email address"
-                            aria-invalid={showError}
+                            aria-invalid={showError ? 'true' : undefined}
                             aria-describedby={showError ? 'email-error' : undefined}
                           />
                           {showError && (

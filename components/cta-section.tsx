@@ -1,166 +1,152 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ArrowRight, Sparkles, Star } from 'lucide-react'
+import { ArrowRight, Sparkles, Trophy } from 'lucide-react'
+// import { Button } from '@/components/ui/button'
 
 export function CTASection() {
   return (
-    <section className="relative w-full py-20 sm:py-24 lg:py-32 overflow-hidden">
-      {/* Enhanced gradient background matching hero section style */}
+    <section className="relative w-full pt-12 pb-16 md:pt-14 md:pb-20 overflow-x-clip md:overflow-visible bg-gradient-to-b from-white via-purple-50/20 to-white">
+      {/* Very subtle gradient background */}
       <div className="absolute inset-0">
-        {/* Primary gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-blue-50/30" />
-        
-        {/* Glass texture layer */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-white/40 via-transparent to-white/20" />
-        
-        {/* Subtle geometric pattern overlay */}
-        <div
-          className="absolute inset-0 opacity-[0.015]"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='grid' width='60' height='60' patternUnits='userSpaceOnUse'%3E%3Cpath d='M 60 0 L 0 0 0 60' fill='none' stroke='black' stroke-width='0.5'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23grid)' /%3E%3C/svg%3E")`,
-          }}
-        />
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-purple-50/20 to-transparent" />
       </div>
 
-      {/* Floating glass orbs for depth */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-gradient-to-br from-purple-200/20 via-pink-100/15 to-transparent backdrop-blur-3xl border border-white/10 animate-float" />
-        <div className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-gradient-to-tr from-blue-200/20 via-cyan-100/15 to-transparent backdrop-blur-3xl border border-white/10 animate-float-delayed" />
-      </div>
-
-      {/* Content container */}
-      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="container relative z-10 mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-          className="mx-auto max-w-4xl"
+          transition={{ duration: 0.6 }}
+          className="max-w-4xl mx-auto"
         >
-          {/* Main CTA Card with glass morphism */}
-          <div className="relative overflow-hidden rounded-3xl bg-white/60 backdrop-blur-xl border border-white/40 shadow-2xl ring-1 ring-gray-200/10">
-            {/* Subtle gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-white/50 via-transparent to-white/30" />
-            
-            {/* Decorative elements */}
-            <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-gradient-to-br from-indigo-100/30 via-purple-50/20 to-transparent blur-3xl" />
-            <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-gradient-to-tr from-blue-100/30 via-cyan-50/20 to-transparent blur-3xl" />
-            
-            {/* Star decorations */}
-            <div className="absolute top-8 right-8 opacity-10">
-              <Star className="h-24 w-24 text-indigo-600 fill-indigo-600" />
-            </div>
-            <div className="absolute bottom-8 left-8 opacity-10">
-              <Star className="h-20 w-20 text-purple-600 fill-purple-600" />
+          {/* Clean CTA Card */}
+          <div className="relative isolate rounded-2xl bg-white/80 backdrop-blur-sm border border-gray-100 p-12 md:p-16 shadow-lg">
+            {/* Subtle trophy decoration on the right */}
+            <div className="absolute top-1/2 -translate-y-1/2 right-12 md:right-16 opacity-5 z-0 pointer-events-none select-none">
+              <Trophy className="w-32 h-32 md:w-40 md:h-40 text-purple-600" />
             </div>
 
-            {/* Content */}
-            <div className="relative z-10 px-8 py-12 sm:px-12 sm:py-16 lg:px-16 lg:py-20">
-              <div className="text-center">
-                {/* Badge */}
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.1, duration: 0.4 }}
-                  className="inline-flex justify-center mb-6"
-                >
-                  <span className="inline-flex items-center rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 px-4 py-2 text-sm font-semibold text-indigo-700 ring-1 ring-inset ring-indigo-600/20">
-                    <Sparkles className="mr-2 h-4 w-4 text-indigo-600" />
-                    Limited Time Offer
-                  </span>
-                </motion.div>
-
-                {/* Heading */}
-                <motion.h2
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2, duration: 0.5 }}
-                  className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold text-gray-900 tracking-tight"
-                  style={{ letterSpacing: '-0.02em' }}
-                >
-                  <span className="block">Ready to Transform</span>
-                  <span className="block mt-2 bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
-                    Your Workflow?
-                  </span>
-                </motion.h2>
-
-                {/* Description */}
-                <motion.p
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.3, duration: 0.5 }}
-                  className="mx-auto mt-6 max-w-2xl text-lg sm:text-xl text-gray-600 leading-relaxed"
-                >
-                  Join thousands of companies already using AI employees to scale their operations. 
-                  Start your journey with a personalized demo tailored to your needs.
-                </motion.p>
-
-                {/* CTA Buttons */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.4, duration: 0.5 }}
-                  className="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center"
-                >
-                  {/* Primary CTA */}
-                  <motion.a
-                    href="https://cal.com/tanushyadav/quick-chat"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group relative inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full shadow-lg hover:shadow-xl transform transition-all duration-200 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-600"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <span className="relative flex items-center">
-                      Book Your Demo
-                      <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-200 group-hover:translate-x-1" />
+            <div className="relative z-10 text-center space-y-6">
+              {/* Clean label */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2, duration: 0.4 }}
+                className="relative z-0 inline-flex pointer-events-none select-none"
+              >
+                <div className="px-3 py-1.5 bg-purple-50 rounded-full border border-purple-100">
+                  <div className="flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-purple-600" />
+                    <span className="text-xs font-semibold text-purple-700">
+                      Hire your AI agents
                     </span>
-                  </motion.a>
+                  </div>
+                </div>
+              </motion.div>
 
-                  {/* Secondary CTA */}
-                  <motion.a
-                    href="#features"
-                    className="group inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-gray-700 bg-white rounded-full border-2 border-gray-200 shadow-md hover:shadow-lg hover:border-gray-300 transform transition-all duration-200 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gray-500"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    Learn More
-                  </motion.a>
-                </motion.div>
+              {/* Main heading - cleaner and more readable */}
+              <motion.h2
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+                className="relative z-10 text-3xl md:text-4xl lg:text-5xl font-bold font-display leading-[1.3] md:leading-[1.25] lg:leading-[1.2] tracking-tight"
+              >
+                <span className="text-gray-900 block pb-[2px] -mb-[2px]">
+                  Each agent we train becomes
+                </span>
+                <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent block mt-3 pb-[2px] -mb-[2px]">
+                  employee of the month.
+                </span>
+              </motion.h2>
 
-                {/* Trust indicators */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.5, duration: 0.5 }}
-                  className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-gray-500"
+              {/* Cleaner subtext */}
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4, duration: 0.5 }}
+                className="max-w-xl mx-auto text-base md:text-lg text-gray-600 leading-relaxed"
+              >
+                Ready to hire and train your next employee of the month with
+                your own hands? AI that only thinks about your data and its
+                work.
+              </motion.p>
+
+              {/* Leaner CTA Button */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.5, duration: 0.4 }}
+                className="pt-4"
+              >
+                <a
+                  href="https://cal.com/tanushyadav/quick-chat"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center relative group bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium px-6 py-4 min-h-[48px] text-base rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-purple-600"
                 >
-                  <span className="flex items-center">
-                    <svg className="mr-2 h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                    14-day free trial
+                  <span className="flex items-center gap-2">
+                    Book an Appointment
+                    <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
                   </span>
-                  <span className="flex items-center">
-                    <svg className="mr-2 h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                    No credit card required
-                  </span>
-                  <span className="flex items-center">
-                    <svg className="mr-2 h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                    Cancel anytime
-                  </span>
-                </motion.div>
-              </div>
+                </a>
+              </motion.div>
+
+              {/* Simple trust indicators */}
+              {/* <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.6, duration: 0.5 }}
+                className="flex flex-wrap items-center justify-center gap-4 md:gap-6 pt-6"
+              >
+                <span className="flex items-center gap-1.5 text-sm text-gray-500">
+                  <svg
+                    className="w-4 h-4 text-green-500"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  No credit card required
+                </span>
+                <span className="flex items-center gap-1.5 text-sm text-gray-500">
+                  <svg
+                    className="w-4 h-4 text-green-500"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  15-minute setup
+                </span>
+                <span className="flex items-center gap-1.5 text-sm text-gray-500">
+                  <svg
+                    className="w-4 h-4 text-green-500"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  Cancel anytime
+                </span>
+              </motion.div> */}
             </div>
           </div>
         </motion.div>

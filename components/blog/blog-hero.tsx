@@ -32,10 +32,10 @@ const BlogHero: React.FC<BlogHeroProps> = ({ onSearch, className }) => {
   }
 
   const quickSearchTopics = [
-    { label: 'AI Automation', icon: TrendingUp },
-    { label: 'Best Practices', icon: Lightbulb },
-    { label: 'Team Management', icon: Users },
-    { label: 'Workflows', icon: BookOpen },
+    { label: 'AI Strategy', icon: TrendingUp },
+    { label: 'Automation', icon: Lightbulb },
+    { label: 'Engineering', icon: Users },
+    { label: 'Business', icon: BookOpen },
   ]
 
   return (
@@ -233,9 +233,9 @@ const BlogHero: React.FC<BlogHeroProps> = ({ onSearch, className }) => {
             }}
           >
             {[
-              { label: 'Articles', value: '25+', number: 25, suffix: '+', gradient: 'from-indigo-600 to-blue-600' },
-              { label: 'Categories', value: '4', number: 4, suffix: '', gradient: 'from-blue-600 to-violet-600' },
-              { label: 'Authors', value: '8', number: 8, suffix: '', gradient: 'from-violet-600 to-indigo-600' },
+              { label: 'Articles', value: '6', number: 6, suffix: '', gradient: 'from-indigo-600 to-blue-600' },
+              { label: 'Categories', value: '2', number: 2, suffix: '', gradient: 'from-blue-600 to-violet-600' },
+              { label: 'Author', value: '1', number: 1, suffix: '', gradient: 'from-violet-600 to-indigo-600' },
             ].map((stat, index) => (
               <motion.div
                 key={stat.label}

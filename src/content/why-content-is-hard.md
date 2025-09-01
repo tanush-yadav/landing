@@ -1,12 +1,12 @@
 ---
-title: "Why Content Is Hard"
-excerpt: "Building a content pipeline from scratch revealed why most founders struggle with consistent content creation - and how AI changes the economics"
-date: "2025-01-01"
-author: "Tanush Yadav"
-authorAvatar: "/images/team/tanush.jpg"
-category: "AI Strategy"
-tags: ["content-strategy", "ai", "startup-growth", "content-marketing"]
-image: "/images/blog/content-pipeline.jpg"
+title: 'Why Content Is Hard'
+excerpt: 'Building a content pipeline from scratch revealed why most founders struggle with consistent content creation - and how AI changes the economics'
+date: '2025-01-01'
+author: 'Tanush Yadav'
+authorAvatar: '/images/team/tanush.jpg'
+category: 'AI Strategy'
+tags: ['content-strategy', 'ai', 'startup-growth', 'content-marketing']
+image: '/images/blog/default_5.jpg'
 featured: true
 ---
 

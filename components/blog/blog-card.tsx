@@ -13,6 +13,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { BlogPost } from '@/lib/types';
 import { cn } from '@/lib/design-system';
+import { getDefaultBlogImage } from '@/lib/blog-defaults';
 
 interface BlogCardProps {
   post: BlogPost;
@@ -34,6 +35,9 @@ const BlogCard: React.FC<BlogCardProps> = ({
     });
   };
 
+  // Get image URL - use featured image if available, otherwise use random default
+  const imageUrl = post.featuredImage || getDefaultBlogImage();
+
   return (
     <Link href={`/blog/${post.slug}`} className="block group">
       <motion.article
@@ -50,19 +54,17 @@ const BlogCard: React.FC<BlogCardProps> = ({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
-        {/* Featured Image - Clean, no overlays */}
-        {post.featuredImage && (
-          <div className="relative h-48 w-full overflow-hidden bg-gray-50">
-            <Image
-              src={post.featuredImage}
-              alt={post.title}
-              fill
-              className="object-cover"
-              priority={priority}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
-          </div>
-        )}
+        {/* Featured Image - Always show, use default if needed */}
+        <div className="relative h-48 w-full overflow-hidden bg-gray-50">
+          <Image
+            src={imageUrl}
+            alt={post.title}
+            fill
+            className="object-cover"
+            priority={priority}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        </div>
 
         {/* Content - Clean typography focus */}
         <div className="p-6">
