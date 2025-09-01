@@ -1,10 +1,15 @@
 ---
-title: "The 5 Agent Patterns That Matter: From Simple Prompts to Production Systems"
-description: "**I burned three weeks building an orchestration nightmare. Then I shipped 100 images in 48 hours with a for-loop.** Here's why complexity is your enemy in agent systems—and the exact pattern hierarchy that actually works."
-date: "2025-09-01"
-author: "Tanush Yadav"
-slug: "the-5-agent-patterns-that-matter-from-simple-prompts-to-production-systems"
-linear_id: "VOL-33"
+title: 'The 5 Agent Patterns That Matter: From Simple Prompts to Production Systems'
+excerpt: "I burned three weeks building an orchestration nightmare. Then I shipped 100 images in 48 hours with a for-loop. Here's why complexity is your enemy in agent systems."
+date: '2025-09-01'
+author: 'Tanush Yadav'
+authorAvatar: '/images/team/tanush.jpg'
+category: 'Engineering'
+tags: ['ai-agents', 'production', 'system-design', 'engineering']
+image: '/images/blog/default_4.jpg'
+slug: 'the-5-agent-patterns-that-matter-from-simple-prompts-to-production-systems'
+linear_id: 'VOL-33'
+featured: true
 ---
 
 # The 5 Agent Patterns That Matter: From Simple Prompts to Production Systems
@@ -14,7 +19,7 @@ linear_id: "VOL-33"
 ## The Pattern Stack (Least to Most Complex)
 
 1. **Why Your First Agent Should Be You** - Direct feedback, rapid iteration
-2. **Reusable prompts** - Parameterized templates with tests  
+2. **Reusable prompts** - Parameterized templates with tests
 3. **Sub-agents** - Specialized tasks with parallelization
 4. **MCP wrappers** - Production-grade integration layer
 5. **Full applications** - Queues, observability, SLAs
@@ -30,6 +35,7 @@ Anchor here. Everything else builds on this foundation.
 ### My 100-Image Sprint Process
 
 **Hour 0-2 results:**
+
 - Generated 20 test images manually
 - Tracked acceptance rate (30% → 65%)
 - The breakthrough: switching from "professional" to "isometric" eliminated 70% of rejections
@@ -56,6 +62,7 @@ img = single_image(prompt)
 ```
 
 **Key metrics to track:**
+
 - Acceptance rate (% shipped without edits)
 - Edit distance (words changed per iteration)
 - Time to first acceptable result
@@ -93,6 +100,7 @@ def generate_batch(themes, style="isometric", form="slide"):
 **85% acceptance revealed the pattern:** aesthetic consistency trumped creative variety. One style, infinite variations.
 
 **Two additions that paid off:**
+
 - **Unit tests** for critical terms (brand colors, negative prompts)
 - **YAML registry** for styles (marketing can PR changes)
 
@@ -103,12 +111,14 @@ def generate_batch(themes, style="isometric", form="slide"):
 Sub-agents solve exactly one problem: concurrent specialization. Everything else is over-engineering.
 
 Reserve sub-agents for dual requirements:
+
 - Parallelization alone → Use batching with semaphore
 - Specialization alone → Use single prompt with sections
 
 ### My Sub-Agent Architecture
 
 **Specialization:**
+
 - **Prompt Stylist** - Shapes initial prompt
 - **Safety Checker** - Enforces brand/policy
 - **Visual QA** - Validates composition
@@ -134,11 +144,13 @@ async def generate_all(themes):
 ```
 
 **Results after sub-agents:**
+
 - Throughput: 12 → 68 images/min
 - Acceptance: 85% → 92% (the 7% jump came from Visual QA catching composition issues early)
 - Unit cost: +4-6% (offset by fewer re-renders)
 
 **Common failures:**
+
 - Cascading retries (bound per stage)
 - Prompt drift (single config source)
 - Over-parallelization (start at 5, scale monitoring p95)
@@ -152,29 +164,30 @@ MCP transforms ad-hoc scripts into typed contracts. The power isn't intelligence
 ### Minimal MCP Server
 
 ```typescript
-import { Server } from "@modelcontextprotocol/sdk/server";
-import { z } from "zod";
+import { Server } from '@modelcontextprotocol/sdk/server'
+import { z } from 'zod'
 
-const server = new Server({ name: "image-gen", version: "0.1.0" });
+const server = new Server({ name: 'image-gen', version: '0.1.0' })
 
 const GenerateImageInput = z.object({
   prompt: z.string(),
-  size: z.enum(["1024x1024", "1536x1024", "1792x1024"]),
-  style: z.enum(["isometric", "photo", "schematic"])
-});
+  size: z.enum(['1024x1024', '1536x1024', '1792x1024']),
+  style: z.enum(['isometric', 'photo', 'schematic']),
+})
 
-server.tool("generate_image", {
-  description: "Generate branded image",
+server.tool('generate_image', {
+  description: 'Generate branded image',
   inputSchema: GenerateImageInput,
   handler: async ({ prompt, size, style }) => {
-    const refinedPrompt = buildPrompt(prompt, style);
-    const image = await callImageAPI(refinedPrompt, size);
-    return { prompt: refinedPrompt, size, b64: image };
-  }
-});
+    const refinedPrompt = buildPrompt(prompt, style)
+    const image = await callImageAPI(refinedPrompt, size)
+    return { prompt: refinedPrompt, size, b64: image }
+  },
+})
 ```
 
 **Benefits:**
+
 - Clear schemas and errors
 - Centralized constraints
 - Zero glue code for new clients
@@ -186,6 +199,7 @@ server.tool("generate_image", {
 Production isn't about sophistication—it's about promises. Every component exists to keep one.
 
 **Required components:**
+
 - Queue with idempotency keys
 - Budget control and rate limits
 - Audit logs with trace IDs
@@ -203,9 +217,9 @@ while True:
             prompt = enforce_policy(prompt)
             img = render(prompt, job.size)
             qa = vision_check(img)
-            if qa.ok: 
+            if qa.ok:
                 store(img); mark_done(job.id)
-            else: 
+            else:
                 store(qa.report); mark_needs_review(job.id)
     except RateLimit:
         queue.defer(job, delay=backoff(job.attempt))
@@ -218,19 +232,23 @@ while True:
 Ask these questions in order. Ascend only when you can justify "yes."
 
 1. **Is it ambiguous/aesthetic?** → Start human-in-the-loop
+
    - Ship 10 manually
    - <60% acceptance: keep iterating
-   - >80% acceptance: graduate to reusable
+   - > 80% acceptance: graduate to reusable
 
 2. **Will you reuse >2x per week?** → Create reusable prompt
+
    - Parameters and tests
    - Config not code
 
 3. **Need specialization AND parallelization?** → Add sub-agents
+
    - Target: >20 items/min
    - 2+ reasoning modes
 
 4. **Multiple tools/teams need access?** → MCP wrapper
+
    - 2+ client surfaces
    - Stable interface needed
 

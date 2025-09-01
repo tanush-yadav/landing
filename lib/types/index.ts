@@ -268,6 +268,68 @@ export interface TableData<T = unknown> {
 }
 
 // ============================================================================
+// Blog Types
+// ============================================================================
+
+export interface BlogAuthor {
+  name: string;
+  avatar: string;
+  bio: string;
+  socialLinks?: {
+    twitter?: string;
+    linkedin?: string;
+    github?: string;
+  };
+}
+
+export interface BlogPost {
+  id: ID;
+  title: string;
+  excerpt: string;
+  content: string;
+  author: BlogAuthor;
+  publishedAt: Timestamp;
+  updatedAt?: Timestamp;
+  readTime: number; // in minutes
+  tags: string[];
+  category: string;
+  featuredImage?: string;
+  slug: string;
+  status: 'draft' | 'published' | 'archived';
+  seo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+    keywords?: string[];
+    canonicalUrl?: string;
+  };
+}
+
+export interface BlogCategory {
+  id: ID;
+  name: string;
+  slug: string;
+  description?: string;
+  color?: string;
+  postCount: number;
+}
+
+export interface BlogTag {
+  name: string;
+  slug: string;
+  postCount: number;
+}
+
+export interface BlogFilters {
+  search?: string;
+  category?: string;
+  tags?: string[];
+  author?: string;
+  sortBy?: 'publishedAt' | 'title' | 'readTime';
+  sortOrder?: 'asc' | 'desc';
+  readTimeRange?: 'short' | 'medium' | 'long';
+}
+
+// ============================================================================
 // Utility Types
 // ============================================================================
 

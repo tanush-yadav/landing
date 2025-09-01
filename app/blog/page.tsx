@@ -1,33 +1,54 @@
 import { Metadata } from 'next'
 import Navigation from '@/components/navigation'
+import BlogPageClient from '@/components/blog/blog-page-client'
+import { BlogListStructuredData } from '@/components/blog/blog-structured-data'
+import { getAllPosts, getCategoriesWithCounts } from '@/lib/content-loader.server'
 
 export const metadata: Metadata = {
-  title: 'Blog - Cintra',
-  description: 'Latest insights on AI automation, agentic workflows, and team productivity.',
+  title: 'Blog - Cintra | AI Automation Insights & Best Practices',
+  description: 'Discover the latest insights on AI automation, agentic workflows, and team productivity. Learn how leading teams are transforming their work with AI-powered solutions.',
+  keywords: 'AI automation, agentic workflows, team productivity, AI agents, workflow automation, productivity tips, AI best practices',
+  authors: [{ name: 'Cintra Team' }],
+  openGraph: {
+    title: 'Cintra Blog - AI Automation Insights',
+    description: 'Latest insights on AI automation, agentic workflows, and team productivity from the Cintra team.',
+    type: 'website',
+    url: 'https://cintra.ai/blog',
+    images: [
+      {
+        url: '/og-blog.png',
+        width: 1200,
+        height: 630,
+        alt: 'Cintra Blog - AI Automation Insights',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Cintra Blog - AI Automation Insights',
+    description: 'Latest insights on AI automation, agentic workflows, and team productivity.',
+    images: ['/og-blog.png'],
+  },
+  alternates: {
+    canonical: 'https://cintra.ai/blog',
+  },
 }
 
 export default function BlogPage() {
+  // Get posts from the server-side content loader
+  const blogPosts = getAllPosts();
+  const blogCategories = getCategoriesWithCounts();
+
   return (
-    <main className="min-h-screen">
-      <Navigation />
-      <div className="pt-32 pb-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-              Blog
-            </h1>
-            <p className="text-xl text-gray-600 mb-8">
-              Latest insights on AI automation, agentic workflows, and team productivity.
-            </p>
-            <div className="bg-white/20 backdrop-blur-xl border border-white/40 rounded-2xl p-8 shadow-xl">
-              <p className="text-gray-700">
-                Our blog is coming soon. We&apos;ll share insights about AI automation, 
-                best practices for agentic workflows, and tips for improving team productivity.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
+    <>
+      <BlogListStructuredData posts={blogPosts} />
+      <main className="min-h-screen">
+        <Navigation />
+        <BlogPageClient 
+          initialPosts={blogPosts} 
+          categories={blogCategories} 
+        />
+      </main>
+    </>
   )
 }

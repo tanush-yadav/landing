@@ -2,8 +2,10 @@
 
 import { useState, useEffect, useCallback, memo } from 'react'
 import Link from 'next/link'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, ChevronRight, Sparkles, Calendar } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
+import { CALENDAR_LINK, CTA_TEXT } from '@/lib/constants'
 
 const Navigation = memo(() => {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -12,8 +14,13 @@ const Navigation = memo(() => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const navItems = [
-    { label: 'Agents', href: '/team' },
-    { label: 'Blog', href: '/blog' },
+    // { label: 'Agents', href: '/agents', icon: '🤖', description: 'Meet our AI team' },
+    {
+      label: 'Blog',
+      href: '/blog',
+      icon: '📚',
+      description: 'Latest insights',
+    },
   ]
 
   const controlNavbar = useCallback(() => {
@@ -64,13 +71,20 @@ const Navigation = memo(() => {
 
   return (
     <>
-      <header
+      <motion.header
         className={cn(
-          'fixed top-0 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ease-out',
-          isVisible
-            ? 'translate-y-0 opacity-100'
-            : '-translate-y-full opacity-0'
+          'fixed top-0 left-0 right-0 z-50 flex justify-center',
+          'transform-gpu' // GPU acceleration
         )}
+        initial={{ y: -100, opacity: 0 }}
+        animate={{
+          y: isVisible ? 0 : -100,
+          opacity: isVisible ? 1 : 0,
+        }}
+        transition={{
+          duration: 0.3,
+          ease: [0.25, 0.4, 0.25, 1],
+        }}
       >
         <nav
           className={cn(
@@ -80,7 +94,7 @@ const Navigation = memo(() => {
               ? 'mt-4 mx-4 rounded-2xl bg-white/90 backdrop-blur-xl border border-white/60 shadow-2xl shadow-black/10 ring-1 ring-gray-200/20'
               : 'mt-6 mx-4 rounded-2xl bg-white/20 backdrop-blur-xl border border-white/40 shadow-xl shadow-black/5 ring-1 ring-white/20',
             // Responsive width
-            'w-[calc(100vw-2rem)] max-w-5xl'
+            'w-full max-w-5xl'
           )}
         >
           <div
@@ -90,12 +104,16 @@ const Navigation = memo(() => {
               isScrolled ? 'h-14 px-6' : 'h-16 px-6'
             )}
           >
-            {/* Logo */}
-            <div className="flex items-center">
+            {/* Enhanced Logo with Animation */}
+            <motion.div
+              className="flex items-center"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
               <Link
                 href="/"
                 className={cn(
-                  'text-xl font-bold transition-all duration-300 hover:scale-105',
+                  'flex items-center gap-2 text-xl font-bold transition-all duration-300',
                   isScrolled
                     ? 'text-gray-900'
                     : 'text-gray-900 drop-shadow-sm font-semibold'
@@ -104,7 +122,7 @@ const Navigation = memo(() => {
               >
                 Cintra
               </Link>
-            </div>
+            </motion.div>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center">
@@ -125,6 +143,30 @@ const Navigation = memo(() => {
                   </Link>
                 ))}
               </div>
+
+              {/* CTA Button */}
+              <motion.div
+                className="ml-4"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Link
+                  href={CALENDAR_LINK}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(
+                    'inline-flex items-center gap-2 px-4 py-2 rounded-lg',
+                    'text-sm font-semibold transition-all duration-300',
+                    'shadow-lg hover:shadow-xl',
+                    isScrolled
+                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700'
+                      : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 backdrop-blur-sm'
+                  )}
+                >
+                  <Calendar className="w-4 h-4" />
+                  <span>{CTA_TEXT}</span>
+                </Link>
+              </motion.div>
             </div>
 
             {/* Mobile Menu Button */}
@@ -149,7 +191,7 @@ const Navigation = memo(() => {
             </button>
           </div>
         </nav>
-      </header>
+      </motion.header>
 
       {/* Mobile Menu Overlay */}
       <div
@@ -210,6 +252,20 @@ const Navigation = memo(() => {
                   {item.label}
                 </Link>
               ))}
+            </div>
+
+            {/* CTA Button - Mobile */}
+            <div className="pt-4 border-t border-gray-200/40">
+              <Link
+                href={CALENDAR_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-base font-semibold rounded-lg shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200"
+                onClick={closeMobileMenu}
+              >
+                <Calendar className="w-5 h-5" />
+                <span>{CTA_TEXT}</span>
+              </Link>
             </div>
           </nav>
         </div>
