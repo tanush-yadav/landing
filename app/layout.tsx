@@ -38,6 +38,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://cintra.run',
   },
+  icons: {
+    icon: '/images/favicon.ico',
+    shortcut: '/images/favicon.ico',
+  },
   openGraph: {
     title: 'Cintra – AI Employees That Join Your Team',
     description:
