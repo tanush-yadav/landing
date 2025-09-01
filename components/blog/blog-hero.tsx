@@ -42,7 +42,7 @@ const BlogHero: React.FC<BlogHeroProps> = ({ onSearch, className }) => {
     <section
       data-testid="blog-hero"
       className={cn(
-        'relative overflow-x-clip py-20 lg:py-28',
+        'relative overflow-hidden py-20 lg:py-28',
         // Enhanced gradient with better color depth and vibrancy
         'bg-gradient-to-br from-indigo-50 via-white to-blue-50',
         className
@@ -220,7 +220,7 @@ const BlogHero: React.FC<BlogHeroProps> = ({ onSearch, className }) => {
 
           {/* Stats Section with Spring Animations - Mobile Optimized */}
           <motion.div
-            className="flex sm:grid sm:grid-cols-3 gap-4 sm:gap-6 max-w-2xl mx-auto overflow-x-auto pb-2 sm:pb-0 -mx-4 px-4 sm:mx-auto sm:px-0"
+            className="flex sm:grid sm:grid-cols-3 gap-4 sm:gap-6 max-w-2xl mx-auto overflow-x-auto sm:overflow-x-visible pb-2 sm:pb-0 -mx-4 px-4 sm:mx-auto sm:px-0"
             initial="hidden"
             animate="visible"
             variants={{
@@ -233,9 +233,9 @@ const BlogHero: React.FC<BlogHeroProps> = ({ onSearch, className }) => {
             }}
           >
             {[
-              { label: 'Articles', value: '25+', number: 25, suffix: '+' },
-              { label: 'Categories', value: '4', number: 4, suffix: '' },
-              { label: 'Authors', value: '8', number: 8, suffix: '' },
+              { label: 'Articles', value: '25+', number: 25, suffix: '+', gradient: 'from-indigo-600 to-blue-600' },
+              { label: 'Categories', value: '4', number: 4, suffix: '', gradient: 'from-blue-600 to-violet-600' },
+              { label: 'Authors', value: '8', number: 8, suffix: '', gradient: 'from-violet-600 to-indigo-600' },
             ].map((stat, index) => (
               <motion.div
                 key={stat.label}
@@ -247,7 +247,7 @@ const BlogHero: React.FC<BlogHeroProps> = ({ onSearch, className }) => {
                   'flex-shrink-0 sm:flex-shrink' // Prevent shrinking on mobile
                 )}
                 variants={{
-                  hidden: { opacity: 0, y: 30, scale: 0.9 },
+                  hidden: { opacity: 0, y: 20, scale: 0.95 },
                   visible: {
                     opacity: 1,
                     y: 0,
@@ -269,7 +269,7 @@ const BlogHero: React.FC<BlogHeroProps> = ({ onSearch, className }) => {
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                 <motion.div
-                  className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-emerald-600 bg-clip-text text-transparent"
+                  className={cn("text-3xl font-bold bg-gradient-to-r bg-clip-text text-transparent", stat.gradient)}
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{
