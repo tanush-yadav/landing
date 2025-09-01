@@ -1,0 +1,143 @@
+/* Blog Mobile Optimizations */
+
+/* Hide scrollbar while maintaining scroll functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
+
+/* Mobile viewport fixes for 375px and below */
+@media (max-width: 375px) {
+  /* Adjust padding for small screens */
+  .blog-hero-content {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Ensure touch targets are at least 48px */
+  button,
+  a,
+  input,
+  select,
+  textarea,
+  [role="button"] {
+    min-height: 48px;
+    min-width: 48px;
+  }
+
+  /* Fix text overflow issues */
+  h1, h2, h3, h4, h5, h6 {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  /* Adjust font sizes for better readability */
+  .text-4xl {
+    font-size: 1.875rem;
+  }
+  
+  .text-5xl {
+    font-size: 2.25rem;
+  }
+  
+  .text-6xl {
+    font-size: 2.5rem;
+  }
+
+  /* Fix grid layouts on mobile */
+  .grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Ensure images don't overflow */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* Smooth animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Fix tap highlight on mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Ensure proper focus styles for accessibility */
+:focus-visible {
+  outline: 2px solid #4F46E5;
+  outline-offset: 2px;
+}
+
+/* Loading skeleton animations */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.skeleton-loading {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 25%,
+    #e0e0e0 50%,
+    #f0f0f0 75%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Improved mobile card layouts */
+@media (max-width: 640px) {
+  .blog-card {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  /* Stack elements vertically on mobile */
+  .flex-row {
+    flex-direction: column;
+  }
+
+  /* Adjust spacing for mobile */
+  .gap-8 {
+    gap: 1.5rem;
+  }
+
+  .p-8 {
+    padding: 1.5rem;
+  }
+}
+
+/* Performance optimizations */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* GPU acceleration for smooth animations */
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}

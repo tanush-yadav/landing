@@ -131,15 +131,18 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setBookmarked(!bookmarked)}
-                  className={`p-2 rounded-full transition-colors ${
+                  className={`p-2 rounded-full transition-colors min-h-[48px] min-w-[48px] flex items-center justify-center ${
                     bookmarked ? 'bg-gray-900 text-white' : 'hover:bg-gray-100'
                   }`}
+                  aria-label={bookmarked ? 'Remove bookmark' : 'Add bookmark'}
+                  aria-pressed={bookmarked}
                 >
                   <Bookmark size={20} fill={bookmarked ? 'currentColor' : 'none'} />
                 </button>
                 <button
                   onClick={handleShare}
-                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors min-h-[48px] min-w-[48px] flex items-center justify-center"
+                  aria-label="Share article"
                 >
                   <Share2 size={20} />
                 </button>
@@ -201,17 +204,18 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setBookmarked(!bookmarked)}
-                  className={`p-2 rounded-full transition-colors ${
+                  className={`p-2 rounded-full transition-colors min-h-[48px] min-w-[48px] flex items-center justify-center ${
                     bookmarked ? 'bg-gray-900 text-white' : 'hover:bg-gray-100'
                   }`}
-                  aria-label="Bookmark"
+                  aria-label={bookmarked ? 'Remove bookmark' : 'Add bookmark'}
+                  aria-pressed={bookmarked}
                 >
                   <Bookmark size={24} fill={bookmarked ? 'currentColor' : 'none'} />
                 </button>
                 <button
                   onClick={handleShare}
-                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                  aria-label="Share"
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors min-h-[48px] min-w-[48px] flex items-center justify-center"
+                  aria-label="Share article"
                 >
                   <Share2 size={24} />
                 </button>
@@ -257,11 +261,13 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
             <div className="flex items-center gap-6">
               <button
                 onClick={() => setLiked(!liked)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${
+                className={`flex items-center gap-2 px-4 py-3 rounded-full transition-all min-h-[48px] ${
                   liked 
                     ? 'bg-red-500 text-white' 
                     : 'bg-white hover:bg-gray-100 text-gray-700'
                 }`}
+                aria-label={liked ? 'Unlike article' : 'Like article'}
+                aria-pressed={liked}
               >
                 <Heart size={20} fill={liked ? 'currentColor' : 'none'} />
                 <span className="font-medium">
@@ -271,7 +277,8 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
               
               <button
                 onClick={handleShare}
-                className="flex items-center gap-2 px-4 py-2 bg-white hover:bg-gray-100 rounded-full text-gray-700 transition-colors"
+                className="flex items-center gap-2 px-4 py-3 bg-white hover:bg-gray-100 rounded-full text-gray-700 transition-colors min-h-[48px]"
+                aria-label="Share article"
               >
                 <Share2 size={20} />
                 <span className="font-medium">Share</span>
@@ -280,12 +287,13 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
             
             <button
               onClick={() => setBookmarked(!bookmarked)}
-              className={`p-3 rounded-full transition-all ${
+              className={`p-3 rounded-full transition-all min-h-[48px] min-w-[48px] flex items-center justify-center ${
                 bookmarked 
                   ? 'bg-gray-900 text-white' 
                   : 'bg-white hover:bg-gray-100 text-gray-700'
               }`}
-              aria-label="Bookmark"
+              aria-label={bookmarked ? 'Remove bookmark' : 'Add bookmark'}
+              aria-pressed={bookmarked}
             >
               <Bookmark size={24} fill={bookmarked ? 'currentColor' : 'none'} />
             </button>

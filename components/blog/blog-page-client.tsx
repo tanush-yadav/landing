@@ -1,12 +1,24 @@
 'use client';
 
-import { useState } from 'react'
+import { useState, Suspense, lazy } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
-import BlogHero from '@/components/blog/blog-hero'
-import BlogGrid from '@/components/blog/blog-grid'
+import dynamic from 'next/dynamic'
+import BlogErrorBoundary from '@/components/blog/blog-error-boundary'
 import Breadcrumb from '@/components/ui/breadcrumb'
 import { BlogPost, BlogCategory } from '@/lib/types'
+import BlogSkeleton from '@/components/blog/blog-skeleton'
+
+// Lazy load components for better performance
+const BlogHero = dynamic(() => import('@/components/blog/blog-hero'), {
+  loading: () => <div className="h-96 bg-gradient-to-br from-indigo-50 to-blue-50 animate-pulse" />,
+  ssr: true
+})
+
+const BlogGrid = dynamic(() => import('@/components/blog/blog-grid'), {
+  loading: () => <BlogSkeleton />,
+  ssr: true
+})
 
 interface BlogPageClientProps {
   initialPosts: BlogPost[];
@@ -49,9 +61,11 @@ export default function BlogPageClient({ initialPosts, categories }: BlogPageCli
   ];
 
   return (
-    <>
+    <BlogErrorBoundary>
       {/* Hero Section */}
-      <BlogHero onSearch={handleSearch} />
+      <Suspense fallback={<div className="h-96 bg-gradient-to-br from-indigo-50 to-blue-50 animate-pulse" />}>
+        <BlogHero onSearch={handleSearch} />
+      </Suspense>
       
       {/* Breadcrumb Navigation */}
       <div className="bg-white/80 backdrop-blur-sm border-b border-gray-200">
@@ -61,22 +75,24 @@ export default function BlogPageClient({ initialPosts, categories }: BlogPageCli
       </div>
       
       {/* Blog Content */}
-      <section className="py-16 bg-gradient-to-b from-white to-gray-50">
+      <section className="py-12 sm:py-16 bg-gradient-to-b from-white to-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div id="blog-results">
-            <BlogGrid
-              posts={filteredPosts}
-              categories={categories}
-              onPostClick={handlePostClick}
-              showSearch={!searchQuery} // Hide search in grid if hero search is active
-              showFilters={true}
-            />
+            <Suspense fallback={<BlogSkeleton />}>
+              <BlogGrid
+                posts={filteredPosts}
+                categories={categories}
+                onPostClick={handlePostClick}
+                showSearch={!searchQuery} // Hide search in grid if hero search is active
+                showFilters={true}
+              />
+            </Suspense>
           </div>
         </div>
       </section>
 
       {/* Clean Newsletter CTA Section */}
-      <section className="py-20 bg-linear-bg-primary">
+      <section className="py-16 sm:py-20 bg-linear-bg-primary">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
             className="bg-linear-bg-secondary rounded-2xl border border-linear-border-subtle p-8 sm:p-12 text-center"
@@ -95,14 +111,16 @@ export default function BlogPageClient({ initialPosts, categories }: BlogPageCli
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-4 py-3 bg-linear-bg-primary border border-linear-border-default rounded-lg text-linear-text-primary placeholder:text-linear-text-quaternary focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+                className="flex-1 px-4 py-3 bg-linear-bg-primary border border-linear-border-default rounded-lg text-linear-text-primary placeholder:text-linear-text-quaternary focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 min-h-[48px]"
                 required
+                aria-label="Email subscription"
               />
               <motion.button 
                 type="submit"
-                className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors duration-200"
+                className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors duration-200 min-h-[48px] flex items-center justify-center"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
+                aria-label="Subscribe to newsletter"
               >
                 Subscribe
               </motion.button>
@@ -114,6 +132,6 @@ export default function BlogPageClient({ initialPosts, categories }: BlogPageCli
           </motion.div>
         </div>
       </section>
-    </>
+    </BlogErrorBoundary>
   )
 }
