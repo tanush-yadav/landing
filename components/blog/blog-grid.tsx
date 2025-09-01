@@ -409,7 +409,6 @@ const BlogGrid: React.FC<BlogGridProps> = ({
             >
               <BlogCard
                 post={post}
-                onReadMore={onPostClick}
                 priority={index < 3} // Load first 3 images with priority
               />
             </motion.div>
