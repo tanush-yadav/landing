@@ -326,6 +326,7 @@ export interface BlogFilters {
   author?: string;
   sortBy?: 'publishedAt' | 'title' | 'readTime';
   sortOrder?: 'asc' | 'desc';
+  readTimeRange?: 'short' | 'medium' | 'long';
 }
 
 // ============================================================================

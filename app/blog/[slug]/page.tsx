@@ -1,7 +1,7 @@
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { 
   ArrowLeft, 
@@ -27,6 +27,7 @@ export default function BlogPostPage() {
   const [post, setPost] = useState<BlogPost | null>(null);
   const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [readingProgress, setReadingProgress] = useState(0);
 
   useEffect(() => {
     if (params.slug && typeof params.slug === 'string') {
@@ -40,6 +41,33 @@ export default function BlogPostPage() {
       setIsLoading(false);
     }
   }, [params.slug]);
+
+  // Reading progress indicator
+  const handleScroll = useCallback(() => {
+    const articleElement = document.querySelector('article');
+    if (!articleElement) return;
+
+    const articleTop = articleElement.offsetTop;
+    const articleHeight = articleElement.offsetHeight;
+    const windowHeight = window.innerHeight;
+    const scrollTop = window.scrollY;
+
+    // Calculate how much of the article has been scrolled
+    const scrolledIntoArticle = Math.max(0, scrollTop - articleTop + windowHeight);
+    const totalScrollableHeight = articleHeight;
+    
+    const progress = Math.min(100, (scrolledIntoArticle / totalScrollableHeight) * 100);
+    setReadingProgress(progress);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial calculation
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [handleScroll]);
 
   const formatDate = (dateString: string | Date) => {
     const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
@@ -118,6 +146,17 @@ export default function BlogPostPage() {
   return (
     <main className="min-h-screen">
       <Navigation />
+      
+      {/* Reading Progress Bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 z-50 origin-left"
+        style={{ 
+          scaleX: readingProgress / 100,
+          transformOrigin: 'left'
+        }}
+        initial={{ scaleX: 0 }}
+        transition={{ duration: 0.1 }}
+      />
 
       {/* Breadcrumb */}
       <div className="pt-32 pb-8">

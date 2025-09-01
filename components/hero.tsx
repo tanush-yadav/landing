@@ -338,7 +338,9 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                           {task.label}
                         </Label.Root>
                       </div>
-                      <span className="text-gray-500 text-[13px] sm:text-sm">{task.time}</span>
+                      <span className="text-gray-500 text-[13px] sm:text-sm">
+                        {task.time}
+                      </span>
                     </div>
                   ))}
                 </RadioGroup.Root>
@@ -358,11 +360,21 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                   )}
                 >
                   {isDemoRunning ? (
-                    <span className="inline-flex items-center" role="status" aria-live="polite" aria-atomic="true">
+                    <span
+                      className="inline-flex items-center"
+                      role="status"
+                      aria-live="polite"
+                      aria-atomic="true"
+                    >
                       Demo in Progress...
                     </span>
                   ) : isDelegating ? (
-                    <span className="inline-flex items-center" role="status" aria-live="polite" aria-atomic="true">
+                    <span
+                      className="inline-flex items-center"
+                      role="status"
+                      aria-live="polite"
+                      aria-atomic="true"
+                    >
                       <svg
                         className="animate-spin -ml-1 mr-3 h-5 w-5"
                         xmlns="http://www.w3.org/2000/svg"

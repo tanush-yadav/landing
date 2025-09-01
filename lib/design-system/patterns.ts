@@ -3,7 +3,7 @@
  * This file defines reusable patterns and composition rules
  */
 
-import { type CSSProperties } from 'react';
+import { type CSSProperties } from 'react'
 
 // Component Size Variants
 export const sizes = {
@@ -12,9 +12,9 @@ export const sizes = {
   md: 'md',
   lg: 'lg',
   xl: 'xl',
-} as const;
+} as const
 
-export type Size = keyof typeof sizes;
+export type Size = keyof typeof sizes
 
 // Component Variant Types
 export const variants = {
@@ -26,9 +26,9 @@ export const variants = {
   danger: 'danger',
   success: 'success',
   warning: 'warning',
-} as const;
+} as const
 
-export type Variant = keyof typeof variants;
+export type Variant = keyof typeof variants
 
 // Component States
 export const states = {
@@ -40,9 +40,9 @@ export const states = {
   loading: 'loading',
   error: 'error',
   success: 'success',
-} as const;
+} as const
 
-export type State = keyof typeof states;
+export type State = keyof typeof states
 
 // Common Animation Patterns
 export const animations = {
@@ -87,7 +87,7 @@ export const animations = {
     animate: { rotate: 360 },
     transition: { duration: 1, ease: 'linear', repeat: Infinity },
   },
-} as const;
+} as const
 
 // Glass Morphism Pattern
 export const glassMorphism = {
@@ -103,18 +103,20 @@ export const glassMorphism = {
     WebkitBackdropFilter: 'blur(10px)',
     border: '1px solid rgba(255, 255, 255, 0.1)',
   } as CSSProperties,
-} as const;
+} as const
 
-// Gradient Patterns
+// Gradient Patterns - Enhanced with new color palette
 export const gradients = {
-  primary: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-  secondary: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-  success: 'linear-gradient(135deg, #13E2DA 0%, #1FA2FF 100%)',
+  primary: 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)', // Blue gradient
+  secondary: 'linear-gradient(135deg, #10B981 0%, #059669 100%)', // Emerald gradient
+  newsletter: 'linear-gradient(135deg, #2563EB 0%, #10B981 100%)', // Blue to Emerald
+  hero: 'linear-gradient(135deg, #EFF6FF 0%, #ECFDF5 100%)', // Subtle hero gradient
+  success: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
   warning: 'linear-gradient(135deg, #FCB045 0%, #FD7E14 100%)',
-  danger: 'linear-gradient(135deg, #FF512F 0%, #F09819 100%)',
-  dark: 'linear-gradient(135deg, #434343 0%, #000000 100%)',
-  mesh: 'radial-gradient(at 40% 20%, hsla(28,100%,74%,1) 0px, transparent 50%), radial-gradient(at 80% 0%, hsla(189,100%,56%,1) 0px, transparent 50%), radial-gradient(at 0% 50%, hsla(355,100%,93%,1) 0px, transparent 50%)',
-} as const;
+  danger: 'linear-gradient(135deg, #EF4444 0%, #DC2626 100%)',
+  dark: 'linear-gradient(135deg, #1F2937 0%, #111827 100%)',
+  mesh: 'radial-gradient(at 40% 20%, hsla(217,91%,60%,0.3) 0px, transparent 50%), radial-gradient(at 80% 0%, hsla(158,64%,52%,0.3) 0px, transparent 50%), radial-gradient(at 0% 50%, hsla(217,91%,95%,0.3) 0px, transparent 50%)',
+} as const
 
 // Common Layout Patterns
 export const layouts = {
@@ -133,20 +135,34 @@ export const layouts = {
     col: 'flex flex-col',
     wrap: 'flex flex-wrap',
   },
-} as const;
+} as const
 
-// Typography Patterns
+// Typography Patterns - Enhanced Modular Scale
 export const typography = {
-  h1: 'text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight',
-  h2: 'text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight',
-  h3: 'text-2xl sm:text-3xl lg:text-4xl font-semibold',
-  h4: 'text-xl sm:text-2xl lg:text-3xl font-semibold',
-  h5: 'text-lg sm:text-xl lg:text-2xl font-medium',
-  h6: 'text-base sm:text-lg lg:text-xl font-medium',
-  body: 'text-base leading-relaxed',
+  // Hero sizes with improved leading and tracking
+  hero: 'text-5xl lg:text-6xl font-bold font-display tracking-tight leading-[1.35]',
+  heroGradient:
+    'bg-gradient-to-r from-indigo-600 via-blue-600 to-violet-600 bg-clip-text text-transparent',
+
+  // Heading sizes with better hierarchy
+  h1: 'text-4xl lg:text-5xl font-bold tracking-tight leading-[1.2]',
+  h2: 'text-2xl lg:text-3xl font-semibold leading-[1.3]',
+  h3: 'text-xl lg:text-2xl font-semibold leading-[1.4]',
+  h4: 'text-lg lg:text-xl font-medium leading-[1.5]',
+  h5: 'text-base lg:text-lg font-medium leading-[1.6]',
+  h6: 'text-sm lg:text-base font-medium leading-[1.7]',
+
+  // Body text with improved readability
+  body: 'text-base lg:text-lg leading-relaxed text-gray-600',
+  bodyLarge: 'text-lg lg:text-xl leading-relaxed text-gray-600',
+  bodySmall: 'text-sm lg:text-base leading-relaxed text-gray-600',
+
+  // Utility text styles
   small: 'text-sm leading-relaxed',
   caption: 'text-xs uppercase tracking-wider',
-} as const;
+  label: 'text-sm font-medium text-gray-700',
+  helper: 'text-xs text-gray-500',
+} as const
 
 // Button Styles Pattern - Enhanced with gradients and better focus states
 export const buttonStyles = {
@@ -159,13 +175,18 @@ export const buttonStyles = {
     xl: 'px-6 py-4 text-xl min-h-[52px]',
   },
   variants: {
-    primary: 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 shadow-lg hover:shadow-xl focus-visible:ring-indigo-500',
-    secondary: 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-800 focus-visible:ring-gray-500 border border-gray-600',
-    outline: 'border-2 border-gray-600 text-gray-700 hover:border-gray-700 hover:bg-gray-50 hover:text-gray-800 focus-visible:ring-gray-500',
-    ghost: 'text-gray-700 hover:bg-gray-100 hover:text-gray-800 focus-visible:ring-gray-500',
-    danger: 'bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800 shadow-lg hover:shadow-xl focus-visible:ring-red-500',
+    primary:
+      'bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 shadow-lg hover:shadow-xl focus-visible:ring-indigo-500',
+    secondary:
+      'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-800 focus-visible:ring-gray-500 border border-gray-600',
+    outline:
+      'border-2 border-gray-600 text-gray-700 hover:border-gray-700 hover:bg-gray-50 hover:text-gray-800 focus-visible:ring-gray-500',
+    ghost:
+      'text-gray-700 hover:bg-gray-100 hover:text-gray-800 focus-visible:ring-gray-500',
+    danger:
+      'bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800 shadow-lg hover:shadow-xl focus-visible:ring-red-500',
   },
-} as const;
+} as const
 
 // Card Styles Pattern - Enhanced with better hover effects
 export const cardStyles = {
@@ -185,8 +206,8 @@ export const cardStyles = {
   hover: {
     transform: 'hover:-translate-y-1',
     shadow: 'hover:shadow-xl',
-  }
-} as const;
+  },
+} as const
 
 // Input Styles Pattern
 export const inputStyles = {
@@ -197,18 +218,22 @@ export const inputStyles = {
     lg: 'text-lg py-3',
   },
   variants: {
-    default: 'border-neutral-300 focus:border-primary-500 focus:ring-primary-500',
+    default:
+      'border-neutral-300 focus:border-primary-500 focus:ring-primary-500',
     error: 'border-red-500 focus:border-red-500 focus:ring-red-500',
     success: 'border-green-500 focus:border-green-500 focus:ring-green-500',
   },
-} as const;
+} as const
 
 // Accessibility Patterns
 export const a11y = {
-  srOnly: 'absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0',
-  focusVisible: 'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2',
-  skipToContent: 'sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-50',
-} as const;
+  srOnly:
+    'absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0',
+  focusVisible:
+    'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2',
+  skipToContent:
+    'sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-50',
+} as const
 
 // Responsive Patterns
 export const responsive = {
@@ -217,9 +242,9 @@ export const responsive = {
   mobileOnly: 'block sm:hidden',
   tabletUp: 'hidden sm:block',
   desktopUp: 'hidden lg:block',
-} as const;
+} as const
 
 // Export utility function to combine class names
 export const cn = (...classes: (string | undefined | null | false)[]) => {
-  return classes.filter(Boolean).join(' ');
-};
+  return classes.filter(Boolean).join(' ')
+}

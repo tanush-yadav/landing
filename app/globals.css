@@ -212,6 +212,10 @@
     animation: float 10s ease-in-out infinite;
     animation-delay: 2s;
   }
+  
+  .animate-pulse-slow {
+    animation: pulse-slow 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
 
   @keyframes float {
     0%,
@@ -220,6 +224,17 @@
     }
     50% {
       transform: translateY(-20px) scale(1.05);
+    }
+  }
+  
+  @keyframes pulse-slow {
+    0%, 100% {
+      opacity: 0.1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+      opacity: 0.2;
+      transform: translate(-50%, -50%) scale(1.1);
     }
   }
 
@@ -245,6 +260,22 @@
     }
     100% {
       background-position: 0% 50%;
+    }
+  }
+
+  /* Animated gradient shift for newsletter section */
+  .animate-gradient-shift {
+    animation: gradient-shift 8s ease-in-out infinite;
+  }
+
+  @keyframes gradient-shift {
+    0%, 100% {
+      opacity: 0.3;
+      transform: translateY(0) scale(1);
+    }
+    50% {
+      opacity: 0.6;
+      transform: translateY(-20px) scale(1.1);
     }
   }
 

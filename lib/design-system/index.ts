@@ -3,13 +3,13 @@
  * Export all design system utilities and patterns
  */
 
-export * from './theme';
-export * from './patterns';
-export { cn } from './patterns';
+export * from './theme'
+export * from './patterns'
+export { cn } from './patterns'
 
 // Re-export commonly used utilities
-export { theme } from './theme';
-export { 
+export { theme } from './theme'
+export {
   animations,
   buttonStyles,
   cardStyles,
@@ -20,4 +20,4 @@ export {
   gradients,
   a11y,
   responsive,
-} from './patterns';
+} from './patterns'

@@ -5,6 +5,7 @@ date: '2025-08-29'
 author: 'Tanush Yadav'
 slug: 'why-every-small-business-needs-automation-and-why-hiring-won-t-save-you'
 linear_id: 'VOL-25'
+image: '/images/why-every-small-business-needs-automation.png'
 ---
 
 # Why Every Small Business Needs Automation (And Why Hiring Won't Save You)
