@@ -128,7 +128,7 @@ const BlogHero: React.FC<BlogHeroProps> = ({ onSearch, className }) => {
               type: 'spring',
               stiffness: 100,
             }}
-            className="inline-block mb-6"
+            className="hidden sm:inline-block mb-6"
           >
             <div className="relative">
               {/* Glow effect */}
@@ -220,7 +220,7 @@ const BlogHero: React.FC<BlogHeroProps> = ({ onSearch, className }) => {
           >
             <form onSubmit={handleSearchSubmit} className="max-w-2xl mx-auto">
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none z-10">
+                <div className="absolute inset-y-0 left-0 pl-4 sm:pl-5 flex items-center pointer-events-none z-10">
                   <Search className="h-5 w-5 text-gray-600 group-hover:text-indigo-600 transition-colors duration-200" />
                 </div>
                 <AnimatePresence mode="wait">
@@ -235,7 +235,7 @@ const BlogHero: React.FC<BlogHeroProps> = ({ onSearch, className }) => {
                     aria-label="Search blog posts"
                     aria-describedby="search-hint"
                     className={cn(
-                      'block w-full pl-14 pr-32 py-3 sm:py-4 text-base sm:text-lg',
+                      'block w-full pl-12 sm:pl-14 pr-24 sm:pr-32 py-3 sm:py-4 text-base sm:text-lg',
                       'bg-white/90 backdrop-blur-sm border-2 border-gray-200/50 rounded-2xl',
                       'placeholder:text-gray-400 text-gray-900',
                       'hover:shadow-xl hover:border-indigo-300/50 hover:bg-white',
@@ -252,7 +252,7 @@ const BlogHero: React.FC<BlogHeroProps> = ({ onSearch, className }) => {
                 </AnimatePresence>
                 {/* Search loading spinner */}
                 {isSearching && (
-                  <div className="absolute right-36 inset-y-0 flex items-center">
+                  <div className="absolute right-28 sm:right-36 inset-y-0 flex items-center">
                     <svg
                       className="animate-spin h-5 w-5 text-indigo-600"
                       xmlns="http://www.w3.org/2000/svg"
@@ -279,14 +279,14 @@ const BlogHero: React.FC<BlogHeroProps> = ({ onSearch, className }) => {
                   type="submit"
                   aria-label="Search"
                   className={cn(
-                    'absolute inset-y-0 right-2 px-4 sm:px-6 my-2 rounded-xl',
+                    'absolute inset-y-0 right-2 px-3 sm:px-6 my-2 rounded-xl',
                     'bg-gradient-to-r from-indigo-600 to-purple-600',
                     'text-white font-medium shadow-lg',
                     'hover:from-indigo-700 hover:to-purple-700 hover:shadow-xl',
                     'focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2',
                     'transition-all duration-300',
                     'flex items-center justify-center group',
-                    'min-w-[48px]' // Mobile touch target
+                    'min-w-[44px] sm:min-w-[48px]' // Mobile touch target
                   )}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
