@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Bookmark, Heart, Share2 } from 'lucide-react';
 import { getDefaultBlogImage } from '@/lib/blog-defaults';
+import DOMPurify from 'isomorphic-dompurify';
 interface BlogPostData {
   title: string;
   description?: string;
@@ -238,7 +239,7 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
           <div 
             ref={contentRef}
             className="prose prose-lg prose-gray max-w-none"
-            dangerouslySetInnerHTML={{ __html: post.htmlContent || '' }}
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.htmlContent || '') }}
           />
 
           {/* Tags */}

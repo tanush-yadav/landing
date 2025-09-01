@@ -209,7 +209,7 @@ const NewsletterPopup: React.FC<NewsletterPopupProps> = ({
                       <CheckCircle className="h-10 w-10 text-white" />
                     </motion.div>
                     <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                      You're all set! 🎉
+                      You&apos;re all set! 🎉
                     </h3>
                     <p className="text-gray-600">
                       Welcome to our community. Check your inbox for a confirmation email.

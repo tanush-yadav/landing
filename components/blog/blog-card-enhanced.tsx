@@ -8,7 +8,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUpRight, Clock, Calendar, Eye, Heart, Bookmark, Share2 } from 'lucide-react';
+import { ArrowUpRight, Clock, Calendar, Heart, Bookmark, Share2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { BlogPost } from '@/lib/types';
@@ -245,12 +245,6 @@ const EnhancedBlogCard: React.FC<EnhancedBlogCardProps> = ({
                 <Calendar className="h-3.5 w-3.5" />
                 <span>{formatDate(post.publishedAt)}</span>
               </div>
-              {post.views && (
-                <div className="flex items-center gap-1">
-                  <Eye className="h-3.5 w-3.5" />
-                  <span>{post.views.toLocaleString()}</span>
-                </div>
-              )}
             </div>
 
             {/* Title with Hover Effect */}
@@ -315,11 +309,6 @@ const EnhancedBlogCard: React.FC<EnhancedBlogCardProps> = ({
                   <p className="text-sm font-semibold text-gray-900">
                     {post.author.name}
                   </p>
-                  {post.author.role && (
-                    <p className="text-xs text-gray-500">
-                      {post.author.role}
-                    </p>
-                  )}
                 </div>
               </div>
 
