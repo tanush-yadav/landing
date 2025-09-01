@@ -196,3 +196,79 @@ export function getCategoriesWithCounts(): BlogCategory[] {
 
   return categories
 }
+
+// Get previous and next posts for navigation
+export function getPostNavigation(currentSlug: string): {
+  previous?: BlogPost;
+  next?: BlogPost;
+} {
+  const posts = getAllPosts()
+  const currentIndex = posts.findIndex(post => post.slug === currentSlug)
+  
+  if (currentIndex === -1) {
+    return {}
+  }
+  
+  return {
+    previous: currentIndex < posts.length - 1 ? posts[currentIndex + 1] : undefined,
+    next: currentIndex > 0 ? posts[currentIndex - 1] : undefined
+  }
+}
+
+// Get posts by multiple categories
+export function getPostsByCategories(categories: string[]): BlogPost[] {
+  if (!categories.length) return getAllPosts()
+  
+  return getAllPosts().filter(post =>
+    categories.some(category =>
+      post.category.toLowerCase() === category.toLowerCase()
+    )
+  )
+}
+
+// Get posts by reading time range
+export function getPostsByReadingTime(
+  minTime?: number,
+  maxTime?: number
+): BlogPost[] {
+  return getAllPosts().filter(post => {
+    if (minTime && post.readTime < minTime) return false
+    if (maxTime && post.readTime > maxTime) return false
+    return true
+  })
+}
+
+// Get similar posts based on tags and category
+export function getSimilarPosts(
+  currentPost: BlogPost,
+  limit: number = 5
+): BlogPost[] {
+  const allPosts = getAllPosts().filter(post => post.id !== currentPost.id)
+  
+  // Score posts by similarity
+  const scoredPosts = allPosts.map(post => {
+    let score = 0
+    
+    // Same category gets high score
+    if (post.category === currentPost.category) {
+      score += 10
+    }
+    
+    // Shared tags get medium score
+    const sharedTags = post.tags.filter(tag =>
+      currentPost.tags.includes(tag)
+    ).length
+    score += sharedTags * 3
+    
+    // Same author gets small score
+    if (post.author.name === currentPost.author.name) {
+      score += 1
+    }
+    
+    return { ...post, similarityScore: score }
+  })
+  
+  return scoredPosts
+    .sort((a, b) => b.similarityScore - a.similarityScore)
+    .slice(0, limit)
+}
