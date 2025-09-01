@@ -106,16 +106,23 @@ const BlogCard: React.FC<BlogCardProps> = ({
           {/* Footer - Minimal meta info */}
           <div className="flex items-center justify-between pt-4 border-t border-gray-100">
             <div className="flex items-center gap-3">
-              {/* Author Avatar */}
-              <div className="relative h-10 w-10 overflow-hidden rounded-full bg-gray-100">
-                <Image
-                  data-testid="author-avatar"
-                  src={post.author.avatar}
-                  alt={post.author.name}
-                  fill
-                  className="object-cover"
-                  sizes="40px"
-                />
+              {/* Author Avatar with Gradient Background */}
+              <div className="relative group">
+                {/* Gradient Background Blur */}
+                <div className="absolute inset-0 rounded-xl blur-lg opacity-60 bg-gradient-to-br from-purple-400/20 via-pink-400/20 to-purple-500/20 group-hover:opacity-80 transition-opacity duration-300" />
+                
+                {/* Avatar Container */}
+                <div className="relative h-10 w-10 overflow-hidden rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 shadow-lg">
+                  <Image
+                    data-testid="author-avatar"
+                    src={post.author.avatar}
+                    alt={post.author.name}
+                    fill
+                    className="object-cover transition-all duration-500"
+                    style={{ objectPosition: '50% 15%' }}
+                    sizes="40px"
+                  />
+                </div>
               </div>
               
               {/* Author Name & Date */}

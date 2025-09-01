@@ -4,7 +4,7 @@ import { useState } from 'react'
 import dynamic from 'next/dynamic'
 import Navigation from '@/components/navigation'
 import Hero from '@/components/hero'
-import { CTASection } from '@/components/cta-section'
+import { NewsletterCTA } from '@/components/newsletter-cta'
 
 // Lazy load heavy components
 const InteractiveDemoWrapper = dynamic(
@@ -128,8 +128,8 @@ export default function Home() {
         isDemoRunning={isDemoRunning}
       />
 
-      {/* CTA Section */}
-      <CTASection />
+      {/* Newsletter CTA Section */}
+      <NewsletterCTA />
     </main>
   )
 }
