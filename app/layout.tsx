@@ -89,6 +89,12 @@ export default function RootLayout({
               {`window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }`}
             </Script>
             <Script
+              src="https://analytics.ahrefs.com/analytics.js"
+              strategy="afterInteractive"
+              data-key="vdbXacm9LLXraBwRuttWYA"
+              async
+            />
+            <Script
               src="https://www.googletagmanager.com/gtag/js?id=G-PRENL31DQR"
               strategy="afterInteractive"
             />
