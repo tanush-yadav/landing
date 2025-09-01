@@ -115,13 +115,12 @@ Track key metrics to ensure AI automation delivers value:
 
 AI automation, when implemented thoughtfully, can significantly boost engineering team productivity. Start with small experiments, measure results, and scale successful patterns across your organization.`,
     author: {
-      name: 'Alex Chen',
-      avatar: '/blog/authors/alex-chen.jpg',
-      bio: 'Senior AI Engineer at Cintra, specializing in developer productivity automation',
+      name: 'Sophia',
+      avatar: '/images/sophia-agent.png',
+      bio: 'AI Research Agent at Cintra, specializing in engineering automation and developer productivity',
       socialLinks: {
-        twitter: '@alexchen_dev',
-        linkedin: 'alex-chen-ai',
-        github: 'alexchen'
+        twitter: '@sophia_ai_agent',
+        linkedin: 'sophia-cintra-ai'
       }
     },
     publishedAt: '2025-09-01T10:00:00Z',
@@ -230,12 +229,12 @@ Ready to transform your content strategy? Start with these steps:
 
 The future of content is AI-augmented, not AI-replaced. Focus on using AI to handle repetitive tasks while your team focuses on strategy and creativity.`,
     author: {
-      name: 'Sarah Kim',
-      avatar: '/blog/authors/sarah-kim.jpg',
-      bio: 'Content Strategy Lead at Cintra, expert in AI-powered content workflows',
+      name: 'Sophia',
+      avatar: '/images/sophia-agent.png',
+      bio: 'AI Research Agent at Cintra, expert in content strategy and automated workflows',
       socialLinks: {
-        twitter: '@sarahkim_content',
-        linkedin: 'sarah-kim-strategy'
+        twitter: '@sophia_ai_agent',
+        linkedin: 'sophia-cintra-ai'
       }
     },
     publishedAt: '2025-08-28T14:00:00Z',
@@ -399,12 +398,12 @@ Teams that embrace AI automation now will have a significant competitive advanta
 
 AI automation isn't about replacing salespeople—it's about empowering them to focus on what they do best: building relationships and closing deals. By automating routine tasks, sales teams can spend more time on high-value activities that drive revenue growth.`,
     author: {
-      name: 'Michael Rodriguez',
-      avatar: '/blog/authors/michael-rodriguez.jpg',
-      bio: 'VP of Sales Operations at Cintra, specializing in sales automation and CRM optimization',
+      name: 'Sophia',
+      avatar: '/images/sophia-agent.png',
+      bio: 'AI Research Agent at Cintra, specializing in sales automation and CRM optimization',
       socialLinks: {
-        linkedin: 'michael-rodriguez-sales',
-        twitter: '@mike_sales_ai'
+        twitter: '@sophia_ai_agent',
+        linkedin: 'sophia-cintra-ai'
       }
     },
     publishedAt: '2025-08-25T09:30:00Z',
@@ -579,13 +578,12 @@ AI-powered monitoring transforms operations from reactive to proactive, reducing
 
 The goal isn't to replace operations teams with AI, but to empower them with intelligent tools that prevent problems before they impact your business.`,
     author: {
-      name: 'Jordan Park',
-      avatar: '/blog/authors/jordan-park.jpg',
-      bio: 'Principal DevOps Engineer at Cintra, expert in AI-powered operations and monitoring',
+      name: 'Sophia',
+      avatar: '/images/sophia-agent.png',
+      bio: 'AI Research Agent at Cintra, expert in AI-powered operations and monitoring',
       socialLinks: {
-        github: 'jordanpark-devops',
-        linkedin: 'jordan-park-devops',
-        twitter: '@jordan_devops'
+        twitter: '@sophia_ai_agent',
+        linkedin: 'sophia-cintra-ai'
       }
     },
     publishedAt: '2025-08-22T11:15:00Z',
@@ -810,12 +808,12 @@ Start small, focus on clear value creation, and gradually build trust between hu
 
 The question isn't whether AI agents will join your team—it's how quickly you can make them effective teammates.`,
     author: {
-      name: 'Dr. Emma Watson',
-      avatar: '/blog/authors/emma-watson.jpg',
-      bio: 'Chief AI Officer at Cintra, researcher in human-AI collaboration and workplace transformation',
+      name: 'Sophia',
+      avatar: '/images/sophia-agent.png',
+      bio: 'AI Research Agent at Cintra, researcher in human-AI collaboration and workplace transformation',
       socialLinks: {
-        linkedin: 'emma-watson-ai',
-        twitter: '@emmawatson_ai'
+        twitter: '@sophia_ai_agent',
+        linkedin: 'sophia-cintra-ai'
       }
     },
     publishedAt: '2025-08-20T08:00:00Z',
