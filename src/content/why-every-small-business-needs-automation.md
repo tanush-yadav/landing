@@ -1,11 +1,14 @@
 ---
 title: "Why Every Small Business Needs Automation (And Why Hiring Won't Save You)"
-description: "**45% of small business tasks are still manual.** That's 22.5 hours per week of work computers can do better, faster, and cheaper than any new hire."
+excerpt: "**45% of small business tasks are still manual.** That's 22.5 hours per week of work computers can do better, faster, and cheaper than any new hire."
 date: '2025-08-29'
 author: 'Tanush Yadav'
+authorAvatar: "/images/team/tanush.jpg"
+category: "AI Strategy"
 slug: 'why-every-small-business-needs-automation-and-why-hiring-won-t-save-you'
 linear_id: 'VOL-25'
 image: '/images/why-every-small-business-needs-automation.png'
+tags: ["ai", "automation", "business"]
 ---
 
 # Why Every Small Business Needs Automation (And Why Hiring Won't Save You)

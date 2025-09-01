@@ -1,0 +1,151 @@
+/* Medium-style Typography for Blog Posts */
+
+.prose {
+  @apply text-gray-800;
+}
+
+/* Headings */
+.prose h1 {
+  @apply font-display text-4xl font-bold mt-12 mb-6 text-gray-900;
+}
+
+.prose h2 {
+  @apply font-display text-3xl font-bold mt-10 mb-5 text-gray-900;
+}
+
+.prose h3 {
+  @apply font-display text-2xl font-semibold mt-8 mb-4 text-gray-900;
+}
+
+.prose h4 {
+  @apply font-display text-xl font-semibold mt-6 mb-3 text-gray-900;
+}
+
+/* Paragraphs */
+.prose p {
+  @apply text-[21px] leading-[1.58] mb-7 text-gray-800;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  letter-spacing: -0.003em;
+}
+
+/* Links */
+.prose a {
+  @apply text-gray-900 underline underline-offset-2 decoration-gray-400 hover:decoration-gray-600 transition-colors;
+}
+
+.prose a:hover {
+  @apply text-black decoration-2;
+}
+
+/* Lists */
+.prose ul {
+  @apply list-disc list-inside mb-7 space-y-2;
+}
+
+.prose ol {
+  @apply list-decimal list-inside mb-7 space-y-2;
+}
+
+.prose li {
+  @apply text-[21px] leading-[1.58] text-gray-800;
+}
+
+.prose ul ul,
+.prose ol ul {
+  @apply ml-6 mt-2;
+}
+
+/* Blockquotes */
+.prose blockquote {
+  @apply border-l-4 border-gray-900 pl-5 my-8 italic;
+}
+
+.prose blockquote p {
+  @apply text-[21px] text-gray-700;
+}
+
+/* Code */
+.prose code {
+  @apply bg-gray-100 rounded px-1.5 py-0.5 text-sm font-mono text-gray-900;
+}
+
+.prose pre {
+  @apply bg-gray-900 rounded-lg p-4 overflow-x-auto my-8;
+}
+
+.prose pre code {
+  @apply bg-transparent text-gray-100 p-0;
+}
+
+/* Images */
+.prose img {
+  @apply rounded-lg my-8 w-full;
+}
+
+.prose figure {
+  @apply my-10;
+}
+
+.prose figcaption {
+  @apply text-center text-sm text-gray-600 mt-3;
+}
+
+/* Tables */
+.prose table {
+  @apply w-full border-collapse my-8;
+}
+
+.prose th {
+  @apply border-b-2 border-gray-200 p-3 text-left font-semibold text-gray-900;
+}
+
+.prose td {
+  @apply border-b border-gray-200 p-3 text-gray-800;
+}
+
+/* Horizontal Rules */
+.prose hr {
+  @apply my-12 border-gray-200;
+}
+
+/* Strong and Emphasis */
+.prose strong {
+  @apply font-semibold text-gray-900;
+}
+
+.prose em {
+  @apply italic;
+}
+
+/* First paragraph - larger text */
+.prose > p:first-of-type {
+  @apply text-[23px] leading-[1.5] text-gray-700;
+}
+
+/* Drop cap for first letter */
+.prose > p:first-of-type::first-letter {
+  @apply float-left text-[4rem] leading-[3.5rem] pr-2 pt-1 font-display font-bold text-gray-900;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .prose p {
+    @apply text-[19px] leading-[1.6];
+  }
+  
+  .prose > p:first-of-type {
+    @apply text-[20px];
+  }
+  
+  .prose h1 {
+    @apply text-3xl;
+  }
+  
+  .prose h2 {
+    @apply text-2xl;
+  }
+  
+  .prose h3 {
+    @apply text-xl;
+  }
+}

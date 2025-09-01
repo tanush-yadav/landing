@@ -1,10 +1,15 @@
 ---
 title: "The 5 Agent Patterns That Matter: From Simple Prompts to Production Systems"
-description: "**I burned three weeks building an orchestration nightmare. Then I shipped 100 images in 48 hours with a for-loop.** Here's why complexity is your enemy in agent systems—and the exact pattern hierarchy that actually works."
+excerpt: "I burned three weeks building an orchestration nightmare. Then I shipped 100 images in 48 hours with a for-loop. Here's why complexity is your enemy in agent systems."
 date: "2025-09-01"
 author: "Tanush Yadav"
+authorAvatar: "/images/team/tanush.jpg"
+category: "Engineering"
+tags: ["ai-agents", "production", "system-design", "engineering"]
+image: "/images/blog/agent-patterns.jpg"
 slug: "the-5-agent-patterns-that-matter-from-simple-prompts-to-production-systems"
 linear_id: "VOL-33"
+featured: true
 ---
 
 # The 5 Agent Patterns That Matter: From Simple Prompts to Production Systems

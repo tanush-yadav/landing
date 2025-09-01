@@ -14,7 +14,7 @@ export function NewsletterCTA() {
   const [formState, setFormState] = useState<FormState>({ status: 'idle' })
   const [touched, setTouched] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
-  const successTimeoutRef = useRef<NodeJS.Timeout>()
+  const successTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Clean up timeout on unmount
   useEffect(() => {
@@ -129,7 +129,7 @@ export function NewsletterCTA() {
                   >
                     <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
                     <h3 className="text-2xl font-semibold text-gray-900 mb-2">
-                      You're subscribed!
+                      You&apos;re subscribed!
                     </h3>
                     <p className="text-gray-600">
                       {formState.message}

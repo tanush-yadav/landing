@@ -15,7 +15,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const post = await getPostData(params.slug);
+  const resolvedParams = await params;
+  const post = await getPostData(resolvedParams.slug);
   
   if (!post) {
     return {
@@ -55,13 +56,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function BlogPost({ params }: Props) {
-  const post = await getPostData(params.slug);
+  const resolvedParams = await params;
+  const post = await getPostData(resolvedParams.slug);
   
   if (!post) {
     notFound();
   }
 
-  const relatedPosts = getRelatedPosts(params.slug, 3);
+  const relatedPosts = getRelatedPosts(resolvedParams.slug, 3);
 
   return <BlogPostClient post={post} relatedPosts={relatedPosts} />;
 }

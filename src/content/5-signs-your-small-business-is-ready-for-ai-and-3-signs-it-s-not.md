@@ -1,8 +1,12 @@
 ---
 title: "5 Signs Your Small Business is Ready for AI (And 3 Signs It's Not)"
-description: "Sarah spent three hours every Monday routing 247 emails with 12 templates. Soul-crushing repetition that any algorithm could handle. When routine tasks consume **10+ hours weekly**, automation transforms from luxury to necessity."
+excerpt: "Sarah spent three hours every Monday routing 247 emails with 12 templates. Soul-crushing repetition that any algorithm could handle. When routine tasks consume **10+ hours weekly**, automation transforms from luxury to necessity."
 date: "2025-09-01"
 author: "Tanush Yadav"
+authorAvatar: "/images/team/tanush.jpg"
+category: "AI Strategy"
+image: "/images/blog/default.jpg"
+tags: ["ai", "automation", "business"]
 slug: "5-signs-your-small-business-is-ready-for-ai-and-3-signs-it-s-not"
 linear_id: "VOL-32"
 ---
