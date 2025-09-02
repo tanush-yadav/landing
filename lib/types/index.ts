@@ -296,6 +296,7 @@ export interface BlogPost {
   featuredImage?: string;
   slug: string;
   status: 'draft' | 'published' | 'archived';
+  featured?: boolean; // Flag to identify featured posts
   seo?: {
     metaTitle?: string;
     metaDescription?: string;

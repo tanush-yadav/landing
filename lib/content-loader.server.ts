@@ -62,6 +62,7 @@ export function getPostBySlug(slug: string): BlogPost | null {
     tags: data.tags || extractTagsFromContent(content),
     category: data.category || 'Operations',
     featuredImage: data.featuredImage || data.image || '/blog/default-hero.jpg',
+    featured: data.featured || false, // Support featured flag from frontmatter
     status: data.status || 'published',
     seo: {
       metaTitle: data.metaTitle || `${data.title} | Cintra`,
@@ -115,7 +116,17 @@ export function searchPosts(query: string): BlogPost[] {
 }
 
 export function getFeaturedPosts(limit: number = 3): BlogPost[] {
-  return getAllPosts().slice(0, limit)
+  const allPosts = getAllPosts()
+  // First try to get posts marked as featured
+  const featuredPosts = allPosts.filter(post => post.featured === true)
+  
+  if (featuredPosts.length >= limit) {
+    return featuredPosts.slice(0, limit)
+  }
+  
+  // If not enough featured posts, supplement with recent posts
+  const nonFeaturedPosts = allPosts.filter(post => !post.featured)
+  return [...featuredPosts, ...nonFeaturedPosts.slice(0, limit - featuredPosts.length)]
 }
 
 export function getRecentPosts(limit: number = 5): BlogPost[] {
