@@ -1,6 +1,6 @@
 ---
 title: "8 MCP Servers That Make Your Claude Code 10x Better (And Why More Makes It Worse)"
-excerpt: "**Your Claude setup is drowning. Not in complexity—in choice.** At 20 MCP servers, you've built a 40% failure machine that takes 8 seconds to be wrong. Every server beyond eight is a poison pill: 15% slower responses, 12% more errors, compounding until your setup chokes."
+excerpt: "Your Claude setup is drowning. Not in complexity—in choice. At 20 MCP servers, you've built a 40% failure machine that takes 8 seconds to be wrong. Every server beyond eight is a poison pill: 15% slower responses, 12% more errors, compounding until your setup chokes."
 date: "2025-09-01"
 author: "Tanush Yadav"
 authorAvatar: "/images/team/tanush.jpg"

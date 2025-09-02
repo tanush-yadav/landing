@@ -23,8 +23,7 @@
 
 /* Paragraphs */
 .prose p {
-  @apply text-[21px] leading-[1.58] mb-7 text-gray-800;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  @apply text-[21px] leading-[1.58] mb-7 text-gray-800 font-sans;
   letter-spacing: -0.003em;
 }
 
@@ -47,7 +46,7 @@
 }
 
 .prose li {
-  @apply text-[21px] leading-[1.58] text-gray-800;
+  @apply text-[21px] leading-[1.58] text-gray-800 font-sans;
 }
 
 .prose ul ul,

@@ -1,6 +1,6 @@
 ---
 title: "No Time for Marketing? Here's How AI Turns Your Sales Calls into Content That Actually Converts"
-excerpt: "**Your best content happens at minute 23 of a sales call. Here's how to capture it.**"
+excerpt: "Your best content happens at minute 23 of a sales call. Here's how to capture it."
 date: '2025-09-01'
 author: 'Tanush Yadav'
 authorAvatar: '/images/team/tanush.jpg'
