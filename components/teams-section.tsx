@@ -2,168 +2,26 @@
 
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { getAgentAvatar } from './agent-avatars'
 // import { AgentCardSkeleton } from './agent-card-skeleton'
 import {
-  Code2,
-  FileText,
-  TrendingUp,
-  Shield,
-  Users,
-  Calendar,
   Sparkles,
   CheckCircle2,
   Activity,
   Zap,
+  ExternalLink,
 } from 'lucide-react'
 import {
   cn,
   incrementDelegationClickCount,
   redirectToCalIfThresholdMet,
 } from '@/lib/utils'
+import { agentsData } from '@/lib/data/agents'
 
-// AI Team Member Data with Avatar Images
-const teamMembers = [
-  {
-    id: 'junior-engineer',
-    name: 'Alex',
-    role: 'Junior Engineer',
-    status: 'active',
-    currentTask: 'Fixing authentication bug in production...',
-    icon: Code2,
-    avatarUrl: '/images/alex-agent.png',
-    gradient: 'from-blue-500 to-cyan-500',
-    bgGradient: 'from-blue-50 to-cyan-50',
-    avatarGradient: 'from-blue-400/20 via-cyan-400/20 to-blue-500/20',
-    stats: {
-      tasksCompleted: 147,
-      avgTime: '3.5 mins',
-      efficiency: '98%',
-    },
-    activities: [
-      'Reviewing pull requests',
-      'Writing unit tests',
-      'Fixing bugs',
-      'Refactoring code',
-    ],
-  },
-  {
-    id: 'blog-writer',
-    name: 'Sophia',
-    role: 'Blog Writer',
-    status: 'active',
-    currentTask: 'Creating content for Q1 product launch...',
-    icon: FileText,
-    avatarUrl: '/images/sophia-agent.png',
-    gradient: 'from-purple-500 to-pink-500',
-    bgGradient: 'from-purple-50 to-pink-50',
-    avatarGradient: 'from-purple-400/20 via-pink-400/20 to-purple-500/20',
-    stats: {
-      articlesWritten: 89,
-      avgTime: '4 mins',
-      engagement: '4.8★',
-    },
-    activities: [
-      'Writing blog posts',
-      'Creating documentation',
-      'Email campaigns',
-      'Social media content',
-    ],
-  },
-  {
-    id: 'marketer',
-    name: 'Maya',
-    role: 'Marketer',
-    status: 'active',
-    currentTask: 'Analyzing campaign performance metrics...',
-    icon: TrendingUp,
-    avatarUrl: '/images/maya-agent.png',
-    gradient: 'from-orange-500 to-red-500',
-    bgGradient: 'from-orange-50 to-red-50',
-    avatarGradient: 'from-orange-400/20 via-red-400/20 to-orange-500/20',
-    stats: {
-      campaigns: 52,
-      conversion: '+32%',
-      reach: '2.4M',
-    },
-    activities: [
-      'Campaign optimization',
-      'A/B testing',
-      'Audience segmentation',
-      'Performance analytics',
-    ],
-  },
-  {
-    id: 'qa-engineer',
-    name: 'Quinn',
-    role: 'QA Engineer',
-    status: 'active',
-    currentTask: 'Running automated test suite...',
-    icon: Shield,
-    avatarUrl: '/images/quinn-agent.png',
-    gradient: 'from-green-500 to-emerald-500',
-    bgGradient: 'from-green-50 to-emerald-50',
-    avatarGradient: 'from-green-400/20 via-emerald-400/20 to-green-500/20',
-    stats: {
-      testsRun: 1842,
-      coverage: '94%',
-      bugsFound: 231,
-    },
-    activities: [
-      'Automated testing',
-      'Bug tracking',
-      'Performance testing',
-      'Security audits',
-    ],
-  },
-  {
-    id: 'sales-rep',
-    name: 'Jordan',
-    role: 'Sales Rep',
-    status: 'active',
-    currentTask: 'Following up with qualified leads...',
-    icon: Users,
-    avatarUrl: '/images/jordan-agent.png',
-    gradient: 'from-indigo-500 to-blue-500',
-    bgGradient: 'from-indigo-50 to-blue-50',
-    avatarGradient: 'from-indigo-400/20 via-blue-400/20 to-indigo-500/20',
-    stats: {
-      dealsClosed: 67,
-      pipeline: '$1.2M',
-      conversion: '28%',
-    },
-    activities: [
-      'Lead qualification',
-      'Demo scheduling',
-      'Follow-ups',
-      'CRM updates',
-    ],
-  },
-  {
-    id: 'executive-assistant',
-    name: 'Riley',
-    role: 'Executive Assistant',
-    status: 'active',
-    currentTask: "Organizing tomorrow's meeting agenda...",
-    icon: Calendar,
-    avatarUrl: '/images/riley-agent.png',
-    gradient: 'from-violet-500 to-purple-500',
-    bgGradient: 'from-violet-50 to-purple-50',
-    avatarGradient: 'from-violet-400/20 via-purple-400/20 to-violet-500/20',
-    stats: {
-      meetings: 124,
-      tasks: 892,
-      saved: '40h/week',
-    },
-    activities: [
-      'Calendar management',
-      'Email triaging',
-      'Task prioritization',
-      'Meeting prep',
-    ],
-  },
-]
+// Use shared agent data
+const teamMembers = agentsData
 
 // Modern Avatar Component
 const AgentAvatar = ({
@@ -446,19 +304,22 @@ const TeamMemberCard = ({
 
               {/* Name and Role */}
               <div className="flex-1">
-                <h3 className="font-semibold text-neutral-900 text-lg flex items-center gap-2">
-                  {member.name}
-                  <motion.div
-                    animate={{ rotate: [0, 360] }}
-                    transition={{
-                      duration: 10,
-                      repeat: Infinity,
-                      ease: 'linear',
-                    }}
-                  >
-                    <Sparkles className="w-4 h-4 text-yellow-400" />
-                  </motion.div>
-                </h3>
+                <Link href={`/agents/${member.id}`} className="group/link">
+                  <h3 className="font-semibold text-neutral-900 text-lg flex items-center gap-2 group-hover/link:text-blue-600 transition-colors">
+                    {member.name}
+                    <motion.div
+                      animate={{ rotate: [0, 360] }}
+                      transition={{
+                        duration: 10,
+                        repeat: Infinity,
+                        ease: 'linear',
+                      }}
+                    >
+                      <Sparkles className="w-4 h-4 text-yellow-400" />
+                    </motion.div>
+                    <ExternalLink className="w-3 h-3 text-neutral-400 opacity-0 group-hover/link:opacity-100 transition-opacity" />
+                  </h3>
+                </Link>
                 <p className="text-sm text-neutral-500">{member.role}</p>
               </div>
             </div>
@@ -514,31 +375,51 @@ const TeamMemberCard = ({
             ))}
           </div>
 
-          {/* Action Button */}
-          <motion.button
-            onClick={() => {
-              const newCount = incrementDelegationClickCount()
-              if (redirectToCalIfThresholdMet(newCount)) {
-                return
-              }
-              onDelegate(member.id)
-            }}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            disabled={isAutoDelegating}
-            className={cn(
-              'w-full py-2.5 px-4 rounded-lg',
-              'bg-gradient-to-r text-white font-medium text-sm',
-              member.gradient,
-              'shadow-md hover:shadow-lg',
-              'transition-all duration-200',
-              'flex items-center justify-center gap-2',
-              isAutoDelegating && 'opacity-75 cursor-not-allowed'
-            )}
-          >
-            <Zap className="w-4 h-4" />
-            {isAutoDelegating ? 'Auto-delegating...' : 'Delegate Task'}
-          </motion.button>
+          {/* Action Buttons */}
+          <div className="space-y-2">
+            <motion.button
+              onClick={() => {
+                const newCount = incrementDelegationClickCount()
+                if (redirectToCalIfThresholdMet(newCount)) {
+                  return
+                }
+                onDelegate(member.id)
+              }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              disabled={isAutoDelegating}
+              className={cn(
+                'w-full py-2.5 px-4 rounded-lg',
+                'bg-gradient-to-r text-white font-medium text-sm',
+                member.gradient,
+                'shadow-md hover:shadow-lg',
+                'transition-all duration-200',
+                'flex items-center justify-center gap-2',
+                isAutoDelegating && 'opacity-75 cursor-not-allowed'
+              )}
+            >
+              <Zap className="w-4 h-4" />
+              {isAutoDelegating ? 'Auto-delegating...' : 'Delegate Task'}
+            </motion.button>
+            
+            <Link href={`/agents/${member.id}`}>
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className={cn(
+                  'w-full py-2 px-4 rounded-lg',
+                  'bg-white border border-neutral-200',
+                  'font-medium text-sm text-neutral-700',
+                  'hover:bg-neutral-50',
+                  'transition-all duration-200',
+                  'flex items-center justify-center gap-2'
+                )}
+              >
+                <ExternalLink className="w-4 h-4" />
+                View Details
+              </motion.div>
+            </Link>
+          </div>
         </div>
 
         {/* Hover Effect Border Gradient */}
