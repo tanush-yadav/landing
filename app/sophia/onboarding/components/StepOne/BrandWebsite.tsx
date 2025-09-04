@@ -265,7 +265,7 @@ export default function BrandWebsite({
                   key={sourceType.key}
                   onClick={() => toggleUrlSelection(url)}
                   className={cn(
-                    'p-0 rounded-lg border text-left transition-all duration-150 flex items-center gap-3',
+                    'p-4 rounded-lg border text-left transition-all duration-150 flex items-center gap-3',
                     isSelected
                       ? 'border-blue-500 bg-blue-50'
                       : 'border-slate-200 bg-white hover:border-slate-300'
