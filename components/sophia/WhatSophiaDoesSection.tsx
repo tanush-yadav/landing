@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Brain, Zap, PenTool, TrendingUp } from 'lucide-react'
-import Image from 'next/image'
+import SophiaCharacter, { SophiaEmotion } from './SophiaCharacter'
+// import { useStaggeredAnimation } from '@/hooks/useScrollAnimation' // Reserved for future use
 
 interface Capability {
   icon: React.ReactNode
@@ -15,6 +16,7 @@ interface Capability {
     suffix: string
     label: string
   }
+  emotion: SophiaEmotion
 }
 
 const capabilities: Capability[] = [
@@ -27,7 +29,8 @@ const capabilities: Capability[] = [
       value: 10000,
       suffix: "+",
       label: "Knowledge points analyzed"
-    }
+    },
+    emotion: 'thinking'
   },
   {
     icon: <Zap className="w-8 h-8" />,
@@ -38,7 +41,8 @@ const capabilities: Capability[] = [
       value: 95,
       suffix: "%",
       label: "Voice accuracy"
-    }
+    },
+    emotion: 'default'
   },
   {
     icon: <PenTool className="w-8 h-8" />,
@@ -49,7 +53,8 @@ const capabilities: Capability[] = [
       value: 10,
       suffix: "x",
       label: "Content velocity increase"
-    }
+    },
+    emotion: 'writing'
   }
 ]
 
@@ -151,25 +156,17 @@ export default function WhatSophiaDoesSection() {
 
                 {/* Sophia reaction on hover */}
                 <motion.div
-                  className="absolute -top-4 -right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  animate={{
-                    y: [0, -5, 0],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
+                  className="absolute -top-6 -right-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  initial={{ scale: 0 }}
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ type: "spring", stiffness: 300 }}
                 >
-                  <div className="bg-white rounded-full shadow-lg p-2">
-                    <Image
-                      src="/images/sophia-agent.png"
-                      alt="Sophia reaction"
-                      width={40}
-                      height={40}
-                      className="object-contain"
-                    />
-                  </div>
+                  <SophiaCharacter
+                    emotion={capability.emotion}
+                    size="small"
+                    floatingAnimation={false}
+                    showSparkles={false}
+                  />
                 </motion.div>
               </div>
             </motion.div>

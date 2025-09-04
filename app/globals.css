@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @import '../src/styles/prose.css';
+@import '../styles/design-system.css';
 
 @layer base {
   :root {

@@ -74,7 +74,7 @@ export default function PricingPreview() {
   const isInView = useInView(containerRef, { once: true, margin: "-100px" })
 
   return (
-    <section className="py-24 bg-gradient-to-b from-gray-50 to-white" ref={containerRef}>
+    <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50 to-white" ref={containerRef}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
@@ -95,28 +95,29 @@ export default function PricingPreview() {
           </div>
         </motion.div>
 
-        {/* Pricing Cards */}
-        <div className="grid lg:grid-cols-3 gap-8">
+        {/* Pricing Cards - Equal Height Grid */}
+        <div className="grid lg:grid-cols-3 gap-6 lg:gap-8 equal-height-grid">
           {pricingTiers.map((tier, index) => (
             <motion.div
               key={tier.name}
-              className="relative"
+              className="relative flex h-full"
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: index * 0.15 }}
+              transition={{ duration: 0.5, delay: index * 0.1, ease: [0.4, 0, 0.2, 1] }}
+              whileHover={{ y: -4 }}
             >
               {/* Popular Badge */}
               {tier.popular && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-                  <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
+                  <div className="bg-gradient-to-r from-blue-700 to-purple-700 text-white px-4 py-1.5 rounded-full text-sm font-semibold flex items-center gap-1 shadow-md">
                     <Star className="w-4 h-4" />
                     Most Popular
                   </div>
                 </div>
               )}
 
-              {/* Card */}
-              <div className={`bg-white rounded-2xl ${tier.popular ? 'ring-2 ring-blue-500' : 'border border-gray-200'} p-8 h-full flex flex-col hover:shadow-xl transition-all duration-300`}>
+              {/* Card - Enhanced with micro-interactions */}
+              <div className={`bg-white rounded-2xl ${tier.popular ? 'ring-2 ring-blue-600 shadow-lg' : 'border border-gray-200'} p-6 sm:p-8 h-full flex flex-col hover:shadow-xl transition-all duration-200 hover:scale-[1.01] card-interactive`}>
                 {/* Header */}
                 <div className="mb-6">
                   <h3 className={`text-2xl font-bold bg-gradient-to-r ${tier.color} bg-clip-text text-transparent mb-2`}>
@@ -145,10 +146,10 @@ export default function PricingPreview() {
                 <Button
                   size="lg"
                   variant={tier.popular ? 'primary' : 'secondary'}
-                  className={`w-full ${
+                  className={`w-full touch-target transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] ${
                     tier.popular 
-                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white' 
-                      : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
+                      ? 'bg-gradient-to-r from-blue-700 to-purple-700 hover:from-blue-800 hover:to-purple-800 text-white shadow-md hover:shadow-lg' 
+                      : 'bg-gray-100 hover:bg-gray-200 text-gray-900 hover:shadow-md'
                   }`}
                 >
                   {tier.cta}

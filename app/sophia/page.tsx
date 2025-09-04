@@ -1,19 +1,40 @@
 'use client'
 
 import { useRef } from 'react'
+import dynamic from 'next/dynamic'
 import { useScroll } from 'framer-motion'
-import SophiaHeader from '@/components/sophia/SophiaHeader'
-import HeroSection from '@/components/sophia/HeroSection'
-import WhatSophiaDoesSection from '@/components/sophia/WhatSophiaDoesSection'
-import IntegrationShowcase from '@/components/sophia/IntegrationShowcase'
-import HowItWorksSection from '@/components/sophia/HowItWorksSection'
-import UseCasesCarousel from '@/components/sophia/UseCasesCarousel'
-import TrustSignalsSection from '@/components/sophia/TrustSignalsSection'
-import PricingPreview from '@/components/sophia/PricingPreview'
-import InteractiveDemo from '@/components/sophia/InteractiveDemo'
-import SocialProofSection from '@/components/sophia/SocialProofSection'
-import FinalCTASection from '@/components/sophia/FinalCTASection'
-import FloatingSophia from '@/components/sophia/FloatingSophia'
+
+// Core components - load immediately
+import ComposioNav from '@/components/sophia/composio/ComposioNav'
+import ComposioHero from '@/components/sophia/composio/ComposioHero'
+import LogoParade from '@/components/sophia/composio/LogoParade'
+import MetricsSection from '@/components/sophia/composio/MetricsSection'
+
+// Lazy load secondary components
+const FeatureShowcase = dynamic(
+  () => import('@/components/sophia/composio/FeatureShowcase'),
+  { ssr: false }
+)
+const IntegrationGrid = dynamic(
+  () => import('@/components/sophia/composio/IntegrationGrid'),
+  { ssr: false }
+)
+const TestimonialsSection = dynamic(
+  () => import('@/components/sophia/composio/TestimonialsSection'),
+  { ssr: false }
+)
+const PricingSection = dynamic(
+  () => import('@/components/sophia/composio/PricingSection'),
+  { ssr: false }
+)
+const FinalCTA = dynamic(
+  () => import('@/components/sophia/composio/FinalCTA'),
+  { ssr: false }
+)
+const FloatingSophiaIndicator = dynamic(
+  () => import('@/components/sophia/composio/FloatingSophiaIndicator'),
+  { ssr: false }
+)
 
 export default function SophiaLandingPage() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -23,52 +44,40 @@ export default function SophiaLandingPage() {
   })
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-white">
-      {/* Header Navigation */}
-      <SophiaHeader />
-      
-      {/* Floating Sophia that follows scroll */}
-      <FloatingSophia scrollYProgress={scrollYProgress} />
+    <div 
+      ref={containerRef} 
+      className="min-h-screen bg-[#FAF9F7] text-black overflow-x-hidden"
+      style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}
+    >
+      {/* Navigation */}
+      <ComposioNav />
 
-      {/* Hero Section */}
-      <HeroSection />
+      {/* Floating Sophia Indicator */}
+      <FloatingSophiaIndicator scrollYProgress={scrollYProgress} />
 
-      {/* What Sophia Does */}
-      <div id="features">
-        <WhatSophiaDoesSection />
-      </div>
+      {/* Hero Section with gradient background */}
+      <ComposioHero />
 
-      {/* Integration Showcase */}
-      <div id="integrations">
-        <IntegrationShowcase />
-      </div>
+      {/* Logo Parade */}
+      <LogoParade />
 
-      {/* How It Works */}
-      <div id="how-it-works">
-        <HowItWorksSection />
-      </div>
+      {/* Animated Metrics */}
+      <MetricsSection />
 
-      {/* Use Cases Carousel */}
-      <UseCasesCarousel />
+      {/* Feature Showcase */}
+      <FeatureShowcase />
 
-      {/* Trust Signals */}
-      <TrustSignalsSection />
+      {/* Integration Grid */}
+      <IntegrationGrid />
 
-      {/* Pricing Preview */}
-      <div id="pricing">
-        <PricingPreview />
-      </div>
+      {/* Testimonials */}
+      <TestimonialsSection />
 
-      {/* Interactive Demo */}
-      <div id="demo">
-        <InteractiveDemo />
-      </div>
-
-      {/* Social Proof */}
-      <SocialProofSection />
+      {/* Pricing */}
+      <PricingSection />
 
       {/* Final CTA */}
-      <FinalCTASection />
+      <FinalCTA />
     </div>
   )
 }

@@ -180,7 +180,7 @@ export default function UseCasesCarousel() {
                                 className="object-contain"
                               />
                             </div>
-                            <p className="text-sm font-medium text-gray-700">Sophia's Solution</p>
+                            <p className="text-sm font-medium text-gray-700">Sophia&apos;s Solution</p>
                           </div>
                           <p className="text-gray-700 leading-relaxed">
                             {useCase.solution}
