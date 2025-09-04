@@ -1,119 +1,184 @@
-"use client";
+'use client'
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, ChevronLeft, ArrowLeft } from "lucide-react";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import SophiaReactions from "@/components/sophia/SophiaReactions";
-import ProgressIndicator from "./components/ProgressIndicator";
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ChevronRight, ChevronLeft, ArrowLeft } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import Link from 'next/link'
+import SophiaReactions from '@/components/sophia/SophiaReactions'
+import ProgressIndicator from './components/ProgressIndicator'
 
 // Step One Components
-import IntegrationsSetup from "./components/StepOne/IntegrationsSetup";
-import HowYouTalk from "./components/StepOne/HowYouTalk";
-import WhatYouConsume from "./components/StepOne/WhatYouConsume";
-import BrandNarratives from "./components/StepOne/BrandNarratives";
-import SocialPresence from "./components/StepOne/SocialPresence";
-import StyleGuide from "./components/StepOne/StyleGuide";
+import BrandWebsite from './components/StepOne/BrandWebsite'
+import IntegrationsSetup from './components/StepOne/IntegrationsSetup'
+import WhatYouConsume from './components/StepOne/WhatYouConsume'
+import BrandNarratives from './components/StepOne/BrandNarratives'
+import SocialPresence from './components/StepOne/SocialPresence'
+import StyleGuide from './components/StepOne/StyleGuide'
+import BrandGlossary from './components/StepOne/BrandGlossary'
 
 // Step Two Components
-import TitleSelector from "./components/StepTwo/TitleSelector";
-import ContentEditor from "./components/StepTwo/ContentEditor";
-import CookingAnimation from "./components/StepTwo/CookingAnimation";
+import TitleSelector from './components/StepTwo/TitleSelector'
+import ContentEditor from './components/StepTwo/ContentEditor'
+import CookingAnimation from './components/StepTwo/CookingAnimation'
 
 // Step Three Components
-import DeliveryOptions from "./components/StepThree/DeliveryOptions";
+import DeliveryOptions from './components/StepThree/DeliveryOptions'
 
-const TOTAL_STEPS = 10; // 6 sub-steps in Step 1 (including integrations), 2 in Step 2, 1 cooking, 1 in Step 3
+const TOTAL_STEPS = 12 // 8 sub-steps in Step 1 (including brand website and glossary), 2 in Step 2, 1 cooking, 1 in Step 3
 
 export default function OnboardingPage() {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [onboardingData, setOnboardingData] = useState({});
-  const [isCooking, setIsCooking] = useState(false);
-  const [isTyping, setIsTyping] = useState(false);
-  const [sophiaMessage, setSophiaMessage] = useState("Welcome! Let's get to know each other better.");
+  const [currentStep, setCurrentStep] = useState(0)
+  const [onboardingData, setOnboardingData] = useState({})
+  const [isCooking, setIsCooking] = useState(false)
+  const [isTyping, setIsTyping] = useState(false)
+  const [sophiaMessage, setSophiaMessage] = useState(
+    "Welcome! Let's get to know each other better."
+  )
 
   useEffect(() => {
     // Load saved progress from localStorage
-    const savedProgress = localStorage.getItem("sophia-onboarding-progress");
+    const savedProgress = localStorage.getItem('sophia-onboarding-progress')
     if (savedProgress) {
-      const { step, data } = JSON.parse(savedProgress);
-      setCurrentStep(step);
-      setOnboardingData(data);
+      const { step, data } = JSON.parse(savedProgress)
+      setCurrentStep(step)
+      setOnboardingData(data)
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
     // Save progress to localStorage
     localStorage.setItem(
-      "sophia-onboarding-progress",
+      'sophia-onboarding-progress',
       JSON.stringify({ step: currentStep, data: onboardingData })
-    );
-  }, [currentStep, onboardingData]);
+    )
+  }, [currentStep, onboardingData])
 
   const handleNext = () => {
-    setIsTyping(true);
-    setTimeout(() => setIsTyping(false), 1000);
-    
-    if (currentStep === 7) {
+    setIsTyping(true)
+    setTimeout(() => setIsTyping(false), 1000)
+
+    if (currentStep === 8) {
       // After content editor, show cooking animation
-      setIsCooking(true);
+      setIsCooking(true)
       setTimeout(() => {
-        setIsCooking(false);
-        setCurrentStep(currentStep + 1);
-      }, 5000);
+        setIsCooking(false)
+        setCurrentStep(currentStep + 1)
+      }, 5000)
     } else {
-      setCurrentStep(Math.min(currentStep + 1, TOTAL_STEPS - 1));
+      setCurrentStep(Math.min(currentStep + 1, TOTAL_STEPS - 1))
     }
-  };
+  }
 
   const handleBack = () => {
-    setCurrentStep(Math.max(currentStep - 1, 0));
-  };
+    setCurrentStep(Math.max(currentStep - 1, 0))
+  }
 
   const updateData = (key: string, value: any) => {
-    setOnboardingData(prev => ({ ...prev, [key]: value }));
-  };
+    setOnboardingData((prev) => ({ ...prev, [key]: value }))
+  }
 
   const renderStep = () => {
     switch (currentStep) {
       case 0:
-        return <IntegrationsSetup onUpdate={updateData} data={onboardingData} setSophiaMessage={setSophiaMessage} />;
+        return (
+          <BrandWebsite
+            onUpdate={updateData}
+            data={onboardingData}
+            setSophiaMessage={setSophiaMessage}
+          />
+        )
       case 1:
-        return <HowYouTalk onUpdate={updateData} data={onboardingData} setSophiaMessage={setSophiaMessage} />;
+        return (
+          <IntegrationsSetup
+            onUpdate={updateData}
+            data={onboardingData}
+            setSophiaMessage={setSophiaMessage}
+          />
+        )
       case 2:
-        return <WhatYouConsume onUpdate={updateData} data={onboardingData} setSophiaMessage={setSophiaMessage} />;
+        return (
+          <WhatYouConsume
+            onUpdate={updateData}
+            data={onboardingData}
+            setSophiaMessage={setSophiaMessage}
+          />
+        )
       case 3:
-        return <BrandNarratives onUpdate={updateData} data={onboardingData} setSophiaMessage={setSophiaMessage} />;
+        return (
+          <BrandNarratives
+            onUpdate={updateData}
+            data={onboardingData}
+            setSophiaMessage={setSophiaMessage}
+          />
+        )
       case 4:
-        return <SocialPresence onUpdate={updateData} data={onboardingData} setSophiaMessage={setSophiaMessage} />;
+        return (
+          <SocialPresence
+            onUpdate={updateData}
+            data={onboardingData}
+            setSophiaMessage={setSophiaMessage}
+          />
+        )
       case 5:
-        return <StyleGuide onUpdate={updateData} data={onboardingData} setSophiaMessage={setSophiaMessage} />;
+        return (
+          <StyleGuide
+            onUpdate={updateData}
+            data={onboardingData}
+            setSophiaMessage={setSophiaMessage}
+          />
+        )
       case 6:
-        return <TitleSelector onUpdate={updateData} data={onboardingData} setSophiaMessage={setSophiaMessage} />;
+        return (
+          <BrandGlossary
+            onUpdate={updateData}
+            data={onboardingData}
+            setSophiaMessage={setSophiaMessage}
+          />
+        )
       case 7:
-        return <ContentEditor onUpdate={updateData} data={onboardingData} setSophiaMessage={setSophiaMessage} />;
+        return (
+          <TitleSelector
+            onUpdate={updateData}
+            data={onboardingData}
+            setSophiaMessage={setSophiaMessage}
+          />
+        )
       case 8:
-        return <DeliveryOptions onUpdate={updateData} data={onboardingData} setSophiaMessage={setSophiaMessage} />;
+        return (
+          <ContentEditor
+            onUpdate={updateData}
+            data={onboardingData}
+            setSophiaMessage={setSophiaMessage}
+          />
+        )
+      case 9:
+        return (
+          <DeliveryOptions
+            onUpdate={updateData}
+            data={onboardingData}
+            setSophiaMessage={setSophiaMessage}
+          />
+        )
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   const getStepTitle = () => {
-    if (currentStep <= 5) return "Share Your Brain's Context";
-    if (currentStep <= 7) return "Your First Fire Piece";
-    return "How Do You Want This Dish Served?";
-  };
+    if (currentStep <= 6) return "Share Your Brain's Context"
+    if (currentStep <= 8) return 'Your First Fire Piece'
+    return 'How Do You Want This Dish Served?'
+  }
 
   const getMainStep = () => {
-    if (currentStep <= 5) return 1;
-    if (currentStep <= 7) return 2;
-    return 3;
-  };
+    if (currentStep <= 6) return 1
+    if (currentStep <= 8) return 2
+    return 3
+  }
 
   return (
-    <motion.div 
+    <motion.div
       className="min-h-screen bg-gray-50"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -143,11 +208,18 @@ export default function OnboardingPage() {
                     </Link>
                     <div className="h-6 w-px bg-gray-300" />
                     <div>
-                      <h1 className="text-lg font-semibold text-gray-900">Getting Started with Sophia</h1>
-                      <p className="text-sm text-gray-500">Step {getMainStep()} of 3</p>
+                      <h1 className="text-lg font-semibold text-gray-900">
+                        Getting Started with Sophia
+                      </h1>
+                      <p className="text-sm text-gray-500">
+                        Step {getMainStep()} of 3
+                      </p>
                     </div>
                   </div>
-                  <ProgressIndicator currentStep={currentStep} totalSteps={TOTAL_STEPS} />
+                  <ProgressIndicator
+                    currentStep={currentStep}
+                    totalSteps={TOTAL_STEPS}
+                  />
                 </div>
               </div>
             </div>
@@ -156,8 +228,12 @@ export default function OnboardingPage() {
             <div className="max-w-4xl mx-auto px-6 py-12 pb-32">
               {/* Step Title */}
               <div className="mb-8">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-2">{getStepTitle()}</h2>
-                <p className="text-gray-600">Let's personalize your experience with Sophia</p>
+                <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+                  {getStepTitle()}
+                </h2>
+                <p className="text-gray-600">
+                  Let's personalize your experience with Sophia
+                </p>
               </div>
 
               {/* Step Content */}
@@ -180,10 +256,10 @@ export default function OnboardingPage() {
                   onClick={handleBack}
                   disabled={currentStep === 0}
                   className={cn(
-                    "flex items-center gap-2 px-5 py-2.5 rounded-md text-sm font-medium transition-all duration-150",
+                    'flex items-center gap-2 px-5 py-2.5 rounded-md text-sm font-medium transition-all duration-150',
                     currentStep === 0
-                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                      : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
                   )}
                 >
                   <ChevronLeft className="w-4 h-4" />
@@ -194,26 +270,23 @@ export default function OnboardingPage() {
                   onClick={handleNext}
                   disabled={currentStep === TOTAL_STEPS - 1}
                   className={cn(
-                    "flex items-center gap-2 px-5 py-2.5 rounded-md text-sm font-medium transition-all duration-150",
+                    'flex items-center gap-2 px-5 py-2.5 rounded-md text-sm font-medium transition-all duration-150',
                     currentStep === TOTAL_STEPS - 1
-                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                      : "bg-gray-900 text-white hover:bg-gray-800"
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      : 'bg-gray-900 text-white hover:bg-gray-800'
                   )}
                 >
-                  {currentStep === 7 ? "Generate Content" : "Continue"}
+                  {currentStep === 7 ? 'Generate Content' : 'Continue'}
                   <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
             </div>
 
             {/* Sophia Reactions at Bottom */}
-            <SophiaReactions 
-              currentStep={currentStep}
-              isTyping={isTyping}
-            />
+            <SophiaReactions currentStep={currentStep} isTyping={isTyping} />
           </motion.div>
         )}
       </AnimatePresence>
     </motion.div>
-  );
+  )
 }

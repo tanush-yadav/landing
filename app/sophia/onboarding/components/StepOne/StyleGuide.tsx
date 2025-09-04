@@ -1,308 +1,351 @@
-"use client";
+'use client'
 
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Palette, Type, Mic, Sparkles, RefreshCw, Download } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { useEffect, useState, useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Edit3, FileText, Save, RotateCcw, Check, Sparkles } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 interface StyleGuideProps {
-  onUpdate: (key: string, value: any) => void;
-  data: any;
-  setSophiaMessage: (message: string) => void;
+  onUpdate: (key: string, value: any) => void
+  data: any
+  setSophiaMessage: (message: string) => void
 }
 
-const toneOptions = [
-  { id: "professional", label: "Professional", icon: "👔" },
-  { id: "casual", label: "Casual", icon: "😊" },
-  { id: "witty", label: "Witty", icon: "😄" },
-  { id: "authoritative", label: "Authoritative", icon: "🎓" },
-  { id: "friendly", label: "Friendly", icon: "🤗" },
-  { id: "inspirational", label: "Inspirational", icon: "✨" },
-];
+// Sample brand style guide content
+const defaultStyleGuideContent = `## Our Brand Mission
 
-const colorPalettes = [
-  { id: 1, name: "Ocean", colors: ["#0EA5E9", "#0284C7", "#0369A1", "#075985", "#0C4A6E"] },
-  { id: 2, name: "Forest", colors: ["#10B981", "#059669", "#047857", "#065F46", "#064E3B"] },
-  { id: 3, name: "Sunset", colors: ["#F59E0B", "#D97706", "#B45309", "#92400E", "#78350F"] },
-  { id: 4, name: "Royal", colors: ["#8B5CF6", "#7C3AED", "#6D28D9", "#5B21B6", "#4C1D95"] },
-];
+We believe that great content should inspire, educate, and drive meaningful action. Our mission is to create content that doesn't just inform, but transforms how people think and work.
+
+## Voice & Tone
+
+**Our Brand Voice:**
+- **Conversational yet professional** - We speak like trusted advisors, not corporate robots
+- **Confident but approachable** - We know our stuff, but we're not intimidating
+- **Clear and direct** - No jargon, no fluff. Every word serves a purpose
+- **Thoughtfully optimistic** - We believe in better outcomes and show the path forward
+
+**Tone Guidelines:**
+- **For tutorials:** Patient, encouraging, step-by-step
+- **For insights:** Thoughtful, data-driven, perspective-shifting  
+- **For announcements:** Excited but not hyperbolic, clear about benefits
+- **For problem-solving:** Empathetic, solution-focused, actionable
+
+## Word Choices & Terminology
+
+**We say this:**
+- "Help you succeed" (not "drive results")
+- "Learn together" (not "upskill")
+- "Make it simple" (not "streamline processes")  
+- "Real impact" (not "ROI optimization")
+- "Your team" (not "stakeholders")
+
+**Avoid these words:**
+- Synergy, paradigm, leverage, utilize, ideate, circle back, deep dive, low-hanging fruit
+
+## Writing Style
+
+**Sentence Structure:**
+- Mix short, punchy sentences with longer, detailed explanations
+- Start with the most important point, then add supporting details
+- Use active voice: "We built this feature" not "This feature was built"
+
+**Formatting Preferences:**
+- Use bullet points for lists and key takeaways
+- Bold important concepts on first mention
+- Include concrete examples whenever possible
+- Break up long paragraphs for better readability
+
+## Brand Personality
+
+**We are:**
+- **The Trusted Guide** - We've been there, we know the challenges, we'll show you the way
+- **The Thoughtful Expert** - We don't just know what works, we understand why it works
+- **The Practical Visionary** - We see the bigger picture but focus on actionable next steps
+- **The Authentic Voice** - We share real experiences, including failures and lessons learned
+
+**We are not:**
+- The know-it-all who talks down to people
+- The trendy voice that chases every new buzzword
+- The corporate entity that speaks in marketing-speak
+- The perfectionist that never shows vulnerability
+
+## Communication Principles
+
+1. **Lead with value** - Every piece of content should make someone's work or life better
+2. **Respect time** - Get to the point quickly, then provide depth for those who want it
+3. **Show, don't just tell** - Use examples, case studies, and concrete evidence
+4. **Admit what we don't know** - It's better to be honest than to appear all-knowing
+5. **Connect the dots** - Help readers understand not just what to do, but why it matters
+
+## Content Formatting Standards
+
+**Headers:** Use sentence case, not title case
+**Lists:** Parallel structure, consistent punctuation  
+**Examples:** Always label clearly as "Example:" or "For instance:"
+**Calls to action:** Specific and benefit-focused
+**Links:** Descriptive anchor text, never "click here"`
 
 export default function StyleGuide({ onUpdate, data, setSophiaMessage }: StyleGuideProps) {
-  const [selectedTones, setSelectedTones] = useState<string[]>(data.tones || []);
-  const [selectedPalette, setSelectedPalette] = useState(data.palette || null);
-  const [customColors, setCustomColors] = useState<string[]>(data.customColors || []);
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [styleGuideGenerated, setStyleGuideGenerated] = useState(false);
-  const [typography, setTypography] = useState(data.typography || {
-    heading: "Modern Sans",
-    body: "Clean Sans",
-    accent: "Display Serif"
-  });
+  const [content, setContent] = useState<string>(data.styleGuideContent || defaultStyleGuideContent)
+  const [isEditing, setIsEditing] = useState(false)
+  const [hasChanges, setHasChanges] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)
+  const [lastSaved, setLastSaved] = useState<Date | null>(null)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
-    setSophiaMessage("I'll capture your visual essence! Let's create your unique brand style guide.");
-  }, [setSophiaMessage]);
+    setSophiaMessage('Let me help you craft your brand style guide. Edit this content to match your unique voice and communication style.')
+  }, [setSophiaMessage])
 
-  const handleToneToggle = (toneId: string) => {
-    const updated = selectedTones.includes(toneId)
-      ? selectedTones.filter(t => t !== toneId)
-      : [...selectedTones, toneId];
-    
-    setSelectedTones(updated);
-    onUpdate("tones", updated);
-  };
+  const handleContentChange = (value: string) => {
+    setContent(value)
+    setHasChanges(true)
+    if (onUpdate) {
+      onUpdate('styleGuideContent', value)
+    }
+  }
 
-  const handleGenerateStyleGuide = () => {
-    setIsGenerating(true);
-    setSophiaMessage("Creating your perfect style guide... This is going to be amazing!");
+  const handleSave = async () => {
+    setIsSaving(true)
+    setSophiaMessage('Saving your style guide updates...')
     
+    // Simulate save operation
     setTimeout(() => {
-      setStyleGuideGenerated(true);
-      setIsGenerating(false);
-      setSophiaMessage("Your style guide is ready! Looking fantastic!");
-      onUpdate("styleGuideGenerated", true);
-    }, 3000);
-  };
+      setHasChanges(false)
+      setLastSaved(new Date())
+      setIsSaving(false)
+      setSophiaMessage('Style guide saved! Your brand voice is looking sharp.')
+    }, 1000)
+  }
 
-  const addCustomColor = () => {
-    const randomColor = `#${Math.floor(Math.random()*16777215).toString(16)}`;
-    const updated = [...customColors, randomColor];
-    setCustomColors(updated);
-    onUpdate("customColors", updated);
-  };
+  const handleReset = () => {
+    setContent(defaultStyleGuideContent)
+    setHasChanges(true)
+    setSophiaMessage('Reset to default style guide template.')
+  }
+
+  const toggleEditing = () => {
+    setIsEditing(!isEditing)
+    if (!isEditing && textareaRef.current) {
+      // Focus and move cursor to end when entering edit mode
+      setTimeout(() => {
+        textareaRef.current?.focus()
+        const len = textareaRef.current?.value.length || 0
+        textareaRef.current?.setSelectionRange(len, len)
+      }, 100)
+    }
+  }
+
+  // Auto-resize textarea
+  useEffect(() => {
+    if (textareaRef.current && isEditing) {
+      textareaRef.current.style.height = 'auto'
+      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px'
+    }
+  }, [content, isEditing])
+
+  const formatLastSaved = (date: Date) => {
+    const now = new Date()
+    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000)
+    
+    if (diffInSeconds < 60) return 'Just now'
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} min ago`
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hr ago`
+    return date.toLocaleDateString()
+  }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Brand Style Guide</h2>
-        <p className="text-gray-600">Let's define your visual identity and communication style.</p>
+    <div className="space-y-8 max-w-5xl mx-auto">
+      {/* Header matching other components */}
+      <div className="space-y-3">
+        <h2 className="font-display text-2xl font-medium text-slate-900">
+          Brand Style Guide
+        </h2>
+        <p className="font-body text-base text-slate-500">
+          Define your brand voice, writing style, and communication principles that will guide all your content.
+        </p>
       </div>
 
-      {/* Tone of Voice */}
-      <div>
-        <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-          <Mic className="w-5 h-5 text-purple-600" />
-          Tone of Voice
-        </h3>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-          {toneOptions.map((tone) => {
-            const isSelected = selectedTones.includes(tone.id);
-            
-            return (
-              <motion.button
-                key={tone.id}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => handleToneToggle(tone.id)}
-                className={cn(
-                  "relative p-4 rounded-xl border-2 transition-all",
-                  isSelected
-                    ? "border-purple-400 bg-purple-50"
-                    : "border-gray-200 bg-white hover:border-gray-300"
-                )}
-              >
-                {isSelected && (
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center"
-                  >
-                    <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </motion.div>
-                )}
-                <div className="text-2xl mb-2">{tone.icon}</div>
-                <p className="text-sm font-medium text-gray-800">{tone.label}</p>
-              </motion.button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Color Palette */}
-      <div>
-        <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-          <Palette className="w-5 h-5 text-purple-600" />
-          Color Palette
-        </h3>
-        <div className="space-y-3">
-          {colorPalettes.map((palette) => {
-            const isSelected = selectedPalette?.id === palette.id;
-            
-            return (
-              <motion.button
-                key={palette.id}
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
-                onClick={() => {
-                  setSelectedPalette(palette);
-                  onUpdate("palette", palette);
-                }}
-                className={cn(
-                  "w-full p-4 rounded-xl border-2 transition-all",
-                  isSelected
-                    ? "border-purple-400 bg-purple-50"
-                    : "border-gray-200 bg-white hover:border-gray-300"
-                )}
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="font-medium text-gray-800">{palette.name}</span>
-                  {isSelected && (
-                    <span className="text-xs text-purple-600 font-medium">Selected</span>
-                  )}
-                </div>
-                <div className="flex gap-2">
-                  {palette.colors.map((color, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: index * 0.05 }}
-                      className="flex-1 h-12 rounded-lg shadow-sm"
-                      style={{ backgroundColor: color }}
-                      title={color}
-                    />
-                  ))}
-                </div>
-              </motion.button>
-            );
-          })}
-          
-          {/* Custom Colors */}
-          <div className="p-4 border-2 border-dashed border-gray-300 rounded-xl">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-sm font-medium text-gray-700">Custom Colors</span>
-              <button
-                onClick={addCustomColor}
-                className="text-xs text-purple-600 hover:text-purple-700 font-medium"
-              >
-                + Add Color
-              </button>
-            </div>
-            {customColors.length > 0 ? (
-              <div className="flex gap-2">
-                {customColors.map((color, index) => (
-                  <div
-                    key={index}
-                    className="w-10 h-10 rounded-lg shadow-sm cursor-pointer"
-                    style={{ backgroundColor: color }}
-                    title={color}
-                  />
-                ))}
-              </div>
-            ) : (
-              <p className="text-xs text-gray-500">No custom colors added yet</p>
+      {/* Status and Controls */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <p className="font-body text-sm text-slate-500">
+              {isEditing ? 'Editing mode' : 'Preview mode'}
+            </p>
+            {hasChanges && (
+              <span className="flex items-center gap-1 text-xs text-amber-600">
+                <div className="w-2 h-2 bg-amber-500 rounded-full" />
+                Unsaved changes
+              </span>
+            )}
+            {lastSaved && !hasChanges && (
+              <span className="flex items-center gap-1 text-xs text-green-600">
+                <Check className="w-3 h-3" />
+                Saved {formatLastSaved(lastSaved)}
+              </span>
             )}
           </div>
-        </div>
-      </div>
 
-      {/* Typography */}
-      <div>
-        <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-          <Type className="w-5 h-5 text-purple-600" />
-          Typography
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <p className="text-xs text-gray-600 mb-2">Headings</p>
-            <p className="text-lg font-bold text-gray-900">{typography.heading}</p>
-          </div>
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <p className="text-xs text-gray-600 mb-2">Body Text</p>
-            <p className="text-lg text-gray-900">{typography.body}</p>
-          </div>
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <p className="text-xs text-gray-600 mb-2">Accent</p>
-            <p className="text-lg italic text-gray-900">{typography.accent}</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Generate Button */}
-      <motion.button
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-        onClick={handleGenerateStyleGuide}
-        disabled={isGenerating || styleGuideGenerated}
-        className={cn(
-          "w-full py-4 rounded-xl font-semibold transition-all flex items-center justify-center gap-3",
-          styleGuideGenerated
-            ? "bg-green-500 text-white"
-            : "bg-gradient-to-r from-purple-500 to-indigo-600 text-white hover:from-purple-600 hover:to-indigo-700"
-        )}
-      >
-        {isGenerating ? (
-          <>
-            <RefreshCw className="w-5 h-5 animate-spin" />
-            Generating Your Style Guide...
-          </>
-        ) : styleGuideGenerated ? (
-          <>
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
-            Style Guide Generated!
-          </>
-        ) : (
-          <>
-            <Sparkles className="w-5 h-5" />
-            Generate My Style Guide
-          </>
-        )}
-      </motion.button>
-
-      {/* Generated Preview */}
-      <AnimatePresence>
-        {styleGuideGenerated && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl p-6 border border-purple-200"
-          >
-            <div className="flex items-center justify-between mb-4">
-              <h4 className="font-semibold text-gray-900">Your Style Guide is Ready!</h4>
-              <button className="flex items-center gap-2 px-3 py-1 bg-white rounded-lg text-sm text-purple-600 hover:bg-purple-50">
-                <Download className="w-4 h-4" />
-                Download
-              </button>
-            </div>
+          {/* Action buttons */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleReset}
+              className="flex items-center gap-1 px-3 py-1.5 text-xs text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md transition-colors duration-150"
+              title="Reset to default template"
+            >
+              <RotateCcw className="w-3 h-3" />
+              Reset
+            </button>
             
-            <div className="space-y-3">
-              <div className="bg-white rounded-lg p-3">
-                <p className="text-xs text-gray-600 mb-1">Voice Characteristics</p>
-                <p className="text-sm text-gray-800">
-                  {selectedTones.map(t => toneOptions.find(opt => opt.id === t)?.label).join(", ")}
-                </p>
-              </div>
-              
-              {selectedPalette && (
-                <div className="bg-white rounded-lg p-3">
-                  <p className="text-xs text-gray-600 mb-2">Brand Colors</p>
-                  <div className="flex gap-1">
-                    {selectedPalette.colors.map((color: string, index: number) => (
-                      <div
-                        key={index}
-                        className="flex-1 h-6 rounded"
-                        style={{ backgroundColor: color }}
-                      />
-                    ))}
-                  </div>
-                </div>
+            {hasChanges && (
+              <motion.button
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                onClick={handleSave}
+                disabled={isSaving}
+                className="flex items-center gap-1 px-3 py-1.5 bg-blue-500 text-white text-xs rounded-md hover:bg-blue-600 transition-colors duration-150 disabled:opacity-50"
+              >
+                {isSaving ? (
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                  >
+                    <Sparkles className="w-3 h-3" />
+                  </motion.div>
+                ) : (
+                  <Save className="w-3 h-3" />
+                )}
+                {isSaving ? 'Saving...' : 'Save'}
+              </motion.button>
+            )}
+
+            <button
+              onClick={toggleEditing}
+              className={cn(
+                'flex items-center gap-1 px-3 py-1.5 text-xs rounded-md transition-colors duration-150',
+                isEditing
+                  ? 'bg-slate-500 text-white hover:bg-slate-600'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
               )}
-              
-              <div className="bg-white rounded-lg p-3">
-                <p className="text-xs text-gray-600 mb-1">Typography System</p>
-                <p className="text-sm text-gray-800">
-                  {typography.heading} / {typography.body}
-                </p>
+            >
+              {isEditing ? <FileText className="w-3 h-3" /> : <Edit3 className="w-3 h-3" />}
+              {isEditing ? 'Preview' : 'Edit'}
+            </button>
+          </div>
+        </div>
+        
+        {/* Progress indicator */}
+        <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
+          <motion.div
+            className="h-full bg-blue-500"
+            initial={{ width: 0 }}
+            animate={{ width: content.length > 100 ? '100%' : `${(content.length / 100) * 100}%` }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+          />
+        </div>
+      </div>
+
+      {/* Main Editor/Preview */}
+      <div className="relative">
+        <AnimatePresence mode="wait">
+          {isEditing ? (
+            <motion.div
+              key="editor"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="space-y-4"
+            >
+              {/* Editor */}
+              <div className="bg-white rounded-lg border border-slate-200 p-6 shadow-sm">
+                <div className="flex items-center gap-2 mb-4 pb-3 border-b border-slate-100">
+                  <Edit3 className="w-4 h-4 text-slate-500" />
+                  <h3 className="font-display text-sm font-medium text-slate-900">
+                    Style Guide Editor
+                  </h3>
+                </div>
+                
+                <textarea
+                  ref={textareaRef}
+                  value={content}
+                  onChange={(e) => handleContentChange(e.target.value)}
+                  className="w-full min-h-[600px] resize-none border-0 outline-none font-mono text-sm text-slate-700 leading-relaxed"
+                  placeholder="Define your brand voice, writing style, and communication guidelines..."
+                  style={{ 
+                    fontFamily: 'ui-monospace, SFMono-Regular, Monaco, Cascadia Code, Roboto Mono, Menlo, monospace'
+                  }}
+                />
               </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+
+              {/* Editor tips */}
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                <h4 className="font-display text-sm font-medium text-blue-900 mb-2">
+                  Editing Tips
+                </h4>
+                <div className="text-xs text-blue-700 space-y-1">
+                  <p>• Use ## for main sections and **bold** for emphasis</p>
+                  <p>• Include specific examples of your preferred word choices</p>
+                  <p>• Define what your brand is AND what it isn't</p>
+                  <p>• Add formatting guidelines for consistent content creation</p>
+                </div>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="preview"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="bg-white rounded-lg border border-slate-200 p-8 shadow-sm"
+            >
+              <div className="flex items-center gap-2 mb-6 pb-4 border-b border-slate-100">
+                <FileText className="w-4 h-4 text-slate-500" />
+                <h3 className="font-display text-sm font-medium text-slate-900">
+                  Style Guide Preview
+                </h3>
+              </div>
+              
+              <div 
+                className="prose prose-slate max-w-none font-body text-slate-700 leading-relaxed"
+                dangerouslySetInnerHTML={{
+                  __html: content
+                    .replace(/^## (.*$)/gm, '<h2 class="text-xl font-display font-semibold text-slate-900 mt-8 mb-4 first:mt-0">$1</h2>')
+                    .replace(/^\*\*(.*?)\*\*/gm, '<strong class="font-semibold text-slate-900">$1</strong>')
+                    .replace(/^- (.*$)/gm, '<li class="ml-4 list-disc">$1</li>')
+                    .replace(/^(\d+)\. (.*$)/gm, '<li class="ml-4 list-decimal">$2</li>')
+                    .replace(/\n\n/g, '</p><p class="mb-4">')
+                    .replace(/^(.+)$/gm, (match, p1) => {
+                      if (p1.startsWith('<h2') || p1.startsWith('<li') || p1.startsWith('</p>') || p1.startsWith('<p')) {
+                        return p1
+                      }
+                      return `<p class="mb-4">${p1}</p>`
+                    })
+                }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Footer matching other components */}
+      <div className="pt-6 border-t border-slate-100 space-y-3">
+        <div className="flex items-center gap-4 text-xs text-slate-500">
+          <div className="flex items-center gap-2">
+            <Edit3 className="w-3 h-3" />
+            <span>Click Edit to modify content</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <FileText className="w-3 h-3" />
+            <span>Preview to see formatted result</span>
+          </div>
+        </div>
+        <p className="font-body text-xs text-slate-500 leading-relaxed">
+          Your style guide will help Sophia understand your brand voice and create content that matches your communication style. Include specific examples and guidelines for best results.
+        </p>
+      </div>
     </div>
-  );
+  )
 }
