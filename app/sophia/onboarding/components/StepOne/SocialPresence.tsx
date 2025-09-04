@@ -69,8 +69,8 @@ const socialPlatforms = [
 ]
 
 interface SocialPresenceProps {
-  onUpdate?: (key: string, value: any) => void
-  data?: any
+  onUpdate?: (key: string, value: unknown) => void
+  data?: Record<string, unknown>
   setSophiaMessage?: (message: string) => void
 }
 
@@ -80,7 +80,7 @@ export default function SocialPresence({
   setSophiaMessage,
 }: SocialPresenceProps) {
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>(
-    data?.selectedPlatforms || []
+    (data?.selectedPlatforms as string[]) || []
   )
 
   // Track connection states for each platform (matching IntegrationsGrid pattern)

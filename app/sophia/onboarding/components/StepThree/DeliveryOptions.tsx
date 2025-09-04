@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Copy, Download, Globe, FileText, Code, Cloud, Check, Sparkles, ArrowRight, ExternalLink } from "lucide-react";
+import { Mail, Copy, Globe, FileText, Code, Cloud, Check, Sparkles, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
@@ -168,14 +168,14 @@ export default function DeliveryOptions({ onUpdate, data, setSophiaMessage }: De
           <div>
             <h3 className="font-semibold text-gray-900">Content Ready!</h3>
             <p className="text-sm text-gray-600">
-              {data.wordCount || 0} words • {Math.ceil((data.wordCount || 0) / 200)} min read
+              {(data.wordCount as number) || 0} words • {Math.ceil(((data.wordCount as number) || 0) / 200)} min read
             </p>
           </div>
         </div>
         <div className="bg-white rounded-lg p-4 border border-green-100">
-          <h4 className="font-bold text-gray-900 mb-2">{data.selectedTitle?.title || "Your Content"}</h4>
+          <h4 className="font-bold text-gray-900 mb-2">{(data.selectedTitle as any)?.title || "Your Content"}</h4>
           <p className="text-sm text-gray-600 line-clamp-3">
-            {data.thesis || "Your amazing content is ready to be shared with the world..."}
+            {(data.thesis as string) || "Your amazing content is ready to be shared with the world..."}
           </p>
         </div>
       </motion.div>
@@ -288,7 +288,7 @@ export default function DeliveryOptions({ onUpdate, data, setSophiaMessage }: De
               />
             </div>
             <p className="text-xs text-gray-600 mt-2">
-              We'll send your content directly to your inbox, formatted and ready to use!
+              We&apos;ll send your content directly to your inbox, formatted and ready to use!
             </p>
           </motion.div>
         )}

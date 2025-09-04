@@ -8,7 +8,6 @@ import {
   Hash, 
   BookOpen, 
   Tag,
-  Check,
   Loader2
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -20,8 +19,8 @@ interface GlossaryTerm {
 }
 
 interface BrandGlossaryProps {
-  onUpdate?: (key: string, value: any) => void
-  data?: any
+  onUpdate?: (key: string, value: unknown) => void
+  data?: Record<string, unknown>
   setSophiaMessage?: (message: string) => void
 }
 
@@ -43,7 +42,7 @@ export default function BrandGlossary({
   setSophiaMessage,
 }: BrandGlossaryProps) {
   const [glossaryTerms, setGlossaryTerms] = useState<GlossaryTerm[]>(
-    data?.glossaryTerms || sampleTerms
+    (data?.glossaryTerms as GlossaryTerm[]) || sampleTerms
   )
   const [newTerm, setNewTerm] = useState('')
   const [isAdding, setIsAdding] = useState(false)
@@ -146,7 +145,7 @@ export default function BrandGlossary({
           Define your brand vocabulary
         </h2>
         <p className="font-body text-base text-slate-500">
-          Add key terms, phrases, and industry language that define your brand's communication style
+          Add key terms, phrases, and industry language that define your brand&apos;s communication style
         </p>
       </div>
 
@@ -339,7 +338,7 @@ export default function BrandGlossary({
             No terms in your glossary yet
           </p>
           <p className="text-xs text-slate-500">
-            Add terms that define your brand's voice and industry language
+            Add terms that define your brand&apos;s voice and industry language
           </p>
         </div>
       )}

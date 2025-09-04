@@ -121,7 +121,7 @@ export default function BrandNarratives({
   setSophiaMessage,
 }: BrandNarrativesProps) {
   const [selectedNarratives, setSelectedNarratives] = useState<string[]>(
-    data?.selectedNarratives || []
+    (data?.selectedNarratives as string[]) || []
   )
 
   // Track connection states for each narrative (matching IntegrationsGrid pattern)

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Sparkles, TrendingUp, Eye, Clock, Plus, RefreshCw } from "lucide-react";
+import { RefreshCw, Sparkles, TrendingUp, Clock, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const suggestedTitles = [
@@ -48,16 +48,18 @@ const suggestedTitles = [
   },
 ];
 
+type Title = typeof suggestedTitles[0];
+
 interface TitleSelectorProps {
-  onUpdate: (key: string, value: any) => void;
-  data: any;
+  onUpdate: (key: string, value: unknown) => void;
+  data: Record<string, unknown>;
   setSophiaMessage: (message: string) => void;
 }
 
 export default function TitleSelector({ onUpdate, data, setSophiaMessage }: TitleSelectorProps) {
-  const [selectedTitle, setSelectedTitle] = useState(data.selectedTitle || null);
-  const [customTitle, setCustomTitle] = useState(data.customTitle || "");
-  const [isCustom, setIsCustom] = useState(data.isCustomTitle || false);
+  const [selectedTitle, setSelectedTitle] = useState<Title | null>((data.selectedTitle as Title) || null);
+  const [customTitle, setCustomTitle] = useState((data.customTitle as string) || "");
+  const [isCustom, setIsCustom] = useState((data.isCustomTitle as boolean) || false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [titles, setTitles] = useState(suggestedTitles);
 
@@ -76,7 +78,7 @@ export default function TitleSelector({ onUpdate, data, setSophiaMessage }: Titl
   const handleCustomTitle = () => {
     if (customTitle.trim()) {
       const custom = {
-        id: "custom",
+        id: 999,  // Special ID for custom titles
         title: customTitle,
         category: "Custom",
         engagement: "Unknown",

@@ -2,12 +2,12 @@
 
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bold, Italic, List, Link2, Image, AlignLeft, AlignCenter, AlignRight, Sparkles, Check } from "lucide-react";
+import { Bold, Italic, List, Link2, AlignLeft, AlignCenter, AlignRight, Type, Copy, RefreshCw, Save, Check, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ContentEditorProps {
-  onUpdate: (key: string, value: any) => void;
-  data: any;
+  onUpdate: (key: string, value: unknown) => void;
+  data: Record<string, unknown>;
   setSophiaMessage: (message: string) => void;
 }
 
@@ -30,9 +30,9 @@ const sophiaMessages = [
 ];
 
 export default function ContentEditor({ onUpdate, data, setSophiaMessage }: ContentEditorProps) {
-  const [thesis, setThesis] = useState(data.thesis || "");
-  const [antithesis, setAntithesis] = useState(data.antithesis || "");
-  const [synthesis, setSynthesis] = useState(data.synthesis || "");
+  const [thesis, setThesis] = useState((data.thesis as string) || "");
+  const [antithesis, setAntithesis] = useState((data.antithesis as string) || "");
+  const [synthesis, setSynthesis] = useState((data.synthesis as string) || "");
   const [wordCount, setWordCount] = useState(0);
   const [readingTime, setReadingTime] = useState(0);
   const [activeSection, setActiveSection] = useState<"thesis" | "antithesis" | "synthesis">("thesis");
@@ -104,7 +104,7 @@ export default function ContentEditor({ onUpdate, data, setSophiaMessage }: Cont
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
-          {data.selectedTitle?.title || "Your Content"}
+          {(data.selectedTitle as any)?.title || "Your Content"}
         </h2>
         <div className="flex items-center gap-6 text-sm text-gray-600">
           <span className="flex items-center gap-2">
@@ -192,7 +192,7 @@ export default function ContentEditor({ onUpdate, data, setSophiaMessage }: Cont
             ref={thesisRef}
             contentEditable
             className="p-4 min-h-[150px] focus:outline-none"
-            placeholder="Present your main argument..."
+            data-placeholder="Present your main argument..."
             onFocus={() => setActiveSection("thesis")}
             onInput={(e) => handleSectionChange("thesis", e.currentTarget.textContent || "")}
             dangerouslySetInnerHTML={{ __html: thesis }}
@@ -225,7 +225,7 @@ export default function ContentEditor({ onUpdate, data, setSophiaMessage }: Cont
             ref={antithesisRef}
             contentEditable
             className="p-4 min-h-[150px] focus:outline-none"
-            placeholder="Explore the counterpoint..."
+            data-placeholder="Explore the counterpoint..."
             onFocus={() => setActiveSection("antithesis")}
             onInput={(e) => handleSectionChange("antithesis", e.currentTarget.textContent || "")}
             dangerouslySetInnerHTML={{ __html: antithesis }}
@@ -258,7 +258,7 @@ export default function ContentEditor({ onUpdate, data, setSophiaMessage }: Cont
             ref={synthesisRef}
             contentEditable
             className="p-4 min-h-[150px] focus:outline-none"
-            placeholder="Bring it all together..."
+            data-placeholder="Bring it all together..."
             onFocus={() => setActiveSection("synthesis")}
             onInput={(e) => handleSectionChange("synthesis", e.currentTarget.textContent || "")}
             dangerouslySetInnerHTML={{ __html: synthesis }}

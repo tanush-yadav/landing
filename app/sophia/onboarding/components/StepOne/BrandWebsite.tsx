@@ -7,12 +7,10 @@ import {
   FileText,
   BookOpen,
   ShoppingBag,
-  ExternalLink,
   Loader2,
   Check,
   AlertCircle,
   Users,
-  Link2,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -27,8 +25,8 @@ interface WebsiteUrls {
 }
 
 interface BrandWebsiteProps {
-  onUpdate?: (key: string, value: any) => void
-  data?: any
+  onUpdate?: (key: string, value: unknown) => void
+  data?: Record<string, unknown>
   setSophiaMessage?: (message: string) => void
   onReadyToContinue?: (isReady: boolean) => void
 }
@@ -39,14 +37,14 @@ export default function BrandWebsite({
   setSophiaMessage,
   onReadyToContinue,
 }: BrandWebsiteProps) {
-  const [websiteUrl, setWebsiteUrl] = useState(data?.websiteUrl || '')
+  const [websiteUrl, setWebsiteUrl] = useState((data?.websiteUrl as string) || '')
   const [detectedUrls, setDetectedUrls] = useState<WebsiteUrls>(
-    data?.detectedUrls || { main: '' }
+    (data?.detectedUrls as WebsiteUrls) || { main: '' }
   )
   const [detectionStatus, setDetectionStatus] =
     useState<DetectionStatus>('idle')
   const [selectedUrls, setSelectedUrls] = useState<string[]>(
-    data?.selectedUrls || []
+    (data?.selectedUrls as string[]) || []
   )
   const [isValidUrl, setIsValidUrl] = useState(true)
 
@@ -114,7 +112,7 @@ export default function BrandWebsite({
 
     // Auto-select main sources
     const autoSelected = [detected.main, detected.about, detected.blog].filter(
-      Boolean
+      (url): url is string => Boolean(url)
     )
 
     setDetectedUrls(detected)
@@ -150,7 +148,7 @@ export default function BrandWebsite({
           Tell me about your brand
         </h2>
         <p className="text-slate-500">
-          Enter your website URL and I'll learn your brand voice
+          Enter your website URL and I&apos;ll learn your brand voice
         </p>
       </div>
 
@@ -310,7 +308,7 @@ export default function BrandWebsite({
           <AlertCircle className="w-8 h-8 mx-auto text-red-400 mb-3" />
           <h3 className="font-medium text-red-900 mb-2">Analysis Failed</h3>
           <p className="text-sm text-red-700 mb-4">
-            Couldn't analyze your website. Please try again.
+            Couldn&apos;t analyze your website. Please try again.
           </p>
           <button
             onClick={() => setDetectionStatus('idle')}

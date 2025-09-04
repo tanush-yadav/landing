@@ -4,8 +4,8 @@ import { useEffect } from "react";
 import IntegrationsGrid from "@/components/sophia/IntegrationsGrid";
 
 interface IntegrationsSetupProps {
-  onUpdate: (key: string, value: any) => void;
-  data: any;
+  onUpdate: (key: string, value: unknown) => void;
+  data: Record<string, unknown>;
   setSophiaMessage: (message: string) => void;
 }
 

@@ -6,8 +6,8 @@ import { Edit3, FileText, Save, RotateCcw, Check, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface StyleGuideProps {
-  onUpdate: (key: string, value: any) => void
-  data: any
+  onUpdate: (key: string, value: unknown) => void
+  data: Record<string, unknown>
   setSophiaMessage: (message: string) => void
 }
 
@@ -86,7 +86,7 @@ We believe that great content should inspire, educate, and drive meaningful acti
 **Links:** Descriptive anchor text, never "click here"`
 
 export default function StyleGuide({ onUpdate, data, setSophiaMessage }: StyleGuideProps) {
-  const [content, setContent] = useState<string>(data.styleGuideContent || defaultStyleGuideContent)
+  const [content, setContent] = useState<string>((data.styleGuideContent as string) || defaultStyleGuideContent)
   const [isEditing, setIsEditing] = useState(false)
   const [hasChanges, setHasChanges] = useState(false)
   const [isSaving, setIsSaving] = useState(false)

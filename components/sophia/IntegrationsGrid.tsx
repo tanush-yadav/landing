@@ -61,8 +61,8 @@ const integrations = [
 ]
 
 interface IntegrationsGridProps {
-  onUpdate?: (key: string, value: any) => void
-  data?: any
+  onUpdate?: (key: string, value: unknown) => void
+  data?: Record<string, unknown>
   setSophiaMessage?: (message: string) => void
 }
 
@@ -72,7 +72,7 @@ export default function IntegrationsGrid({
   setSophiaMessage,
 }: IntegrationsGridProps) {
   const [selectedIntegrations, setSelectedIntegrations] = useState<string[]>(
-    data?.selectedIntegrations || []
+    (data?.selectedIntegrations as string[]) || []
   )
 
   // Track connection states for each integration
