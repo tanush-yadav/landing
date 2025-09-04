@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Copy, Download, Globe, FileText, Code, Cloud, Check, Sparkles, ArrowRight, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -83,14 +83,14 @@ const deliveryOptions = [
 ];
 
 interface DeliveryOptionsProps {
-  onUpdate: (key: string, value: any) => void;
-  data: any;
+  onUpdate: (key: string, value: unknown) => void;
+  data: Record<string, unknown>;
   setSophiaMessage: (message: string) => void;
 }
 
 export default function DeliveryOptions({ onUpdate, data, setSophiaMessage }: DeliveryOptionsProps) {
-  const [selectedOption, setSelectedOption] = useState<string | null>(data.deliveryOption || null);
-  const [email, setEmail] = useState(data.deliveryEmail || "");
+  const [selectedOption, setSelectedOption] = useState<string | null>((data?.deliveryOption as string) || null);
+  const [email, setEmail] = useState((data?.deliveryEmail as string) || "");
   const [isDelivering, setIsDelivering] = useState(false);
   const [delivered, setDelivered] = useState(false);
   const [copiedToClipboard, setCopiedToClipboard] = useState(false);

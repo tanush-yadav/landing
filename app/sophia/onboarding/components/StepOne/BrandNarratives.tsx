@@ -7,7 +7,6 @@ import {
   ExternalLink,
   Loader2,
   Globe,
-  FileText,
   BookOpen,
   Users,
   Target,
@@ -111,8 +110,8 @@ const brandNarratives = [
 ]
 
 interface BrandNarrativesProps {
-  onUpdate?: (key: string, value: any) => void
-  data?: any
+  onUpdate?: (key: string, value: unknown) => void
+  data?: Record<string, unknown>
   setSophiaMessage?: (message: string) => void
 }
 
@@ -433,7 +432,7 @@ export default function BrandNarratives({
                         Sample Title
                       </h5>
                       <p className="font-body text-sm text-slate-900">
-                        "{selectedPreview.sampleTitle}"
+                        &ldquo;{selectedPreview.sampleTitle}&rdquo;
                       </p>
                     </div>
 
