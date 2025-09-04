@@ -2,7 +2,15 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Check, ExternalLink, Loader2, BookOpen, TrendingUp, Users, Mail } from 'lucide-react'
+import {
+  Check,
+  ExternalLink,
+  Loader2,
+  BookOpen,
+  TrendingUp,
+  Users,
+  Mail,
+} from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 // Connection status types (matching IntegrationsGrid pattern)
@@ -22,7 +30,7 @@ const substackPublications = [
     subscribers: '4M+',
     preview: `"The business world is complex, but it doesn't have to be complicated. We break down the biggest stories in business, tech, and finance into witty, easily digestible content that helps you start your day smarter."`,
     sampleTitle: 'The AI race heats up as tech giants battle for dominance',
-    writingStyle: 'Conversational, witty, data-driven'
+    writingStyle: 'Conversational, witty, data-driven',
   },
   {
     id: 'the-hustle',
@@ -35,8 +43,9 @@ const substackPublications = [
     category: 'Business',
     subscribers: '2M+',
     preview: `"We dig into the stories behind the headlines. Why did that startup raise $100M? What's the real story behind that viral TikTok trend? We find the interesting angles others miss."`,
-    sampleTitle: 'How a college dropout built a $2B empire selling fidget spinners',
-    writingStyle: 'Investigative, story-driven, accessible'
+    sampleTitle:
+      'How a college dropout built a $2B empire selling fidget spinners',
+    writingStyle: 'Investigative, story-driven, accessible',
   },
   {
     id: 'stratechery',
@@ -49,8 +58,8 @@ const substackPublications = [
     category: 'Technology',
     subscribers: '100K+',
     preview: `"Technology is reshaping every industry, but understanding why requires more than just tracking the news. I analyze the strategy behind tech companies' moves and what it means for the future of business."`,
-    sampleTitle: 'The End of the Beginning: Apple\'s AI Strategy',
-    writingStyle: 'Deep analysis, strategic thinking, first principles'
+    sampleTitle: "The End of the Beginning: Apple's AI Strategy",
+    writingStyle: 'Deep analysis, strategic thinking, first principles',
   },
   {
     id: 'platformer',
@@ -63,8 +72,8 @@ const substackPublications = [
     category: 'Technology',
     subscribers: '50K+',
     preview: `"The internet is where democracy lives or dies in the 21st century. I cover the platforms that shape our discourse, the policies that govern them, and the people fighting for our digital rights."`,
-    sampleTitle: 'Inside Twitter\'s transformation into X: A platform in crisis',
-    writingStyle: 'Investigative journalism, policy-focused, accessible'
+    sampleTitle: "Inside Twitter's transformation into X: A platform in crisis",
+    writingStyle: 'Investigative journalism, policy-focused, accessible',
   },
   {
     id: 'money-stuff',
@@ -78,7 +87,7 @@ const substackPublications = [
     subscribers: '200K+',
     preview: `"Finance is weird and complicated, but it's also deeply human. I try to explain what's happening in markets, why people make the decisions they do, and why finance is simultaneously very important and pretty absurd."`,
     sampleTitle: 'Crypto Is Having a Normal One',
-    writingStyle: 'Witty, educational, insider perspective'
+    writingStyle: 'Witty, educational, insider perspective',
   },
   {
     id: 'heather-cox-richardson',
@@ -91,8 +100,8 @@ const substackPublications = [
     category: 'Politics',
     subscribers: '1M+',
     preview: `"To understand today's politics, we need to understand how we got here. Every day, I connect current events to the deeper currents of American history, showing how the present moment fits into our longer story."`,
-    sampleTitle: 'The Historical Echoes of Today\'s Political Moment',
-    writingStyle: 'Historical context, thoughtful analysis, educational'
+    sampleTitle: "The Historical Echoes of Today's Political Moment",
+    writingStyle: 'Historical context, thoughtful analysis, educational',
   },
 ]
 
@@ -118,7 +127,9 @@ export default function WhatYouConsume({
   const [hoveredPublication, setHoveredPublication] = useState<string | null>(
     null
   )
-  const [selectedPreview, setSelectedPreview] = useState<typeof substackPublications[0] | null>(null)
+  const [selectedPreview, setSelectedPreview] = useState<
+    (typeof substackPublications)[0] | null
+  >(null)
 
   useEffect(() => {
     if (setSophiaMessage) {
@@ -197,7 +208,8 @@ export default function WhatYouConsume({
           What content inspires you?
         </h2>
         <p className="font-body text-base text-slate-500">
-          Select Substack newsletters to learn your writing preferences and discover your unique voice.
+          Select Substack newsletters to learn your writing preferences and
+          discover your unique voice.
         </p>
       </div>
 
@@ -205,7 +217,8 @@ export default function WhatYouConsume({
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <p className="font-body text-sm text-slate-500">
-            {selectedPublications.length} of {substackPublications.length} connected
+            {selectedPublications.length} of {substackPublications.length}{' '}
+            connected
           </p>
           <div className="flex items-center gap-4 text-xs text-slate-400">
             <span className="flex items-center gap-1">
@@ -220,7 +233,8 @@ export default function WhatYouConsume({
             initial={{ width: 0 }}
             animate={{
               width: `${
-                (selectedPublications.length / substackPublications.length) * 100
+                (selectedPublications.length / substackPublications.length) *
+                100
               }%`,
             }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
@@ -234,8 +248,10 @@ export default function WhatYouConsume({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {substackPublications.map((publication) => {
               const Icon = publication.icon
-              const isConnected = connectionStates[publication.id] === 'connected'
-              const isConnecting = connectionStates[publication.id] === 'connecting'
+              const isConnected =
+                connectionStates[publication.id] === 'connected'
+              const isConnecting =
+                connectionStates[publication.id] === 'connecting'
               const isHovered = hoveredPublication === publication.id
 
               return (
@@ -293,7 +309,10 @@ export default function WhatYouConsume({
                             transition={{ duration: 0.15 }}
                             className="w-5 h-5 rounded bg-blue-500 flex items-center justify-center"
                           >
-                            <Check className="w-3 h-3 text-white" strokeWidth={3} />
+                            <Check
+                              className="w-3 h-3 text-white"
+                              strokeWidth={3}
+                            />
                           </motion.div>
                         ) : (
                           <motion.div
@@ -320,7 +339,9 @@ export default function WhatYouConsume({
                               isConnecting && 'opacity-50'
                             )}
                             style={{
-                              color: isConnected ? publication.color : '#94a3b8',
+                              color: isConnected
+                                ? publication.color
+                                : '#94a3b8',
                             }}
                           />
                         )}
@@ -373,7 +394,9 @@ export default function WhatYouConsume({
 
         {/* Preview Panel (1/3 width) */}
         <div className="lg:col-span-1">
-          <h3 className="font-display text-lg font-medium text-slate-900 mb-4">Writing Preview</h3>
+          <h3 className="font-display text-lg font-medium text-slate-900 mb-4">
+            Writing Preview
+          </h3>
           <div className="sticky top-6">
             <AnimatePresence mode="wait">
               {selectedPreview ? (
@@ -398,7 +421,7 @@ export default function WhatYouConsume({
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="space-y-3">
                     <div className="p-4 bg-slate-50 rounded-lg">
                       <BookOpen className="w-4 h-4 text-slate-400 mb-2" />
@@ -406,7 +429,7 @@ export default function WhatYouConsume({
                         {selectedPreview.preview}
                       </p>
                     </div>
-                    
+
                     <div className="space-y-2">
                       <h5 className="font-body text-xs font-medium text-slate-600 uppercase tracking-wide">
                         Sample Title
@@ -415,7 +438,7 @@ export default function WhatYouConsume({
                         "{selectedPreview.sampleTitle}"
                       </p>
                     </div>
-                    
+
                     <div className="space-y-2">
                       <h5 className="font-body text-xs font-medium text-slate-600 uppercase tracking-wide">
                         Writing Style
@@ -449,7 +472,7 @@ export default function WhatYouConsume({
       </div>
 
       {/* Footer matching IntegrationsGrid */}
-      <div className="pt-6 border-t border-slate-100 space-y-3">
+      {/* <div className="pt-6 border-t border-slate-100 space-y-3">
         <div className="flex items-start gap-6 text-xs text-slate-500">
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 rounded bg-blue-500 flex items-center justify-center">
@@ -475,7 +498,7 @@ export default function WhatYouConsume({
             View our privacy policy
           </a>
         </p>
-      </div>
+      </div> */}
     </div>
   )
 }

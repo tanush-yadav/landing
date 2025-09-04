@@ -347,7 +347,7 @@ export default function SocialPresence({
       </div>
 
       {/* Footer matching IntegrationsGrid */}
-      <div className="pt-6 border-t border-slate-100 space-y-3">
+      {/* <div className="pt-6 border-t border-slate-100 space-y-3">
         <div className="flex items-start gap-6 text-xs text-slate-500">
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 rounded bg-blue-500 flex items-center justify-center">
@@ -375,7 +375,7 @@ export default function SocialPresence({
             View our privacy policy
           </a>
         </p>
-      </div>
+      </div> */}
     </div>
   )
 }

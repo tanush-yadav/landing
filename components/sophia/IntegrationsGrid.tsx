@@ -3,16 +3,8 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Check, Link2, Loader2, AlertCircle, ExternalLink } from 'lucide-react'
-import {
-  SiZoom,
-} from 'react-icons/si'
-import {
-  Mic,
-  Video,
-  Headphones,
-  FileAudio,
-  Users,
-} from 'lucide-react'
+import { SiZoom } from 'react-icons/si'
+import { Mic, Video, Headphones, FileAudio, Users } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 // Connection types
@@ -182,7 +174,8 @@ export default function IntegrationsGrid({
           Connect Your Workspace
         </h2>
         <p className="font-body text-base text-slate-500">
-          We will learn from your transcripts, customer calls, discovery calls, sales calls.
+          We will learn from your transcripts, customer calls, discovery calls,
+          sales calls.
         </p>
       </div>
 
@@ -347,7 +340,7 @@ export default function IntegrationsGrid({
       </div>
 
       {/* Professional Footer with Connection Info */}
-      <div className="pt-6 border-t border-slate-100 space-y-3">
+      {/* <div className="pt-6 border-t border-slate-100 space-y-3">
         <div className="flex items-start gap-6 text-xs text-slate-500">
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 rounded bg-blue-500 flex items-center justify-center">
@@ -375,7 +368,7 @@ export default function IntegrationsGrid({
             View our privacy policy
           </a>
         </p>
-      </div>
+      </div> */}
     </div>
   )
 }

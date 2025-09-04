@@ -204,12 +204,11 @@ export default function OnboardingPage() {
                       className="flex items-center gap-2 text-gray-500 hover:text-gray-700 transition-colors duration-150"
                     >
                       <ArrowLeft className="w-4 h-4" />
-                      <span className="text-sm">Back to Sophia</span>
                     </Link>
                     <div className="h-6 w-px bg-gray-300" />
                     <div>
                       <h1 className="text-lg font-semibold text-gray-900">
-                        Getting Started with Sophia
+                        Share your brain's context
                       </h1>
                       <p className="text-sm text-gray-500">
                         Step {getMainStep()} of 3
@@ -227,14 +226,14 @@ export default function OnboardingPage() {
             {/* Main Content */}
             <div className="max-w-4xl mx-auto px-6 py-12 pb-32">
               {/* Step Title */}
-              <div className="mb-8">
+              {/* <div className="mb-8">
                 <h2 className="text-2xl font-semibold text-gray-900 mb-2">
                   {getStepTitle()}
                 </h2>
                 <p className="text-gray-600">
                   Let's personalize your experience with Sophia
                 </p>
-              </div>
+              </div> */}
 
               {/* Step Content */}
               <AnimatePresence mode="wait">

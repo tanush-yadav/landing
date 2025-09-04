@@ -2,7 +2,16 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Check, ExternalLink, Loader2, Globe, FileText, BookOpen, Users, Target } from 'lucide-react'
+import {
+  Check,
+  ExternalLink,
+  Loader2,
+  Globe,
+  FileText,
+  BookOpen,
+  Users,
+  Target,
+} from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 // Connection status types (matching IntegrationsGrid pattern)
@@ -22,7 +31,7 @@ const brandNarratives = [
     preview: `"We believe that everyone is an athlete. If you have a body, you are an athlete. Our job is to help you unleash your potential, push your limits, and achieve greatness you never thought possible."`,
     sampleTitle: 'Why Your Next Challenge Is Your Greatest Opportunity',
     brandVoice: 'Bold, motivational, empowering, action-oriented',
-    toneElements: ['Achievement', 'Determination', 'Excellence', 'Inspiration']
+    toneElements: ['Achievement', 'Determination', 'Excellence', 'Inspiration'],
   },
   {
     id: 'apple-innovation',
@@ -36,7 +45,7 @@ const brandNarratives = [
     preview: `"We're not just creating products. We're crafting experiences that seamlessly integrate into your life, anticipate your needs, and empower you to create, connect, and explore in ways you never imagined."`,
     sampleTitle: 'The Beautiful Intersection of Technology and Humanity',
     brandVoice: 'Elegant, visionary, human-centered, premium',
-    toneElements: ['Innovation', 'Craftsmanship', 'Intuition', 'Excellence']
+    toneElements: ['Innovation', 'Craftsmanship', 'Intuition', 'Excellence'],
   },
   {
     id: 'patagonia-purpose',
@@ -50,7 +59,7 @@ const brandNarratives = [
     preview: `"We're in business to save our home planet. Every decision we make, every product we create, and every story we tell serves this mission. Adventure is our vehicle, but responsibility is our destination."`,
     sampleTitle: 'Why Doing Less Can Mean Achieving More',
     brandVoice: 'Authentic, purposeful, rugged, environmentally conscious',
-    toneElements: ['Responsibility', 'Adventure', 'Authenticity', 'Purpose']
+    toneElements: ['Responsibility', 'Adventure', 'Authenticity', 'Purpose'],
   },
   {
     id: 'stripe-builders',
@@ -62,9 +71,9 @@ const brandNarratives = [
     category: 'Fintech',
     audience: 'Entrepreneurs & Developers',
     preview: `"We build economic infrastructure for the internet. Our tools help ambitious companies scale their revenue and reach. Behind every transaction is a dream, a business, and people working to build something meaningful."`,
-    sampleTitle: 'Building the Financial Rails for Tomorrow\'s Economy',
+    sampleTitle: "Building the Financial Rails for Tomorrow's Economy",
     brandVoice: 'Technical, empowering, growth-focused, accessible',
-    toneElements: ['Growth', 'Innovation', 'Accessibility', 'Empowerment']
+    toneElements: ['Growth', 'Innovation', 'Accessibility', 'Empowerment'],
   },
   {
     id: 'airbnb-belonging',
@@ -78,7 +87,7 @@ const brandNarratives = [
     preview: `"Travel isn't just about the destination. It's about the connections you make, the stories you collect, and the sense of belonging you find in unexpected places. We're creating a world where anyone can belong anywhere."`,
     sampleTitle: 'How Strangers Become Friends: The Science of Belonging',
     brandVoice: 'Warm, inclusive, community-focused, experiential',
-    toneElements: ['Connection', 'Hospitality', 'Discovery', 'Community']
+    toneElements: ['Connection', 'Hospitality', 'Discovery', 'Community'],
   },
   {
     id: 'tesla-future',
@@ -90,9 +99,14 @@ const brandNarratives = [
     category: 'Automotive/Energy',
     audience: 'Early Adopters',
     preview: `"We're not just building cars. We're reimagining transportation, energy, and humanity's relationship with technology. Every innovation brings us closer to a sustainable future that seemed impossible just yesterday."`,
-    sampleTitle: 'Why the Impossible Is Just Engineering We Haven\'t Solved Yet',
+    sampleTitle: "Why the Impossible Is Just Engineering We Haven't Solved Yet",
     brandVoice: 'Visionary, disruptive, mission-driven, forward-thinking',
-    toneElements: ['Innovation', 'Sustainability', 'Disruption', 'Future-focused']
+    toneElements: [
+      'Innovation',
+      'Sustainability',
+      'Disruption',
+      'Future-focused',
+    ],
   },
 ]
 
@@ -115,15 +129,15 @@ export default function BrandNarratives({
   const [connectionStates, setConnectionStates] = useState<
     Record<string, ConnectionStatus>
   >({})
-  const [hoveredNarrative, setHoveredNarrative] = useState<string | null>(
-    null
-  )
-  const [selectedPreview, setSelectedPreview] = useState<typeof brandNarratives[0] | null>(null)
+  const [hoveredNarrative, setHoveredNarrative] = useState<string | null>(null)
+  const [selectedPreview, setSelectedPreview] = useState<
+    (typeof brandNarratives)[0] | null
+  >(null)
 
   useEffect(() => {
     if (setSophiaMessage) {
       setSophiaMessage(
-        'Choose brand voices that inspire you - I\'ll learn from their narrative style'
+        "Choose brand voices that inspire you - I'll learn from their narrative style"
       )
     }
   }, [setSophiaMessage])
@@ -197,7 +211,8 @@ export default function BrandNarratives({
           What brand voices inspire you?
         </h2>
         <p className="font-body text-base text-slate-500">
-          Select brand narratives to learn their storytelling style and develop your unique voice.
+          Select brand narratives to learn their storytelling style and develop
+          your unique voice.
         </p>
       </div>
 
@@ -235,7 +250,8 @@ export default function BrandNarratives({
             {brandNarratives.map((narrative) => {
               const Icon = narrative.icon
               const isConnected = connectionStates[narrative.id] === 'connected'
-              const isConnecting = connectionStates[narrative.id] === 'connecting'
+              const isConnecting =
+                connectionStates[narrative.id] === 'connecting'
               const isHovered = hoveredNarrative === narrative.id
 
               return (
@@ -293,7 +309,10 @@ export default function BrandNarratives({
                             transition={{ duration: 0.15 }}
                             className="w-5 h-5 rounded bg-blue-500 flex items-center justify-center"
                           >
-                            <Check className="w-3 h-3 text-white" strokeWidth={3} />
+                            <Check
+                              className="w-3 h-3 text-white"
+                              strokeWidth={3}
+                            />
                           </motion.div>
                         ) : (
                           <motion.div
@@ -373,7 +392,9 @@ export default function BrandNarratives({
 
         {/* Preview Panel (1/3 width) */}
         <div className="lg:col-span-1">
-          <h3 className="font-display text-lg font-medium text-slate-900 mb-4">Brand Voice Preview</h3>
+          <h3 className="font-display text-lg font-medium text-slate-900 mb-4">
+            Brand Voice Preview
+          </h3>
           <div className="sticky top-6">
             <AnimatePresence mode="wait">
               {selectedPreview ? (
@@ -398,7 +419,7 @@ export default function BrandNarratives({
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="space-y-3">
                     <div className="p-4 bg-slate-50 rounded-lg">
                       <BookOpen className="w-4 h-4 text-slate-400 mb-2" />
@@ -406,7 +427,7 @@ export default function BrandNarratives({
                         {selectedPreview.preview}
                       </p>
                     </div>
-                    
+
                     <div className="space-y-2">
                       <h5 className="font-body text-xs font-medium text-slate-600 uppercase tracking-wide">
                         Sample Title
@@ -415,7 +436,7 @@ export default function BrandNarratives({
                         "{selectedPreview.sampleTitle}"
                       </p>
                     </div>
-                    
+
                     <div className="space-y-2">
                       <h5 className="font-body text-xs font-medium text-slate-600 uppercase tracking-wide">
                         Brand Voice
@@ -424,7 +445,7 @@ export default function BrandNarratives({
                         {selectedPreview.brandVoice}
                       </p>
                     </div>
-                    
+
                     <div className="space-y-2">
                       <h5 className="font-body text-xs font-medium text-slate-600 uppercase tracking-wide">
                         Tone Elements
@@ -465,7 +486,7 @@ export default function BrandNarratives({
       </div>
 
       {/* Footer matching IntegrationsGrid */}
-      <div className="pt-6 border-t border-slate-100 space-y-3">
+      {/* <div className="pt-6 border-t border-slate-100 space-y-3">
         <div className="flex items-start gap-6 text-xs text-slate-500">
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 rounded bg-blue-500 flex items-center justify-center">
@@ -491,7 +512,7 @@ export default function BrandNarratives({
             View our privacy policy
           </a>
         </p>
-      </div>
+      </div> */}
     </div>
   )
 }
