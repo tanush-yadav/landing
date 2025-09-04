@@ -9,7 +9,7 @@ linear_id: "VOL-50"
 
 # Agent Lock-in Is the New Vendor Lock-in
 
-Your AI agents own you—not the other way around. One weekend migration exposed the trap.
+I failed terribly at a migration recently.
 
 The task seemed straightforward: migrate from the sunsetting Assistants API to the Responses API. Change a client, update method names, ship by Monday.
 
