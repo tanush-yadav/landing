@@ -143,7 +143,7 @@ export default function BrandWebsite({
   ]
 
   return (
-    <div className="max-w-2xl mx-8 space-y-8">
+    <div className="space-y-8">
       {/* Header */}
       <div className="space-y-2">
         <h2 className="font-display text-2xl font-medium text-slate-900">
@@ -214,6 +214,34 @@ export default function BrandWebsite({
         )}
       </div>
 
+      {/* Loading State - Show during analysis */}
+      <AnimatePresence mode="wait">
+        {detectionStatus === 'analyzing' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="py-8"
+          >
+            <div className="flex flex-col items-center justify-center space-y-4">
+              <div className="relative">
+                <div className="w-12 h-12 border-4 border-slate-200 rounded-full" />
+                <div className="absolute top-0 left-0 w-12 h-12 border-4 border-blue-500 rounded-full border-t-transparent animate-spin" />
+              </div>
+              <div className="text-center space-y-1">
+                <p className="text-sm font-medium text-slate-900">
+                  Analyzing your website...
+                </p>
+                <p className="text-xs text-slate-500">
+                  Discovering content sources and integrations
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Content Sources - Clean Grid */}
       {detectionStatus === 'ready' && (
         <motion.div
@@ -237,7 +265,7 @@ export default function BrandWebsite({
                   key={sourceType.key}
                   onClick={() => toggleUrlSelection(url)}
                   className={cn(
-                    'p-4 rounded-lg border text-left transition-all duration-150 flex items-center gap-3',
+                    'p-0 rounded-lg border text-left transition-all duration-150 flex items-center gap-3',
                     isSelected
                       ? 'border-blue-500 bg-blue-50'
                       : 'border-slate-200 bg-white hover:border-slate-300'
@@ -277,7 +305,7 @@ export default function BrandWebsite({
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-red-50 border border-red-200 rounded-lg p-6 text-center"
+          className="bg-red-50 border border-red-200 rounded-lg p-2 text-center"
         >
           <AlertCircle className="w-8 h-8 mx-auto text-red-400 mb-3" />
           <h3 className="font-medium text-red-900 mb-2">Analysis Failed</h3>

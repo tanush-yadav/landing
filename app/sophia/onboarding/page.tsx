@@ -224,7 +224,7 @@ export default function OnboardingPage() {
             </div>
 
             {/* Main Content */}
-            <div className="max-w-4xl mx-auto px-6 py-12 pb-32">
+            <div className="max-w-4xl mx-auto px-4 py-12 pb-32">
               {/* Step Title */}
               {/* <div className="mb-8">
                 <h2 className="text-2xl font-semibold text-gray-900 mb-2">
@@ -243,7 +243,7 @@ export default function OnboardingPage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.2 }}
-                  className="bg-white rounded-lg border border-gray-200 shadow-sm p-8 min-h-[400px]"
+                  className="bg-white rounded-lg border border-gray-200 shadow-sm p-6 min-h-[400px]"
                 >
                   {renderStep()}
                 </motion.div>
