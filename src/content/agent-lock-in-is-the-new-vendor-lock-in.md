@@ -1,10 +1,11 @@
 ---
-title: "Agent Lock-in Is the New Vendor Lock-in"
-description: "Your AI agents own you—not the other way around. One weekend migration exposed the trap."
-date: "2025-09-03"
-author: "Tanush Yadav"
-slug: "agent-lock-in-is-the-new-vendor-lock-in"
-linear_id: "VOL-50"
+title: 'Agent Lock-in Is the New Vendor Lock-in'
+description: 'Your AI agents own you—not the other way around. One weekend migration exposed the trap.'
+date: '2025-09-03'
+author: 'Tanush Yadav'
+slug: 'agent-lock-in-is-the-new-vendor-lock-in'
+image: '/images/blog/default_5.jpg'
+linear_id: 'VOL-50'
 ---
 
 # Agent Lock-in Is the New Vendor Lock-in
@@ -22,7 +23,7 @@ That's agent lock-in—a new architectural trap that compounds the complexity of
 Teams assume they're abstracting "the model." Reality disagrees. **Lock-in infects three critical layers**:
 
 - **Conversation state**: threads, runs, tool calls, and memory trapped in provider-specific shapes
-- **Multi-agent coordination**: orchestration graphs, planners, retries, and tool routing imprisoned by framework DSLs  
+- **Multi-agent coordination**: orchestration graphs, planners, retries, and tool routing imprisoned by framework DSLs
 - **Tool integration**: schemas, IO formats, calling conventions, and auth welded to specific runtimes
 
 Here's the common anti-pattern poisoning production systems:
@@ -116,49 +117,64 @@ The minimal viable abstraction for production systems:
 ```typescript
 // Model client hides provider differences
 export interface ModelClient {
-  chat(input: ChatInput): Promise<ChatResult>;
-  stream?(input: ChatInput): AsyncIterable<ChatChunk>;
+  chat(input: ChatInput): Promise<ChatResult>
+  stream?(input: ChatInput): AsyncIterable<ChatChunk>
 }
 
 // Tool spec is pure JSON Schema with a stable name
 export interface ToolSpec {
-  name: string;
-  description?: string;
-  schema: JSONSchema7;
+  name: string
+  description?: string
+  schema: JSONSchema7
 }
 
 // Tool adapter executes real business logic
 export interface Tool {
-  spec: ToolSpec;
-  invoke(args: unknown, ctx: ToolContext): Promise<unknown>;
+  spec: ToolSpec
+  invoke(args: unknown, ctx: ToolContext): Promise<unknown>
 }
 
 // State store is your infra, not the vendor's
 export interface StateStore {
-  get(key: string): Promise<SessionState | null>;
-  set(key: string, state: SessionState): Promise<void>;
+  get(key: string): Promise<SessionState | null>
+  set(key: string, state: SessionState): Promise<void>
 }
 
-export async function runAgent(sessionId: string, model: ModelClient, store: StateStore, tools: Tool[]) {
-  const state = (await store.get(sessionId)) ?? { messages: [] };
-  let result = await model.chat({ messages: state.messages, tools: tools.map(t => t.spec) });
+export async function runAgent(
+  sessionId: string,
+  model: ModelClient,
+  store: StateStore,
+  tools: Tool[]
+) {
+  const state = (await store.get(sessionId)) ?? { messages: [] }
+  let result = await model.chat({
+    messages: state.messages,
+    tools: tools.map((t) => t.spec),
+  })
 
   while (result.toolCalls?.length) {
-    const toolResults = [];
+    const toolResults = []
     for (const call of result.toolCalls) {
-      const t = tools.find(x => x.spec.name === call.name);
-      if (!t) throw new Error(`Unknown tool ${call.name}`);
-      toolResults.push({ id: call.id, output: await t.invoke(call.args, { sessionId }) });
+      const t = tools.find((x) => x.spec.name === call.name)
+      if (!t) throw new Error(`Unknown tool ${call.name}`)
+      toolResults.push({
+        id: call.id,
+        output: await t.invoke(call.args, { sessionId }),
+      })
     }
     result = await model.chat({
-      messages: [...state.messages, result.asMessage(), { role: "tool", toolResults }],
-      tools: tools.map(t => t.spec)
-    });
+      messages: [
+        ...state.messages,
+        result.asMessage(),
+        { role: 'tool', toolResults },
+      ],
+      tools: tools.map((t) => t.spec),
+    })
   }
 
-  state.messages.push(result.asMessage());
-  await store.set(sessionId, state);
-  return result.text;
+  state.messages.push(result.asMessage())
+  await store.set(sessionId, state)
+  return result.text
 }
 ```
 
@@ -172,11 +188,11 @@ class OpenAIResponsesClient implements ModelClient {
   async chat(input: ChatInput): Promise<ChatResult> {
     // map ChatInput to Responses payload
     const resp = await this.sdk.responses.create({
-      model: "gpt-4.1",
+      model: 'gpt-4.1',
       messages: input.messages,
       tools: input.tools?.map(toOpenAITool),
-    });
-    return fromOpenAI(resp);
+    })
+    return fromOpenAI(resp)
   }
 }
 ```
@@ -184,14 +200,18 @@ class OpenAIResponsesClient implements ModelClient {
 MCP tool adapter:
 
 ```typescript
-import { Server as MCPServer } from "@anthropic-ai/mcp";
+import { Server as MCPServer } from '@anthropic-ai/mcp'
 
 export function serveTools(tools: Tool[]) {
-  const mcp = new MCPServer();
+  const mcp = new MCPServer()
   for (const t of tools) {
-    mcp.tool(t.spec.name, t.spec.schema, async (args, ctx) => await t.invoke(args, ctx));
+    mcp.tool(
+      t.spec.name,
+      t.spec.schema,
+      async (args, ctx) => await t.invoke(args, ctx)
+    )
   }
-  return mcp;
+  return mcp
 }
 ```
 
@@ -206,7 +226,7 @@ While the lock-in challenge intensifies, emerging standards offer escape routes.
 **[MCP (Model Context Protocol)](https://www.anthropic.com/news/model-context-protocol)** delivers the most practical standard today:
 
 - Tool discovery via schemas and manifests
-- Consistent RPC envelope for tool execution  
+- Consistent RPC envelope for tool execution
 - Transport-agnostic model-to-capability connections
 
 MCP transforms toolset registration across multiple orchestrators. **Tools become portable assets**.
@@ -224,15 +244,18 @@ Design architecture seams aligned with these standards. **Tool schemas, message 
 ### Days 0–30: Inventory and Isolate
 
 **Build dependency map**
+
 - Count references to thread/run IDs, tool-call envelopes, provider SDK types, framework decorators
 - Tag "hot paths" (customer-facing, revenue-impacting) versus internal tools
 
 **Wrap the model**
+
 - Introduce ModelClient interface
 - Implement Responses API adapter alongside current client
 - Add A/B testing flag for staging validation
 
 **Externalize state**
+
 - Introduce StateStore backed by Postgres or Redis
 - Dual-write for one week
 - Keep state minimal: messages, last tool call, variables
@@ -240,16 +263,19 @@ Design architecture seams aligned with these standards. **Tool schemas, message 
 ### Days 31–60: Decouple Tools and Coordinator
 
 **Define ToolSpec**
+
 - Normalize tools to JSON Schema and pure args/output
 - Remove SDK-specific annotations from tool code
 - Create two adapters: current orchestrator and MCP
 
 **Build eval harness**
+
 - Record 50–200 representative sessions
 - Replay through old and new adapters
 - Diff behaviors and costs
 
 **Abstract coordinator**
+
 - Create Coordinator interface (run(), plan(), route())
 - Adapt to current framework
 - Extract business logic from framework callbacks
@@ -257,16 +283,19 @@ Design architecture seams aligned with these standards. **Tool schemas, message 
 ### Days 61–90: Parallel Run and Cutover
 
 **Shadow deploy**
+
 - Run new stack read-only for 1–2 weeks
 - Compare latencies, error rates, cost deltas
 
 **Fix the critical 20%**
+
 - Tool arg coercion
 - Retry idempotency
 - Streaming token handling
 - Function-call naming mismatches
 
 **Migrate incrementally**
+
 - Cut over one agent or route at a time
 - Maintain old path as safety valve for one sprint
 
@@ -274,14 +303,14 @@ Validation harness for A/B testing:
 
 ```typescript
 async function dualRun(session, message) {
-  const a = await adapterA.chat({ session, message, tools });
-  const b = await adapterB.chat({ session, message, tools });
+  const a = await adapterA.chat({ session, message, tools })
+  const b = await adapterB.chat({ session, message, tools })
   return {
     sameFinalText: normalize(a.text) === normalize(b.text),
     toolDiff: diff(a.toolCalls, b.toolCalls),
     costDelta: b.cost - a.cost,
-    latencyDelta: b.latency - a.latency
-  };
+    latencyDelta: b.latency - a.latency,
+  }
 }
 ```
 
