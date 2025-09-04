@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, ChevronLeft, Home } from "lucide-react";
+import { ChevronRight, ChevronLeft, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import SophiaCompanion from "./components/SophiaCompanion";
+import SophiaReactions from "@/components/sophia/SophiaReactions";
 import ProgressIndicator from "./components/ProgressIndicator";
 
 // Step One Components
@@ -30,6 +30,7 @@ export default function OnboardingPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [onboardingData, setOnboardingData] = useState({});
   const [isCooking, setIsCooking] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const [sophiaMessage, setSophiaMessage] = useState("Welcome! Let's get to know each other better.");
 
   useEffect(() => {
@@ -51,6 +52,9 @@ export default function OnboardingPage() {
   }, [currentStep, onboardingData]);
 
   const handleNext = () => {
+    setIsTyping(true);
+    setTimeout(() => setIsTyping(false), 1000);
+    
     if (currentStep === 7) {
       // After content editor, show cooking animation
       setIsCooking(true);
@@ -110,10 +114,10 @@ export default function OnboardingPage() {
 
   return (
     <motion.div 
-      className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50"
+      className="min-h-screen bg-gray-50"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.4 }}
+      transition={{ duration: 0.3 }}
     >
       <AnimatePresence mode="wait">
         {isCooking ? (
@@ -125,25 +129,22 @@ export default function OnboardingPage() {
             exit={{ opacity: 0 }}
             className="relative min-h-screen"
           >
-            {/* Background Pattern */}
-            <div className="absolute inset-0 bg-grid-gray-100/50 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]" />
-            
-            {/* Header */}
-            <div className="relative z-10 border-b border-gray-200 bg-white/80 backdrop-blur-sm">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            {/* Clean Header */}
+            <div className="bg-white border-b border-gray-200">
+              <div className="max-w-6xl mx-auto px-6 py-4">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-6">
                     <Link
                       href="/sophia"
-                      className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors group"
+                      className="flex items-center gap-2 text-gray-500 hover:text-gray-700 transition-colors duration-150"
                     >
-                      <Home className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
-                      <span className="text-sm font-medium">Back to Sophia</span>
+                      <ArrowLeft className="w-4 h-4" />
+                      <span className="text-sm">Back to Sophia</span>
                     </Link>
-                    <div className="border-l border-gray-300 h-8" />
+                    <div className="h-6 w-px bg-gray-300" />
                     <div>
-                      <h1 className="text-2xl font-bold text-gray-900">Sophia Onboarding</h1>
-                      <p className="text-sm text-gray-600 mt-1">Step {getMainStep()} of 3: {getStepTitle()}</p>
+                      <h1 className="text-lg font-semibold text-gray-900">Getting Started with Sophia</h1>
+                      <p className="text-sm text-gray-500">Step {getMainStep()} of 3</p>
                     </div>
                   </div>
                   <ProgressIndicator currentStep={currentStep} totalSteps={TOTAL_STEPS} />
@@ -152,65 +153,64 @@ export default function OnboardingPage() {
             </div>
 
             {/* Main Content */}
-            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                {/* Sophia Companion */}
-                <div className="lg:col-span-3">
-                  <SophiaCompanion 
-                    message={sophiaMessage}
-                    currentStep={currentStep}
-                    expression={currentStep === 7 ? "writing" : "friendly"}
-                  />
-                </div>
+            <div className="max-w-4xl mx-auto px-6 py-12 pb-32">
+              {/* Step Title */}
+              <div className="mb-8">
+                <h2 className="text-2xl font-semibold text-gray-900 mb-2">{getStepTitle()}</h2>
+                <p className="text-gray-600">Let's personalize your experience with Sophia</p>
+              </div>
 
-                {/* Step Content */}
-                <div className="lg:col-span-9">
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={currentStep}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      transition={{ duration: 0.3 }}
-                      className="bg-white rounded-2xl shadow-xl p-8 min-h-[500px]"
-                    >
-                      {renderStep()}
-                    </motion.div>
-                  </AnimatePresence>
+              {/* Step Content */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentStep}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="bg-white rounded-lg border border-gray-200 shadow-sm p-8 min-h-[400px]"
+                >
+                  {renderStep()}
+                </motion.div>
+              </AnimatePresence>
 
-                  {/* Navigation */}
-                  <div className="flex justify-between mt-8">
-                    <button
-                      onClick={handleBack}
-                      disabled={currentStep === 0}
-                      className={cn(
-                        "flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all",
-                        currentStep === 0
-                          ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                          : "bg-white border-2 border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300"
-                      )}
-                    >
-                      <ChevronLeft className="w-5 h-5" />
-                      Back
-                    </button>
+              {/* Navigation */}
+              <div className="flex justify-between mt-6">
+                <button
+                  onClick={handleBack}
+                  disabled={currentStep === 0}
+                  className={cn(
+                    "flex items-center gap-2 px-5 py-2.5 rounded-md text-sm font-medium transition-all duration-150",
+                    currentStep === 0
+                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                      : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
+                  )}
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  Back
+                </button>
 
-                    <button
-                      onClick={handleNext}
-                      disabled={currentStep === TOTAL_STEPS - 1}
-                      className={cn(
-                        "flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all",
-                        currentStep === TOTAL_STEPS - 1
-                          ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                          : "bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700 shadow-lg hover:shadow-xl"
-                      )}
-                    >
-                      {currentStep === 7 ? "Cook My Content" : "Next"}
-                      <ChevronRight className="w-5 h-5" />
-                    </button>
-                  </div>
-                </div>
+                <button
+                  onClick={handleNext}
+                  disabled={currentStep === TOTAL_STEPS - 1}
+                  className={cn(
+                    "flex items-center gap-2 px-5 py-2.5 rounded-md text-sm font-medium transition-all duration-150",
+                    currentStep === TOTAL_STEPS - 1
+                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                      : "bg-gray-900 text-white hover:bg-gray-800"
+                  )}
+                >
+                  {currentStep === 7 ? "Generate Content" : "Continue"}
+                  <ChevronRight className="w-4 h-4" />
+                </button>
               </div>
             </div>
+
+            {/* Sophia Reactions at Bottom */}
+            <SophiaReactions 
+              currentStep={currentStep}
+              isTyping={isTyping}
+            />
           </motion.div>
         )}
       </AnimatePresence>

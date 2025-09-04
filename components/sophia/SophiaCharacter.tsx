@@ -9,13 +9,15 @@ export type SophiaEmotion = 'default' | 'confused' | 'thinking' | 'thumbs-up' | 
 
 interface SophiaCharacterProps {
   emotion?: SophiaEmotion
-  size?: 'small' | 'medium' | 'large'
+  size?: 'small' | 'medium' | 'large' | 'xlarge'
   showSparkles?: boolean
   floatingAnimation?: boolean
   className?: string
   autoRotateEmotions?: boolean
   rotationInterval?: number
   onEmotionChange?: (emotion: SophiaEmotion) => void
+  presentationMode?: 'default' | 'hero' | 'compact'
+  showPulse?: boolean
 }
 
 const emotionPaths: Record<SophiaEmotion, string> = {
@@ -29,7 +31,8 @@ const emotionPaths: Record<SophiaEmotion, string> = {
 const sizeMap = {
   small: { width: 96, height: 96, sparkleSize: 'w-3 h-3' },
   medium: { width: 144, height: 144, sparkleSize: 'w-4 h-4' },
-  large: { width: 192, height: 192, sparkleSize: 'w-6 h-6' }
+  large: { width: 192, height: 192, sparkleSize: 'w-6 h-6' },
+  xlarge: { width: 256, height: 256, sparkleSize: 'w-8 h-8' }
 }
 
 export default function SophiaCharacter({
@@ -40,7 +43,9 @@ export default function SophiaCharacter({
   className = '',
   autoRotateEmotions = false,
   rotationInterval = 5000,
-  onEmotionChange
+  onEmotionChange,
+  presentationMode = 'default',
+  showPulse = false
 }: SophiaCharacterProps) {
   const [currentEmotion, setCurrentEmotion] = useState<SophiaEmotion>(emotion)
   const [imageError, setImageError] = useState(false)
@@ -76,6 +81,14 @@ export default function SophiaCharacter({
     },
     static: {
       y: 0
+    },
+    bounce: {
+      y: [0, -8, 0],
+      transition: {
+        duration: 2,
+        repeat: Infinity,
+        ease: "easeInOut"
+      }
     }
   }
 
@@ -95,11 +108,28 @@ export default function SophiaCharacter({
 
   return (
     <div className={`relative inline-block ${className}`}>
+      {/* Pulse effect for hero mode */}
+      {showPulse && (
+        <motion.div
+          className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 to-purple-400"
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.5, 0, 0.5]
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeOut"
+          }}
+          style={{ filter: 'blur(20px)' }}
+        />
+      )}
+      
       <motion.div
         className="relative"
         variants={floatingAnimation ? floatingVariants : undefined}
-        animate={floatingAnimation ? "floating" : "static"}
-        whileHover={floatingAnimation ? { scale: 1.05 } : undefined}
+        animate={floatingAnimation ? (presentationMode === 'hero' ? "bounce" : "floating") : "static"}
+        whileHover={floatingAnimation ? { scale: 1.05 } : { scale: 1.02 }}
         transition={{ type: "spring", stiffness: 300 }}
       >
         <AnimatePresence mode="wait">
@@ -119,7 +149,11 @@ export default function SophiaCharacter({
               alt={`Sophia ${currentEmotion}`}
               width={dimensions.width}
               height={dimensions.height}
-              className="object-contain drop-shadow-2xl rounded-2xl"
+              className={`object-contain rounded-2xl transition-all duration-300 ${
+                presentationMode === 'hero' 
+                  ? 'drop-shadow-[0_20px_50px_rgba(59,130,246,0.15)]' 
+                  : 'drop-shadow-2xl'
+              }`}
               priority
               quality={90}
               onError={() => setImageError(true)}
