@@ -1,6 +1,6 @@
 ---
 title: 'Agent Lock-in Is the New Vendor Lock-in'
-description: 'Your AI agents own you—not the other way around. One weekend migration exposed the trap.'
+description: 'Your AI agents own you, not the other way around. One weekend migration exposed the trap.'
 date: '2025-09-03'
 author: 'Tanush Yadav'
 slug: 'agent-lock-in-is-the-new-vendor-lock-in'
