@@ -3,7 +3,12 @@ export const CALENDAR_LINK = 'https://cal.com/tanush-yadav-9zdiau/15min'
 
 // Navigation constants
 export const NAV_ITEMS = [
-  { label: 'Agents', href: '/agents', icon: '🤖', description: 'Meet our AI team' },
+  {
+    label: 'Agents',
+    href: '/agents',
+    icon: '🤖',
+    description: 'Meet our AI team',
+  },
   { label: 'Blog', href: '/blog', icon: '📚', description: 'Latest insights' },
 ]
 
