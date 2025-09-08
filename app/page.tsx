@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 import Navigation from '@/components/navigation'
 import Hero from '@/components/hero'
 import { CTASection } from '@/components/cta-section'
+import TestimonialsInline from '@/components/testimonials-inline'
 
 // Lazy load heavy components
 const InteractiveDemoWrapper = dynamic(
@@ -114,6 +115,9 @@ export default function Home() {
     <main id="main" className="min-h-screen">
       <Navigation />
       <Hero onDemoTrigger={handleDemoTrigger} isDemoRunning={isDemoRunning} />
+
+      {/* Near-fold testimonials */}
+      <TestimonialsInline />
 
       {/* Interactive Demo Section - Clean Professional UI */}
       <InteractiveDemoWrapper

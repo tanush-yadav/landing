@@ -33,7 +33,8 @@ export default function ComposioHero() {
         <motion.div
           className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full"
           style={{
-            background: 'radial-gradient(circle, rgba(147, 51, 234, 0.15) 0%, transparent 70%)',
+            background:
+              'radial-gradient(circle, rgba(147, 51, 234, 0.15) 0%, transparent 70%)',
             filter: 'blur(80px)',
           }}
           animate={{
@@ -49,7 +50,8 @@ export default function ComposioHero() {
         <motion.div
           className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full"
           style={{
-            background: 'radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%)',
+            background:
+              'radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%)',
             filter: 'blur(80px)',
           }}
           animate={{
@@ -74,7 +76,9 @@ export default function ComposioHero() {
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm border border-gray-200 mb-8"
         >
           <Sparkles className="w-4 h-4 text-purple-600" />
-          <span className="text-sm font-medium text-gray-700">AI-Powered Content Creation</span>
+          <span className="text-sm font-medium text-gray-700">
+            Start ranking in 7 days
+          </span>
         </motion.div>
 
         {/* Main Headline with Split Style */}
@@ -88,11 +92,11 @@ export default function ComposioHero() {
           <span className="block">Content that</span>
           <span className="block mt-2">
             <em className="font-serif italic bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-              evolves
-            </em>
-            {' '}for your
+              shares
+            </em>{' '}
+            your brain
           </span>
-          <span className="block mt-2">Founders</span>
+          <span className="block mt-2">Context</span>
         </motion.h1>
 
         {/* Subheadline */}
@@ -102,7 +106,8 @@ export default function ComposioHero() {
           transition={{ duration: 0.7, delay: 0.2 }}
           className="text-xl sm:text-2xl text-gray-600 max-w-3xl mx-auto mb-12 leading-relaxed"
         >
-          Sophia learns your unique voice, understands your expertise, and creates authentic content that sounds exactly like you—only faster.
+          Sophia learns your unique voice, understands your expertise, and
+          creates authentic content that sounds exactly like you—only faster.
         </motion.p>
 
         {/* CTA Buttons */}

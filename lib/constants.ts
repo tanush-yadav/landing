@@ -1,5 +1,5 @@
 // Calendar and booking constants - using static link from CTA section
-export const CALENDAR_LINK = 'https://cal.com/tanushyadav/quick-chat'
+export const CALENDAR_LINK = 'https://cal.com/tanush-yadav-9zdiau/15min'
 
 // Navigation constants
 export const NAV_ITEMS = [
