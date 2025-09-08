@@ -1,53 +1,210 @@
-# Claude Code Configuration - SPARC Development Environment
+# CLAUDE.md
 
-## 🚨 CRITICAL: CONCURRENT EXECUTION & FILE MANAGEMENT
-
-**ABSOLUTE RULES**:
-1. ALL operations MUST be concurrent/parallel in a single message
-2. **NEVER save working files, text/mds and tests to the root folder**
-3. ALWAYS organize files in appropriate subdirectories
-4. **USE CLAUDE CODE'S TASK TOOL** for spawning agents concurrently, not just MCP
-
-### ⚡ GOLDEN RULE: "1 MESSAGE = ALL RELATED OPERATIONS"
-
-**MANDATORY PATTERNS:**
-- **TodoWrite**: ALWAYS batch ALL todos in ONE call (5-10+ todos minimum)
-- **Task tool (Claude Code)**: ALWAYS spawn ALL agents in ONE message with full instructions
-- **File operations**: ALWAYS batch ALL reads/writes/edits in ONE message
-- **Bash commands**: ALWAYS batch ALL terminal operations in ONE message
-- **Memory operations**: ALWAYS batch ALL memory store/retrieve in ONE message
-
-### 🎯 CRITICAL: Claude Code Task Tool for Agent Execution
-
-**Claude Code's Task tool is the PRIMARY way to spawn agents:**
-```javascript
-// ✅ CORRECT: Use Claude Code's Task tool for parallel agent execution
-[Single Message]:
-  Task("Research agent", "Analyze requirements and patterns...", "researcher")
-  Task("Coder agent", "Implement core features...", "coder")
-  Task("Tester agent", "Create comprehensive tests...", "tester")
-  Task("Reviewer agent", "Review code quality...", "reviewer")
-  Task("Architect agent", "Design system architecture...", "system-architect")
-```
-
-**MCP tools are ONLY for coordination setup:**
-- `mcp__claude-flow__swarm_init` - Initialize coordination topology
-- `mcp__claude-flow__agent_spawn` - Define agent types for coordination
-- `mcp__claude-flow__task_orchestrate` - Orchestrate high-level workflows
-
-### 📁 File Organization Rules
-
-**NEVER save to root folder. Use these directories:**
-- `/src` - Source code files
-- `/tests` - Test files
-- `/docs` - Documentation and markdown files
-- `/config` - Configuration files
-- `/scripts` - Utility scripts
-- `/examples` - Example code
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
 
-This project uses SPARC (Specification, Pseudocode, Architecture, Refinement, Completion) methodology with Claude-Flow orchestration for systematic Test-Driven Development.
+**Cintra Landing Site**: A Next.js 15 landing page showcasing Sophia, an AI content assistant. The site features an interactive onboarding flow where users connect their data sources and configure content preferences.
+
+**Core Product**: Sophia - AI assistant that learns from user's transcripts, conversations, and content preferences to generate personalized content.
+
+## Development Commands
+
+### Essential Commands
+- `npm run dev` - Start development server (localhost:3000)
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run test:e2e` - Run Playwright end-to-end tests
+
+### Testing Notes
+- No unit test framework configured (only Playwright E2E)
+- When implementing tests, determine framework by checking existing patterns
+- DO NOT assume Jest/Vitest - ask user for preference
+
+## Architecture Overview
+
+### Tech Stack
+- **Framework**: Next.js 15 with App Router
+- **Styling**: Tailwind CSS with custom design system
+- **Animation**: Framer Motion
+- **TypeScript**: Full type safety with strict mode
+- **Icons**: Lucide React + React Icons
+- **Analytics**: PostHog, Google Analytics, Plausible (production only)
+
+### Key Directories
+```
+app/                    # Next.js App Router pages
+├── sophia/            # Sophia product pages
+│   └── onboarding/    # Multi-step onboarding flow
+components/            # Reusable React components
+├── ui/                # Base UI components
+├── blog/              # Blog-specific components  
+└── sophia/            # Sophia-specific components
+lib/                   # Utilities and shared logic
+├── design-system/     # Design system utilities
+└── data/             # Data and content
+```
+
+### Core Patterns
+
+#### Component Architecture
+- **Consistent Props Pattern**: All major components follow this interface:
+```typescript
+interface ComponentProps {
+  onUpdate?: (key: string, value: any) => void
+  data?: any
+  setSophiaMessage?: (message: string) => void
+}
+```
+
+#### Design System Integration
+- **Utility Function**: `cn()` from `lib/utils.ts` for class merging (clsx + tailwind-merge)
+- **Font Variables**: `font-display`, `font-heading`, `font-sans` (custom font setup)
+- **Color Palette**: Primarily `slate-*` grays with `blue-500` accents
+- **Animation Patterns**: Consistent `0.15s`, `0.3s` durations with `ease-out` timing
+
+#### Connection Flow Pattern
+Used across onboarding steps (IntegrationsGrid, WhatYouConsume, SocialPresence):
+```typescript
+type ConnectionStatus = 'not_connected' | 'connecting' | 'connected' | 'error'
+```
+- Hover states reveal connection methods
+- Loading spinners during connection
+- Connected state shows checkmarks and blue borders
+- Consistent progress tracking with visual feedback
+
+### Onboarding Flow Architecture
+
+**Multi-Step Wizard**: Located in `app/sophia/onboarding/`
+- **Step 0**: IntegrationsSetup - Connect meeting/transcript tools (Gong, Zoom, etc.)
+- **Step 1**: WhatYouConsume - Select Substack publications for writing inspiration
+- **Step 2**: BrandNarratives - Define brand voice and storytelling preferences
+- **Step 3**: SocialPresence - Connect social platforms for voice analysis
+- **Step 4**: StyleGuide - Set writing style and tone preferences
+- **Steps 5-7**: Content creation and delivery options
+
+**Key Onboarding Patterns**:
+- Persistent state via localStorage
+- Sophia companion with context-aware reactions
+- Progress indicator with visual feedback
+- Consistent card-based selection interface
+- Connection states with loading/success feedback
+
+## Design System Guidelines
+
+### Color Usage
+- **Primary Text**: `text-slate-900` (headings), `text-slate-600` (body)
+- **Borders**: `border-slate-200` (default), `border-blue-500` (selected)
+- **Backgrounds**: `bg-white` (cards), `bg-slate-50` (page backgrounds)
+- **Interactive States**: `hover:border-slate-300`, `hover:shadow-sm`
+
+### Typography Scale
+```css
+font-display: Fraunces (headings)
+font-heading: Plus Jakarta Sans  
+font-sans: Outfit (body text)
+```
+
+### Animation Guidelines
+- **Card Interactions**: `transition-all duration-150`
+- **Page Transitions**: `duration-0.3` with `ease-out`
+- **Hover Effects**: Quick `duration-150` responses
+- **Loading States**: Framer Motion with staggered animations
+
+### Responsive Patterns
+- **Grid Layouts**: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`
+- **Typography**: Responsive font sizes using `clamp()` functions
+- **Spacing**: Consistent `space-y-*` and `gap-*` patterns
+
+## Component Conventions
+
+### File Naming
+- PascalCase for components (`SocialPresence.tsx`)
+- kebab-case for pages and utilities (`blog-post.tsx`)
+- Organized by feature in subdirectories
+
+### Import Patterns
+```typescript
+'use client'  // Client components always at top
+
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { IconName } from 'lucide-react'
+import { cn } from '@/lib/utils'
+```
+
+### State Management
+- Local state with `useState` for component-specific data
+- Props drilling for parent-child communication
+- localStorage for onboarding persistence
+- No global state management library
+
+## Content Architecture
+
+### Blog System
+- Markdown-based content in `content/blog/`
+- Gray-matter for frontmatter parsing
+- Structured data for SEO
+- Reading time calculation
+- Dynamic routing with `[slug]`
+
+### Analytics Integration
+- **Production Only**: Analytics disabled in development
+- **Environment Flag**: `NEXT_PUBLIC_ENABLE_ANALYTICS` override
+- **Multiple Providers**: PostHog, GA4, Plausible, Ahrefs
+
+## Performance Optimizations
+
+### Image Handling
+- Next.js Image component with optimization
+- AVIF/WebP format support
+- Responsive device sizes configured
+- Remote pattern allowlist for external images
+
+### Build Optimizations
+- Console removal in production builds
+- Compression enabled
+- PostHog proxy for analytics
+- Font optimization with `display: swap`
+
+## Development Guidelines
+
+### Code Style
+- TypeScript strict mode enforced
+- No explicit `any` types (use proper interfaces)
+- Consistent arrow functions for components
+- Destructured props in function signatures
+
+### Error Handling
+- Error boundaries for blog content
+- Graceful fallbacks for missing data
+- Loading states for async operations
+
+### Accessibility
+- Skip navigation link implemented
+- Semantic HTML structure
+- Focus management in interactive elements
+- Screen reader friendly components
+
+## Important Notes
+
+### Analytics Configuration
+- Analytics are **disabled by default** in development
+- Set `NEXT_PUBLIC_ENABLE_ANALYTICS=true` to enable in dev
+- Multiple tracking systems run in production
+
+### Image Assets
+- Sophia character images stored in `/public/images/sophia-reactions/`
+- Optimized image loading with Next.js Image component
+- Remote image patterns configured for external sources
+
+### Font Loading
+- Custom Google Fonts with CSS variables
+- Preloaded for performance
+- Fallback system fonts defined
+
+This codebase emphasizes clean, maintainable code with consistent patterns across components. When adding new features, follow the established design system and component patterns for consistency.
 
 ## SPARC Commands
 
@@ -330,3 +487,4 @@ NEVER create files unless they're absolutely necessary for achieving your goal.
 ALWAYS prefer editing an existing file to creating a new one.
 NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.
 Never save working files, text/mds and tests to the root folder.
+- memory UX designer to always think ultra hard and be super creative, But give a short intuitive answer.

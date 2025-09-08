@@ -16,6 +16,12 @@ const Navigation = memo(() => {
   const navItems = [
     // { label: 'Agents', href: '/agents', icon: '🤖', description: 'Meet our AI team' },
     {
+      label: 'Sophia',
+      href: '/sophia',
+      icon: '✨',
+      description: 'AI employee',
+    },
+    {
       label: 'Blog',
       href: '/blog',
       icon: '📚',
@@ -138,8 +144,19 @@ const Navigation = memo(() => {
                         ? 'text-gray-700 hover:text-gray-900 hover:bg-gray-100/60'
                         : 'text-gray-700 hover:text-gray-900 hover:bg-white/20 drop-shadow-sm font-medium'
                     )}
+                    aria-label={item.label}
                   >
-                    {item.label}
+                    <span className="inline-flex items-center gap-1">
+                      {item.label === 'Sophia' && (
+                        <Sparkles className="w-4 h-4 text-purple-500" />
+                      )}
+                      <span>{item.label}</span>
+                      {item.label === 'Sophia' && (
+                        <span className="ml-1 inline-flex items-center rounded-full bg-purple-50 text-purple-700 text-[10px] font-semibold px-1.5 py-0.5 ring-1 ring-purple-200 animate-pulse">
+                          New
+                        </span>
+                      )}
+                    </span>
                   </Link>
                 ))}
               </div>
@@ -248,8 +265,19 @@ const Navigation = memo(() => {
                   href={item.href}
                   className="block px-4 py-3 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100/60 rounded-lg transition-all duration-200 hover:scale-[1.02]"
                   onClick={closeMobileMenu}
+                  aria-label={item.label}
                 >
-                  {item.label}
+                  <span className="inline-flex items-center gap-2">
+                    {item.label === 'Sophia' && (
+                      <Sparkles className="w-5 h-5 text-purple-500" />
+                    )}
+                    <span>{item.label}</span>
+                    {item.label === 'Sophia' && (
+                      <span className="ml-1 inline-flex items-center rounded-full bg-purple-50 text-purple-700 text-[10px] font-semibold px-1.5 py-0.5 ring-1 ring-purple-200 animate-pulse">
+                        New
+                      </span>
+                    )}
+                  </span>
                 </Link>
               ))}
             </div>
