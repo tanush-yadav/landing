@@ -76,7 +76,7 @@ export default function RootLayout({
       className={`${GeistSans.variable} ${outfit.variable} ${plusJakartaSans.variable} ${fraunces.variable}`}
       suppressHydrationWarning
     >
-      <body className={`${GeistSans.className} min-h-screen`}>
+      <body className={`${outfit.className} min-h-screen`}>
         {analyticsEnabled && (
           <>
             <Script
