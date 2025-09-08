@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Outfit, Plus_Jakarta_Sans, Fraunces } from 'next/font/google'
+import { GeistSans } from 'geist/font/sans'
 import './globals.css'
 import '@/styles/blog-mobile.css'
 import Script from 'next/script'
@@ -72,10 +73,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${outfit.variable} ${plusJakartaSans.variable} ${fraunces.variable}`}
+      className={`${GeistSans.variable} ${outfit.variable} ${plusJakartaSans.variable} ${fraunces.variable}`}
       suppressHydrationWarning
     >
-      <body className={`${outfit.className} min-h-screen`}>
+      <body className={`${GeistSans.className} min-h-screen`}>
         {analyticsEnabled && (
           <>
             <Script
