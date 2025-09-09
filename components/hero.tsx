@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-// import Link from 'next/link'
+import Link from 'next/link'
 import { ArrowRight, Users, FileText, TrendingUp, Settings } from 'lucide-react'
 import * as RadioGroup from '@radix-ui/react-radio-group'
 import * as Label from '@radix-ui/react-label'
@@ -11,6 +11,8 @@ import {
   redirectToCalIfThresholdMet,
 } from '@/lib/utils'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Button } from '@/components/ui/button'
+import { CALENDAR_LINK } from '@/lib/constants'
 
 // Team data with AI names and tasks
 const teams = [

@@ -15,12 +15,12 @@ const Navigation = memo(() => {
 
   const navItems = [
     // { label: 'Agents', href: '/agents', icon: '🤖', description: 'Meet our AI team' },
-    {
-      label: 'Sophia',
-      href: '/sophia',
-      icon: '✨',
-      description: 'AI employee',
-    },
+    // {
+    //   label: 'Sophia',
+    //   href: '/sophia',
+    //   icon: '✨',
+    //   description: 'AI employee',
+    // },
     {
       label: 'Blog',
       href: '/blog',
