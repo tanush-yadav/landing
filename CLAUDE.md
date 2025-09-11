@@ -488,3 +488,4 @@ ALWAYS prefer editing an existing file to creating a new one.
 NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.
 Never save working files, text/mds and tests to the root folder.
 - memory UX designer to always think ultra hard and be super creative, But give a short intuitive answer.
+- memory Never run npm run dev or npm run build, it's already running. No need to test as well.

@@ -191,23 +191,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
       {/* Content */}
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
         <div className="mx-auto max-w-4xl">
-          {/* Badge */}
-          <div
-            className={cn(
-              'inline-flex items-center justify-center mb-8 opacity-0',
-              isVisible && 'animate-fade-in-down'
-            )}
-            role="status"
-            aria-live="polite"
-          >
-            <span className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-md px-4 py-1.5 text-sm font-medium text-gray-700 border border-white/40 shadow-lg ring-1 ring-gray-200/10">
-              <span className="relative flex h-2 w-2 mr-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-              </span>
-              Live Now: Watch AI Complete Real Tasks
-            </span>
-          </div>
+
 
           {/* Main Headline */}
           <h1
