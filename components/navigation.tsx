@@ -97,8 +97,8 @@ const Navigation = memo(() => {
             'transition-all duration-500 ease-out',
             // Enhanced glassy card styling that changes on scroll
             isScrolled
-              ? 'mt-4 mx-4 rounded-2xl bg-white/90 backdrop-blur-xl border border-white/60 shadow-2xl shadow-black/10 ring-1 ring-gray-200/20'
-              : 'mt-6 mx-4 rounded-2xl bg-white/20 backdrop-blur-xl border border-white/40 shadow-xl shadow-black/5 ring-1 ring-white/20',
+              ? 'mt-2 mx-3 sm:mt-4 sm:mx-4 rounded-xl sm:rounded-2xl bg-white/90 backdrop-blur-xl border border-white/60 shadow-none md:shadow-2xl shadow-black/10 ring-1 ring-gray-200/20'
+              : 'mt-3 mx-3 sm:mt-6 sm:mx-4 rounded-xl sm:rounded-2xl bg-white/20 backdrop-blur-xl border border-white/40 shadow-none md:shadow-xl shadow-black/5 ring-1 ring-white/20',
             // Responsive width
             'w-full max-w-5xl'
           )}
@@ -107,7 +107,7 @@ const Navigation = memo(() => {
             className={cn(
               'flex items-center justify-between transition-all duration-300',
               // Adaptive padding based on scroll state
-              isScrolled ? 'h-14 px-6' : 'h-16 px-6'
+              isScrolled ? 'h-12 px-4 sm:h-14 sm:px-6' : 'h-14 px-4 sm:h-16 sm:px-6'
             )}
           >
             {/* Enhanced Logo with Animation */}
