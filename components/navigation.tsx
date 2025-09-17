@@ -13,20 +13,25 @@ const Navigation = memo(() => {
   const [lastScrollY, setLastScrollY] = useState(0)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-  const navItems = [
+  const navItems: Array<{
+    label: string
+    href: string
+    icon: string
+    description: string
+  }> = [
     // { label: 'Agents', href: '/agents', icon: '🤖', description: 'Meet our AI team' },
-    {
-      label: 'Sophia',
-      href: '/sophia',
-      icon: '✨',
-      description: 'AI employee',
-    },
-    {
-      label: 'Blog',
-      href: '/blog',
-      icon: '📚',
-      description: 'Latest insights',
-    },
+    // {
+    //   label: 'Sophia',
+    //   href: '/sophia',
+    //   icon: '✨',
+    //   description: 'AI employee',
+    // },
+    // {
+    //   label: 'Blog',
+    //   href: '/blog',
+    //   icon: '📚',
+    //   description: 'Latest insights',
+    // },
   ]
 
   const controlNavbar = useCallback(() => {
@@ -131,60 +136,7 @@ const Navigation = memo(() => {
             </motion.div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center">
-              {/* Simplified Nav */}
-              <div className="flex items-center space-x-1">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    className={cn(
-                      'text-sm font-medium transition-all duration-300 px-3 py-2 rounded-lg hover:scale-105',
-                      isScrolled
-                        ? 'text-gray-700 hover:text-gray-900 hover:bg-gray-100/60'
-                        : 'text-gray-700 hover:text-gray-900 hover:bg-white/20 drop-shadow-sm font-medium'
-                    )}
-                    aria-label={item.label}
-                  >
-                    <span className="inline-flex items-center gap-1">
-                      {item.label === 'Sophia' && (
-                        <Sparkles className="w-4 h-4 text-purple-500" />
-                      )}
-                      <span>{item.label}</span>
-                      {item.label === 'Sophia' && (
-                        <span className="ml-1 inline-flex items-center rounded-full bg-purple-50 text-purple-700 text-[10px] font-semibold px-1.5 py-0.5 ring-1 ring-purple-200 animate-pulse">
-                          New
-                        </span>
-                      )}
-                    </span>
-                  </Link>
-                ))}
-              </div>
-
-              {/* CTA Button */}
-              <motion.div
-                className="ml-4"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Link
-                  href={CALENDAR_LINK}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    'inline-flex items-center gap-2 px-4 py-2 rounded-lg',
-                    'text-sm font-semibold transition-all duration-300',
-                    'shadow-lg hover:shadow-xl',
-                    isScrolled
-                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700'
-                      : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 backdrop-blur-sm'
-                  )}
-                >
-                  <Calendar className="w-4 h-4" />
-                  <span>{CTA_TEXT}</span>
-                </Link>
-              </motion.div>
-            </div>
+          
 
             {/* Mobile Menu Button */}
             <button

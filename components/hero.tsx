@@ -1,110 +1,49 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+<<<<<<< Updated upstream
 // import Link from 'next/link'
 import { ArrowRight, Users, FileText, TrendingUp, Settings } from 'lucide-react'
 import * as RadioGroup from '@radix-ui/react-radio-group'
 import * as Label from '@radix-ui/react-label'
+=======
+import Image from 'next/image'
+import { ArrowRight, Search } from 'lucide-react'
+>>>>>>> Stashed changes
 import {
   cn,
   incrementDelegationClickCount,
   redirectToCalIfThresholdMet,
 } from '@/lib/utils'
+<<<<<<< Updated upstream
 import { motion, AnimatePresence } from 'framer-motion'
+=======
+import { motion } from 'framer-motion'
+import { Button } from '@/components/ui/button'
+>>>>>>> Stashed changes
 
-// Team data with AI names and tasks
-const teams = [
+// Platform tasks for YouTube, TikTok Shop, and Shopify
+const floatingPills = [
   {
-    id: 'engineering',
-    name: 'Engineering',
-    icon: <Settings className="h-4 w-4" />,
-    aiName: 'Alex',
-    tasks: [
-      {
-        id: 'auth-bug-fix',
-        label: 'Fix authentication bug in production',
-        time: '3.5 mins',
-      },
-      {
-        id: 'payment-api-error',
-        label: 'Add error handling to payment API',
-        time: '3 mins',
-      },
-      {
-        id: 'user-service-tests',
-        label: 'Write unit tests for user service',
-        time: '3 mins',
-      },
-    ],
+    id: 'youtube-tech-channels',
+    platform: 'YouTube',
+    icon: <Image src="/images/youtube.png" alt="YouTube" width={18} height={18} className="h-4.5 w-4.5" />,
+    text: 'Search for top tech YouTube channels',
+    searchQuery: 'Search for top tech YouTube channels with high engagement',
   },
   {
-    id: 'content',
-    name: 'Content',
-    icon: <FileText className="h-4 w-4" />,
-    aiName: 'Sophia',
-    tasks: [
-      {
-        id: 'blog-post',
-        label: 'Write blog post about Q4 product updates',
-        time: '4 mins',
-      },
-      {
-        id: 'email-campaign',
-        label: 'Create email campaign for new feature launch',
-        time: '3 mins',
-      },
-      {
-        id: 'api-docs',
-        label: 'Update help documentation for API changes',
-        time: '3 mins',
-      },
-    ],
+    id: 'tiktok-beauty-creators',
+    platform: 'TikTok Shop',
+    icon: <Image src="/images/tiktok-shop-logo.png" alt="TikTok Shop" width={18} height={18} className="h-4.5 w-4.5" />,
+    text: 'Find beauty TikTok creators with 50K+',
+    searchQuery: 'Find beauty TikTok creators with 50K+ followers',
   },
   {
-    id: 'sales',
-    name: 'Sales',
-    icon: <TrendingUp className="h-4 w-4" />,
-    aiName: 'Jordan',
-    tasks: [
-      {
-        id: 'qualify-leads',
-        label: "Qualify leads from yesterday's webinar",
-        time: '2.5 mins',
-      },
-      {
-        id: 'competitor-research',
-        label: 'Research competitor pricing for Enterprise deals',
-        time: '3 mins',
-      },
-      {
-        id: 'crm-update',
-        label: 'Update CRM with meeting notes from demos',
-        time: '3 mins',
-      },
-    ],
-  },
-  {
-    id: 'operations',
-    name: 'Operations',
-    icon: <Users className="h-4 w-4" />,
-    aiName: 'Quinn',
-    tasks: [
-      {
-        id: 'aws-audit',
-        label: 'Audit AWS costs and identify savings',
-        time: '3 mins',
-      },
-      {
-        id: 'monitoring-setup',
-        label: 'Set up monitoring alerts for the API',
-        time: '3 mins',
-      },
-      {
-        id: 'deployment-docs',
-        label: 'Document the deployment process',
-        time: '3 mins',
-      },
-    ],
+    id: 'shopify-skincare-creators',
+    platform: 'Shopify',
+    icon: <Image src="/images/shopify-logo.png" alt="Shopify" width={18} height={18} className="h-4.5 w-4.5" />,
+    text: 'Find niche skincare creators for product launches',
+    searchQuery: 'Find niche skincare creators for product launches',
   },
 ]
 
@@ -115,27 +54,31 @@ interface HeroProps {
 
 const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
   const [isVisible, setIsVisible] = useState(false)
-  const [selectedTeam, setSelectedTeam] = useState('engineering')
-  const [selectedTask, setSelectedTask] = useState('auth-bug-fix') // Auto-select first task
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedPill, setSelectedPill] = useState<string | null>(null)
   const [isDelegating, setIsDelegating] = useState(false)
 
   useEffect(() => {
     setIsVisible(true)
   }, [])
 
-  const currentTeam = teams.find((t) => t.id === selectedTeam) || teams[0]
   const delegatingTimerRef = useRef<number | null>(null)
 
-  const handleDelegate = () => {
-    if (selectedTask && !isDemoRunning) {
+  const handlePillClick = (pill: typeof floatingPills[0]) => {
+    setSearchQuery(pill.searchQuery)
+    setSelectedPill(pill.id)
+  }
+
+  const handleMagicClick = () => {
+    if (searchQuery.trim() && !isDemoRunning) {
       const newCount = incrementDelegationClickCount()
       if (redirectToCalIfThresholdMet(newCount)) {
         return
       }
       setIsDelegating(true)
-      // Trigger the demo animation and scroll with the selected task
+      // Trigger the demo animation and scroll with the search query
       if (onDemoTrigger) {
-        onDemoTrigger(selectedTask)
+        onDemoTrigger(searchQuery)
       }
       // Reset delegating state after animation
       delegatingTimerRef.current = window.setTimeout(() => {
@@ -153,7 +96,10 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
   }, [])
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 py-16 sm:py-20">
+    <section
+      id="hero"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 py-16 sm:py-20"
+    >
       {/* Enhanced Gradient Mesh Background with Glass Effect */}
       <div className="absolute inset-0">
         {/* Primary gradient background */}
@@ -215,9 +161,9 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
             )}
             style={{ letterSpacing: '-0.02em' }}
           >
-            AI Employees That
+            find creators your
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-gray-800 via-gray-700 to-gray-900">
-              Join Your Team
+              buyers already follow
             </span>
           </h1>
 
@@ -228,184 +174,104 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
               isVisible && 'animate-fade-in-up animation-delay-200'
             )}
           >
-            And Get Shit Done (actually)
+            and negoatiate, manage, track attribution (autonomously)
           </p>
 
-          {/* Team Selector and Task Selection */}
+          {/* Floating Pills and Search Section */}
           <div
             className={cn(
-              'w-full max-w-3xl mx-auto opacity-0',
+              'w-full max-w-4xl mx-auto opacity-0',
               isVisible && 'animate-fade-in-up animation-delay-400'
             )}
           >
-            {/* Team Tabs - Enhanced for mobile touch targets */}
-            <div
-              className="flex flex-wrap justify-center gap-2 mb-6 px-2"
-              role="tablist"
-              aria-label="Teams"
-            >
-              {teams.map((team) => (
-                <button
-                  key={team.id}
-                  onClick={() => {
-                    setSelectedTeam(team.id)
-                    setSelectedTask(team.tasks?.[0]?.id ?? '')
-                  }}
-                  aria-label={`Select ${team.name} team`}
-                  role="tab"
-                  aria-selected={selectedTeam === team.id}
-                  aria-controls={`panel-${team.id}`}
-                  id={`tab-${team.id}`}
-                  tabIndex={selectedTeam === team.id ? 0 : -1}
-                  className={cn(
-                    'inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-3 sm:py-2 min-w-[80px] rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap',
-                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-600',
-                    selectedTeam === team.id
-                      ? 'bg-gradient-to-r from-gray-800 to-gray-900 text-white shadow-lg transform scale-105'
-                      : 'bg-white/60 backdrop-blur-sm text-gray-700 border border-gray-600 hover:bg-white/80 hover:border-gray-700 shadow-md ring-1 ring-gray-200/10'
-                  )}
-                >
-                  {team.icon}
-                  <span>{team.name}</span>
-                </button>
-              ))}
+            {/* Task Options */}
+            <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-white/30 shadow-xl ring-1 ring-gray-200/20 mb-6">
+              <div className="space-y-3">
+                {floatingPills.map((pill, index) => (
+                  <motion.div
+                    key={pill.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.2, delay: 0.05 * index }}
+                    onClick={() => handlePillClick(pill)}
+                    className={cn(
+                      'flex items-center justify-between p-3 sm:p-4 rounded-lg cursor-pointer transition-all duration-200 border',
+                      selectedPill === pill.id
+                        ? 'bg-gray-100 border-gray-600'
+                        : 'bg-gray-50 border-gray-200 hover:bg-gray-100 hover:border-gray-300',
+                      isDemoRunning && 'cursor-not-allowed opacity-60'
+                    )}
+                  >
+                    <div className="flex items-center gap-3 flex-1">
+                      <div className={cn(
+                        'w-5 h-5 rounded-full border-2 bg-white flex items-center justify-center transition-all duration-200',
+                        selectedPill === pill.id
+                          ? 'border-gray-900 bg-gray-900'
+                          : 'border-gray-400'
+                      )}>
+                        {selectedPill === pill.id && (
+                          <div className="w-2 h-2 rounded-full bg-white" />
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {pill.icon}
+                        <span className="text-gray-900 text-sm sm:text-base leading-snug">
+                          {pill.text}
+                        </span>
+                      </div>
+                    </div>
+                    <span className="text-gray-500 text-xs sm:text-sm">
+                      3 mins
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
             </div>
 
-            {/* Task Selection */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={selectedTeam}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.2 }}
-                className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-sm md:backdrop-blur-md motion-reduce:!backdrop-blur-0 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/30 dark:border-white/10 shadow-xl ring-1 ring-gray-200/20 dark:ring-white/10"
-                role="tabpanel"
-                id={`panel-${selectedTeam}`}
-                aria-labelledby={`tab-${selectedTeam}`}
-              >
-                <h3
-                  id={`task-heading-${currentTeam.id}`}
-                  className="text-gray-900 text-base sm:text-lg font-heading font-semibold leading-snug mb-3 sm:mb-4"
-                >
-                  Select a task for {currentTeam.aiName} to complete:
-                </h3>
+            {/* Search Input and Magic Button */}
+            <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-white/30 shadow-xl ring-1 ring-gray-200/20">
+              <div className="space-y-4">
+                {/* Large Search Input */}
+                <div className="relative">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    disabled={isDemoRunning}
+                    placeholder="Search for YouTube channels, TikTok creators, and podcasts by describing what you're looking for..."
+                    className={cn(
+                      'w-full pl-12 pr-4 py-4 text-lg rounded-xl border-2 border-gray-200 bg-white',
+                      'focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none',
+                      'placeholder:text-gray-400 transition-all duration-200',
+                      isDemoRunning && 'cursor-not-allowed opacity-60'
+                    )}
+                  />
+                </div>
 
-                <RadioGroup.Root
-                  value={selectedTask}
-                  onValueChange={(value) =>
-                    !isDemoRunning && setSelectedTask(value)
-                  }
-                  className="space-y-2 sm:space-y-3"
-                  aria-labelledby={`task-heading-${currentTeam.id}`}
-                >
-                  {currentTeam.tasks.map((task) => (
-                    <div
-                      key={task.id}
-                      className={cn(
-                        'flex flex-col items-start sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 p-3 sm:p-4 rounded-lg transition-all duration-200',
-                        isDemoRunning && 'cursor-not-allowed opacity-60',
-                        !isDemoRunning && 'cursor-pointer',
-                        selectedTask === task.id
-                          ? 'bg-gray-100 border border-gray-600'
-                          : 'bg-gray-50 border border-gray-200 hover:bg-gray-100'
-                      )}
-                      role="group"
-                      aria-disabled={isDemoRunning}
-                      aria-labelledby={`task-label-${task.id}`}
-                    >
-                      <div className="flex items-center gap-3 flex-1">
-                        <RadioGroup.Item
-                          id={`task-${task.id}`}
-                          value={task.id}
-                          disabled={isDemoRunning}
-                          className={cn(
-                            'w-5 h-5 rounded-full border-2 bg-white flex items-center justify-center',
-                            'data-[state=checked]:border-gray-900 data-[state=checked]:bg-gray-900',
-                            isDemoRunning
-                              ? 'cursor-not-allowed opacity-50'
-                              : 'border-gray-600',
-                            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-600'
-                          )}
-                        >
-                          <RadioGroup.Indicator className="w-2 h-2 rounded-full bg-white" />
-                        </RadioGroup.Item>
-                        <Label.Root
-                          id={`task-label-${task.id}`}
-                          htmlFor={`task-${task.id}`}
-                          className="text-gray-900 text-sm sm:text-base leading-snug cursor-pointer"
-                        >
-                          {task.label}
-                        </Label.Root>
-                      </div>
-                      <span className="text-gray-500 text-[13px] sm:text-sm">
-                        {task.time}
-                      </span>
-                    </div>
-                  ))}
-                </RadioGroup.Root>
-
-                {/* Delegate Button - Enhanced with gradient background */}
-                <button
-                  onClick={handleDelegate}
-                  disabled={!selectedTask || isDelegating || isDemoRunning}
-                  aria-label={`Delegate task to ${currentTeam.aiName}`}
-                  aria-busy={isDelegating}
-                  className={cn(
-                    'w-full mt-4 sm:mt-6 py-3 sm:py-4 px-5 sm:px-6 rounded-xl sm:rounded-full font-semibold text-sm sm:text-base transition-all duration-200 transform',
-                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-600',
-                    selectedTask && !isDelegating && !isDemoRunning
-                      ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 hover:scale-[1.02] shadow-lg hover:shadow-xl'
-                      : 'bg-gray-200 text-gray-400 cursor-not-allowed opacity-60'
-                  )}
+                {/* Magic Button */}
+                <Button
+                  onClick={handleMagicClick}
+                  disabled={!searchQuery.trim() || isDelegating || isDemoRunning}
+                  isLoading={isDelegating}
+                  variant="primary"
+                  size="lg"
+                  fullWidth
+                  className="text-lg py-4"
                 >
                   {isDemoRunning ? (
-                    <span
-                      className="inline-flex items-center"
-                      role="status"
-                      aria-live="polite"
-                      aria-atomic="true"
-                    >
-                      Demo in Progress...
-                    </span>
+                    'Demo in Progress...'
                   ) : isDelegating ? (
-                    <span
-                      className="inline-flex items-center"
-                      role="status"
-                      aria-live="polite"
-                      aria-atomic="true"
-                    >
-                      <svg
-                        className="animate-spin -ml-1 mr-3 h-5 w-5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        ></circle>
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        ></path>
-                      </svg>
-                      Delegating to {currentTeam.aiName}...
-                    </span>
+                    'Finding creators...'
                   ) : (
-                    <span className="inline-flex items-center justify-center">
-                      Delegate to {currentTeam.aiName}
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </span>
+                    <>
+                      Magic
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </>
                   )}
-                </button>
-              </motion.div>
-            </AnimatePresence>
+                </Button>
+              </div>
+            </div>
           </div>
 
           {/* Trust Indicators */}
@@ -427,7 +293,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                   clipRule="evenodd"
                 />
               </svg>
-              <span>SOC 2 Type II Certified</span>
+              <span>Autonomous negotiation</span>
             </div>
             <div className="flex items-center gap-2">
               <svg
@@ -441,7 +307,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                   clipRule="evenodd"
                 />
               </svg>
-              <span>Enterprise Ready</span>
+              <span>Autonomous attribution</span>
             </div>
             <div className="flex items-center gap-2">
               <svg
@@ -451,7 +317,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
               >
                 <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
               </svg>
-              <span>Trusted by leading companies</span>
+              <span>Autonomous management</span>
             </div>
           </div>
         </div>

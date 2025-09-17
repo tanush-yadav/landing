@@ -1,10 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import Navigation from '@/components/navigation'
 import Hero from '@/components/hero'
 import { CTASection } from '@/components/cta-section'
+import MovingTestimonials from '@/components/moving-testimonials'
+import { CreatorListModal } from '@/components/creator-list-modal'
 
 // Lazy load heavy components
 const InteractiveDemoWrapper = dynamic(
@@ -31,58 +33,12 @@ export default function Home() {
   const [demoTrigger, setDemoTrigger] = useState(false)
   const [selectedTask, setSelectedTask] = useState('')
   const [isDemoRunning, setIsDemoRunning] = useState(false)
-  // removed unused teamsDelegation state
-
-  // Map hero task IDs to demo workflow IDs
-  const taskMapping: Record<string, string> = {
-    // Engineering tasks
-    'auth-bug-fix': 'fix-auth-bug',
-    'payment-api-error': 'payment-api-error',
-    'user-service-tests': 'unit-tests',
-    // Content tasks
-    'blog-post': 'blog-post',
-    'email-campaign': 'email-campaign',
-    'api-docs': 'api-docs',
-    // Sales tasks
-    'qualify-leads': 'qualify-leads',
-    'competitor-research': 'competitor-research',
-    'crm-update': 'crm-updates',
-    // Operations tasks
-    'aws-audit': 'aws-audit',
-    'monitoring-setup': 'api-monitoring',
-    'deployment-docs': 'deployment-docs',
-  }
-
-  const handleDemoTrigger = (heroTaskId?: string) => {
-    // Don't allow new demo if one is already running
-    if (isDemoRunning) {
-      return
-    }
-
-    // Map the hero task to a demo task
-    const demoTaskId =
-      heroTaskId && taskMapping[heroTaskId]
-        ? taskMapping[heroTaskId]
-        : 'fix-auth-bug'
-
-    // Force a reset by changing task to empty then back
-    // This ensures the demo component fully resets
-    setSelectedTask('')
-    setDemoTrigger(false)
-    setIsDemoRunning(true)
-
-    // Then set the new task and trigger after a brief delay
-    setTimeout(() => {
-      setSelectedTask(demoTaskId)
-      setDemoTrigger(true)
-    }, 100)
-  }
+  const [showCreatorModal, setShowCreatorModal] = useState(false)
+  const [modalDismissed, setModalDismissed] = useState(false)
 
   const handleDemoComplete = () => {
     setIsDemoRunning(false)
-    // Ensure trigger is reset when demo completes
     setDemoTrigger(false)
-    // no-op
   }
 
   const handleTeamsDelegation = (task: string) => {
@@ -98,7 +54,6 @@ export default function Home() {
 
     const demoTaskId = teamTaskMapping[task] || 'fix-auth-bug'
 
-    // no-op
     setSelectedTask('')
     setDemoTrigger(false)
     setIsDemoRunning(true)
@@ -110,10 +65,40 @@ export default function Home() {
     }, 100)
   }
 
+  useEffect(() => {
+    if (modalDismissed) return
+
+    const timer = window.setTimeout(() => {
+      setShowCreatorModal(true)
+    }, 4000)
+
+    return () => {
+      window.clearTimeout(timer)
+    }
+  }, [modalDismissed])
+
+  const handleModalClose = useCallback(() => {
+    setShowCreatorModal(false)
+    setModalDismissed(true)
+  }, [])
+
+  const handleModalPrimaryAction = useCallback(
+    (_payload: { website: string; workEmail: string }) => {
+      const heroSection = document.getElementById('hero')
+      if (heroSection) {
+        heroSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    },
+    []
+  )
+
   return (
     <main id="main" className="min-h-screen">
       <Navigation />
-      <Hero onDemoTrigger={handleDemoTrigger} isDemoRunning={isDemoRunning} />
+      <Hero />
+
+      {/* Moving testimonials - companies trust banner */}
+      <MovingTestimonials />
 
       {/* Interactive Demo Section - Clean Professional UI */}
       <InteractiveDemoWrapper
@@ -130,6 +115,12 @@ export default function Home() {
 
       {/* CTA Section */}
       <CTASection />
+
+      <CreatorListModal
+        open={showCreatorModal}
+        onClose={handleModalClose}
+        onPrimaryAction={handleModalPrimaryAction}
+      />
     </main>
   )
 }

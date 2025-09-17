@@ -19,6 +19,7 @@ import {
   Hash,
   MoreHorizontal,
   GitPullRequest,
+  Search,
 } from 'lucide-react'
 import { getWorkflowById, type TaskWorkflow } from '@/lib/demo-workflows'
 
@@ -389,6 +390,44 @@ const InteractiveDemo = memo(
     )
     const shouldReduceMotion = useReducedMotion()
 
+    const searchQueries = useMemo(
+      () => [
+        'Find fashion creators driving spring campaigns',
+        'Discover lifestyle influencers with 100K+ engaged followers',
+        'Surface TikTok beauty creators ready for brand partnerships',
+      ],
+      []
+    )
+
+    const defaultSearchQuery = useMemo(
+      () =>
+        searchQueries[0] ||
+        'Discover fashion creators driving spring campaigns',
+      [searchQueries]
+    )
+
+    const searchMetrics = useMemo(
+      () => [
+        { label: 'Results', value: '143' },
+        { label: 'Match Quality', value: '95%' },
+        { label: 'Search Time', value: '0.8s' },
+      ],
+      []
+    )
+
+    const [searchQueryIndex, setSearchQueryIndex] = useState(0)
+    const [displayedSearchQuery, setDisplayedSearchQuery] = useState(() =>
+      shouldReduceMotion ? defaultSearchQuery : ''
+    )
+    const [searchTypingState, setSearchTypingState] =
+      useState<'typing' | 'pausing' | 'deleting'>(
+        shouldReduceMotion ? 'pausing' : 'typing'
+      )
+
+    const activeSearchQuery =
+      searchQueries[searchQueryIndex] ?? defaultSearchQuery
+    const isTypingActive = displayedSearchQuery.length > 0
+
     // Memoized current task from workflow
     const currentTask = useMemo(() => {
       console.log('Selected task ID:', selectedTask)
@@ -404,6 +443,18 @@ const InteractiveDemo = memo(
       console.log('Fallback workflow:', fallbackWorkflow)
       return fallbackWorkflow ? workflowToConfig(fallbackWorkflow) : null
     }, [selectedTask])
+
+    useEffect(() => {
+      if (shouldReduceMotion) {
+        setDisplayedSearchQuery(defaultSearchQuery)
+        setSearchTypingState('pausing')
+        setSearchQueryIndex(0)
+        return
+      }
+
+      setDisplayedSearchQuery('')
+      setSearchTypingState('typing')
+    }, [defaultSearchQuery, shouldReduceMotion])
 
     // Cleanup function for timeouts
     const clearAllTimeouts = useCallback(() => {
@@ -423,6 +474,53 @@ const InteractiveDemo = memo(
       },
       []
     )
+
+    useEffect(() => {
+      if (shouldReduceMotion) return
+
+      const currentQuery =
+        searchQueries[searchQueryIndex] ?? defaultSearchQuery
+
+      if (!currentQuery) return
+
+      if (searchTypingState === 'typing') {
+        if (displayedSearchQuery.length < currentQuery.length) {
+          safeSetTimeout(() => {
+            setDisplayedSearchQuery(
+              currentQuery.slice(0, displayedSearchQuery.length + 1)
+            )
+          }, 70)
+        } else {
+          setSearchTypingState('pausing')
+          safeSetTimeout(() => {
+            setSearchTypingState('deleting')
+          }, 1500)
+        }
+      } else if (searchTypingState === 'deleting') {
+        if (displayedSearchQuery.length > 0) {
+          safeSetTimeout(() => {
+            setDisplayedSearchQuery(
+              currentQuery.slice(0, displayedSearchQuery.length - 1)
+            )
+          }, 45)
+        } else {
+          safeSetTimeout(() => {
+            setSearchTypingState('typing')
+            setSearchQueryIndex((prev) =>
+              searchQueries.length > 0 ? (prev + 1) % searchQueries.length : 0
+            )
+          }, 250)
+        }
+      }
+    }, [
+      defaultSearchQuery,
+      displayedSearchQuery,
+      safeSetTimeout,
+      searchQueries,
+      searchQueryIndex,
+      searchTypingState,
+      shouldReduceMotion,
+    ])
 
     // Reset demo state
     const resetDemo = useCallback(() => {
@@ -694,7 +792,88 @@ const InteractiveDemo = memo(
         aria-label="Interactive demonstration of AI automation workflow"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+          <div className="relative">
+            <motion.div
+              className="relative z-20 mx-auto w-full max-w-4xl lg:max-w-5xl -mb-12 sm:-mb-14 lg:-mb-20"
+              initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+            >
+              <div className="relative overflow-hidden rounded-3xl border border-gray-100 bg-white/90 shadow-2xl shadow-blue-100/50 backdrop-blur-md">
+                <div className="absolute inset-x-8 top-6 h-44 rounded-[2.5rem] bg-gradient-to-b from-blue-400/10 via-blue-400/5 to-transparent blur-3xl" />
+                <div className="relative">
+                  <div className="flex items-center gap-2 px-6 py-4 border-b border-gray-100 bg-white/80 backdrop-blur-sm">
+                    <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-yellow-300" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-green-400" />
+                    <span className="ml-auto text-xs font-semibold uppercase tracking-[0.32em] text-gray-400">
+                      Live Search
+                    </span>
+                  </div>
+                  <div className="px-6 py-6 sm:p-8">
+                    <div className="rounded-2xl border border-gray-100 bg-white shadow-inner shadow-gray-100/60">
+                      <div className="flex items-center gap-3 px-5 py-4">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500/10 text-blue-500">
+                          <Search className="h-5 w-5" aria-hidden="true" />
+                        </div>
+                        <div className="flex-1 text-left">
+                          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-gray-400">
+                            Searching
+                          </p>
+                          <div
+                            className="flex items-center min-h-[1.75rem] text-base font-medium text-gray-700 transition-colors duration-300 sm:text-lg"
+                            aria-live="polite"
+                            aria-atomic="true"
+                          >
+                            <span
+                              className={cn(
+                                'whitespace-pre-line',
+                                !isTypingActive && 'text-gray-300'
+                              )}
+                            >
+                              {isTypingActive
+                                ? displayedSearchQuery
+                                : activeSearchQuery}
+                            </span>
+                            {!shouldReduceMotion && (
+                              <motion.span
+                                className="ml-1 h-5 w-[2px] bg-blue-500"
+                                animate={{ opacity: [0, 1, 0] }}
+                                transition={{ duration: 0.9, repeat: Infinity }}
+                              />
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                      {searchMetrics.map((metric, index) => (
+                        <motion.div
+                          key={metric.label}
+                          className="rounded-2xl border border-gray-100 bg-white/95 px-5 py-4 text-left shadow-sm shadow-blue-100/30"
+                          initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{
+                            duration: 0.4,
+                            delay: 0.2 + index * 0.1,
+                            ease: 'easeOut',
+                          }}
+                        >
+                          <div className="text-2xl font-semibold text-gray-900">
+                            {metric.value}
+                          </div>
+                          <div className="mt-1 text-xs font-semibold uppercase tracking-[0.28em] text-gray-500">
+                            {metric.label}
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            <div className="grid grid-cols-1 gap-4 pt-20 sm:gap-6 sm:pt-24 lg:grid-cols-2 lg:pt-32">
             {/* Linear Demo */}
             <motion.div
               className={cn(
@@ -1183,7 +1362,8 @@ const InteractiveDemo = memo(
             </div>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
     )
   }
 )
