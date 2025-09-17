@@ -28,8 +28,7 @@ const teamMembers = [
   {
     id: 'creator-discovery',
     name: 'AI Creator Discovery',
-    role:
-      'Find niche creators by what they say or do in videos with advanced filters.',
+    role: 'Find niche creators by spoken content.',
     status: 'active',
     currentTask: 'Surfacing creators who mention “gym routines” this week...',
     icon: Code2,
@@ -52,8 +51,7 @@ const teamMembers = [
   {
     id: 'outreach-agent',
     name: 'Outreach Agent',
-    role:
-      'Reach thousands of creators with personalized messages via affiliate center, DMs, or email.',
+    role: 'Personalized outreach at massive scale.',
     status: 'active',
     currentTask: 'Personalizing 1,000 DMs for fitness creators...',
     icon: FileText,
@@ -76,8 +74,7 @@ const teamMembers = [
   {
     id: 'community-campaigns',
     name: 'Community Campaigns',
-    role:
-      'Run automated retainers, challenges, or contests to grow your community and retain top affiliates.',
+    role: 'Automate retainers, challenges, and contests.',
     status: 'active',
     currentTask: 'Launching “Back to School” creator challenge...',
     icon: TrendingUp,
@@ -100,8 +97,7 @@ const teamMembers = [
   {
     id: 'creative-agent',
     name: 'Creative Agent',
-    role:
-      'Analyze top videos from your creators and competitors. Auto‑generate briefs, hooks, and nuggets.',
+    role: 'Analyze videos and auto‑generate briefs.',
     status: 'active',
     currentTask: 'Drafting hook variations from top 10 videos...',
     icon: Shield,
@@ -124,8 +120,7 @@ const teamMembers = [
   {
     id: 'crm-agent',
     name: 'Creator Relationship Management',
-    role:
-      'Track and manage the full creator journey—from samples and briefs to high GMV—powered by automations.',
+    role: 'Track creators from samples to GMV.',
     status: 'active',
     currentTask: 'Syncing samples, briefs, and payouts to CRM...',
     icon: Users,
@@ -148,8 +143,7 @@ const teamMembers = [
   {
     id: 'social-intelligence',
     name: 'Social Intelligence',
-    role:
-      'Learn about creators and the content strategies of brands winning on TikTok Shop.',
+    role: 'Monitor brands, creators, and content trends.',
     status: 'active',
     currentTask: 'Monitoring competitors’ top creators and hooks...',
     icon: Calendar,
@@ -465,20 +459,10 @@ const TeamMemberCard = ({
                     <Sparkles className="w-4 h-4 text-yellow-400" />
                   </motion.div>
                 </h3>
-                <p className="text-sm text-neutral-500">{member.role}</p>
+                <p className="text-sm text-neutral-500 line-clamp-2">{member.role}</p>
               </div>
             </div>
 
-            {/* Right: Hours saved badge + Status */}
-            <div className="flex flex-col items-end gap-2">
-              {(() => { const saved = (member as any)?.stats?.hoursSaved; return saved })() && (
-                <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-white border border-neutral-200 text-[11px] text-neutral-700 shadow-sm">
-                  <Zap className="w-3.5 h-3.5 text-blue-600" />
-                  <span>{String((member as any).stats.hoursSaved)} hours saved</span>
-                </div>
-              )}
-              <StatusIndicator status={member.status} />
-            </div>
           </div>
 
           {/* Current Activity Section */}
@@ -600,7 +584,8 @@ export default function TeamsSection({
   const [selectedTask, setSelectedTask] = React.useState<string | null>(null)
   const [isAutoDelegating, setIsAutoDelegating] = React.useState(false)
   const [countdown, setCountdown] = React.useState<number | null>(null)
-  const [hasUserInteracted, setHasUserInteracted] = React.useState(false)
+  // Keep cards in normal state; disable auto-delegation/dimming by default
+  const [hasUserInteracted, setHasUserInteracted] = React.useState(true)
   const [delegationInProgress, setDelegationInProgress] = React.useState(false)
   const countdownRef = React.useRef<number | null>(null)
   const autoDelegateRef = React.useRef<number[]>([])
@@ -877,12 +862,7 @@ export default function TeamsSection({
           {teamMembers.map((member, index) => (
             <motion.div
               key={member.id}
-              animate={{
-                scale: selectedMember === member.id ? [1, 1.05, 1] : 1,
-                opacity:
-                  selectedMember && selectedMember !== member.id ? 0.7 : 1,
-              }}
-              transition={{ duration: 0.3 }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
               className="relative"
             >
               {/* Highlight effect for selected member */}
