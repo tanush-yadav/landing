@@ -2,7 +2,6 @@
 
 import { useRef } from 'react'
 import { cn } from '@/lib/utils'
-import { CompanyLogos, type CompanyLogoKey } from '@/components/ui/company-logos'
 
 export interface MovingTestimonialsProps {
   className?: string
@@ -10,20 +9,20 @@ export interface MovingTestimonialsProps {
   speed?: 'slow' | 'normal' | 'fast'
 }
 
-// Extended company data with more realistic companies
-const COMPANIES: Array<{ key: CompanyLogoKey; name: string } | { name: string; displayName?: string }> = [
-  { key: 'YCombinator', name: 'Y Combinator' },
-  { key: 'Soma Capital', name: 'Soma Capital' },
-  { key: 'LangChain', name: 'LangChain' },
-  { name: 'OpenAI', displayName: 'OpenAI' },
-  { name: 'Anthropic', displayName: 'Anthropic' },
-  { name: 'Stripe', displayName: 'Stripe' },
-  { name: 'Linear', displayName: 'Linear' },
-  { name: 'Vercel', displayName: 'Vercel' },
-  { name: 'Notion', displayName: 'Notion' },
-  { name: 'Figma', displayName: 'Figma' },
-  { name: 'Discord', displayName: 'Discord' },
-  { name: 'GitHub', displayName: 'GitHub' },
+// Company data for trusted by section
+const COMPANIES = [
+  { name: 'OpenAI' },
+  { name: 'Anthropic' },
+  { name: 'Stripe' },
+  { name: 'Linear' },
+  { name: 'Vercel' },
+  { name: 'Notion' },
+  { name: 'Figma' },
+  { name: 'Discord' },
+  { name: 'GitHub' },
+  { name: 'Y Combinator' },
+  { name: 'LangChain' },
+  { name: 'Replicate' },
 ]
 
 // Duplicate the array to ensure seamless looping
@@ -84,29 +83,16 @@ const MovingTestimonials = ({
               )}
               style={{ width: 'max-content' }}
             >
-              {EXTENDED_COMPANIES.map((company, index) => {
-                // Check if company has a logo component
-                const hasLogo = 'key' in company && company.key in CompanyLogos
-                const LogoComponent = hasLogo ? CompanyLogos[company.key as CompanyLogoKey] : null
-                const displayName = 'displayName' in company ? company.displayName : company.name
-
-                return (
-                  <div
-                    key={`${company.name}-${index}`}
-                    className="flex-shrink-0 flex items-center justify-center min-w-[120px] sm:min-w-[140px] h-12 sm:h-14"
-                  >
-                    {LogoComponent ? (
-                      <div className="w-full h-full opacity-60 hover:opacity-80 transition-opacity duration-300 grayscale hover:grayscale-0">
-                        <LogoComponent className="w-full h-full object-contain" />
-                      </div>
-                    ) : (
-                      <div className="text-slate-500 hover:text-slate-700 transition-colors duration-300 font-heading font-semibold text-sm sm:text-base tracking-wide">
-                        {displayName || company.name}
-                      </div>
-                    )}
+              {EXTENDED_COMPANIES.map((company, index) => (
+                <div
+                  key={`${company.name}-${index}`}
+                  className="flex-shrink-0 flex items-center justify-center min-w-[120px] sm:min-w-[140px] h-12 sm:h-14"
+                >
+                  <div className="text-slate-500 hover:text-slate-700 transition-colors duration-300 font-heading font-semibold text-sm sm:text-base tracking-wide">
+                    {company.name}
                   </div>
-                )
-              })}
+                </div>
+              ))}
             </div>
           </div>
         </div>

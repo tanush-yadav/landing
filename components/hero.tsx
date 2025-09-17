@@ -1,26 +1,15 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-<<<<<<< Updated upstream
-// import Link from 'next/link'
-import { ArrowRight, Users, FileText, TrendingUp, Settings } from 'lucide-react'
-import * as RadioGroup from '@radix-ui/react-radio-group'
-import * as Label from '@radix-ui/react-label'
-=======
 import Image from 'next/image'
 import { ArrowRight, Search } from 'lucide-react'
->>>>>>> Stashed changes
 import {
   cn,
   incrementDelegationClickCount,
   redirectToCalIfThresholdMet,
 } from '@/lib/utils'
-<<<<<<< Updated upstream
-import { motion, AnimatePresence } from 'framer-motion'
-=======
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
->>>>>>> Stashed changes
 
 // Platform tasks for YouTube, TikTok Shop, and Shopify
 const floatingPills = [
