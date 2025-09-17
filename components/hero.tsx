@@ -17,15 +17,15 @@ const floatingPills = [
     id: 'youtube-tech-channels',
     platform: 'YouTube',
     icon: <Image src="/images/youtube.png" alt="YouTube" width={18} height={18} className="h-4.5 w-4.5" />,
-    text: 'Search for top tech YouTube channels',
-    searchQuery: 'Search for top tech YouTube channels with high engagement',
+    text: 'Search for youtubers talking about claude code',
+    searchQuery: 'Search for tech youtube channels talking about claude code',
   },
   {
     id: 'tiktok-beauty-creators',
     platform: 'TikTok Shop',
     icon: <Image src="/images/tiktok-shop-logo.png" alt="TikTok Shop" width={18} height={18} className="h-4.5 w-4.5" />,
-    text: 'Find beauty TikTok creators with 50K+',
-    searchQuery: 'Find beauty TikTok creators with 50K+ followers',
+    text: 'Find beauty TikTok creators > 50K followers',
+    searchQuery: 'Find beauty TikTok creators > 50K+ followers',
   },
   {
     id: 'shopify-skincare-creators',
@@ -39,23 +39,76 @@ const floatingPills = [
 interface HeroProps {
   onDemoTrigger?: (taskId?: string) => void
   isDemoRunning?: boolean
+  onOpenModal?: () => void
+  // Notify parent when the search query changes so other sections
+  // (e.g., the live search animation) can reflect the selection.
+  onSearchQueryChange?: (query: string) => void
 }
 
-const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
+const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQueryChange }: HeroProps) => {
   const [isVisible, setIsVisible] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedPill, setSelectedPill] = useState<string | null>(null)
   const [isDelegating, setIsDelegating] = useState(false)
+  const [isTypingDemo, setIsTypingDemo] = useState(false)
+  const [typedText, setTypedText] = useState('')
 
   useEffect(() => {
     setIsVisible(true)
   }, [])
+
+  // Demo typing animation
+  useEffect(() => {
+    if (!isVisible || searchQuery || isDemoRunning) return
+
+    const demoQueries = [
+      'Find beauty creators with 100K+ followers who post skincare content',
+      'Search for tech YouTubers reviewing productivity software',
+      'Discover lifestyle influencers promoting sustainable fashion'
+    ]
+
+    let timeoutId: NodeJS.Timeout
+
+    const startTypingDemo = () => {
+      const randomQuery = demoQueries[Math.floor(Math.random() * demoQueries.length)]
+      setIsTypingDemo(true)
+      setTypedText('')
+
+      let charIndex = 0
+      const typeChar = () => {
+        if (charIndex < randomQuery.length) {
+          setTypedText(randomQuery.substring(0, charIndex + 1))
+          charIndex++
+          timeoutId = setTimeout(typeChar, 50 + Math.random() * 50) // Variable typing speed
+        } else {
+          // Pause for 2 seconds, then clear and start over
+          timeoutId = setTimeout(() => {
+            setTypedText('')
+            setIsTypingDemo(false)
+            timeoutId = setTimeout(startTypingDemo, 3000) // Wait 3 seconds before next demo
+          }, 2000)
+        }
+      }
+
+      // Start typing after 2 seconds
+      timeoutId = setTimeout(typeChar, 2000)
+    }
+
+    // Start the demo after component is visible
+    timeoutId = setTimeout(startTypingDemo, 1000)
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId)
+    }
+  }, [isVisible, searchQuery, isDemoRunning])
 
   const delegatingTimerRef = useRef<number | null>(null)
 
   const handlePillClick = (pill: typeof floatingPills[0]) => {
     setSearchQuery(pill.searchQuery)
     setSelectedPill(pill.id)
+    // Propagate selection upward so the demo's live search mirrors it
+    onSearchQueryChange?.(pill.searchQuery)
   }
 
   const handleMagicClick = () => {
@@ -87,7 +140,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 py-16 sm:py-20"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 pt-20 pb-16 sm:pt-24 sm:pb-20"
     >
       {/* Enhanced Gradient Mesh Background with Glass Effect */}
       <div className="absolute inset-0">
@@ -133,25 +186,28 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
             role="status"
             aria-live="polite"
           >
-            <span className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-md px-4 py-1.5 text-sm font-medium text-gray-700 border border-white/40 shadow-lg ring-1 ring-gray-200/10">
+            <button
+              onClick={onOpenModal}
+              className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-md px-4 py-1.5 text-sm font-medium text-gray-700 border border-white/40 shadow-lg ring-1 ring-gray-200/10 hover:bg-white/30 hover:border-white/50 transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            >
               <span className="relative flex h-2 w-2 mr-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
               </span>
-              Live Now: Watch AI Complete Real Tasks
-            </span>
+              Get creators in your niche
+            </button>
           </div>
 
           {/* Main Headline */}
           <h1
             className={cn(
-              'text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-display font-bold text-gray-900 mb-6 opacity-0 leading-tight',
+              'text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold text-gray-900 mb-4 sm:mb-6 opacity-0 leading-[1.1] sm:leading-tight',
               isVisible && 'animate-fade-in-up'
             )}
             style={{ letterSpacing: '-0.02em' }}
           >
             find creators your
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-gray-800 via-gray-700 to-gray-900">
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-gray-800 via-gray-700 to-gray-900 mt-1 sm:mt-2">
               buyers already follow
             </span>
           </h1>
@@ -159,11 +215,11 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
           {/* Subheadline */}
           <p
             className={cn(
-              'text-base sm:text-lg md:text-xl text-gray-600 mb-8 sm:mb-10 max-w-2xl mx-auto opacity-0 px-4',
+              'text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-6 sm:mb-8 md:mb-10 max-w-2xl mx-auto opacity-0 px-2 sm:px-4',
               isVisible && 'animate-fade-in-up animation-delay-200'
             )}
           >
-            and negoatiate, manage, track attribution (autonomously)
+            and negotiate, manage, track attribution (autonomously)
           </p>
 
           {/* Floating Pills and Search Section */}
@@ -174,7 +230,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
             )}
           >
             {/* Task Options */}
-            <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-white/30 shadow-xl ring-1 ring-gray-200/20 mb-6">
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/30 shadow-xl ring-1 ring-gray-200/20 mb-4 sm:mb-6">
               <div className="space-y-3">
                 {floatingPills.map((pill, index) => (
                   <motion.div
@@ -184,7 +240,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                     transition={{ duration: 0.2, delay: 0.05 * index }}
                     onClick={() => handlePillClick(pill)}
                     className={cn(
-                      'flex items-center justify-between p-3 sm:p-4 rounded-lg cursor-pointer transition-all duration-200 border',
+                      'flex items-center justify-between p-3 sm:p-4 rounded-lg cursor-pointer transition-all duration-200 border min-h-[56px] sm:min-h-[64px]',
                       selectedPill === pill.id
                         ? 'bg-gray-100 border-gray-600'
                         : 'bg-gray-50 border-gray-200 hover:bg-gray-100 hover:border-gray-300',
@@ -202,14 +258,16 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                           <div className="w-2 h-2 rounded-full bg-white" />
                         )}
                       </div>
-                      <div className="flex items-center gap-2">
-                        {pill.icon}
-                        <span className="text-gray-900 text-sm sm:text-base leading-snug">
+                      <div className="flex items-center gap-2 flex-1 min-w-0">
+                        <div className="flex-shrink-0">
+                          {pill.icon}
+                        </div>
+                        <span className="text-gray-900 text-xs sm:text-sm md:text-base leading-snug break-words">
                           {pill.text}
                         </span>
                       </div>
                     </div>
-                    <span className="text-gray-500 text-xs sm:text-sm">
+                    <span className="text-gray-500 text-xs sm:text-sm flex-shrink-0 ml-2">
                       3 mins
                     </span>
                   </motion.div>
@@ -218,24 +276,39 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
             </div>
 
             {/* Search Input and Magic Button */}
-            <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-white/30 shadow-xl ring-1 ring-gray-200/20">
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/30 shadow-xl ring-1 ring-gray-200/20">
               <div className="space-y-4">
                 {/* Large Search Input */}
                 <div className="relative">
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                   <input
                     type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    value={searchQuery || (isTypingDemo ? typedText : '')}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value)
+                      setIsTypingDemo(false)
+                      setTypedText('')
+                      onSearchQueryChange?.(e.target.value)
+                    }}
+                    onFocus={() => {
+                      setIsTypingDemo(false)
+                      setTypedText('')
+                    }}
                     disabled={isDemoRunning}
-                    placeholder="Search for YouTube channels, TikTok creators, and podcasts by describing what you're looking for..."
+                    placeholder={!isTypingDemo && !searchQuery ? "Search for creators..." : ""}
                     className={cn(
-                      'w-full pl-12 pr-4 py-4 text-lg rounded-xl border-2 border-gray-200 bg-white',
+                      'w-full pl-11 sm:pl-12 pr-4 py-3 sm:py-4 text-sm sm:text-base md:text-lg rounded-lg sm:rounded-xl border-2 border-gray-200 bg-white',
                       'focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none',
-                      'placeholder:text-gray-400 transition-all duration-200',
+                      'placeholder:text-gray-400 placeholder:text-xs sm:placeholder:text-sm md:placeholder:text-base transition-all duration-200',
+                      isTypingDemo && 'text-gray-600',
                       isDemoRunning && 'cursor-not-allowed opacity-60'
                     )}
                   />
+                  {isTypingDemo && (
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                      <div className="w-0.5 h-5 bg-gray-400 animate-pulse" />
+                    </div>
+                  )}
                 </div>
 
                 {/* Magic Button */}
@@ -246,7 +319,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
                   variant="primary"
                   size="lg"
                   fullWidth
-                  className="text-lg py-4"
+                  className="text-sm sm:text-base md:text-lg py-3 sm:py-4 min-h-[48px] sm:min-h-[56px]"
                 >
                   {isDemoRunning ? (
                     'Demo in Progress...'
@@ -266,7 +339,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
           {/* Trust Indicators */}
           <div
             className={cn(
-              'mt-12 mb-16 sm:mb-0 flex flex-wrap justify-center items-center gap-6 sm:gap-8 text-gray-500 text-xs sm:text-sm opacity-0',
+              'mt-8 sm:mt-12 mb-20 sm:mb-0 flex flex-wrap justify-center items-center gap-3 sm:gap-6 md:gap-8 text-gray-500 text-xs sm:text-sm opacity-0 px-4',
               isVisible && 'animate-fade-in animation-delay-600'
             )}
           >
@@ -313,7 +386,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false }: HeroProps) => {
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-5 sm:bottom-8 left-1/2 -translate-x-1/2">
+      <div className="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 hidden sm:block">
         <div
           className={cn(
             'flex flex-col items-center text-gray-400 transition-all duration-300 hover:text-gray-600 cursor-pointer opacity-0',

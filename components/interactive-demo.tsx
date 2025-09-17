@@ -13,13 +13,14 @@ import { cn } from '@/lib/utils'
 import {
   Circle,
   CheckCircle2,
-  MessageSquare,
-  Users,
   AlertCircle,
-  Hash,
   MoreHorizontal,
-  GitPullRequest,
   Search,
+  MessageCircle,
+  Sparkles,
+  Mail,
+  Send,
+  Clock3,
 } from 'lucide-react'
 import { getWorkflowById, type TaskWorkflow } from '@/lib/demo-workflows'
 
@@ -61,6 +62,26 @@ interface DemoConfig {
   subtasks: Subtask[]
   slackMessages: SlackMessage[]
   completionMessage: CompletionMessage | null
+}
+
+interface NegotiationMessage {
+  id: string
+  sender: 'agent' | 'creator'
+  author: string
+  avatar: string
+  timestamp: string
+  content: string
+  highlights?: string[]
+  delay: number
+}
+
+interface OutboundEmail {
+  id: string
+  status: 'sending' | 'scheduled' | 'sent'
+  subject: string
+  preview: string
+  timestamp: string
+  delay: number
 }
 
 // Helper function to convert workflow to demo config
@@ -164,13 +185,15 @@ interface DemoState {
     | 'complete'
   ticketCreated: boolean
   subtasksCreated: boolean
-  slackNotified: boolean
+  conversationStarted: boolean
   timeCalculated: boolean
+  emailsQueued: boolean
 }
 
 interface InteractiveDemoProps {
   triggerDemo?: boolean
   selectedTask?: string
+  incomingSearchQuery?: string
   onDemoComplete?: () => void
 }
 
@@ -258,7 +281,7 @@ const ProgressBar = memo(
     const isComplete = completed === total
 
     return (
-      <div className="flex items-center gap-3 text-sm text-gray-600 mb-4">
+      <div className="flex items-center gap-3 text-sm text-slate-600 mb-4">
         <motion.div
           className="flex items-center gap-1.5"
           animate={{
@@ -269,7 +292,7 @@ const ProgressBar = memo(
           <CheckCircle2
             className={cn(
               'h-4 w-4 transition-colors',
-              isComplete ? 'text-emerald-600' : 'text-gray-600'
+              isComplete ? 'text-emerald-600' : 'text-slate-500'
             )}
           />
           <span className="font-semibold">
@@ -278,9 +301,9 @@ const ProgressBar = memo(
         </motion.div>
 
         <div className="flex-1 relative">
-          <div className="bg-gray-100 rounded-full h-2 overflow-hidden">
+          <div className="bg-emerald-100/60 rounded-full h-2 overflow-hidden">
             <motion.div
-              className="h-full bg-gradient-to-r from-blue-500 to-purple-500"
+              className="h-full bg-gradient-to-r from-emerald-500 to-teal-500"
               initial={{ width: 0 }}
               animate={{ width: `${percentage}%` }}
               transition={{
@@ -305,7 +328,7 @@ const ProgressBar = memo(
             className="absolute -right-12 top-1/2 -translate-y-1/2 text-xs font-bold"
             animate={{
               opacity: completed > 0 ? 1 : 0,
-              color: isComplete ? '#059669' : '#6b7280',
+              color: isComplete ? '#047857' : '#64748b',
             }}
           >
             {Math.round(percentage)}%
@@ -367,6 +390,7 @@ const InteractiveDemo = memo(
   ({
     triggerDemo = false,
     selectedTask = 'fix-auth-bug',
+    incomingSearchQuery,
     onDemoComplete,
   }: InteractiveDemoProps) => {
     // Optimized state management
@@ -374,12 +398,14 @@ const InteractiveDemo = memo(
       phase: 'idle',
       ticketCreated: false,
       subtasksCreated: false,
-      slackNotified: false,
+      conversationStarted: false,
       timeCalculated: false,
+      emailsQueued: false,
     })
 
     const [completedSubtasks, setCompletedSubtasks] = useState<number[]>([])
     const [visibleMessages, setVisibleMessages] = useState<string[]>([])
+    const [visibleEmails, setVisibleEmails] = useState<string[]>([])
     const [showTyping, setShowTyping] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
@@ -390,7 +416,7 @@ const InteractiveDemo = memo(
     )
     const shouldReduceMotion = useReducedMotion()
 
-    const searchQueries = useMemo(
+    const baseSearchQueries = useMemo(
       () => [
         'Find fashion creators driving spring campaigns',
         'Discover lifestyle influencers with 100K+ engaged followers',
@@ -399,12 +425,25 @@ const InteractiveDemo = memo(
       []
     )
 
-    const defaultSearchQuery = useMemo(
-      () =>
-        searchQueries[0] ||
-        'Discover fashion creators driving spring campaigns',
-      [searchQueries]
+    const [customSearchQuery, setCustomSearchQuery] = useState<string | null>(
+      null
     )
+
+    const searchQueries = useMemo(() => {
+      if (customSearchQuery) {
+        const remaining = baseSearchQueries.filter(
+          (query) => query !== customSearchQuery
+        )
+        return [customSearchQuery, ...remaining]
+      }
+      return baseSearchQueries
+    }, [baseSearchQueries, customSearchQuery])
+
+    const defaultSearchQuery = useMemo(() => {
+      const fallback = baseSearchQueries[0] ||
+        'Discover fashion creators driving spring campaigns'
+      return searchQueries[0] || fallback
+    }, [baseSearchQueries, searchQueries])
 
     const searchMetrics = useMemo(
       () => [
@@ -426,7 +465,7 @@ const InteractiveDemo = memo(
 
     const activeSearchQuery =
       searchQueries[searchQueryIndex] ?? defaultSearchQuery
-    const isTypingActive = displayedSearchQuery.length > 0
+    const isTypingActive = searchTypingState === 'typing' || searchTypingState === 'deleting' || displayedSearchQuery.length > 0
 
     // Memoized current task from workflow
     const currentTask = useMemo(() => {
@@ -444,7 +483,118 @@ const InteractiveDemo = memo(
       return fallbackWorkflow ? workflowToConfig(fallbackWorkflow) : null
     }, [selectedTask])
 
+    const negotiationMessages = useMemo<NegotiationMessage[]>(() => {
+      const agentName = currentTask?.agent.name || 'Jordan'
+      const agentAvatar = currentTask?.agent.avatar || 'J'
+      const creatorName = 'Ava Chen'
+      const creatorAvatar = 'AC'
+      const focusQuery = searchQueries[0]
+
+      return [
+        {
+          id: 'negotiation-intro',
+          sender: 'agent',
+          author: agentName,
+          avatar: agentAvatar,
+          timestamp: '4:12 PM',
+          content: `Hi ${creatorName}, loved your recent launch series. We have a campaign focused on “${focusQuery}” and think you’re a perfect fit. Available next week?`,
+          highlights: ['Deliverables: 2 Reels + Story recap'],
+          delay: 900,
+        },
+        {
+          id: 'negotiation-response',
+          sender: 'creator',
+          author: creatorName,
+          avatar: creatorAvatar,
+          timestamp: '4:13 PM',
+          content: `Thanks ${agentName}! I can fit this in. Standard package is 2 Reels, 1 Story sequence, usage for 30 days. Rate is $2.8k.`,
+          highlights: ['Turnaround: 72 hours', 'Add-on: Product unboxing'],
+          delay: 1200,
+        },
+        {
+          id: 'negotiation-counter',
+          sender: 'agent',
+          author: agentName,
+          avatar: agentAvatar,
+          timestamp: '4:14 PM',
+          content: `Love it. We’ll cover product + shipping, bonus $500 if swipe-up clicks > 3.5k. Also adding an affiliate code with 15% rev share. Sound good?`,
+          highlights: ['Bonus: $500 performance kicker', 'Affiliate rev share: 15%'],
+          delay: 1100,
+        },
+        {
+          id: 'negotiation-agree',
+          sender: 'creator',
+          author: creatorName,
+          avatar: creatorAvatar,
+          timestamp: '4:15 PM',
+          content: `Deal! Lock me in for shoot on Tuesday. Send the brief + contract and I’ll confirm timelines tonight.`,
+          delay: 1000,
+        },
+        {
+          id: 'negotiation-wrap',
+          sender: 'agent',
+          author: agentName,
+          avatar: agentAvatar,
+          timestamp: '4:15 PM',
+          content: `Amazing — consider it booked. I’ll send the brief right after this sequence finishes and loop in our creative ops.`,
+          delay: 900,
+        },
+      ]
+    }, [currentTask, searchQueries])
+
+    const emailSequence = useMemo<OutboundEmail[]>(() => {
+      const today = new Date()
+      const formatTime = (minsFromNow: number) => {
+        const future = new Date(today.getTime() + minsFromNow * 60000)
+        return future.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      }
+
+      return [
+        {
+          id: 'email-hot',
+          status: 'sent',
+          subject: '🔥 Hot leads — Schedule intro calls',
+          preview: '8 buyers received the calendar link + tailored ROI snippet.',
+          timestamp: formatTime(0),
+          delay: 600,
+        },
+        {
+          id: 'email-warm',
+          status: 'sending',
+          subject: 'Warm list — Campaign bundle follow up',
+          preview: '21 leads queued with dynamic product highlights and case study.',
+          timestamp: formatTime(2),
+          delay: 700,
+        },
+        {
+          id: 'email-nurture',
+          status: 'scheduled',
+          subject: 'Nurture drip — Webinar recap sequence',
+          preview: '14 prospects added to nurture flow with personalized CTA.',
+          timestamp: 'Tomorrow 9:00 AM',
+          delay: 900,
+        },
+      ]
+    }, [])
+
     useEffect(() => {
+      if (incomingSearchQuery && incomingSearchQuery.trim()) {
+        setCustomSearchQuery(incomingSearchQuery.trim())
+
+        // Trigger typing animation for the new search query
+        if (!shouldReduceMotion) {
+          setDisplayedSearchQuery('')
+          setSearchTypingState('typing')
+          setSearchQueryIndex(0)
+        }
+      } else {
+        setCustomSearchQuery(null)
+      }
+    }, [incomingSearchQuery, shouldReduceMotion])
+
+    useEffect(() => {
+      if (!triggerDemo) return
+
       if (shouldReduceMotion) {
         setDisplayedSearchQuery(defaultSearchQuery)
         setSearchTypingState('pausing')
@@ -454,7 +604,17 @@ const InteractiveDemo = memo(
 
       setDisplayedSearchQuery('')
       setSearchTypingState('typing')
-    }, [defaultSearchQuery, shouldReduceMotion])
+      setSearchQueryIndex(0)
+    }, [triggerDemo, defaultSearchQuery, shouldReduceMotion])
+
+    useEffect(() => {
+      if (!shouldReduceMotion) return
+      if (triggerDemo) return
+
+      setDisplayedSearchQuery(defaultSearchQuery)
+      setSearchTypingState('pausing')
+      setSearchQueryIndex(0)
+    }, [defaultSearchQuery, shouldReduceMotion, triggerDemo])
 
     // Cleanup function for timeouts
     const clearAllTimeouts = useCallback(() => {
@@ -530,14 +690,23 @@ const InteractiveDemo = memo(
         phase: 'idle',
         ticketCreated: false,
         subtasksCreated: false,
-        slackNotified: false,
+        conversationStarted: false,
         timeCalculated: false,
+        emailsQueued: false,
       })
       setCompletedSubtasks([])
       setVisibleMessages([])
+      setVisibleEmails([])
       setShowTyping(false)
       setError(null)
-    }, [clearAllTimeouts])
+      setSearchQueryIndex(0)
+      setDisplayedSearchQuery(shouldReduceMotion ? defaultSearchQuery : '')
+      setSearchTypingState(shouldReduceMotion ? 'pausing' : 'typing')
+    }, [
+      clearAllTimeouts,
+      defaultSearchQuery,
+      shouldReduceMotion,
+    ])
 
     // Optimized animation sequence with error handling
     const startDemoSequence = useCallback(async () => {
@@ -558,16 +727,16 @@ const InteractiveDemo = memo(
             phase: 'complete',
             ticketCreated: true,
             subtasksCreated: true,
-            slackNotified: true,
+            conversationStarted: true,
             timeCalculated: true,
+            emailsQueued: true,
           })
           // Complete ALL subtasks in reduced motion mode
           setCompletedSubtasks(
             currentTask?.subtasks.map((st) => st.id) || [0, 1, 2, 3, 4]
           )
-          setVisibleMessages(
-            currentTask?.slackMessages.map((msg) => msg.id) || []
-          )
+          setVisibleMessages(negotiationMessages.map((msg) => msg.id))
+          setVisibleEmails(emailSequence.map((email) => email.id))
           setIsLoading(false)
           // Call the onDemoComplete callback if provided
           if (onDemoComplete) {
@@ -609,39 +778,52 @@ const InteractiveDemo = memo(
           }))
         }, 1600)
 
+        // Surface outbound emails first (earlier timing)
         safeSetTimeout(() => {
-          console.log('Setting slackNotified to true')
+          setDemoState((prev) => ({ ...prev, emailsQueued: true }))
+        }, 1800)
+
+        let cumulativeEmailDelay = 2000
+        emailSequence.forEach((email) => {
+          safeSetTimeout(() => {
+            setVisibleEmails((prev) => [...prev, email.id])
+          }, cumulativeEmailDelay)
+          cumulativeEmailDelay += email.delay
+        })
+
+        // Start creator negotiation thread after emails (later timing)
+        const messageStartDelay = cumulativeEmailDelay + 300
+        safeSetTimeout(() => {
+          console.log('Starting creator negotiation thread')
           setDemoState((prev) => {
             const newState: DemoState = {
               ...prev,
               phase: 'reviewing' as const,
-              slackNotified: true,
+              conversationStarted: true,
             }
-            console.log('New state with slackNotified:', newState)
+            console.log('New state with conversationStarted:', newState)
             return newState
           })
-        }, 2000)
+        }, messageStartDelay)
 
-        // Show Slack messages progressively
-        let messageDelay = 2400
-        if (currentTask?.slackMessages) {
-          for (let i = 0; i < currentTask.slackMessages.length; i++) {
-            const message = currentTask.slackMessages[i]
-            safeSetTimeout(() => {
-              if (i < currentTask.slackMessages.length - 1) {
-                setShowTyping(true)
-                safeSetTimeout(() => setShowTyping(false), 800)
-              }
-              setVisibleMessages((prev) => [...prev, message.id])
-            }, messageDelay)
-            messageDelay += (message.delay || 400) + 400
-          }
-        }
+        // Show negotiation messages progressively
+        let messageDelay = messageStartDelay + 400
+        negotiationMessages.forEach((message, index) => {
+          safeSetTimeout(() => {
+            if (index < negotiationMessages.length - 1) {
+              setShowTyping(true)
+              safeSetTimeout(() => setShowTyping(false), 700)
+            }
+            setVisibleMessages((prev) => [...prev, message.id])
+          }, messageDelay)
+          messageDelay += message.delay
+        })
+
+        const completionAnchor = messageDelay + 300
 
         // Complete subtasks first
         if (currentTask?.subtasks && currentTask.subtasks.length > 0) {
           const subtasksToComplete = currentTask.subtasks.length // Complete ALL subtasks
-          const subtaskDelay = messageDelay + 400 // Start subtasks sooner
           for (let i = 0; i < subtasksToComplete; i++) {
             safeSetTimeout(() => {
               setCompletedSubtasks((prev) => [
@@ -649,33 +831,32 @@ const InteractiveDemo = memo(
                 currentTask.subtasks[i].id,
               ])
               if (i === subtasksToComplete - 1) {
-
-                // Set complete phase AFTER all subtasks are done
+                // Set complete phase AFTER all subtasks and communications finish
                 safeSetTimeout(() => {
                   console.log(
-                    'Setting demo to complete phase after all subtasks'
+                    'Setting demo to complete phase after all subtasks and outreach'
                   )
                   setDemoState((prev) => ({
                     ...prev,
                     phase: 'complete' as const,
                   }))
-                          // Call the onDemoComplete callback if provided
+                  // Call the onDemoComplete callback if provided
                   if (onDemoComplete) {
                     onDemoComplete()
                   }
                 }, 500)
               }
-            }, subtaskDelay + i * 300) // Faster subtask completion
+            }, completionAnchor + i * 320)
           }
         } else {
-          // If no subtasks or empty subtasks array, complete after messages
-          console.log('No subtasks found, completing demo after messages')
+          // If no subtasks or empty subtasks array, complete after outreach
+          console.log('No subtasks found, completing demo after outreach')
           safeSetTimeout(() => {
             setDemoState((prev) => ({ ...prev, phase: 'complete' as const }))
-              if (onDemoComplete) {
+            if (onDemoComplete) {
               onDemoComplete()
             }
-          }, messageDelay + 800)
+          }, completionAnchor + 600)
         }
       } catch (err) {
         console.error('Demo sequence error:', err)
@@ -689,6 +870,8 @@ const InteractiveDemo = memo(
       shouldReduceMotion,
       isLoading,
       onDemoComplete,
+      negotiationMessages,
+      emailSequence,
     ])
 
     // Track previous trigger state to detect changes
@@ -835,7 +1018,7 @@ const InteractiveDemo = memo(
                                 ? displayedSearchQuery
                                 : activeSearchQuery}
                             </span>
-                            {!shouldReduceMotion && (
+                            {!shouldReduceMotion && (searchTypingState === 'typing' || searchTypingState === 'deleting' || isTypingActive) && (
                               <motion.span
                                 className="ml-1 h-5 w-[2px] bg-blue-500"
                                 animate={{ opacity: [0, 1, 0] }}
@@ -873,19 +1056,19 @@ const InteractiveDemo = memo(
               </div>
             </motion.div>
 
-            <div className="grid grid-cols-1 gap-4 pt-20 sm:gap-6 sm:pt-24 lg:grid-cols-2 lg:pt-32">
+            <div className="grid grid-cols-1 gap-4 pt-20 sm:gap-6 sm:pt-24 lg:grid-cols-3 lg:pt-32">
             {/* Linear Demo */}
             <motion.div
               className={cn(
-                'bg-white rounded-xl shadow-sm border overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-xl will-change-transform',
+                'bg-white rounded-[28px] shadow-lg shadow-emerald-100/40 border overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl will-change-transform',
                 demoState.phase === 'complete'
-                  ? 'border-green-200 shadow-green-100/50'
-                  : 'border-gray-100'
+                  ? 'border-emerald-200 shadow-emerald-100/70'
+                  : 'border-slate-100'
               )}
               animate={
                 demoState.phase === 'complete'
                   ? {
-                      borderColor: ['#d1fae5', '#a7f3d0', '#d1fae5'],
+                      borderColor: ['#bbf7d0', '#a7f3d0', '#bbf7d0'],
                     }
                   : {}
               }
@@ -895,18 +1078,21 @@ const InteractiveDemo = memo(
               }}
             >
               {/* Linear Header */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+              <div className="flex items-center justify-between px-6 py-5 border-b border-emerald-50 bg-emerald-50/40">
                 <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 bg-gradient-to-br from-indigo-500 to-purple-600 rounded flex items-center justify-center">
-                    <span className="text-white font-bold text-xs">L</span>
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
+                    <span className="text-white font-semibold text-sm">Lr</span>
                   </div>
-                  <span className="text-gray-800 font-medium text-sm">
-                    Linear
-                  </span>
+                  <div>
+                    <p className="text-sm font-semibold text-slate-900">Linear</p>
+                    <p className="text-xs uppercase tracking-[0.28em] text-emerald-600/80">
+                      Lead Ops
+                    </p>
+                  </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="text-xs text-gray-500">Live</span>
+                  <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></div>
+                  <span className="text-xs font-semibold text-emerald-600">Live</span>
                 </div>
               </div>
 
@@ -922,15 +1108,15 @@ const InteractiveDemo = memo(
                       {/* Issue Header */}
                       <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-2.5">
-                          <span className="text-sm text-gray-500 font-medium">
-                            {currentTask?.ticketId || 'VOL-101'}
+                          <span className="text-sm text-emerald-600 font-semibold">
+                            {currentTask?.ticketId || 'VOL-301'}
                           </span>
                           <motion.span
                             className={cn(
-                              'inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wide',
+                              'inline-flex items-center px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-[0.22em]',
                               demoState.phase === 'complete'
-                                ? 'bg-green-100 text-green-700 border border-green-200'
-                                : 'bg-yellow-100 text-yellow-700 border border-yellow-200'
+                                ? 'bg-emerald-50 text-emerald-600 border border-emerald-200'
+                                : 'bg-amber-50 text-amber-600 border border-amber-200'
                             )}
                             animate={
                               demoState.phase === 'complete'
@@ -942,7 +1128,7 @@ const InteractiveDemo = memo(
                             transition={{ duration: 0.5 }}
                           >
                             {demoState.phase === 'complete' && (
-                              <CheckCircle2 className="h-3 w-3 mr-1" />
+                              <CheckCircle2 className="h-3.5 w-3.5 mr-1 text-emerald-500" />
                             )}
                             {demoState.phase === 'complete'
                               ? 'Done'
@@ -953,9 +1139,9 @@ const InteractiveDemo = memo(
                       </div>
 
                       {/* Issue Title */}
-                      <h3 className="text-gray-900 text-base font-medium mb-4">
+                      <h3 className="text-slate-900 text-lg font-semibold mb-4">
                         {currentTask?.title ||
-                          'Fix authentication bug in production'}
+                          "Qualify leads from yesterday's webinar"}
                       </h3>
 
                       {/* Progress Bar */}
@@ -1023,18 +1209,18 @@ const InteractiveDemo = memo(
                               </span>
                             </div>
                             <div className="flex-1">
-                              <p className="text-sm text-gray-700">
-                                <span className="font-medium text-gray-900">
-                                  {currentTask?.agent.name || 'Zoe'}
+                              <p className="text-sm text-slate-700">
+                                <span className="font-medium text-slate-900">
+                                  {currentTask?.agent.name || 'Jordan'}
                                 </span>
-                                <span className="text-gray-600">
+                                <span className="text-slate-600">
                                   {' '}
-                                  is analyzing{' '}
+                                  is qualifying leads from{' '}
                                   {currentTask?.description ||
-                                    'the requirements'}
+                                    'the webinar audience'}
                                 </span>
                               </p>
-                              <span className="text-xs text-gray-400">
+                              <span className="text-xs text-slate-400">
                                 Just now
                               </span>
                             </div>
@@ -1053,18 +1239,18 @@ const InteractiveDemo = memo(
                               </span>
                             </div>
                             <div className="flex-1">
-                              <p className="text-sm text-gray-700">
-                                <span className="font-medium text-gray-900">
-                                  {currentTask?.agent.name || 'Zoe'}
+                              <p className="text-sm text-slate-700">
+                                <span className="font-medium text-slate-900">
+                                  {currentTask?.agent.name || 'Jordan'}
                                 </span>
-                                <span className="text-gray-600">
+                                <span className="text-slate-600">
                                   {' '}
-                                  created {currentTask?.subtasks.length ||
-                                    5}{' '}
-                                  sub-issues
+                                  created{' '}
+                                  {currentTask?.subtasks.length || 5}{' '}
+                                  targeted workflows
                                 </span>
                               </p>
-                              <span className="text-xs text-gray-400">
+                              <span className="text-xs text-slate-400">
                                 2 seconds ago
                               </span>
                             </div>
@@ -1084,8 +1270,8 @@ const InteractiveDemo = memo(
                       exit={{ opacity: 0 }}
                     >
                       <div className="border-t border-gray-100 pt-4">
-                        <h4 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">
-                          Sub-issues
+                        <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-[0.32em] mb-3">
+                          Workflow Steps
                         </h4>
                         <div className="space-y-2">
                           {(currentTask?.subtasks || []).map((task, index) => {
@@ -1100,7 +1286,7 @@ const InteractiveDemo = memo(
                                 transition={{ delay: index * 0.05 }}
                                 className={cn(
                                   'flex items-center gap-3 py-2 rounded-md px-2 transition-all',
-                                  isCompleted && 'bg-green-50/50'
+                                  isCompleted && 'bg-emerald-50/60'
                                 )}
                               >
                                 <motion.div
@@ -1111,17 +1297,17 @@ const InteractiveDemo = memo(
                                   transition={{ duration: 0.3 }}
                                 >
                                   {isCompleted ? (
-                                    <CheckCircle2 className="h-4 w-4 text-green-600" />
+                                    <CheckCircle2 className="h-4 w-4 text-emerald-600" />
                                   ) : (
-                                    <Circle className="h-4 w-4 text-gray-300" />
+                                    <Circle className="h-4 w-4 text-slate-300" />
                                   )}
                                 </motion.div>
                                 <span
                                   className={cn(
                                     'text-sm flex-1',
                                     isCompleted
-                                      ? 'text-gray-500 line-through'
-                                      : 'text-gray-700'
+                                      ? 'text-slate-400 line-through'
+                                      : 'text-slate-700'
                                   )}
                                 >
                                   {task.title}
@@ -1131,7 +1317,7 @@ const InteractiveDemo = memo(
                                     initial={{ opacity: 0, scale: 0 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{ delay: 0.1 }}
-                                    className="text-xs text-green-600 font-bold"
+                                    className="text-xs text-emerald-600 font-bold"
                                   >
                                     DONE
                                   </motion.span>
@@ -1147,217 +1333,225 @@ const InteractiveDemo = memo(
               </div>
             </motion.div>
 
-            {/* Slack Demo */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-xl will-change-transform">
-              {/* Slack Header */}
-              <div className="bg-[#4A154B] px-6 py-4 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Hash className="h-4 w-4 text-white/80" />
-                  <span className="text-white font-medium text-sm">
-                    #development
-                  </span>
-                </div>
+            {/* Outreach Emails */}
+            <div className="bg-white rounded-[28px] shadow-lg shadow-blue-100/40 border border-blue-100 overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl will-change-transform">
+              <div className="flex items-center justify-between px-6 py-5 border-b border-blue-50 bg-blue-50/40">
                 <div className="flex items-center gap-3">
-                  <Users className="h-4 w-4 text-white/60" />
-                  <span className="text-white/60 text-xs">12 members</span>
+                  <div className="h-9 w-9 rounded-full bg-blue-500/10 text-blue-600 flex items-center justify-center">
+                    <Mail className="h-5 w-5" aria-hidden="true" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-slate-900">Creator Outreach</p>
+                    <p className="text-xs uppercase tracking-[0.32em] text-blue-500/70">Sequences</p>
+                  </div>
                 </div>
+                <div className="text-xs font-semibold text-blue-500/70">Automated</div>
               </div>
+              <div className="px-6 py-6 bg-white min-h-[420px] flex flex-col" role="log" aria-live="polite">
+                {demoState.emailsQueued ? (
+                  <AnimatePresence initial={false}>
+                    {emailSequence.map((email, index) => {
+                      const isVisible =
+                        demoState.phase === 'complete' ||
+                        visibleEmails.includes(email.id)
+                      if (!isVisible) {
+                        return null
+                      }
 
-              {/* Slack Messages */}
-              <div
-                className="px-6 py-5 bg-white min-h-[420px]"
-                role="log"
-                aria-live="polite"
-              >
-                <AnimatePresence>
-                  {demoState.slackNotified ? (
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="space-y-4"
-                    >
-                      {/* Dynamic Messages from Current Task */}
-                      {currentTask?.slackMessages &&
-                      currentTask.slackMessages.length > 0 ? (
-                        <>
-                          {currentTask.slackMessages.map(
-                            (message, index) =>
-                              visibleMessages.includes(message.id) && (
-                                <motion.div
-                                  key={message.id}
-                                  initial={{ opacity: 0, y: 10 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  transition={{ delay: index * 0.2 }}
-                                  className="flex items-start gap-3"
-                                >
-                                  <div
-                                    className={cn(
-                                      'w-9 h-9 rounded flex items-center justify-center flex-shrink-0',
-                                      message.type === 'ai'
-                                        ? 'bg-purple-500'
-                                        : 'bg-gray-500'
-                                    )}
-                                  >
-                                    <span className="text-white text-sm font-semibold">
-                                      {message.avatar}
-                                    </span>
-                                  </div>
-                                  <div className="flex-1">
-                                    <div className="flex items-baseline gap-2 mb-1">
-                                      <span className="font-semibold text-gray-900 text-sm">
-                                        {message.author}
-                                      </span>
-                                      <span className="text-xs text-gray-500">
-                                        {message.timestamp}
-                                      </span>
-                                    </div>
-                                    <div className="text-gray-700 text-sm">
-                                      {typeof message.content === 'string' ? (
-                                        <p>{message.content}</p>
-                                      ) : (
-                                        <>
-                                          <p>{message.content.text}</p>
-                                          {message.content.details && (
-                                            <div className="mt-2 bg-gray-50 border border-gray-200 rounded-md p-3">
-                                              <p className="text-xs font-medium text-gray-600 mb-2">
-                                                Details:
-                                              </p>
-                                              <ul className="text-xs text-gray-600 space-y-1">
-                                                {message.content.details.map(
-                                                  (detail, idx) => (
-                                                    <li key={idx}>{detail}</li>
-                                                  )
-                                                )}
-                                              </ul>
-                                            </div>
-                                          )}
-                                        </>
-                                      )}
-                                    </div>
-                                  </div>
-                                </motion.div>
-                              )
-                          )}
-                        </>
-                      ) : (
-                        // Fallback for tasks without Slack messages
+                      const statusConfig = {
+                        sent: {
+                          label: 'Sent',
+                          className: 'bg-emerald-50 text-emerald-600 border border-emerald-200',
+                          icon: CheckCircle2,
+                        },
+                        sending: {
+                          label: 'Sending',
+                          className: 'bg-blue-50 text-blue-600 border border-blue-200',
+                          icon: Send,
+                        },
+                        scheduled: {
+                          label: 'Scheduled',
+                          className: 'bg-amber-50 text-amber-600 border border-amber-200',
+                          icon: Clock3,
+                        },
+                      } as const
+
+                      const config = statusConfig[email.status]
+                      const StatusIcon = config.icon
+
+                      return (
                         <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="flex items-start gap-3"
+                          key={email.id}
+                          initial={{ opacity: 0, y: 16, scale: 0.97 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: -16, scale: 0.95 }}
+                          transition={{ duration: 0.35, delay: index * 0.05 }}
+                          className="rounded-2xl border border-slate-100/80 bg-white/90 px-5 py-4 shadow-sm shadow-blue-100/30"
                         >
-                          <div className="w-9 h-9 bg-purple-500 rounded flex items-center justify-center flex-shrink-0">
-                            <span className="text-white text-sm font-semibold">
-                              {currentTask?.agent.avatar || 'Z'}
-                            </span>
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex items-baseline gap-2 mb-1">
-                              <span className="font-semibold text-gray-900 text-sm">
-                                {currentTask?.agent.name || 'Zoe'}
-                              </span>
-                              <span className="text-xs text-gray-500">
-                                2:34 PM
-                              </span>
-                            </div>
-                            <div className="text-gray-700 text-sm">
-                              <p>
-                                I&apos;m analyzing{' '}
-                                {currentTask?.description || 'the requirements'}
-                                ...
+                          <div className="flex items-center justify-between gap-4">
+                            <div>
+                              <p className="text-sm font-semibold text-slate-900">
+                                {email.subject}
                               </p>
+                              <p className="mt-1 text-xs text-slate-500 leading-5">
+                                {email.preview}
+                              </p>
+                            </div>
+                            <div className="flex flex-col items-end gap-2">
+                              <span className="text-xs text-slate-400">{email.timestamp}</span>
+                              <span
+                                className={cn(
+                                  'inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em]',
+                                  config.className
+                                )}
+                              >
+                                <StatusIcon className="h-3.5 w-3.5" aria-hidden="true" />
+                                {config.label}
+                              </span>
                             </div>
                           </div>
                         </motion.div>
-                      )}
+                      )
+                    })}
+                  </AnimatePresence>
+                ) : (
+                  <div className="flex flex-1 flex-col items-center justify-center text-sm text-blue-400/80 border border-dashed border-blue-100 rounded-2xl bg-blue-50/20">
+                    <p>Drafting personalized outreach sequences…</p>
+                  </div>
+                )}
+              </div>
+            </div>
 
-                      {/* Completion Message */}
-                      {demoState.phase === 'complete' &&
-                        currentTask?.completionMessage && (
+            {/* Messenger Demo */}
+            <div className="bg-white rounded-[28px] shadow-lg shadow-purple-100/40 border border-purple-100 overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl will-change-transform">
+              <div className="bg-gradient-to-r from-purple-600 to-indigo-600 px-6 py-5 flex items-center justify-between text-white">
+                <div className="flex items-center gap-3">
+                  <div className="h-9 w-9 rounded-full bg-white/20 flex items-center justify-center">
+                    <MessageCircle className="h-5 w-5" aria-hidden="true" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold tracking-wide uppercase text-white/90">
+                      Creator Messenger
+                    </p>
+                    <p className="text-xs text-white/70">
+                      Negotiating deliverables in real time
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-white/80">
+                  <Sparkles className="h-4 w-4" aria-hidden="true" />
+                  <span>Auto-Pilot</span>
+                </div>
+              </div>
+              <div
+                className="px-6 py-6 bg-white min-h-[420px] flex flex-col"
+                role="log"
+                aria-live="polite"
+              >
+                {demoState.conversationStarted ? (
+                  <>
+                    <AnimatePresence initial={false}>
+                      {negotiationMessages.map((message, index) => {
+                        const isVisible =
+                          demoState.phase === 'complete' ||
+                          visibleMessages.includes(message.id)
+                        if (!isVisible) {
+                          return null
+                        }
+                        const isAgent = message.sender === 'agent'
+
+                        return (
                           <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.4 }}
-                            className="flex items-start gap-3"
+                            key={message.id}
+                            initial={{ opacity: 0, y: 16, scale: 0.96 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: -12 }}
+                            transition={{ duration: 0.3, delay: index * 0.04 }}
+                            className={cn('flex w-full', isAgent ? 'justify-start' : 'justify-end')}
                           >
-                            <div className="w-9 h-9 bg-purple-500 rounded flex items-center justify-center flex-shrink-0">
-                              <span className="text-white text-sm font-semibold">
-                                {currentTask.agent.avatar}
-                              </span>
-                            </div>
-                            <div className="flex-1">
-                              <div className="flex items-baseline gap-2 mb-1">
-                                <span className="font-semibold text-gray-900 text-sm">
-                                  {currentTask.agent.name}
+                            <div
+                              className={cn(
+                                'max-w-[280px] rounded-3xl px-4 py-3 shadow-md border transition-colors',
+                                isAgent
+                                  ? 'bg-purple-50 text-purple-900 border-purple-100'
+                                  : 'bg-indigo-600 text-white border-indigo-500 shadow-indigo-200/60'
+                              )}
+                            >
+                              <div className="flex items-center gap-2 mb-2">
+                                <span
+                                  className={cn(
+                                    'text-xs font-semibold tracking-wide uppercase',
+                                    isAgent ? 'text-purple-600' : 'text-white/85'
+                                  )}
+                                >
+                                  {message.author}
                                 </span>
-                                <span className="text-xs text-gray-500">
-                                  2:36 PM
+                                <span className={cn('text-[11px]', isAgent ? 'text-purple-400' : 'text-white/60')}>
+                                  {message.timestamp}
                                 </span>
                               </div>
-                              <div className="text-gray-700 text-sm">
-                                <p className="mb-2">
-                                  <span className="text-green-600">✅</span>{' '}
-                                  {currentTask.completionMessage.content}
-                                </p>
-                                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-purple-50 text-purple-700 rounded-md text-xs font-medium">
-                                  <GitPullRequest className="h-3.5 w-3.5" />
-                                  <span>Task Complete</span>
-                                </div>
-                              </div>
+                              <p className="text-sm leading-5">{message.content}</p>
+                              {message.highlights && (
+                                <ul
+                                  className={cn(
+                                    'mt-3 text-xs space-y-1.5 border-t pt-3',
+                                    isAgent
+                                      ? 'border-purple-100 text-purple-600'
+                                      : 'border-white/30 text-white/85'
+                                  )}
+                                >
+                                  {message.highlights.map((highlight, hi) => (
+                                    <li key={hi} className="flex items-center gap-1.5">
+                                      <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
+                                      <span>{highlight}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
                             </div>
                           </motion.div>
-                        )}
-
-                      {/* Typing Indicator */}
-                      {showTyping && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -10 }}
-                          className="flex items-start gap-3"
-                        >
-                          <div className="w-9 h-9 bg-purple-500 rounded flex items-center justify-center flex-shrink-0">
-                            <span className="text-white text-sm font-semibold">
-                              {currentTask?.agent.avatar || 'Z'}
-                            </span>
-                          </div>
-                          <div className="bg-gray-100 rounded-md px-3 py-2 flex items-center gap-1.5">
-                            {[0, 0.2, 0.4].map((delay, i) => (
-                              <motion.div
-                                key={i}
+                        )
+                      })}
+                    </AnimatePresence>
+                    {showTyping && (
+                      <motion.div
+                        key="messenger-typing"
+                        initial={{ opacity: 0, y: 16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -8 }}
+                        className="mt-4 flex justify-start"
+                      >
+                        <div className="flex items-center gap-2 rounded-full bg-purple-50 px-4 py-2 text-purple-600">
+                          <span className="text-xs font-semibold uppercase tracking-[0.3em]">
+                            {currentTask?.agent.name || 'Jordan'}
+                          </span>
+                          <div className="flex items-center gap-1">
+                            {[0, 0.2, 0.4].map((delay) => (
+                              <motion.span
+                                key={delay}
+                                className="h-1.5 w-1.5 rounded-full bg-purple-400"
                                 animate={{
                                   y: [0, -3, 0],
                                   opacity: [0.4, 1, 0.4],
                                 }}
                                 transition={{
-                                  duration: 1.2,
+                                  duration: 1,
                                   repeat: Infinity,
                                   delay,
                                   ease: 'easeInOut',
                                 }}
-                                className="w-1.5 h-1.5 bg-gray-500 rounded-full"
                               />
                             ))}
                           </div>
-                        </motion.div>
-                      )}
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      className="flex items-center justify-center h-[380px]"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                    >
-                      <div className="text-center">
-                        <MessageSquare className="h-10 w-10 mx-auto mb-3 text-gray-300" />
-                        <p className="text-sm text-gray-500">
-                          Waiting for updates...
-                        </p>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                        </div>
+                      </motion.div>
+                    )}
+                  </>
+                ) : (
+                  <div className="flex flex-1 flex-col items-center justify-center text-sm text-purple-400/80 border border-dashed border-purple-100 rounded-2xl bg-purple-50/20">
+                    <p>Negotiating deliverables with the creator…</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>

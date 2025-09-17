@@ -11,18 +11,9 @@ export interface MovingTestimonialsProps {
 
 // Company data for trusted by section
 const COMPANIES = [
-  { name: 'OpenAI' },
-  { name: 'Anthropic' },
-  { name: 'Stripe' },
-  { name: 'Linear' },
-  { name: 'Vercel' },
-  { name: 'Notion' },
-  { name: 'Figma' },
-  { name: 'Discord' },
-  { name: 'GitHub' },
   { name: 'Y Combinator' },
-  { name: 'LangChain' },
-  { name: 'Replicate' },
+  { name: 'Loreal' },
+  { name: 'Lakme' },
 ]
 
 // Duplicate the array to ensure seamless looping

@@ -43,6 +43,23 @@ const dialogVariants = {
 }
 
 const emailPattern = /.+@.+\..+/
+const WEBSITE_PREFIX = 'https://'
+
+const buildFullWebsite = (value: string) => {
+  const sanitized = value.trim().replace(/^https?:\/\//i, '')
+  return sanitized.length > 0 ? `${WEBSITE_PREFIX}${sanitized}` : ''
+}
+
+const isValidWebsite = (value: string) => {
+  if (!value) return false
+  try {
+    // eslint-disable-next-line no-new
+    new URL(value)
+    return true
+  } catch {
+    return false
+  }
+}
 
 const inboxHighlights = [
   '12 to 15 vetted creators for your niche',
@@ -115,7 +132,8 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
     const trimmedWebsite = website.trim()
     const trimmedEmail = workEmail.trim()
 
-    const isWebsiteValid = trimmedWebsite.length > 0
+    const fullWebsite = buildFullWebsite(trimmedWebsite)
+    const isWebsiteValid = isValidWebsite(fullWebsite)
     const isEmailValid = emailPattern.test(trimmedEmail)
 
     if (!isWebsiteValid || !isEmailValid) {
@@ -128,18 +146,23 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
       return
     }
 
-    onPrimaryAction?.({ website: trimmedWebsite, workEmail: trimmedEmail })
+    onPrimaryAction?.({ website: fullWebsite, workEmail: trimmedEmail })
     onClose()
   }
 
-  const websiteHasError = showErrors && website.trim().length === 0
-  const emailHasError = showErrors && !emailPattern.test(workEmail.trim())
+  const fullWebsite = buildFullWebsite(website)
+  const sanitizedEmail = workEmail.trim()
+  const isWebsiteStructurallyValid = isValidWebsite(fullWebsite)
+  const isEmailValid = emailPattern.test(sanitizedEmail)
+  const websiteHasError = showErrors && !isWebsiteStructurallyValid
+  const emailHasError = showErrors && !isEmailValid
   const websiteErrorMessage = websiteHasError
-    ? 'Please enter your website so we can personalize the list.'
+    ? 'Add your site after the prefix so we can personalize the list.'
     : undefined
   const emailErrorMessage = emailHasError
     ? 'Enter a valid work email so we can send your creator list.'
     : undefined
+  const isSubmitDisabled = !isWebsiteStructurallyValid || !isEmailValid
 
   const modalContent = (
     <AnimatePresence>
@@ -234,10 +257,20 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
                     autoCorrect="off"
                     placeholder="yourbrand.com"
                     value={website}
-                    onChange={(event) => setWebsite(event.target.value)}
+                    onChange={(event) =>
+                      setWebsite(event.target.value.replace(/^https?:\/\//i, ''))
+                    }
                     error={websiteErrorMessage}
+                    leftIcon={
+                      <span
+                        aria-hidden="true"
+                        className="text-sm font-semibold text-linear-text-tertiary"
+                      >
+                        {WEBSITE_PREFIX}
+                      </span>
+                    }
                     className={cn(
-                      'h-12 rounded-xl bg-linear-bg-secondary/80 text-linear-text-primary placeholder:text-linear-text-tertiary focus:ring-offset-2 focus:ring-offset-linear-bg-primary',
+                      'h-12 rounded-xl bg-linear-bg-secondary/80 pl-24 text-linear-text-primary placeholder:text-linear-text-tertiary focus:ring-offset-2 focus:ring-offset-linear-bg-primary',
                       websiteHasError
                         ? 'border-red-500 focus:ring-red-500'
                         : 'border-linear-border-default focus:ring-indigo-500'
@@ -278,10 +311,7 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
                   type="submit"
                   className="h-14 rounded-2xl text-lg font-semibold"
                   fullWidth
-                  disabled={
-                    website.trim().length === 0 ||
-                    !emailPattern.test(workEmail.trim())
-                  }
+                  disabled={isSubmitDisabled}
                 >
                   Get my creator list
                 </Button>

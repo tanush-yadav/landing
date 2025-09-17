@@ -6,12 +6,14 @@ import InteractiveDemo from './interactive-demo'
 interface InteractiveDemoWrapperProps {
   triggerDemoFromHero?: boolean
   selectedTaskFromHero?: string
+  heroSearchQuery?: string
   onDemoComplete?: () => void
 }
 
 const InteractiveDemoWrapper = ({
   triggerDemoFromHero,
   selectedTaskFromHero,
+  heroSearchQuery,
   onDemoComplete,
 }: InteractiveDemoWrapperProps) => {
   const [demoTrigger, setDemoTrigger] = useState(false)
@@ -59,6 +61,7 @@ const InteractiveDemoWrapper = ({
       <InteractiveDemo
         triggerDemo={demoTrigger}
         selectedTask={selectedTaskFromHero}
+        incomingSearchQuery={heroSearchQuery}
         onDemoComplete={onDemoComplete}
       />
     </section>

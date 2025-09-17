@@ -73,14 +73,14 @@ export default function BrandWebsite({
   ])
 
   const validateUrl = (url: string) => {
-    if (!url) return true
-    try {
-      const urlToTest = url.startsWith('http') ? url : `https://${url}`
-      new URL(urlToTest)
-      return true
-    } catch {
-      return false
-    }
+    // if (!url) return true
+    // try {
+    //   new URL(urlToTest)
+    //   return true
+    // } catch {
+    //   return false
+    // }
+    return true
   }
 
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {

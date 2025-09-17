@@ -27,6 +27,10 @@ const PricingSection = dynamic(
   () => import('@/components/sophia/composio/PricingSection'),
   { ssr: false }
 )
+const TeamsSection = dynamic(
+  () => import('@/components/teams-section'),
+  { ssr: false }
+)
 const FinalCTA = dynamic(
   () => import('@/components/sophia/composio/FinalCTA'),
   { ssr: false }
@@ -75,6 +79,9 @@ export default function SophiaLandingPage() {
 
       {/* Pricing */}
       <PricingSection />
+
+      {/* Team / Agent Jobs */}
+      <TeamsSection />
 
       {/* Final CTA */}
       <FinalCTA />

@@ -4,7 +4,11 @@ import { motion } from 'framer-motion'
 import { ArrowRight, Sparkles, Trophy } from 'lucide-react'
 // import { Button } from '@/components/ui/button'
 
-export function CTASection() {
+interface CTASectionProps {
+  onOpenModal?: () => void
+}
+
+export function CTASection({ onOpenModal }: CTASectionProps) {
   return (
     <section className="relative w-full pt-12 pb-16 md:pt-14 md:pb-20 overflow-x-clip md:overflow-visible bg-gradient-to-b from-white via-purple-50/20 to-white">
       {/* Very subtle gradient background */}
@@ -40,7 +44,7 @@ export function CTASection() {
                   <div className="flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5 text-purple-600" />
                     <span className="text-xs font-semibold text-purple-700">
-                      Hire your AI agents
+                      Hire your AI agent
                     </span>
                   </div>
                 </div>
@@ -55,10 +59,11 @@ export function CTASection() {
                 className="relative z-10 text-3xl md:text-4xl lg:text-5xl font-bold font-display leading-[1.3] md:leading-[1.25] lg:leading-[1.2] tracking-tight"
               >
                 <span className="text-gray-900 block pb-[2px] -mb-[2px]">
-                  Each agent we train becomes
+                More reach.
                 </span>
                 <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent block mt-3 pb-[2px] -mb-[2px]">
-                  employee of the month.
+                Less guesswork.
+
                 </span>
               </motion.h2>
 
@@ -70,9 +75,7 @@ export function CTASection() {
                 transition={{ delay: 0.4, duration: 0.5 }}
                 className="max-w-xl mx-auto text-base md:text-lg text-gray-600 leading-relaxed"
               >
-                Ready to hire and train your next employee of the month with
-                your own hands? AI that only thinks about your data and its
-                work.
+                Get a list with price ranges, contact info, and a first message template.
               </motion.p>
 
               {/* Leaner CTA Button */}
@@ -83,17 +86,15 @@ export function CTASection() {
                 transition={{ delay: 0.5, duration: 0.4 }}
                 className="pt-4"
               >
-                <a
-                  href="https://cal.com/tanushyadav/quick-chat"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={onOpenModal}
                   className="inline-flex items-center justify-center relative group bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium px-6 py-4 min-h-[48px] text-base rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-purple-600"
                 >
                   <span className="flex items-center gap-2">
-                    Book an Appointment
+                  Get my creator list
                     <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
                   </span>
-                </a>
+                </button>
               </motion.div>
 
               {/* Simple trust indicators */}

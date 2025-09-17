@@ -21,10 +21,10 @@ const InteractiveDemoWrapper = dynamic(
   }
 )
 
-const TeamsSection = dynamic(() => import('@/components/teams-section'), {
+const AttributionOutcomes = dynamic(() => import('@/components/attribution-outcomes'), {
   loading: () => (
     <div className="min-h-[400px] flex items-center justify-center">
-      <div className="animate-pulse text-gray-500">Loading team...</div>
+      <div className="animate-pulse text-gray-500">Loading analytics...</div>
     </div>
   ),
 })
@@ -33,6 +33,7 @@ export default function Home() {
   const [demoTrigger, setDemoTrigger] = useState(false)
   const [selectedTask, setSelectedTask] = useState('')
   const [isDemoRunning, setIsDemoRunning] = useState(false)
+  const [heroSearchQuery, setHeroSearchQuery] = useState('')
   const [showCreatorModal, setShowCreatorModal] = useState(false)
   const [modalDismissed, setModalDismissed] = useState(false)
 
@@ -41,29 +42,30 @@ export default function Home() {
     setDemoTrigger(false)
   }
 
-  const handleTeamsDelegation = (task: string) => {
-    // Map team member tasks to demo workflows
-    const teamTaskMapping: Record<string, string> = {
-      'Fix authentication bug in login flow': 'fix-auth-bug',
-      'Write blog post about new product features': 'blog-post',
-      'Analyze Q4 marketing campaign metrics': 'competitor-research',
-      'Run automated test suite for release': 'unit-tests',
-      'Qualify and follow up with new leads': 'qualify-leads',
-      "Organize tomorrow's stakeholder meeting": 'crm-updates',
-    }
-
-    const demoTaskId = teamTaskMapping[task] || 'fix-auth-bug'
+  const handleHeroDemoTrigger = useCallback((searchQuery?: string) => {
+    const sanitizedQuery = searchQuery?.trim() ||
+      'Find fashion creators driving spring campaigns'
 
     setSelectedTask('')
     setDemoTrigger(false)
     setIsDemoRunning(true)
+    setHeroSearchQuery(sanitizedQuery)
 
-    // Trigger demo after a brief delay
     setTimeout(() => {
-      setSelectedTask(demoTaskId)
+      setSelectedTask('qualify-leads')
       setDemoTrigger(true)
     }, 100)
-  }
+
+    setTimeout(() => {
+      setDemoTrigger(false)
+    }, 1600)
+  }, [])
+
+  // Keep the live search animation in sync with the hero selection
+  const handleSearchQueryChange = useCallback((query: string) => {
+    setHeroSearchQuery(query)
+  }, [])
+
 
   useEffect(() => {
     if (modalDismissed) return
@@ -82,6 +84,10 @@ export default function Home() {
     setModalDismissed(true)
   }, [])
 
+  const handleOpenModal = useCallback(() => {
+    setShowCreatorModal(true)
+  }, [])
+
   const handleModalPrimaryAction = useCallback(
     (_payload: { website: string; workEmail: string }) => {
       const heroSection = document.getElementById('hero')
@@ -95,7 +101,12 @@ export default function Home() {
   return (
     <main id="main" className="min-h-screen">
       <Navigation />
-      <Hero />
+      <Hero
+        onDemoTrigger={handleHeroDemoTrigger}
+        isDemoRunning={isDemoRunning}
+        onOpenModal={handleOpenModal}
+        onSearchQueryChange={handleSearchQueryChange}
+      />
 
       {/* Moving testimonials - companies trust banner */}
       <MovingTestimonials />
@@ -104,17 +115,15 @@ export default function Home() {
       <InteractiveDemoWrapper
         triggerDemoFromHero={demoTrigger}
         selectedTaskFromHero={selectedTask}
+        heroSearchQuery={heroSearchQuery}
         onDemoComplete={handleDemoComplete}
       />
 
-      {/* AI Teams Section */}
-      <TeamsSection
-        onDelegation={handleTeamsDelegation}
-        isDemoRunning={isDemoRunning}
-      />
+      {/* Attribution and Outcomes Section */}
+      <AttributionOutcomes />
 
       {/* CTA Section */}
-      <CTASection />
+      <CTASection onOpenModal={handleOpenModal} />
 
       <CreatorListModal
         open={showCreatorModal}
