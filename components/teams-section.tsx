@@ -469,8 +469,16 @@ const TeamMemberCard = ({
               </div>
             </div>
 
-            {/* Status Indicator */}
-            <StatusIndicator status={member.status} />
+            {/* Right: Hours saved badge + Status */}
+            <div className="flex flex-col items-end gap-2">
+              {(() => { const saved = (member as any)?.stats?.hoursSaved; return saved })() && (
+                <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-white border border-neutral-200 text-[11px] text-neutral-700 shadow-sm">
+                  <Zap className="w-3.5 h-3.5 text-blue-600" />
+                  <span>{String((member as any).stats.hoursSaved)} hours saved</span>
+                </div>
+              )}
+              <StatusIndicator status={member.status} />
+            </div>
           </div>
 
           {/* Current Activity Section */}

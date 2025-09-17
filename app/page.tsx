@@ -29,6 +29,11 @@ const AttributionOutcomes = dynamic(() => import('@/components/attribution-outco
   ),
 })
 
+// Team section (restored from feature/teams-section)
+const TeamsSection = dynamic(() => import('@/components/teams-section'), {
+  ssr: false,
+})
+
 export default function Home() {
   const [demoTrigger, setDemoTrigger] = useState(false)
   const [selectedTask, setSelectedTask] = useState('')
@@ -121,6 +126,9 @@ export default function Home() {
 
       {/* Attribution and Outcomes Section */}
       <AttributionOutcomes />
+
+      {/* Team / Agent Jobs - placed before CTA */}
+      <TeamsSection />
 
       {/* CTA Section */}
       <CTASection onOpenModal={handleOpenModal} />

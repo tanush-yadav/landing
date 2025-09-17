@@ -333,7 +333,7 @@ export default function AttributionOutcomes() {
           >
             <Card variant="elevated" padding="none">
               <Card.Header className="p-6 pb-0">
-                <Card.Title>Creator Performance</Card.Title>
+                <Card.Title className="font-display">Creator Performance</Card.Title>
               </Card.Header>
               <Card.Content className="p-0">
                 <div className="overflow-x-auto">
@@ -395,7 +395,7 @@ export default function AttributionOutcomes() {
             {/* Post Timeline Card */}
             <Card variant="elevated" padding="md">
               <Card.Header>
-                <Card.Title className="flex items-center gap-2">
+                <Card.Title className="font-display flex items-center gap-2">
                   <Calendar className="w-5 h-5 text-blue-600" />
                   Recent posts
                 </Card.Title>
@@ -431,7 +431,7 @@ export default function AttributionOutcomes() {
               {/* Top Converting Creators Mini Card */}
               <Card variant="elevated" padding="md">
                 <Card.Header>
-                  <Card.Title className="text-sm font-semibold flex items-center gap-2">
+                  <Card.Title className="font-display text-sm font-semibold flex items-center gap-2">
                     <Star className="w-4 h-4 text-yellow-500" />
                     Top converting creators this week
                   </Card.Title>
@@ -460,7 +460,7 @@ export default function AttributionOutcomes() {
               {/* Rising Creators Mini Card */}
               <Card variant="elevated" padding="md">
                 <Card.Header>
-                  <Card.Title className="text-sm font-semibold flex items-center gap-2">
+                  <Card.Title className="font-display text-sm font-semibold flex items-center gap-2">
                     <TrendingUp className="w-4 h-4 text-green-500" />
                     Rising micro influencers in your niche
                   </Card.Title>
