@@ -11,13 +11,16 @@ import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Check, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/design-system'
+
+type PrimaryActionResult = void | { success?: boolean; error?: string | null }
 
 export interface CreatorListModalProps {
   open: boolean
   onClose: () => void
-  onPrimaryAction?: (payload: { website: string; workEmail: string }) => void
+  onPrimaryAction?: (
+    payload: { website: string; workEmail: string }
+  ) => PrimaryActionResult | Promise<PrimaryActionResult>
 }
 
 const overlayVariants = {
@@ -80,6 +83,24 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
   const [website, setWebsite] = useState('')
   const [workEmail, setWorkEmail] = useState('')
   const [showErrors, setShowErrors] = useState(false)
+  const [submissionState, setSubmissionState] = useState<
+    'idle' | 'submitting' | 'success' | 'error'
+  >('idle')
+  const [submissionError, setSubmissionError] = useState<string | null>(null)
+
+  const resetFormState = ({ shouldFocus }: { shouldFocus?: boolean } = {}) => {
+    setWebsite('')
+    setWorkEmail('')
+    setShowErrors(false)
+    setSubmissionState('idle')
+    setSubmissionError(null)
+
+    if (shouldFocus) {
+      window.setTimeout(() => {
+        websiteInputRef.current?.focus()
+      }, 20)
+    }
+  }
 
   useEffect(() => {
     if (!hasMountedRef.current) {
@@ -101,9 +122,7 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
   useEffect(() => {
     if (!open) {
       document.body.style.overflow = ''
-      setWebsite('')
-      setWorkEmail('')
-      setShowErrors(false)
+      resetFormState({ shouldFocus: false })
       return
     }
 
@@ -127,7 +146,7 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
     }
   }, [open, onClose])
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const trimmedWebsite = website.trim()
     const trimmedEmail = workEmail.trim()
@@ -146,8 +165,29 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
       return
     }
 
-    onPrimaryAction?.({ website: fullWebsite, workEmail: trimmedEmail })
-    onClose()
+    setSubmissionState('submitting')
+    setSubmissionError(null)
+
+    try {
+      const result = await onPrimaryAction?.({
+        website: fullWebsite,
+        workEmail: trimmedEmail,
+      })
+
+      const didSucceed = result === undefined || result.success !== false
+
+      if (didSucceed) {
+        setSubmissionState('success')
+        return
+      }
+
+      setSubmissionError(result?.error || 'We could not save your request. Please try again.')
+      setSubmissionState('error')
+    } catch (error) {
+      console.error('Failed to submit creator list request', error)
+      setSubmissionError('We ran into an issue saving your request. Please try again.')
+      setSubmissionState('error')
+    }
   }
 
   const fullWebsite = buildFullWebsite(website)
@@ -162,7 +202,9 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
   const emailErrorMessage = emailHasError
     ? 'Enter a valid work email so we can send your creator list.'
     : undefined
-  const isSubmitDisabled = !isWebsiteStructurallyValid || !isEmailValid
+  const isSubmitting = submissionState === 'submitting'
+  const isSubmitDisabled =
+    !isWebsiteStructurallyValid || !isEmailValid || isSubmitting
 
   const modalContent = (
     <AnimatePresence>
@@ -237,100 +279,154 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
               Paste your site, set your niche, and we will surface verified creators already moving product for audiences like yours. You get attribution-ready profiles and outreach sequences without lifting a finger.
             </p>
 
-            <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-6">
-              <div className="flex flex-col gap-5">
-                <div className="flex flex-col gap-2">
-                  <label
-                    htmlFor="modal-website"
-                    className="text-sm font-medium text-gray-700"
+            {submissionState === 'success' ? (
+              <div className="mt-8 flex flex-col gap-6">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 via-teal-500 to-sky-500 text-white shadow-lg shadow-emerald-200/50">
+                    <Check className="h-5 w-5" aria-hidden="true" />
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-600">
+                      You&apos;re on the list
+                    </p>
+                    <h3 className="mt-1 text-xl font-bold font-display text-gray-900 sm:text-2xl">
+                      We&apos;ll send your curated creators next
+                    </h3>
+                  </div>
+                </div>
+                <p className="text-md leading-relaxed text-gray-600 font-sans">
+                  Our team is already lining up vetted partners. Expect your inbox at {sanitizedEmail || 'your email'} to get a personalized list with outreach scripts within 24 hours.
+                </p>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      onClose()
+                    }}
+                    className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg shadow-indigo-200/50 transition-all hover:shadow-xl hover:shadow-indigo-300/50"
                   >
-                    Website
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-                      <span
-                        aria-hidden="true"
-                        className="text-sm font-medium text-gray-400"
-                      >
-                        https://
-                      </span>
+                    Back to the site
+                  </Button>
+                  <button
+                    type="button"
+                    onClick={() => resetFormState({ shouldFocus: true })}
+                    className="text-sm font-medium text-gray-500 transition-colors duration-200 hover:text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                  >
+                    Submit another request
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-6">
+                <div className="flex flex-col gap-5">
+                  <div className="flex flex-col gap-2">
+                    <label
+                      htmlFor="modal-website"
+                      className="text-sm font-medium text-gray-700"
+                    >
+                      Website
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+                        <span
+                          aria-hidden="true"
+                          className="text-sm font-medium text-gray-400"
+                        >
+                          https://
+                        </span>
+                      </div>
+                      <input
+                        id="modal-website"
+                        ref={websiteInputRef}
+                        type="text"
+                        inputMode="url"
+                        autoCapitalize="none"
+                        autoCorrect="off"
+                        placeholder="yourbrand.com"
+                        value={website}
+                        onChange={(event) =>
+                          setWebsite(event.target.value.replace(/^https?:\/\//i, ''))
+                        }
+                        className={cn(
+                          'w-full h-12 rounded-xl bg-gray-50 pl-20 pr-4 text-gray-900 placeholder:text-gray-400',
+                          'focus:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white transition-colors',
+                          'border text-sm',
+                          websiteHasError
+                            ? 'border-red-500 focus:ring-red-500'
+                            : 'border-gray-200 hover:border-gray-300 focus:border-indigo-500 focus:ring-indigo-500',
+                          isSubmitting ? 'pointer-events-none opacity-80' : ''
+                        )}
+                        disabled={isSubmitting}
+                      />
+                      {websiteErrorMessage && (
+                        <p className="mt-2 text-sm text-red-600">{websiteErrorMessage}</p>
+                      )}
                     </div>
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <label
+                      htmlFor="modal-work-email"
+                      className="text-sm font-medium text-gray-700"
+                    >
+                      Work email
+                    </label>
                     <input
-                      id="modal-website"
-                      ref={websiteInputRef}
-                      type="text"
-                      inputMode="url"
+                      id="modal-work-email"
+                      ref={workEmailInputRef}
+                      type="email"
+                      inputMode="email"
                       autoCapitalize="none"
                       autoCorrect="off"
-                      placeholder="yourbrand.com"
-                      value={website}
-                      onChange={(event) =>
-                        setWebsite(event.target.value.replace(/^https?:\/\//i, ''))
-                      }
+                      placeholder="name@company.com"
+                      value={workEmail}
+                      onChange={(event) => setWorkEmail(event.target.value)}
                       className={cn(
-                        'w-full h-12 rounded-xl bg-gray-50 pl-20 pr-4 text-gray-900 placeholder:text-gray-400',
+                        'w-full h-12 rounded-xl bg-gray-50 px-4 text-gray-900 placeholder:text-gray-400',
                         'focus:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white transition-colors',
                         'border text-sm',
-                        websiteHasError
+                        emailHasError
                           ? 'border-red-500 focus:ring-red-500'
-                          : 'border-gray-200 hover:border-gray-300 focus:border-indigo-500 focus:ring-indigo-500'
+                          : 'border-gray-200 hover:border-gray-300 focus:border-indigo-500 focus:ring-indigo-500',
+                        isSubmitting ? 'pointer-events-none opacity-80' : ''
                       )}
+                      disabled={isSubmitting}
                     />
-                    {websiteErrorMessage && (
-                      <p className="mt-2 text-sm text-red-600">{websiteErrorMessage}</p>
+                    {emailErrorMessage && (
+                      <p className="mt-2 text-sm text-red-600">{emailErrorMessage}</p>
                     )}
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-2">
-                  <label
-                    htmlFor="modal-work-email"
-                    className="text-sm font-medium text-gray-700"
+                <div className="flex flex-col gap-4">
+                  <Button
+                    type="submit"
+                    className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg shadow-indigo-200/50 transition-all hover:shadow-xl hover:shadow-indigo-300/50 disabled:opacity-50 disabled:shadow-none"
+                    disabled={isSubmitDisabled}
                   >
-                    Work email
-                  </label>
-                  <input
-                    id="modal-work-email"
-                    ref={workEmailInputRef}
-                    type="email"
-                    inputMode="email"
-                    autoCapitalize="none"
-                    autoCorrect="off"
-                    placeholder="name@company.com"
-                    value={workEmail}
-                    onChange={(event) => setWorkEmail(event.target.value)}
-                    className={cn(
-                      'w-full h-12 rounded-xl bg-gray-50 px-4 text-gray-900 placeholder:text-gray-400',
-                      'focus:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white transition-colors',
-                      'border text-sm',
-                      emailHasError
-                        ? 'border-red-500 focus:ring-red-500'
-                        : 'border-gray-200 hover:border-gray-300 focus:border-indigo-500 focus:ring-indigo-500'
+                    {isSubmitting ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <span className="inline-flex h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" aria-hidden="true" />
+                        Sending...
+                      </span>
+                    ) : (
+                      'Get my creator list'
                     )}
-                  />
-                  {emailErrorMessage && (
-                    <p className="mt-2 text-sm text-red-600">{emailErrorMessage}</p>
+                  </Button>
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className="text-sm font-medium text-gray-500 transition-colors duration-200 hover:text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                    disabled={isSubmitting}
+                  >
+                    No thanks
+                  </button>
+                  {submissionState === 'error' && submissionError && (
+                    <p className="text-sm text-red-600">{submissionError}</p>
                   )}
                 </div>
-              </div>
-
-              <div className="flex flex-col gap-4">
-                <Button
-                  type="submit"
-                  className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg shadow-indigo-200/50 transition-all hover:shadow-xl hover:shadow-indigo-300/50 disabled:opacity-50 disabled:shadow-none"
-                  disabled={isSubmitDisabled}
-                >
-                  Get my creator list
-                </Button>
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="text-sm font-medium text-gray-500 transition-colors duration-200 hover:text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-                >
-                  No thanks
-                </button>
-              </div>
-            </form>
+              </form>
+            )}
 
             <div className="mt-10 rounded-2xl border border-gray-200 bg-gray-50/70 px-6 py-6 sm:px-8 sm:py-7">
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-gray-500">

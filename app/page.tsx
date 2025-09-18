@@ -103,14 +103,28 @@ export default function Home() {
         if (!response.ok) {
           const errorBody = await response.json().catch(() => null)
           console.error('Failed to save creator list request', errorBody)
+
+          const message =
+            typeof errorBody?.error === 'string'
+              ? errorBody.error
+              : 'Something went wrong while saving your request.'
+
+          return { success: false as const, error: message }
         }
+
+        const heroSection = document.getElementById('hero')
+        if (heroSection) {
+          heroSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
+
+        return { success: true as const }
       } catch (error) {
         console.error('Failed to save creator list request', error)
-      }
 
-      const heroSection = document.getElementById('hero')
-      if (heroSection) {
-        heroSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        return {
+          success: false as const,
+          error: 'Network error. Please try again in a moment.',
+        }
       }
     },
     []
