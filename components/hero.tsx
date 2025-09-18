@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { Search } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -48,6 +48,8 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
   const [isDelegating, setIsDelegating] = useState(false)
   const [isTypingDemo, setIsTypingDemo] = useState(false)
   const [typedText, setTypedText] = useState('')
+  const [hasInteracted, setHasInteracted] = useState(false)
+  const [autoPlayed, setAutoPlayed] = useState(false)
 
   useEffect(() => {
     setIsVisible(true)
@@ -99,27 +101,45 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
   }, [isVisible, searchQuery, isDemoRunning])
 
   const delegatingTimerRef = useRef<number | null>(null)
+  const autoPlayTimerRef = useRef<number | null>(null)
+
+  const registerInteraction = useCallback(() => {
+    if (!hasInteracted) {
+      setHasInteracted(true)
+    }
+    if (autoPlayTimerRef.current) {
+      window.clearTimeout(autoPlayTimerRef.current)
+      autoPlayTimerRef.current = null
+    }
+  }, [hasInteracted])
 
   const handlePillClick = (pill: typeof floatingPills[0]) => {
+    registerInteraction()
     setSearchQuery(pill.searchQuery)
     setSelectedPill(pill.id)
     // Propagate selection upward so the demo's live search mirrors it
     onSearchQueryChange?.(pill.searchQuery)
-  }
-
-  const handleMagicClick = () => {
-    if (searchQuery.trim() && !isDemoRunning) {
-      setIsDelegating(true)
-      // Trigger the demo animation and scroll with the search query
-      if (onDemoTrigger) {
-        onDemoTrigger(searchQuery)
-      }
-      // Reset delegating state after animation
-      delegatingTimerRef.current = window.setTimeout(() => {
-        setIsDelegating(false)
-      }, 2000)
     }
-  }
+
+  const startDemo = useCallback((query: string) => {
+    const trimmedQuery = query.trim()
+
+    registerInteraction()
+    if (!trimmedQuery || isDemoRunning) {
+      return
+    }
+    setIsDelegating(true)
+
+    onDemoTrigger?.(trimmedQuery)
+
+    if (delegatingTimerRef.current) {
+      window.clearTimeout(delegatingTimerRef.current)
+    }
+
+    delegatingTimerRef.current = window.setTimeout(() => {
+      setIsDelegating(false)
+    }, 2000)
+  }, [isDemoRunning, onDemoTrigger, registerInteraction])
 
   useEffect(() => {
     return () => {
@@ -128,6 +148,46 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
       }
     }
   }, [])
+
+  useEffect(() => {
+    if (!isVisible || isDemoRunning || hasInteracted || autoPlayed) {
+      return
+    }
+
+    const defaultPill = floatingPills[0]
+    if (!defaultPill) {
+      return
+    }
+
+    autoPlayTimerRef.current = window.setTimeout(() => {
+      if (isDemoRunning || hasInteracted) {
+        return
+      }
+
+      setSelectedPill(defaultPill.id)
+      setSearchQuery(defaultPill.searchQuery)
+      setIsTypingDemo(false)
+      setTypedText('')
+      onSearchQueryChange?.(defaultPill.searchQuery)
+      setAutoPlayed(true)
+
+      startDemo(defaultPill.searchQuery)
+    }, 6000)
+
+    return () => {
+      if (autoPlayTimerRef.current) {
+        window.clearTimeout(autoPlayTimerRef.current)
+        autoPlayTimerRef.current = null
+      }
+    }
+  }, [
+    autoPlayed,
+    hasInteracted,
+    startDemo,
+    isDemoRunning,
+    isVisible,
+    onSearchQueryChange,
+  ])
 
   return (
     <section
@@ -262,12 +322,14 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
                     type="text"
                     value={searchQuery || (isTypingDemo ? typedText : '')}
                     onChange={(e) => {
+                      registerInteraction()
                       setSearchQuery(e.target.value)
                       setIsTypingDemo(false)
                       setTypedText('')
                       onSearchQueryChange?.(e.target.value)
                     }}
                     onFocus={() => {
+                      registerInteraction()
                       setIsTypingDemo(false)
                       setTypedText('')
                     }}
@@ -290,7 +352,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
 
                 {/* Magic Button */}
                 <Button
-                  onClick={handleMagicClick}
+                  onClick={() => startDemo(searchQuery)}
                   disabled={isDelegating || isDemoRunning}
                   variant="ghost"
                   aria-busy={isDelegating}
