@@ -1,0 +1,7 @@
+<svg width="3840" height="2160" viewBox="0 0 3840 2160" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title-loreal">
+  <title id="title-loreal">L'Oréal</title>
+  <rect width="3840" height="2160" fill="#040404" />
+  <text x="50%" y="55%" fill="#FFFFFF" font-family="'Didot', 'Georgia', serif" font-size="400" text-anchor="middle" letter-spacing="80">
+    L'ORÉAL
+  </text>
+</svg>

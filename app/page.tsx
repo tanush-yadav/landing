@@ -90,7 +90,24 @@ export default function Home() {
   }, [])
 
   const handleModalPrimaryAction = useCallback(
-    (_payload: { website: string; workEmail: string }) => {
+    async (payload: { website: string; workEmail: string }) => {
+      try {
+        const response = await fetch('/api/creator-list', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        })
+
+        if (!response.ok) {
+          const errorBody = await response.json().catch(() => null)
+          console.error('Failed to save creator list request', errorBody)
+        }
+      } catch (error) {
+        console.error('Failed to save creator list request', error)
+      }
+
       const heroSection = document.getElementById('hero')
       if (heroSection) {
         heroSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -129,7 +146,7 @@ export default function Home() {
 
       {/* Team / Agent Jobs - placed before CTA */}
       <div className="mt-8 sm:mt-10 md:mt-12">
-        <TeamsSection />
+        <TeamsSection onOpenModal={handleOpenModal} />
       </div>
 
       {/* CTA Section */}

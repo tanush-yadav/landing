@@ -87,7 +87,10 @@ export function CTASection({ onOpenModal }: CTASectionProps) {
                 className="pt-3"
               >
                 <button
-                  onClick={onOpenModal}
+                  type="button"
+                  onClick={() => {
+                    onOpenModal?.()
+                  }}
                   className="inline-flex items-center justify-center relative group bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium px-5 py-3 min-h-[40px] text-sm rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-purple-600"
                 >
                   <span className="flex items-center gap-2">

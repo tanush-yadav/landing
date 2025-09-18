@@ -1,0 +1,6 @@
+<svg width="820" height="233" viewBox="0 0 820 233" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title">
+  <title id="title">Y Combinator</title>
+  <rect width="233" height="233" rx="16" fill="#F26522" />
+  <path d="M90 64h36l52 71 52-71h36l-73 95v73h-30v-73L90 64z" fill="#FFFFFF" />
+  <text x="263" y="156" font-family="'Inter', 'Helvetica Neue', Arial, sans-serif" font-size="118" font-weight="500" fill="#F26522">Combinator</text>
+</svg>

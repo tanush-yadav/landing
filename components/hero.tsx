@@ -3,11 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { ArrowRight, Search } from 'lucide-react'
-import {
-  cn,
-  incrementDelegationClickCount,
-  redirectToCalIfThresholdMet,
-} from '@/lib/utils'
+import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 
@@ -113,10 +109,6 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
 
   const handleMagicClick = () => {
     if (searchQuery.trim() && !isDemoRunning) {
-      const newCount = incrementDelegationClickCount()
-      if (redirectToCalIfThresholdMet(newCount)) {
-        return
-      }
       setIsDelegating(true)
       // Trigger the demo animation and scroll with the search query
       if (onDemoTrigger) {
@@ -186,7 +178,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
           {/* Main Headline */}
           <h1
             className={cn(
-              'text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-gray-900 mb-3 opacity-0 leading-[1.1] sm:leading-tight',
+              'text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold text-gray-900 mb-3 opacity-0 leading-[1.1] sm:leading-tight',
               isVisible && 'animate-fade-in-up'
             )}
             style={{ letterSpacing: '-0.02em' }}
@@ -210,7 +202,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
           {/* Floating Pills and Search Section */}
           <div
             className={cn(
-              'mx-auto w-full max-w-xl opacity-0 sm:max-w-2xl md:max-w-2xl lg:max-w-2xl',
+              'mx-auto w-full max-w-lg opacity-0 sm:max-w-2xl md:max-w-2xl lg:max-w-2xl',
               isVisible && 'animate-fade-in-up animation-delay-400'
             )}
           >

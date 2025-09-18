@@ -572,11 +572,13 @@ const availableTasks = [
 interface TeamsSectionProps {
   onDelegation?: (task: string) => void
   isDemoRunning?: boolean
+  onOpenModal?: () => void
 }
 
 export default function TeamsSection({
   onDelegation,
   isDemoRunning,
+  onOpenModal,
 }: TeamsSectionProps = {}) {
   const [selectedMember, setSelectedMember] = React.useState<string | null>(
     null
@@ -731,6 +733,7 @@ export default function TeamsSection({
 
     // Perform delegation
     performDelegation(memberId, task)
+    onOpenModal?.()
   }
 
   return (
@@ -761,7 +764,7 @@ export default function TeamsSection({
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <motion.div
+          {/* <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.5 }}
@@ -772,9 +775,9 @@ export default function TeamsSection({
             <span className="text-sm font-medium text-blue-900">
               Team of AI agents
             </span>
-          </motion.div>
+          </motion.div> */}
 
-          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-neutral-900 mb-6 font-display">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-neutral-900 mb-6 font-display">
             Meet Your{' '}
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               Marketing team

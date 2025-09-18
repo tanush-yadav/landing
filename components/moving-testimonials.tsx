@@ -1,7 +1,13 @@
 'use client'
 
 import { useRef } from 'react'
+import Image from 'next/image'
 import { cn } from '@/lib/utils'
+
+interface Company {
+  name: string
+  logo?: string
+}
 
 export interface MovingTestimonialsProps {
   className?: string
@@ -10,10 +16,10 @@ export interface MovingTestimonialsProps {
 }
 
 // Company data for trusted by section
-const COMPANIES = [
-  { name: 'Y Combinator' },
-  { name: 'Loreal' },
-  { name: 'Lakme' },
+const COMPANIES: Company[] = [
+  { name: 'Y Combinator', logo: '/images/logos/y-combinator.svg' },
+  { name: 'Loreal', logo: '/images/logos/loreal.svg' },
+  { name: 'Lakme', logo: '/images/logos/lakme.svg' },
 ]
 
 // Duplicate the array to ensure seamless looping
@@ -77,11 +83,27 @@ const MovingTestimonials = ({
               {EXTENDED_COMPANIES.map((company, index) => (
                 <div
                   key={`${company.name}-${index}`}
-                  className="flex-shrink-0 flex items-center justify-center min-w-[100px] sm:min-w-[120px] h-10 sm:h-12"
+                  className={cn(
+                    'flex-shrink-0 flex items-center justify-center h-10 sm:h-12',
+                    company.logo
+                      ? 'min-w-[180px] sm:min-w-[220px] px-4'
+                      : 'min-w-[100px] sm:min-w-[120px]'
+                  )}
                 >
-                  <div className="text-slate-500 hover:text-slate-700 transition-colors duration-300 font-heading font-semibold text-xs sm:text-sm tracking-wide">
-                    {company.name}
-                  </div>
+                  {company.logo ? (
+                    <Image
+                      src={company.logo}
+                      alt={company.name}
+                      width={200}
+                      height={60}
+                      style={{ width: 'auto', height: '100%' }}
+                      className="object-contain"
+                    />
+                  ) : (
+                    <div className="text-slate-500 hover:text-slate-700 transition-colors duration-300 font-heading font-semibold text-xs sm:text-sm tracking-wide">
+                      {company.name}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
