@@ -133,40 +133,48 @@ export default function Home() {
   return (
     <main id="main" className="min-h-screen">
       <Navigation />
-      <Hero
-        onDemoTrigger={handleHeroDemoTrigger}
-        isDemoRunning={isDemoRunning}
-        onOpenModal={handleOpenModal}
-        onSearchQueryChange={handleSearchQueryChange}
-      />
+      <section data-section="hero">
+        <Hero
+          onDemoTrigger={handleHeroDemoTrigger}
+          isDemoRunning={isDemoRunning}
+          onOpenModal={handleOpenModal}
+          onSearchQueryChange={handleSearchQueryChange}
+        />
+      </section>
 
-      {/* Interactive Demo Section - Clean Professional UI */}
+      <section
+        data-section="interactive-demo"
+        className="mt-8 sm:mt-10 md:mt-12"
+      >
         <InteractiveDemoWrapper
           triggerDemoFromHero={demoTrigger}
           selectedTaskFromHero={selectedTask}
           heroSearchQuery={heroSearchQuery}
           onDemoComplete={handleDemoComplete}
         />
-  
-      {/* Moving testimonials - companies trust banner */}
-      <div className="mt-6 sm:mt-8 md:mt-10">
+      </section>
+
+      <section
+        data-section="moving-testimonials"
+        className="mt-8 sm:mt-10 md:mt-12"
+      >
         <MovingTestimonials />
-      </div>
+      </section>
 
-      {/* Attribution and Outcomes Section */}
-      <div className="mt-8 sm:mt-10 md:mt-12">
+      <section
+        data-section="attribution-outcomes"
+        className="mt-8 sm:mt-10 md:mt-12"
+      >
         <AttributionOutcomes />
-      </div>
+      </section>
 
-      {/* Team / Agent Jobs - placed before CTA */}
-      <div className="mt-8 sm:mt-10 md:mt-12">
+      <section data-section="teams" className="mt-8 sm:mt-10 md:mt-12">
         <TeamsSection onOpenModal={handleOpenModal} />
-      </div>
+      </section>
 
-      {/* CTA Section */}
-      <div className="mt-8 sm:mt-10 md:mt-12">
+      <section data-section="cta-section" className="mt-8 sm:mt-10 md:mt-12">
         <CTASection onOpenModal={handleOpenModal} />
-      </div>
+      </section>
 
       <CreatorListModal
         open={showCreatorModal}
