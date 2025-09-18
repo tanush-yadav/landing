@@ -222,16 +222,31 @@ export const FormExample: React.FC<FormExampleProps> = ({
 
   return (
     <form onSubmit={handleSubmit} className={cn('space-y-4', className)}>
-      <Input
-        label="Email"
-        type="email"
-        value={formData.email}
-        onChange={(e) =>
-          setFormData((prev) => ({ ...prev, email: e.target.value }))
-        }
-        error={errors.email}
-        placeholder="your@email.com"
-      />
+      <div>
+        <label
+          htmlFor="pattern-showcase-email"
+          className="mb-1.5 block text-sm font-medium text-neutral-700"
+        >
+          Email
+        </label>
+        <Input
+          id="pattern-showcase-email"
+          type="email"
+          value={formData.email}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, email: e.target.value }))
+          }
+          placeholder="your@email.com"
+          aria-invalid={Boolean(errors.email)}
+          className={cn(
+            'bg-white text-neutral-900 placeholder:text-neutral-400 focus-visible:ring-2 focus-visible:ring-offset-2',
+            errors.email && 'border-red-500 focus-visible:ring-red-500'
+          )}
+        />
+        {errors.email && (
+          <p className="mt-1.5 text-sm text-red-600">{errors.email}</p>
+        )}
+      </div>
 
       <div>
         <label className="block text-sm font-medium text-neutral-700 mb-1.5">
@@ -258,12 +273,13 @@ export const FormExample: React.FC<FormExampleProps> = ({
 
       <Button
         type="submit"
-        variant="primary"
-        size="md"
-        isLoading={isSubmitting}
-        fullWidth
+        variant="default"
+        size="lg"
+        className="w-full"
+        disabled={isSubmitting}
+        aria-busy={isSubmitting}
       >
-        Submit
+        {isSubmitting ? 'Sending...' : 'Submit'}
       </Button>
     </form>
   )
@@ -432,7 +448,7 @@ export const Modal: React.FC<ModalProps> = ({
               <Button variant="ghost" size="sm" onClick={onClose}>
                 Cancel
               </Button>
-              <Button variant="primary" size="sm" onClick={onClose}>
+              <Button variant="default" size="sm" onClick={onClose}>
                 Confirm
               </Button>
             </div>

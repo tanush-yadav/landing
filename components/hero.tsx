@@ -292,9 +292,9 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
                 <Button
                   onClick={handleMagicClick}
                   disabled={isDelegating || isDemoRunning}
-                  loading={isDelegating}
                   variant="ghost"
-                  className="rounded-lg bg-gradient-to-r from-purple-600 to-purple-700 py-3 px-6 text-white shadow-lg transition-all hover:purple-400 hover:text-white"
+                  aria-busy={isDelegating}
+                  className="rounded-lg bg-gradient-to-r from-purple-600 to-purple-700 py-3 px-6 text-white shadow-lg transition-all hover:purple-400 hover:text-white disabled:opacity-70"
                 >
                   {isDemoRunning ? (
                     'Demo in Progress...'
