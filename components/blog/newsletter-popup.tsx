@@ -137,7 +137,7 @@ const NewsletterPopup: React.FC<NewsletterPopupProps> = ({
       setTimeout(() => {
         setIsVisible(false);
       }, 3000);
-    } catch (error) {
+    } catch {
       setStatus('error');
       setErrorMessage('Something went wrong. Please try again.');
     }

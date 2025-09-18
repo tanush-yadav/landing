@@ -719,11 +719,7 @@ const InteractiveDemo = memo(
       setSearchQueryIndex(0)
       setDisplayedSearchQuery('')
       setSearchTypingState('pausing')
-    }, [
-      clearAllTimeouts,
-      defaultSearchQuery,
-      shouldReduceMotion,
-    ])
+    }, [clearAllTimeouts])
 
     // Optimized animation sequence with error handling
     const startDemoSequence = useCallback(async () => {

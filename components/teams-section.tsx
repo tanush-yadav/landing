@@ -360,32 +360,6 @@ const TypingIndicator = () => (
   </div>
 )
 
-// Status indicator component
-const StatusIndicator = ({ status }: { status: string }) => (
-  <div className="flex items-center gap-2">
-    <div className="relative">
-      <motion.div
-        className={cn(
-          'w-2 h-2 rounded-full',
-          status === 'active' ? 'bg-green-500' : 'bg-neutral-300'
-        )}
-        animate={status === 'active' ? { scale: [1, 1.2, 1] } : {}}
-        transition={{ duration: 2, repeat: Infinity }}
-      />
-      {status === 'active' && (
-        <motion.div
-          className="absolute inset-0 w-2 h-2 rounded-full bg-green-500"
-          animate={{ scale: [1, 2], opacity: [0.7, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        />
-      )}
-    </div>
-    <span className="text-xs text-neutral-500 font-medium">
-      {status === 'active' ? 'Working' : 'Available'}
-    </span>
-  </div>
-)
-
 // Team member card component
 const TeamMemberCard = ({
   member,

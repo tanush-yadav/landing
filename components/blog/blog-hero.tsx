@@ -12,13 +12,12 @@ import {
   Search,
   TrendingUp,
   BookOpen,
-  Lightbulb,
   Sparkles,
   Zap,
   Brain,
 } from 'lucide-react'
 import dynamic from 'next/dynamic'
-import { cn, typography } from '@/lib/design-system'
+import { cn } from '@/lib/design-system'
 
 // Dynamically import CountUp to avoid SSR issues
 const CountUp = dynamic(() => import('react-countup'), {
@@ -30,6 +29,13 @@ interface BlogHeroProps {
   onSearch?: (query: string) => void
   className?: string
 }
+
+const SEARCH_PLACEHOLDERS = [
+  'Search AI automation insights...',
+  'Find productivity tips...',
+  'Explore agentic workflows...',
+  'Discover team solutions...',
+]
 
 const BlogHero: React.FC<BlogHeroProps> = ({ onSearch, className }) => {
   const [searchQuery, setSearchQuery] = useState('')
@@ -61,17 +67,11 @@ const BlogHero: React.FC<BlogHeroProps> = ({ onSearch, className }) => {
   ]
 
   // Typing animation for search placeholder
-  const searchPlaceholders = [
-    'Search AI automation insights...',
-    'Find productivity tips...',
-    'Explore agentic workflows...',
-    'Discover team solutions...',
-  ]
   const [placeholderIndex, setPlaceholderIndex] = useState(0)
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setPlaceholderIndex((prev) => (prev + 1) % searchPlaceholders.length)
+      setPlaceholderIndex((prev) => (prev + 1) % SEARCH_PLACEHOLDERS.length)
     }, 3000)
     return () => clearInterval(interval)
   }, [])
@@ -228,7 +228,7 @@ const BlogHero: React.FC<BlogHeroProps> = ({ onSearch, className }) => {
                     key={placeholderIndex}
                     data-testid="search-input"
                     type="text"
-                    placeholder={searchPlaceholders[placeholderIndex]}
+                    placeholder={SEARCH_PLACEHOLDERS[placeholderIndex]}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     disabled={isSearching}

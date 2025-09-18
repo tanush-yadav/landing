@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useCallback, memo } from 'react'
 import Link from 'next/link'
-import { Menu, X, ChevronRight, Sparkles, Calendar } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { Menu, X, Sparkles, Calendar } from 'lucide-react'
+import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { CALENDAR_LINK, CTA_TEXT } from '@/lib/constants'
 

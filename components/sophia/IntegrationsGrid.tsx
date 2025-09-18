@@ -16,7 +16,6 @@ import {
   ChevronRight,
   Sparkles,
 } from 'lucide-react'
-import Image from 'next/image'
 
 // Integration types
 export type ConnectionStatus = 'not_connected' | 'connecting' | 'connected' | 'error'
@@ -39,8 +38,10 @@ export interface IntegrationConnection {
   connectedAt?: Date
 }
 
+type ConnectionsUpdate = Record<string, IntegrationConnection>
+
 export interface IntegrationsGridProps {
-  onUpdate?: (key: string, value: any) => void
+  onUpdate?: (key: 'connections', value: ConnectionsUpdate) => void
   data?: {
     connections?: Record<string, IntegrationConnection>
   }

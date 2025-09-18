@@ -81,7 +81,7 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
           text: post.excerpt,
           url: window.location.href,
         });
-      } catch (err) {
+      } catch {
         // Error sharing - handled silently
       }
     } else {

@@ -75,7 +75,7 @@ export function NewsletterCTA() {
       } else {
         throw new Error('Subscription failed')
       }
-    } catch (error) {
+    } catch {
       setFormState({ 
         status: 'error',
         message: 'Something went wrong. Please try again.' 

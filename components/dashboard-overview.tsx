@@ -1,11 +1,5 @@
 import {
   IconArrowUpRight,
-  IconBolt,
-  IconBrandInstagram,
-  IconBrandTiktok,
-  IconBrandYoutube,
-  IconCheck,
-  IconClockHour3,
   IconEye,
   IconShoppingBag,
   IconTrendingUp,
@@ -13,9 +7,7 @@ import {
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
 
 const metricCards = [
   {
@@ -99,41 +91,6 @@ const creatorPerformance = [
     orders: "52",
     revenue: "$2,150",
     roi: "295%",
-  },
-]
-
-const recentPosts = [
-  {
-    title: "Spring Fashion Trends",
-    time: "2 hours ago",
-    status: "Live",
-    icon: IconBrandInstagram,
-    accent: "bg-pink-50 text-pink-600 border-pink-100",
-    badgeClass: "bg-emerald-50 text-emerald-700 border-emerald-200",
-  },
-  {
-    title: "Tech Review Series",
-    time: "5 hours ago",
-    status: "Live",
-    icon: IconBrandYoutube,
-    accent: "bg-red-50 text-red-600 border-red-100",
-    badgeClass: "bg-emerald-50 text-emerald-700 border-emerald-200",
-  },
-  {
-    title: "Workout Equipment Guide",
-    time: "8 hours ago",
-    status: "Completed",
-    icon: IconBrandTiktok,
-    accent: "bg-slate-50 text-slate-600 border-slate-100",
-    badgeClass: "bg-blue-50 text-blue-700 border-blue-200",
-  },
-  {
-    title: "Beauty Routine Update",
-    time: "Tomorrow",
-    status: "Pending",
-    icon: IconBrandInstagram,
-    accent: "bg-purple-50 text-purple-600 border-purple-100",
-    badgeClass: "bg-amber-50 text-amber-700 border-amber-200",
   },
 ]
 
@@ -303,43 +260,6 @@ export function DashboardOverview() {
                   ))}
                 </CardContent>
               </Card>
-
-            {/* <Card className="border-0 shadow-sm">
-              <CardHeader className="pb-4">
-                <div className="space-y-1">
-                  <CardTitle className="text-lg font-semibold font-display">Recent posts</CardTitle>
-                  <p className="text-sm text-muted-foreground">Track live status across each channel</p>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {recentPosts.map((post) => (
-                  <div key={post.title} className="flex items-start gap-3">
-                    <div className={`rounded-lg border p-2 ${post.accent}`}>
-                      <post.icon className="h-4 w-4" />
-                    </div>
-                    <div className="flex-1 space-y-1">
-                      <p className="font-medium text-foreground leading-none">{post.title}</p>
-                      <p className="text-sm text-muted-foreground">{post.time}</p>
-                    </div>
-                    <Badge variant="outline" className={`border ${post.badgeClass}`}>
-                      <div className="flex items-center gap-1">
-                        {post.status === "Live" && <IconBolt className="h-3 w-3" />}
-                        {post.status === "Completed" && <IconCheck className="h-3 w-3" />}
-                        {post.status === "Pending" && <IconClockHour3 className="h-3 w-3" />}
-                        <span className="text-xs font-medium">{post.status}</span>
-                      </div>
-                    </Badge>
-                  </div>
-                ))}
-
-                <Separator className="my-4" />
-
-                <Button className="w-full" variant="default">
-                  <span>View all posts</span>
-                  <IconArrowUpRight className="ml-2 h-4 w-4" />
-                </Button>
-              </CardContent>
-            </Card> */}
             </div>
           </div>
         </div>

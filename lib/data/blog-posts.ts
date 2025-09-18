@@ -14,10 +14,10 @@ export const blogCategories: BlogCategory[] = [];
 export const blogTags: BlogTag[] = [];
 
 // Helper functions that return empty arrays on client
-export const getPostBySlug = (slug: string): BlogPost | undefined => undefined;
-export const getPostsByCategory = (categorySlug: string): BlogPost[] => [];
-export const getPostsByTag = (tagSlug: string): BlogPost[] => [];
-export const getPostsByAuthor = (authorName: string): BlogPost[] => [];
-export const searchPosts = (query: string): BlogPost[] => [];
-export const getFeaturedPosts = (limit: number = 3): BlogPost[] => [];
-export const getRecentPosts = (limit: number = 5): BlogPost[] => [];
+export const getPostBySlug: (slug: string) => BlogPost | undefined = () => undefined;
+export const getPostsByCategory: (categorySlug: string) => BlogPost[] = () => [];
+export const getPostsByTag: (tagSlug: string) => BlogPost[] = () => [];
+export const getPostsByAuthor: (authorName: string) => BlogPost[] = () => [];
+export const searchPosts: (query: string) => BlogPost[] = () => [];
+export const getFeaturedPosts: (limit?: number) => BlogPost[] = () => [];
+export const getRecentPosts: (limit?: number) => BlogPost[] = () => [];
