@@ -102,8 +102,8 @@ const Navigation = memo(() => {
             'transition-all duration-500 ease-out',
             // Enhanced glassy card styling that changes on scroll
             isScrolled
-              ? 'mt-4 mx-4 rounded-2xl bg-white/90 backdrop-blur-xl border border-white/60 shadow-2xl shadow-black/10 ring-1 ring-gray-200/20'
-              : 'mt-6 mx-4 rounded-2xl bg-white/20 backdrop-blur-xl border border-white/40 shadow-xl shadow-black/5 ring-1 ring-white/20',
+              ? 'mt-3 mx-3 rounded-xl bg-white/90 backdrop-blur-xl border border-white/60 shadow-xl shadow-black/10 ring-1 ring-gray-200/20'
+              : 'mt-4 mx-3 rounded-xl bg-white/20 backdrop-blur-xl border border-white/40 shadow-lg shadow-black/5 ring-1 ring-white/20',
             // Responsive width
             'w-full max-w-5xl'
           )}
@@ -112,7 +112,7 @@ const Navigation = memo(() => {
             className={cn(
               'flex items-center justify-between transition-all duration-300',
               // Adaptive padding based on scroll state
-              isScrolled ? 'h-14 px-6' : 'h-16 px-6'
+              isScrolled ? 'h-12 px-4' : 'h-14 px-5'
             )}
           >
             {/* Enhanced Logo with Animation */}
@@ -124,7 +124,7 @@ const Navigation = memo(() => {
               <Link
                 href="/"
                 className={cn(
-                  'flex items-center gap-2 text-xl font-bold transition-all duration-300',
+                  'flex items-center gap-2 text-lg font-bold transition-all duration-300',
                   isScrolled
                     ? 'text-gray-900'
                     : 'text-gray-900 drop-shadow-sm font-semibold'

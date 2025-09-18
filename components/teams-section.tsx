@@ -446,7 +446,7 @@ const TeamMemberCard = ({
 
               {/* Name and Role */}
               <div className="flex-1">
-                <h3 className="font-semibold text-neutral-900 text-lg flex items-center gap-2">
+                <h3 className="font-semibold font-display text-neutral-900 text-lg flex items-center gap-2">
                   {member.name}
                   <motion.div
                     animate={{ rotate: [0, 360] }}
@@ -777,14 +777,12 @@ export default function TeamsSection({
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-neutral-900 mb-6 font-display">
             Meet Your{' '}
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              AI Team Members
+              Marketing team
             </span>
           </h2>
 
           <p className="text-lg sm:text-xl text-neutral-600 max-w-3xl mx-auto">
-            Working 24/7 to help you ship faster. Each AI agent specializes in
-            their domain, delivering professional-grade work in minutes, not
-            hours.
+            Marketing stupid easy
           </p>
 
           {/* Auto-delegation countdown */}

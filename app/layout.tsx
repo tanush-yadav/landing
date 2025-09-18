@@ -30,11 +30,11 @@ const fraunces = Fraunces({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://cintra.run'),
-  title: 'Cintra – AI Employees That Join Your Team',
+  title: 'Marketing stupid easy',
   description:
-    'Cintra builds agentic workflows that actually ship work across engineering, content, sales, and operations.',
+    'Cintra builds agentic workflows that make marketing stupid easy.',
   keywords:
-    'Cintra, agentic workflows, AI agents, automation, engineering automation, sales automation, content automation, operations automation',
+    'Cintra, agentic workflows, AI agents, automation, engineering automation, sales automation, content automation, operations automation, marketing automation',
   alternates: {
     canonical: 'https://cintra.run',
   },
@@ -43,18 +43,18 @@ export const metadata: Metadata = {
     shortcut: '/images/favicon.ico',
   },
   openGraph: {
-    title: 'Cintra – AI Employees That Join Your Team',
+    title: 'Marketing stupid easy',
     description:
-      'Agentic workflows that execute and deliver. Bring AI employees into your team.',
+      'Agentic workflows that make marketing stupid easy.',
     url: 'https://cintra.run',
     siteName: 'Cintra',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Cintra – AI Employees That Join Your Team',
+    title: 'Marketing stupid easy',
     description:
-      'Agentic workflows that execute and deliver. Bring AI employees into your team.',
+      'Agentic workflows that make marketing stupid easy.',
   },
 }
 

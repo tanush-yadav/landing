@@ -18,14 +18,14 @@ const floatingPills = [
     platform: 'YouTube',
     icon: <Image src="/images/youtube.png" alt="YouTube" width={18} height={18} className="h-4.5 w-4.5" />,
     text: 'Search for youtubers talking about claude code',
-    searchQuery: 'Search for tech youtube channels talking about claude code',
+    searchQuery: 'Search for youtubers talking about claude code',
   },
   {
     id: 'tiktok-beauty-creators',
     platform: 'TikTok Shop',
     icon: <Image src="/images/tiktok-shop-logo.png" alt="TikTok Shop" width={18} height={18} className="h-4.5 w-4.5" />,
     text: 'Find beauty TikTok creators > 50K followers',
-    searchQuery: 'Find beauty TikTok creators > 50K+ followers',
+    searchQuery: 'Find beauty TikTok creators > 50K followers',
   },
   {
     id: 'shopify-skincare-creators',
@@ -140,47 +140,32 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 pt-20 pb-16 sm:pt-24 sm:pb-20"
+      className="relative flex min-h-[80vh] items-center justify-center overflow-hidden px-4 pt-8 pb-8 sm:pt-12 sm:pb-10 md:min-h-[85vh]"
     >
       {/* Enhanced Gradient Mesh Background with Glass Effect */}
       <div className="absolute inset-0">
         {/* Primary gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-blue-50/30" />
-
-        {/* Glass texture layer */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-white/40 via-transparent to-white/20" />
-
-        {/* Subtle geometric pattern overlay */}
-        <div
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='grid' width='60' height='60' patternUnits='userSpaceOnUse'%3E%3Cpath d='M 60 0 L 0 0 0 60' fill='none' stroke='black' stroke-width='0.5'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23grid)' /%3E%3C/svg%3E")`,
-          }}
-        />
+        <div className="absolute inset-0 bg-gradient-to-b from-white via-slate-50/50 to-white" />
       </div>
 
       {/* Enhanced Floating orbs with glass effects */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Glass orb elements with subtle floating animation */}
-        <div className="absolute -top-32 -right-32 h-80 w-80 rounded-full bg-gradient-to-br from-purple-200/20 via-pink-100/15 to-transparent backdrop-blur-3xl border border-white/10 animate-float" />
-        <div className="absolute -bottom-32 -left-32 h-80 w-80 rounded-full bg-gradient-to-tr from-blue-200/20 via-cyan-100/15 to-transparent backdrop-blur-3xl border border-white/10 animate-float-delayed" />
-        <div className="absolute top-1/4 right-1/4 h-48 w-48 rounded-full bg-gradient-to-bl from-indigo-100/25 via-purple-50/20 to-transparent backdrop-blur-2xl border border-white/5 animate-float" />
-        <div className="absolute bottom-1/3 left-1/3 h-36 w-36 rounded-full bg-gradient-to-tr from-teal-100/20 via-emerald-50/15 to-transparent backdrop-blur-xl border border-white/5 animate-float-delayed" />
-
-        {/* Additional depth layers */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-96 w-96 rounded-full bg-gradient-radial from-white/5 to-transparent blur-3xl" />
+        {/* Soft orbs */}
+        <div className="absolute -top-44 -right-24 h-64 w-64 rounded-full bg-gradient-to-br from-purple-200/25 via-pink-100/20 to-transparent blur-3xl" />
+        <div className="absolute -bottom-56 -left-24 h-72 w-72 rounded-full bg-gradient-to-tr from-blue-200/20 via-cyan-100/15 to-transparent blur-[120px]" />
+        <div className="absolute top-1/3 right-[18%] h-40 w-40 rounded-full bg-gradient-to-bl from-indigo-100/30 to-transparent blur-3xl" />
       </div>
 
-      {/* Frosted glass overlay for main content area */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/5 to-transparent backdrop-blur-[0.5px]" />
+      {/* Light haze overlay for main content area */}
+      <div className="absolute inset-0 bg-white/10" />
 
       {/* Content */}
-      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-        <div className="mx-auto max-w-4xl">
+      <div className="relative z-10 mx-auto w-full max-w-5xl px-4 text-center sm:px-6">
+        <div className="mx-auto max-w-3xl">
           {/* Badge */}
           <div
             className={cn(
-              'inline-flex items-center justify-center mb-8 opacity-0',
+              'mb-4 flex items-center justify-center opacity-0',
               isVisible && 'animate-fade-in-down'
             )}
             role="status"
@@ -188,11 +173,11 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
           >
             <button
               onClick={onOpenModal}
-              className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-md px-4 py-1.5 text-sm font-medium text-gray-700 border border-white/40 shadow-lg ring-1 ring-gray-200/10 hover:bg-white/30 hover:border-white/50 transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
             >
-              <span className="relative flex h-2 w-2 mr-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70"></span>
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
               </span>
               Get creators in your niche
             </button>
@@ -201,13 +186,13 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
           {/* Main Headline */}
           <h1
             className={cn(
-              'text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold text-gray-900 mb-4 sm:mb-6 opacity-0 leading-[1.1] sm:leading-tight',
+              'text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-gray-900 mb-3 opacity-0 leading-[1.1] sm:leading-tight',
               isVisible && 'animate-fade-in-up'
             )}
             style={{ letterSpacing: '-0.02em' }}
           >
             find creators your
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-gray-800 via-gray-700 to-gray-900 mt-1 sm:mt-2">
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-gray-800 via-gray-700 to-gray-900 mt-1">
               buyers already follow
             </span>
           </h1>
@@ -215,7 +200,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
           {/* Subheadline */}
           <p
             className={cn(
-              'text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-6 sm:mb-8 md:mb-10 max-w-2xl mx-auto opacity-0 px-2 sm:px-4',
+              'text-xs sm:text-sm md:text-base lg:text-lg text-gray-600 mb-4 sm:mb-6 max-w-2xl mx-auto opacity-0 px-2 sm:px-4',
               isVisible && 'animate-fade-in-up animation-delay-200'
             )}
           >
@@ -225,12 +210,12 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
           {/* Floating Pills and Search Section */}
           <div
             className={cn(
-              'w-full max-w-4xl mx-auto opacity-0',
+              'mx-auto w-full max-w-3xl opacity-0 sm:max-w-4xl',
               isVisible && 'animate-fade-in-up animation-delay-400'
             )}
           >
             {/* Task Options */}
-            <div className="bg-white/60 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/30 shadow-xl ring-1 ring-gray-200/20 mb-4 sm:mb-6">
+            <div className="mb-3 rounded-[20px] border border-slate-100 bg-white p-3 shadow-[0_15px_40px_-30px_rgba(15,23,42,0.5)] sm:mb-4 sm:p-4">
               <div className="space-y-3">
                 {floatingPills.map((pill, index) => (
                   <motion.div
@@ -240,29 +225,29 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
                     transition={{ duration: 0.2, delay: 0.05 * index }}
                     onClick={() => handlePillClick(pill)}
                     className={cn(
-                      'flex items-center justify-between p-3 sm:p-4 rounded-lg cursor-pointer transition-all duration-200 border min-h-[56px] sm:min-h-[64px]',
+                      'flex items-center justify-between rounded-xl border p-2 sm:p-3 transition-all duration-200',
                       selectedPill === pill.id
-                        ? 'bg-gray-100 border-gray-600'
-                        : 'bg-gray-50 border-gray-200 hover:bg-gray-100 hover:border-gray-300',
+                        ? 'border-slate-300 bg-slate-100 shadow-sm'
+                        : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50',
                       isDemoRunning && 'cursor-not-allowed opacity-60'
                     )}
                   >
-                    <div className="flex items-center gap-3 flex-1">
+                    <div className="flex items-center gap-2 flex-1">
                       <div className={cn(
-                        'w-5 h-5 rounded-full border-2 bg-white flex items-center justify-center transition-all duration-200',
+                        'w-4 h-4 rounded-full border-2 bg-white flex items-center justify-center transition-all duration-200',
                         selectedPill === pill.id
                           ? 'border-gray-900 bg-gray-900'
                           : 'border-gray-400'
                       )}>
                         {selectedPill === pill.id && (
-                          <div className="w-2 h-2 rounded-full bg-white" />
+                          <div className="w-1.5 h-1.5 rounded-full bg-white" />
                         )}
                       </div>
                       <div className="flex items-center gap-2 flex-1 min-w-0">
                         <div className="flex-shrink-0">
                           {pill.icon}
                         </div>
-                        <span className="text-gray-900 text-xs sm:text-sm md:text-base leading-snug break-words">
+                        <span className="break-words text-xs leading-snug text-slate-900 sm:text-sm md:text-base">
                           {pill.text}
                         </span>
                       </div>
@@ -276,11 +261,11 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
             </div>
 
             {/* Search Input and Magic Button */}
-            <div className="bg-white/60 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/30 shadow-xl ring-1 ring-gray-200/20">
-              <div className="space-y-4">
+            <div className="rounded-[20px] border border-slate-100 bg-white p-3 shadow-[0_15px_40px_-30px_rgba(15,23,42,0.5)] sm:p-4">
+              <div className="space-y-3">
                 {/* Large Search Input */}
                 <div className="relative">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <input
                     type="text"
                     value={searchQuery || (isTypingDemo ? typedText : '')}
@@ -297,16 +282,16 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
                     disabled={isDemoRunning}
                     placeholder={!isTypingDemo && !searchQuery ? "Search for creators..." : ""}
                     className={cn(
-                      'w-full pl-11 sm:pl-12 pr-4 py-3 sm:py-4 text-sm sm:text-base md:text-lg rounded-lg sm:rounded-xl border-2 border-gray-200 bg-white',
-                      'focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none',
-                      'placeholder:text-gray-400 placeholder:text-xs sm:placeholder:text-sm md:placeholder:text-base transition-all duration-200',
-                      isTypingDemo && 'text-gray-600',
+                      'w-full rounded-xl border border-slate-200 bg-white pl-9 pr-3 text-xs leading-tight text-slate-900 shadow-inner transition sm:pl-10 sm:text-sm md:text-base',
+                      'py-2 sm:py-3 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200',
+                      'placeholder:text-slate-400 placeholder:text-xs sm:placeholder:text-sm',
+                      isTypingDemo && 'text-slate-600',
                       isDemoRunning && 'cursor-not-allowed opacity-60'
                     )}
-                  />
+                />
                   {isTypingDemo && (
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                      <div className="w-0.5 h-5 bg-gray-400 animate-pulse" />
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                      <div className="w-0.5 h-4 bg-gray-400 animate-pulse" />
                     </div>
                   )}
                 </div>
@@ -316,10 +301,10 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
                   onClick={handleMagicClick}
                   disabled={!searchQuery.trim() || isDelegating || isDemoRunning}
                   isLoading={isDelegating}
-                  variant="primary"
+                  variant="ghost"
                   size="lg"
                   fullWidth
-                  className="text-sm sm:text-base md:text-lg py-3 sm:py-4 min-h-[48px] sm:min-h-[56px]"
+                  className="min-h-[38px] rounded-xl bg-slate-900 py-2.5 text-xs font-semibold text-white transition hover:bg-slate-800 sm:py-3 sm:text-sm md:text-base"
                 >
                   {isDemoRunning ? (
                     'Demo in Progress...'
@@ -328,7 +313,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
                   ) : (
                     <>
                       Magic
-                      <ArrowRight className="ml-2 h-5 w-5" />
+                      <ArrowRight className="ml-2 h-4 w-4" />
                     </>
                   )}
                 </Button>
@@ -339,13 +324,13 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
           {/* Trust Indicators */}
           <div
             className={cn(
-              'mt-8 sm:mt-12 mb-20 sm:mb-0 flex flex-wrap justify-center items-center gap-3 sm:gap-6 md:gap-8 text-gray-500 text-xs sm:text-sm opacity-0 px-4',
+              'mt-6 flex flex-wrap items-center justify-center gap-3 px-4 text-xs text-slate-500 opacity-0 sm:mt-8 sm:gap-4',
               isVisible && 'animate-fade-in animation-delay-600'
             )}
           >
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
               <svg
-                className="h-5 w-5 text-green-500"
+                className="h-4 w-4 text-emerald-500"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -357,9 +342,9 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
               </svg>
               <span>Autonomous negotiation</span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
               <svg
-                className="h-5 w-5 text-blue-500"
+                className="h-4 w-4 text-blue-500"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -371,9 +356,9 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
               </svg>
               <span>Autonomous attribution</span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
               <svg
-                className="h-5 w-5 text-purple-500"
+                className="h-4 w-4 text-purple-500"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -386,7 +371,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 hidden sm:block">
+      {/* <div className="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 hidden sm:block">
         <div
           className={cn(
             'flex flex-col items-center text-gray-400 transition-all duration-300 hover:text-gray-600 cursor-pointer opacity-0',
@@ -416,7 +401,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
             </svg>
           </div>
         </div>
-      </div>
+      </div> */}
     </section>
   )
 }

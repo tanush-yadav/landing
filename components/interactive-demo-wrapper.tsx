@@ -39,11 +39,6 @@ const InteractiveDemoWrapper = ({
       setTimeout(() => {
         setDemoTrigger(true)
       }, 1000)
-      
-      // Reset trigger after a delay to prepare for next run
-      setTimeout(() => {
-        setDemoTrigger(false)
-      }, 1500)
     } else if (!triggerDemoFromHero) {
       // When hero trigger is false, ensure demo trigger is also false
       setDemoTrigger(false)

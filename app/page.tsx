@@ -60,10 +60,6 @@ export default function Home() {
       setSelectedTask('qualify-leads')
       setDemoTrigger(true)
     }, 100)
-
-    setTimeout(() => {
-      setDemoTrigger(false)
-    }, 1600)
   }, [])
 
   // Keep the live search animation in sync with the hero selection
@@ -113,25 +109,35 @@ export default function Home() {
         onSearchQueryChange={handleSearchQueryChange}
       />
 
-      {/* Moving testimonials - companies trust banner */}
-      <MovingTestimonials />
-
       {/* Interactive Demo Section - Clean Professional UI */}
-      <InteractiveDemoWrapper
-        triggerDemoFromHero={demoTrigger}
-        selectedTaskFromHero={selectedTask}
-        heroSearchQuery={heroSearchQuery}
-        onDemoComplete={handleDemoComplete}
-      />
+      <div className="mt-8 sm:mt-12 md:mt-16">
+        <InteractiveDemoWrapper
+          triggerDemoFromHero={demoTrigger}
+          selectedTaskFromHero={selectedTask}
+          heroSearchQuery={heroSearchQuery}
+          onDemoComplete={handleDemoComplete}
+        />
+      </div>
+
+      {/* Moving testimonials - companies trust banner */}
+      <div className="mt-6 sm:mt-8 md:mt-10">
+        <MovingTestimonials />
+      </div>
 
       {/* Attribution and Outcomes Section */}
-      <AttributionOutcomes />
+      <div className="mt-8 sm:mt-10 md:mt-12">
+        <AttributionOutcomes />
+      </div>
 
       {/* Team / Agent Jobs - placed before CTA */}
-      <TeamsSection />
+      <div className="mt-8 sm:mt-10 md:mt-12">
+        <TeamsSection />
+      </div>
 
       {/* CTA Section */}
-      <CTASection onOpenModal={handleOpenModal} />
+      <div className="mt-8 sm:mt-10 md:mt-12">
+        <CTASection onOpenModal={handleOpenModal} />
+      </div>
 
       <CreatorListModal
         open={showCreatorModal}

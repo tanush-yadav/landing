@@ -169,7 +169,7 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4 py-12">
           <motion.div
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            className="absolute inset-0 bg-white/80 backdrop-blur-md"
             variants={overlayVariants}
             initial="hidden"
             animate="visible"
@@ -183,8 +183,8 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
             aria-modal="true"
             aria-labelledby="creator-modal-heading"
             className={cn(
-              'relative z-10 w-full max-w-lg rounded-3xl border border-linear-border-strong',
-              'bg-linear-bg-primary/95 shadow-[0_40px_120px_-40px_rgba(16,24,40,0.6)] backdrop-blur-xl',
+              'relative z-10 w-full max-w-lg rounded-3xl border border-gray-200',
+              'bg-white shadow-[0_25px_60px_-15px_rgba(0,0,0,0.15)] backdrop-blur-sm',
               'px-6 py-8 sm:px-10 sm:py-10 text-left'
             )}
             variants={dialogVariants}
@@ -196,7 +196,7 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
               <button
                 type="button"
                 onClick={onClose}
-                className="flex h-12 w-12 items-center justify-center rounded-full border border-linear-border-default bg-linear-bg-secondary/80 text-linear-text-secondary transition-colors duration-200 hover:text-linear-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-linear-bg-primary"
+                className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-200 bg-gray-50 text-gray-500 transition-all duration-200 hover:bg-gray-100 hover:text-gray-700 hover:border-gray-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 aria-label="Close"
               >
                 <X className="h-5 w-5" aria-hidden="true" />
@@ -204,7 +204,7 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-500 via-indigo-500 to-purple-600 text-white shadow-lg">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white shadow-lg shadow-indigo-200/50">
                 <svg
                   className="h-6 w-6"
                   viewBox="0 0 24 24"
@@ -223,19 +223,19 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
                 </svg>
               </div>
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-linear-text-tertiary">
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-gray-500">
                   Creator action plan
                 </p>
                 <h2
                   id="creator-modal-heading"
-                  className="mt-1 text-2xl font-semibold text-linear-text-primary sm:text-3xl"
+                  className="mt-1 text-2xl font-bold font-display text-gray-900 sm:text-3xl"
                 >
                   Get a ready-to-activate creator list in 24 hours
                 </h2>
               </div>
             </div>
 
-            <p className="mt-6 text-base leading-relaxed text-linear-text-secondary sm:text-lg">
+            <p className="mt-6 text-base leading-relaxed text-gray-600 sm:text-lg font-sans" style={{ fontDisplay: 'swap' }}>
               Paste your site, set your niche, and we will surface verified creators already moving product for audiences like yours. You get attribution-ready profiles and outreach sequences without lifting a finger.
             </p>
 
@@ -244,48 +244,57 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
                 <div className="flex flex-col gap-2">
                   <label
                     htmlFor="modal-website"
-                    className="text-sm font-medium text-linear-text-tertiary"
+                    className="text-sm font-medium text-gray-700"
+                    style={{ fontDisplay: 'swap' }}
                   >
                     Website
                   </label>
-                  <Input
-                    id="modal-website"
-                    ref={websiteInputRef}
-                    type="url"
-                    inputMode="url"
-                    autoCapitalize="none"
-                    autoCorrect="off"
-                    placeholder="yourbrand.com"
-                    value={website}
-                    onChange={(event) =>
-                      setWebsite(event.target.value.replace(/^https?:\/\//i, ''))
-                    }
-                    error={websiteErrorMessage}
-                    leftIcon={
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
                       <span
                         aria-hidden="true"
-                        className="text-sm font-semibold text-linear-text-tertiary"
+                        className="text-sm font-medium text-gray-400"
+                        style={{ fontDisplay: 'swap' }}
                       >
-                        {WEBSITE_PREFIX}
+                        https://
                       </span>
-                    }
-                    className={cn(
-                      'h-12 rounded-xl bg-linear-bg-secondary/80 pl-24 text-linear-text-primary placeholder:text-linear-text-tertiary focus:ring-offset-2 focus:ring-offset-linear-bg-primary',
-                      websiteHasError
-                        ? 'border-red-500 focus:ring-red-500'
-                        : 'border-linear-border-default focus:ring-indigo-500'
+                    </div>
+                    <input
+                      id="modal-website"
+                      ref={websiteInputRef}
+                      type="text"
+                      inputMode="url"
+                      autoCapitalize="none"
+                      autoCorrect="off"
+                      placeholder="yourbrand.com"
+                      value={website}
+                      onChange={(event) =>
+                        setWebsite(event.target.value.replace(/^https?:\/\//i, ''))
+                      }
+                      className={cn(
+                        'w-full h-12 rounded-xl bg-gray-50 pl-[88px] pr-4 text-gray-900 placeholder:text-gray-400',
+                        'focus:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white transition-colors',
+                        'border',
+                        websiteHasError
+                          ? 'border-red-500 focus:ring-red-500'
+                          : 'border-gray-200 hover:border-gray-300 focus:border-indigo-500 focus:ring-indigo-500'
+                      )}
+                    />
+                    {websiteErrorMessage && (
+                      <p className="mt-2 text-sm text-red-600">{websiteErrorMessage}</p>
                     )}
-                  />
+                  </div>
                 </div>
 
                 <div className="flex flex-col gap-2">
                   <label
                     htmlFor="modal-work-email"
-                    className="text-sm font-medium text-linear-text-tertiary"
+                    className="text-sm font-medium text-gray-700"
+                    style={{ fontDisplay: 'swap' }}
                   >
                     Work email
                   </label>
-                  <Input
+                  <input
                     id="modal-work-email"
                     ref={workEmailInputRef}
                     type="email"
@@ -295,21 +304,26 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
                     placeholder="name@company.com"
                     value={workEmail}
                     onChange={(event) => setWorkEmail(event.target.value)}
-                    error={emailErrorMessage}
                     className={cn(
-                      'h-12 rounded-xl bg-linear-bg-secondary/80 text-linear-text-primary placeholder:text-linear-text-tertiary focus:ring-offset-2 focus:ring-offset-linear-bg-primary',
+                      'w-full h-12 rounded-xl bg-gray-50 px-4 text-gray-900 placeholder:text-gray-400',
+                      'focus:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white transition-colors',
+                      'border',
                       emailHasError
                         ? 'border-red-500 focus:ring-red-500'
-                        : 'border-linear-border-default focus:ring-indigo-500'
+                        : 'border-gray-200 hover:border-gray-300 focus:border-indigo-500 focus:ring-indigo-500'
                     )}
                   />
+                  {emailErrorMessage && (
+                    <p className="mt-2 text-sm text-red-600">{emailErrorMessage}</p>
+                  )}
                 </div>
               </div>
 
               <div className="flex flex-col gap-4">
                 <Button
                   type="submit"
-                  className="h-14 rounded-2xl text-lg font-semibold"
+                  className="h-14 rounded-2xl text-lg font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg shadow-indigo-200/50 transition-all hover:shadow-xl hover:shadow-indigo-300/50 disabled:opacity-50 disabled:shadow-none"
+                  style={{ fontDisplay: 'swap' }}
                   fullWidth
                   disabled={isSubmitDisabled}
                 >
@@ -318,33 +332,34 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
                 <button
                   type="button"
                   onClick={onClose}
-                  className="text-sm font-medium text-linear-text-tertiary transition-colors duration-200 hover:text-linear-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-linear-bg-primary"
+                  className="text-sm font-medium text-gray-500 transition-colors duration-200 hover:text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                  style={{ fontDisplay: 'swap' }}
                 >
                   No thanks
                 </button>
               </div>
             </form>
 
-            <div className="mt-10 rounded-2xl border border-linear-border-default bg-linear-bg-secondary/70 px-6 py-6 sm:px-8 sm:py-7">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-linear-text-tertiary">
+            <div className="mt-10 rounded-2xl border border-gray-200 bg-gray-50/70 px-6 py-6 sm:px-8 sm:py-7">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-gray-500" style={{ fontDisplay: 'swap' }}>
                 After you connect
               </p>
-              <h3 className="mt-2 text-xl font-semibold text-linear-text-primary sm:text-2xl">
+              <h3 className="mt-2 text-xl font-bold font-display text-gray-900 sm:text-2xl">
                 What lands in your inbox
               </h3>
               <ul className="mt-5 space-y-4 text-left">
                 {inboxHighlights.map((item) => (
                   <li key={item} className="flex items-start gap-3">
-                    <span className="mt-1 flex h-7 w-7 flex-none items-center justify-center rounded-full bg-gradient-to-br from-primary-500 via-indigo-500 to-purple-600 text-white shadow-lg">
+                    <span className="mt-1 flex h-7 w-7 flex-none items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white shadow-md shadow-indigo-200/50">
                       <Check className="h-4 w-4" aria-hidden="true" />
                     </span>
-                    <span className="text-base leading-relaxed text-linear-text-secondary">
+                    <span className="text-base leading-relaxed text-gray-600 font-sans" style={{ fontDisplay: 'swap' }}>
                       {item}
                     </span>
                   </li>
                 ))}
               </ul>
-              <div className="mt-5 rounded-xl border border-dashed border-linear-border-strong bg-linear-bg-primary/70 px-4 py-3 text-sm text-linear-text-secondary">
+              <div className="mt-5 rounded-xl border border-dashed border-gray-300 bg-white/70 px-4 py-3 text-sm text-gray-600 font-sans" style={{ fontDisplay: 'swap' }}>
                 Optional: we run outreach for you.
               </div>
             </div>

@@ -374,7 +374,7 @@ const ErrorFallback = memo(({ onRetry }: { onRetry: () => void }) => (
   <div className="bg-gray-50/50 py-16 flex items-center justify-center">
     <div className="text-center">
       <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-      <h3 className="text-lg font-semibold text-gray-900 mb-2">Demo Error</h3>
+      <h3 className="text-lg font-semibold font-display text-gray-900 mb-2">Demo Error</h3>
       <p className="text-gray-600 mb-4">Something went wrong with the demo.</p>
       <button
         onClick={onRetry}
@@ -455,13 +455,9 @@ const InteractiveDemo = memo(
     )
 
     const [searchQueryIndex, setSearchQueryIndex] = useState(0)
-    const [displayedSearchQuery, setDisplayedSearchQuery] = useState(() =>
-      shouldReduceMotion ? defaultSearchQuery : ''
-    )
+    const [displayedSearchQuery, setDisplayedSearchQuery] = useState('')
     const [searchTypingState, setSearchTypingState] =
-      useState<'typing' | 'pausing' | 'deleting'>(
-        shouldReduceMotion ? 'pausing' : 'typing'
-      )
+      useState<'typing' | 'pausing' | 'deleting'>('pausing')
 
     const activeSearchQuery =
       searchQueries[searchQueryIndex] ?? defaultSearchQuery
@@ -488,7 +484,8 @@ const InteractiveDemo = memo(
       const agentAvatar = currentTask?.agent.avatar || 'J'
       const creatorName = 'Ava Chen'
       const creatorAvatar = 'AC'
-      const focusQuery = searchQueries[0]
+      // Use the custom query if available, otherwise use the first default query
+      const focusQuery = customSearchQuery || searchQueries[0] || 'Find fashion creators driving spring campaigns'
 
       return [
         {
@@ -497,7 +494,7 @@ const InteractiveDemo = memo(
           author: agentName,
           avatar: agentAvatar,
           timestamp: '4:12 PM',
-          content: `Hi ${creatorName}, loved your recent launch series. We have a campaign focused on “${focusQuery}” and think you’re a perfect fit. Available next week?`,
+          content: `Hi ${creatorName}, loved your recent launch series. We have a campaign focused on "${focusQuery}" and think you're a perfect fit. Available next week?`,
           highlights: ['Deliverables: 2 Reels + Story recap'],
           delay: 900,
         },
@@ -540,7 +537,7 @@ const InteractiveDemo = memo(
           delay: 900,
         },
       ]
-    }, [currentTask, searchQueries])
+    }, [currentTask, searchQueries, customSearchQuery])
 
     const emailSequence = useMemo<OutboundEmail[]>(() => {
       const today = new Date()
@@ -581,12 +578,16 @@ const InteractiveDemo = memo(
       if (incomingSearchQuery && incomingSearchQuery.trim()) {
         setCustomSearchQuery(incomingSearchQuery.trim())
 
-        // Trigger typing animation for the new search query
-        if (!shouldReduceMotion) {
+        // Immediately display the custom query if motion is reduced,
+        // otherwise reset for typing animation
+        if (shouldReduceMotion) {
+          setDisplayedSearchQuery(incomingSearchQuery.trim())
+          setSearchTypingState('pausing')
+        } else {
           setDisplayedSearchQuery('')
           setSearchTypingState('typing')
-          setSearchQueryIndex(0)
         }
+        setSearchQueryIndex(0)
       } else {
         setCustomSearchQuery(null)
       }
@@ -595,26 +596,34 @@ const InteractiveDemo = memo(
     useEffect(() => {
       if (!triggerDemo) return
 
+      // When demo is triggered, we should use the custom query if available
+      const queryToDisplay = customSearchQuery || defaultSearchQuery
+      
       if (shouldReduceMotion) {
-        setDisplayedSearchQuery(defaultSearchQuery)
+        setDisplayedSearchQuery(queryToDisplay)
         setSearchTypingState('pausing')
         setSearchQueryIndex(0)
         return
       }
 
+      // Start typing animation from the beginning
       setDisplayedSearchQuery('')
       setSearchTypingState('typing')
       setSearchQueryIndex(0)
-    }, [triggerDemo, defaultSearchQuery, shouldReduceMotion])
+    }, [triggerDemo, defaultSearchQuery, shouldReduceMotion, customSearchQuery])
 
+    // Initialize typing animation on mount
     useEffect(() => {
-      if (!shouldReduceMotion) return
-      if (triggerDemo) return
-
-      setDisplayedSearchQuery(defaultSearchQuery)
-      setSearchTypingState('pausing')
+      if (shouldReduceMotion) {
+        setDisplayedSearchQuery(defaultSearchQuery)
+        setSearchTypingState('pausing')
+      } else {
+        // Start typing animation immediately
+        setDisplayedSearchQuery('')
+        setSearchTypingState('typing')
+      }
       setSearchQueryIndex(0)
-    }, [defaultSearchQuery, shouldReduceMotion, triggerDemo])
+    }, [defaultSearchQuery, shouldReduceMotion]) // Initialize when default query is ready
 
     // Cleanup function for timeouts
     const clearAllTimeouts = useCallback(() => {
@@ -636,7 +645,12 @@ const InteractiveDemo = memo(
     )
 
     useEffect(() => {
-      if (shouldReduceMotion) return
+      if (shouldReduceMotion) {
+        // For reduced motion, just show the current query
+        const currentQuery = searchQueries[searchQueryIndex] ?? defaultSearchQuery
+        setDisplayedSearchQuery(currentQuery)
+        return
+      }
 
       const currentQuery =
         searchQueries[searchQueryIndex] ?? defaultSearchQuery
@@ -645,31 +659,35 @@ const InteractiveDemo = memo(
 
       if (searchTypingState === 'typing') {
         if (displayedSearchQuery.length < currentQuery.length) {
-          safeSetTimeout(() => {
+          const timeoutId = setTimeout(() => {
             setDisplayedSearchQuery(
               currentQuery.slice(0, displayedSearchQuery.length + 1)
             )
           }, 70)
+          animationTimeoutRefs.current.add(timeoutId)
         } else {
           setSearchTypingState('pausing')
-          safeSetTimeout(() => {
+          const timeoutId = setTimeout(() => {
             setSearchTypingState('deleting')
           }, 1500)
+          animationTimeoutRefs.current.add(timeoutId)
         }
       } else if (searchTypingState === 'deleting') {
         if (displayedSearchQuery.length > 0) {
-          safeSetTimeout(() => {
+          const timeoutId = setTimeout(() => {
             setDisplayedSearchQuery(
-              currentQuery.slice(0, displayedSearchQuery.length - 1)
+              displayedSearchQuery.slice(0, -1)
             )
           }, 45)
+          animationTimeoutRefs.current.add(timeoutId)
         } else {
-          safeSetTimeout(() => {
+          const timeoutId = setTimeout(() => {
             setSearchTypingState('typing')
             setSearchQueryIndex((prev) =>
               searchQueries.length > 0 ? (prev + 1) % searchQueries.length : 0
             )
           }, 250)
+          animationTimeoutRefs.current.add(timeoutId)
         }
       }
     }, [
@@ -700,8 +718,8 @@ const InteractiveDemo = memo(
       setShowTyping(false)
       setError(null)
       setSearchQueryIndex(0)
-      setDisplayedSearchQuery(shouldReduceMotion ? defaultSearchQuery : '')
-      setSearchTypingState(shouldReduceMotion ? 'pausing' : 'typing')
+      setDisplayedSearchQuery('')
+      setSearchTypingState('pausing')
     }, [
       clearAllTimeouts,
       defaultSearchQuery,
@@ -952,7 +970,7 @@ const InteractiveDemo = memo(
     // Handle null task gracefully
     if (!currentTask) {
       return (
-        <section className="bg-gray-50/50 py-16 relative">
+        <section className="bg-gray-50/50 py-10 relative">
           <div className="max-w-7xl mx-auto px-4 text-center text-gray-600">
             <p>Demo content loading...</p>
           </div>
@@ -970,14 +988,14 @@ const InteractiveDemo = memo(
     return (
       <section
         id="demo-section"
-        className="bg-gray-50/50 py-16 relative"
+        className="bg-gray-50/50 py-10 relative"
         role="region"
         aria-label="Interactive demonstration of AI automation workflow"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="relative">
             <motion.div
-              className="relative z-20 mx-auto w-full max-w-4xl lg:max-w-5xl -mb-12 sm:-mb-14 lg:-mb-20"
+              className="relative z-20 mx-auto w-full max-w-4xl lg:max-w-5xl -mb-8 sm:-mb-10 lg:-mb-14"
               initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -993,9 +1011,9 @@ const InteractiveDemo = memo(
                       Live Search
                     </span>
                   </div>
-                  <div className="px-6 py-6 sm:p-8">
+                  <div className="px-4 py-4 sm:p-6">
                     <div className="rounded-2xl border border-gray-100 bg-white shadow-inner shadow-gray-100/60">
-                      <div className="flex items-center gap-3 px-5 py-4">
+                      <div className="flex items-center gap-3 px-4 py-3">
                         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500/10 text-blue-500">
                           <Search className="h-5 w-5" aria-hidden="true" />
                         </div>
@@ -1029,11 +1047,11 @@ const InteractiveDemo = memo(
                         </div>
                       </div>
                     </div>
-                    <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                    <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-3">
                       {searchMetrics.map((metric, index) => (
                         <motion.div
                           key={metric.label}
-                          className="rounded-2xl border border-gray-100 bg-white/95 px-5 py-4 text-left shadow-sm shadow-blue-100/30"
+                          className="rounded-xl border border-gray-100 bg-white/95 px-4 py-3 text-left shadow-sm shadow-blue-100/30"
                           initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{
@@ -1042,7 +1060,7 @@ const InteractiveDemo = memo(
                             ease: 'easeOut',
                           }}
                         >
-                          <div className="text-2xl font-semibold text-gray-900">
+                          <div className="text-xl font-semibold text-gray-900">
                             {metric.value}
                           </div>
                           <div className="mt-1 text-xs font-semibold uppercase tracking-[0.28em] text-gray-500">
@@ -1056,7 +1074,7 @@ const InteractiveDemo = memo(
               </div>
             </motion.div>
 
-            <div className="grid grid-cols-1 gap-4 pt-20 sm:gap-6 sm:pt-24 lg:grid-cols-3 lg:pt-32">
+            <div className="grid grid-cols-1 gap-3 pt-14 sm:gap-4 sm:pt-16 lg:grid-cols-3 lg:pt-20">
             {/* Linear Demo */}
             <motion.div
               className={cn(
@@ -1085,7 +1103,7 @@ const InteractiveDemo = memo(
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-slate-900">Linear</p>
-                    <p className="text-xs uppercase tracking-[0.28em] text-emerald-600/80">
+                    <p className="text-xs text-emerald-600/80">
                       Lead Ops
                     </p>
                   </div>
@@ -1139,7 +1157,7 @@ const InteractiveDemo = memo(
                       </div>
 
                       {/* Issue Title */}
-                      <h3 className="text-slate-900 text-lg font-semibold mb-4">
+                      <h3 className="text-slate-900 text-lg font-semibold font-display mb-4">
                         {currentTask?.title ||
                           "Qualify leads from yesterday's webinar"}
                       </h3>
@@ -1270,7 +1288,7 @@ const InteractiveDemo = memo(
                       exit={{ opacity: 0 }}
                     >
                       <div className="border-t border-gray-100 pt-4">
-                        <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-[0.32em] mb-3">
+                        <h4 className="text-xs font-semibold font-display text-slate-500 uppercase tracking-[0.32em] mb-3">
                           Workflow Steps
                         </h4>
                         <div className="space-y-2">
@@ -1342,7 +1360,9 @@ const InteractiveDemo = memo(
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-slate-900">Creator Outreach</p>
-                    <p className="text-xs uppercase tracking-[0.32em] text-blue-500/70">Sequences</p>
+                    <p className="text-xs text-slate-500">
+                      Sending out emails to creators
+                    </p>
                   </div>
                 </div>
                 <div className="text-xs font-semibold text-blue-500/70">Automated</div>
@@ -1430,17 +1450,13 @@ const InteractiveDemo = memo(
                     <MessageCircle className="h-5 w-5" aria-hidden="true" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold tracking-wide uppercase text-white/90">
-                      Creator Messenger
+                    <p className="text-sm font-semibold tracking-wide text-white/90">
+                      Messenger
                     </p>
                     <p className="text-xs text-white/70">
                       Negotiating deliverables in real time
                     </p>
                   </div>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-white/80">
-                  <Sparkles className="h-4 w-4" aria-hidden="true" />
-                  <span>Auto-Pilot</span>
                 </div>
               </div>
               <div
@@ -1549,7 +1565,27 @@ const InteractiveDemo = memo(
                   </>
                 ) : (
                   <div className="flex flex-1 flex-col items-center justify-center text-sm text-purple-400/80 border border-dashed border-purple-100 rounded-2xl bg-purple-50/20">
-                    <p>Negotiating deliverables with the creator…</p>
+                    <div className="flex items-center gap-2">
+                      <p>Negotiating deliverables with the creator</p>
+                      <div className="flex items-center gap-1">
+                        {[0, 0.2, 0.4].map((delay, i) => (
+                          <motion.span
+                            key={i}
+                            className="h-1.5 w-1.5 rounded-full bg-purple-400"
+                            animate={{
+                              y: [0, -3, 0],
+                              opacity: [0.4, 1, 0.4],
+                            }}
+                            transition={{
+                              duration: 1,
+                              repeat: Infinity,
+                              delay,
+                              ease: 'easeInOut',
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>

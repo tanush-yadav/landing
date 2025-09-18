@@ -29,7 +29,7 @@ const MovingTestimonials = ({
   return (
     <section
       className={cn(
-        "relative py-12 sm:py-16 overflow-hidden bg-white/50 backdrop-blur-sm",
+        "relative py-6 sm:py-8 overflow-hidden bg-white/50 backdrop-blur-sm",
         className
       )}
       aria-label="Company testimonials"
@@ -39,8 +39,8 @@ const MovingTestimonials = ({
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Title */}
-        <div className="text-center mb-8 sm:mb-12">
-          <h2 className="text-sm sm:text-base font-display font-semibold text-slate-600 tracking-wide uppercase">
+        <div className="text-center mb-4 sm:mb-6">
+          <h2 className="text-xs sm:text-sm font-display font-semibold text-slate-600 tracking-wide uppercase">
             {title}
           </h2>
         </div>
@@ -67,7 +67,7 @@ const MovingTestimonials = ({
           >
             <div
               className={cn(
-                "flex space-x-8 sm:space-x-12",
+                "flex space-x-6 sm:space-x-8",
                 speed === 'slow' && "animate-scroll-left-slow",
                 speed === 'normal' && "animate-scroll-left",
                 speed === 'fast' && "animate-scroll-left-fast"
@@ -77,9 +77,9 @@ const MovingTestimonials = ({
               {EXTENDED_COMPANIES.map((company, index) => (
                 <div
                   key={`${company.name}-${index}`}
-                  className="flex-shrink-0 flex items-center justify-center min-w-[120px] sm:min-w-[140px] h-12 sm:h-14"
+                  className="flex-shrink-0 flex items-center justify-center min-w-[100px] sm:min-w-[120px] h-10 sm:h-12"
                 >
-                  <div className="text-slate-500 hover:text-slate-700 transition-colors duration-300 font-heading font-semibold text-sm sm:text-base tracking-wide">
+                  <div className="text-slate-500 hover:text-slate-700 transition-colors duration-300 font-heading font-semibold text-xs sm:text-sm tracking-wide">
                     {company.name}
                   </div>
                 </div>
