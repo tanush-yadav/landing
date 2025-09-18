@@ -183,7 +183,7 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
             aria-modal="true"
             aria-labelledby="creator-modal-heading"
             className={cn(
-              'relative z-10 w-full max-w-lg rounded-3xl border border-gray-200',
+              'relative z-10 w-full max-w-2xl h-3/4 overflow-y-auto rounded-3xl border border-gray-200',
               'bg-white shadow-[0_25px_60px_-15px_rgba(0,0,0,0.15)] backdrop-blur-sm',
               'px-6 py-8 sm:px-10 sm:py-10 text-left'
             )}
@@ -199,7 +199,7 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
                 className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-200 bg-gray-50 text-gray-500 transition-all duration-200 hover:bg-gray-100 hover:text-gray-700 hover:border-gray-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 aria-label="Close"
               >
-                <X className="h-5 w-5" aria-hidden="true" />
+                <X className="h-4 w-4" aria-hidden="true" />
               </button>
             </div>
 
@@ -223,9 +223,7 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
                 </svg>
               </div>
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-gray-500">
-                  Creator action plan
-                </p>
+              
                 <h2
                   id="creator-modal-heading"
                   className="mt-1 text-2xl font-bold font-display text-gray-900 sm:text-3xl"
@@ -245,7 +243,6 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
                   <label
                     htmlFor="modal-website"
                     className="text-sm font-medium text-gray-700"
-                    style={{ fontDisplay: 'swap' }}
                   >
                     Website
                   </label>
@@ -253,8 +250,7 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
                     <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
                       <span
                         aria-hidden="true"
-                        className="text-sm font-medium text-gray-400"
-                        style={{ fontDisplay: 'swap' }}
+                        className="text-md font-medium text-gray-400"
                       >
                         https://
                       </span>
@@ -272,9 +268,9 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
                         setWebsite(event.target.value.replace(/^https?:\/\//i, ''))
                       }
                       className={cn(
-                        'w-full h-12 rounded-xl bg-gray-50 pl-[88px] pr-4 text-gray-900 placeholder:text-gray-400',
+                        'w-full h-12 rounded-xl bg-gray-50 pl-20 pr-4 text-gray-900 placeholder:text-gray-400',
                         'focus:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white transition-colors',
-                        'border',
+                        'border text-md',
                         websiteHasError
                           ? 'border-red-500 focus:ring-red-500'
                           : 'border-gray-200 hover:border-gray-300 focus:border-indigo-500 focus:ring-indigo-500'
@@ -290,7 +286,6 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
                   <label
                     htmlFor="modal-work-email"
                     className="text-sm font-medium text-gray-700"
-                    style={{ fontDisplay: 'swap' }}
                   >
                     Work email
                   </label>
@@ -307,7 +302,7 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
                     className={cn(
                       'w-full h-12 rounded-xl bg-gray-50 px-4 text-gray-900 placeholder:text-gray-400',
                       'focus:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white transition-colors',
-                      'border',
+                      'border text-md',
                       emailHasError
                         ? 'border-red-500 focus:ring-red-500'
                         : 'border-gray-200 hover:border-gray-300 focus:border-indigo-500 focus:ring-indigo-500'
@@ -322,9 +317,7 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
               <div className="flex flex-col gap-4">
                 <Button
                   type="submit"
-                  className="h-14 rounded-2xl text-lg font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg shadow-indigo-200/50 transition-all hover:shadow-xl hover:shadow-indigo-300/50 disabled:opacity-50 disabled:shadow-none"
-                  style={{ fontDisplay: 'swap' }}
-                  fullWidth
+                  className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg shadow-indigo-200/50 transition-all hover:shadow-xl hover:shadow-indigo-300/50 disabled:opacity-50 disabled:shadow-none"
                   disabled={isSubmitDisabled}
                 >
                   Get my creator list
@@ -333,7 +326,6 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
                   type="button"
                   onClick={onClose}
                   className="text-sm font-medium text-gray-500 transition-colors duration-200 hover:text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-                  style={{ fontDisplay: 'swap' }}
                 >
                   No thanks
                 </button>
@@ -341,7 +333,7 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
             </form>
 
             <div className="mt-10 rounded-2xl border border-gray-200 bg-gray-50/70 px-6 py-6 sm:px-8 sm:py-7">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-gray-500" style={{ fontDisplay: 'swap' }}>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-gray-500">
                 After you connect
               </p>
               <h3 className="mt-2 text-xl font-bold font-display text-gray-900 sm:text-2xl">
@@ -353,13 +345,13 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
                     <span className="mt-1 flex h-7 w-7 flex-none items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white shadow-md shadow-indigo-200/50">
                       <Check className="h-4 w-4" aria-hidden="true" />
                     </span>
-                    <span className="text-base leading-relaxed text-gray-600 font-sans" style={{ fontDisplay: 'swap' }}>
+                    <span className="text-base leading-relaxed text-gray-600 font-sans">
                       {item}
                     </span>
                   </li>
                 ))}
               </ul>
-              <div className="mt-5 rounded-xl border border-dashed border-gray-300 bg-white/70 px-4 py-3 text-sm text-gray-600 font-sans" style={{ fontDisplay: 'swap' }}>
+              <div className="mt-5 rounded-xl border border-dashed border-gray-300 bg-white/70 px-4 py-3 text-sm text-gray-600 font-sans">
                 Optional: we run outreach for you.
               </div>
             </div>

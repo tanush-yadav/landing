@@ -635,7 +635,7 @@ export default function TeamsSection({
       setDelegationInProgress(true)
 
       // Simulate delegation process
-      console.log(`Delegating task: "${task}" to ${memberId}`)
+      // Delegating task to team member
 
       // Trigger the demo through the parent component
       if (onDelegation) {

@@ -110,15 +110,13 @@ export default function Home() {
       />
 
       {/* Interactive Demo Section - Clean Professional UI */}
-      <div className="mt-8 sm:mt-12 md:mt-16">
         <InteractiveDemoWrapper
           triggerDemoFromHero={demoTrigger}
           selectedTaskFromHero={selectedTask}
           heroSearchQuery={heroSearchQuery}
           onDemoComplete={handleDemoComplete}
         />
-      </div>
-
+  
       {/* Moving testimonials - companies trust banner */}
       <div className="mt-6 sm:mt-8 md:mt-10">
         <MovingTestimonials />

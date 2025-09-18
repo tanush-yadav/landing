@@ -179,7 +179,7 @@ export function DashboardOverview() {
         </section>
 
         <div className="grid gap-8 lg:grid-cols-3">
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-3 space-y-8">
             <Card className="border-0 shadow-sm">
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between">
@@ -226,11 +226,11 @@ export function DashboardOverview() {
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-3">
                               <Avatar className="h-8 w-8">
-                                <AvatarFallback className={`text-xs font-semibold text-white ${creator.avatarColor}`}>
+                                <AvatarFallback className={`text-lg font-semibold text-white ${creator.avatarColor}`}>
                                   {creator.avatar}
                                 </AvatarFallback>
                               </Avatar>
-                              <span className="font-medium text-foreground">{creator.name}</span>
+                              <span className="font-medium text-sm text-foreground">{creator.name}</span>
                             </div>
                           </td>
                           <td className="px-6 py-4">
@@ -275,11 +275,11 @@ export function DashboardOverview() {
                     <div key={item.name} className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <Avatar className="h-8 w-8">
-                          <AvatarFallback className={`text-xs font-semibold text-white ${item.color}`}>
+                          <AvatarFallback className={`text-lg font-semibold text-white ${item.color}`}>
                             {item.avatar}
                           </AvatarFallback>
                         </Avatar>
-                        <span className="font-medium text-foreground">{item.name}</span>
+                        <span className="font-medium text-sm text-foreground">{item.name}</span>
                       </div>
                       <span className="text-sm font-semibold text-emerald-600">{item.value}</span>
                     </div>
@@ -295,7 +295,7 @@ export function DashboardOverview() {
                   {microInfluencers.map((item) => (
                     <div key={item.name} className="flex items-center justify-between">
                       <div className="space-y-1">
-                        <p className="font-medium text-foreground">{item.name}</p>
+                        <p className="font-medium text-sm text-foreground">{item.name}</p>
                         <p className="text-sm text-muted-foreground">{item.detail}</p>
                       </div>
                       <span className="text-sm font-semibold text-blue-600">{item.change}</span>
@@ -303,11 +303,8 @@ export function DashboardOverview() {
                   ))}
                 </CardContent>
               </Card>
-            </div>
-          </div>
 
-          <div className="space-y-6">
-            <Card className="border-0 shadow-sm">
+            {/* <Card className="border-0 shadow-sm">
               <CardHeader className="pb-4">
                 <div className="space-y-1">
                   <CardTitle className="text-lg font-semibold font-display">Recent posts</CardTitle>
@@ -342,7 +339,8 @@ export function DashboardOverview() {
                   <IconArrowUpRight className="ml-2 h-4 w-4" />
                 </Button>
               </CardContent>
-            </Card>
+            </Card> */}
+            </div>
           </div>
         </div>
       </div>

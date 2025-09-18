@@ -465,17 +465,16 @@ const InteractiveDemo = memo(
 
     // Memoized current task from workflow
     const currentTask = useMemo(() => {
-      console.log('Selected task ID:', selectedTask)
-      const workflow = getWorkflowById(selectedTask)
-      console.log('Found workflow:', workflow)
+      // Development logging disabled
+      const workflow = getWorkflowById(selectedTask || '')
       if (workflow) {
         const config = workflowToConfig(workflow)
-        console.log('Generated config:', config)
-        if (config) return config
+        // Config generated
+        return config
       }
       // Fallback to first engineering workflow
-      const fallbackWorkflow = getWorkflowById('fix-auth-bug')
-      console.log('Fallback workflow:', fallbackWorkflow)
+      const fallbackWorkflow = getWorkflowById('qualify-leads')
+      // Using fallback workflow
       return fallbackWorkflow ? workflowToConfig(fallbackWorkflow) : null
     }, [selectedTask])
 
@@ -730,7 +729,7 @@ const InteractiveDemo = memo(
     const startDemoSequence = useCallback(async () => {
       if (isLoading) return // Prevent duplicate runs
 
-      console.log('startDemoSequence called - currentTask:', currentTask)
+      // startDemoSequence called
       setIsLoading(true)
       setError(null)
 
@@ -740,7 +739,7 @@ const InteractiveDemo = memo(
 
         // Reduced motion mode - skip animations
         if (shouldReduceMotion) {
-          console.log('Reduced motion mode - setting complete state')
+          // Reduced motion mode - setting complete state
           setDemoState({
             phase: 'complete',
             ticketCreated: true,
@@ -764,14 +763,14 @@ const InteractiveDemo = memo(
         }
 
         // Start the sequence without resetting to idle
-        console.log('Setting initial demo state - ticketCreated: true')
+        // Setting initial demo state - ticketCreated: true
         setDemoState((prev) => {
           const newState: DemoState = {
             ...prev,
             phase: 'analyzing' as const,
             ticketCreated: true,
           }
-          console.log('New demo state:', newState)
+          // Demo state updated
           return newState
         })
         setIsLoading(false) // Clear loading state once demo starts
@@ -812,14 +811,13 @@ const InteractiveDemo = memo(
         // Start creator negotiation thread after emails (later timing)
         const messageStartDelay = cumulativeEmailDelay + 300
         safeSetTimeout(() => {
-          console.log('Starting creator negotiation thread')
+          // Starting creator negotiation thread
           setDemoState((prev) => {
             const newState: DemoState = {
               ...prev,
               phase: 'reviewing' as const,
               conversationStarted: true,
             }
-            console.log('New state with conversationStarted:', newState)
             return newState
           })
         }, messageStartDelay)
@@ -851,9 +849,7 @@ const InteractiveDemo = memo(
               if (i === subtasksToComplete - 1) {
                 // Set complete phase AFTER all subtasks and communications finish
                 safeSetTimeout(() => {
-                  console.log(
-                    'Setting demo to complete phase after all subtasks and outreach'
-                  )
+                  // Setting demo to complete phase after all subtasks and outreach
                   setDemoState((prev) => ({
                     ...prev,
                     phase: 'complete' as const,
@@ -868,7 +864,7 @@ const InteractiveDemo = memo(
           }
         } else {
           // If no subtasks or empty subtasks array, complete after outreach
-          console.log('No subtasks found, completing demo after outreach')
+          // No subtasks found, completing demo after outreach
           safeSetTimeout(() => {
             setDemoState((prev) => ({ ...prev, phase: 'complete' as const }))
             if (onDemoComplete) {
@@ -897,13 +893,7 @@ const InteractiveDemo = memo(
 
     // Effect for demo trigger - simplified to avoid race conditions
     useEffect(() => {
-      console.log('Demo trigger effect:', {
-        triggerDemo,
-        prevTrigger: prevTriggerRef.current,
-        isLoading,
-        phase: demoState.phase,
-        ticketCreated: demoState.ticketCreated,
-      })
+      // Demo trigger effect check
 
       // Only process if trigger changed from false to true
       const triggerChanged = triggerDemo && !prevTriggerRef.current
@@ -911,10 +901,10 @@ const InteractiveDemo = memo(
       if (triggerChanged && !isLoading) {
         // Start if we're in idle state OR if we need to restart from complete state
         if (demoState.phase === 'idle' && !demoState.ticketCreated) {
-          console.log('Starting demo sequence from idle...')
+          // Starting demo sequence from idle
           startDemoSequence()
         } else if (demoState.phase === 'complete') {
-          console.log('Restarting demo sequence from complete...')
+          // Restarting demo sequence from complete
           // Reset and restart for a fresh demo
           resetDemo()
           // Start after a brief delay to ensure state is cleared
@@ -978,12 +968,7 @@ const InteractiveDemo = memo(
       )
     }
 
-    console.log(
-      'Rendering InteractiveDemo - demoState:',
-      demoState,
-      'currentTask:',
-      currentTask
-    )
+    // Component render
 
     return (
       <section
@@ -1605,4 +1590,12 @@ DemoSkeleton.displayName = 'DemoSkeleton'
 ErrorFallback.displayName = 'ErrorFallback'
 InteractiveDemo.displayName = 'InteractiveDemo'
 
-export default InteractiveDemo
+// Memoize the component to prevent unnecessary re-renders
+export default React.memo(InteractiveDemo, (prevProps, nextProps) => {
+  // Only re-render if these specific props change
+  return (
+    prevProps.triggerDemo === nextProps.triggerDemo &&
+    prevProps.selectedTask === nextProps.selectedTask &&
+    prevProps.incomingSearchQuery === nextProps.incomingSearchQuery
+  )
+})

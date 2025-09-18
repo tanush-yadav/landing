@@ -16,21 +16,21 @@ const floatingPills = [
   {
     id: 'youtube-tech-channels',
     platform: 'YouTube',
-    icon: <Image src="/images/youtube.png" alt="YouTube" width={18} height={18} className="h-4.5 w-4.5" />,
+    icon: <Image src="/images/youtube.png" alt="YouTube" width={14} height={14} className="h-3.5 w-3.5" />,
     text: 'Search for youtubers talking about claude code',
     searchQuery: 'Search for youtubers talking about claude code',
   },
   {
     id: 'tiktok-beauty-creators',
     platform: 'TikTok Shop',
-    icon: <Image src="/images/tiktok-shop-logo.png" alt="TikTok Shop" width={18} height={18} className="h-4.5 w-4.5" />,
+    icon: <Image src="/images/tiktok-shop-logo.png" alt="TikTok Shop" width={14} height={14} className="h-3.5 w-3.5" />,
     text: 'Find beauty TikTok creators > 50K followers',
     searchQuery: 'Find beauty TikTok creators > 50K followers',
   },
   {
     id: 'shopify-skincare-creators',
     platform: 'Shopify',
-    icon: <Image src="/images/shopify-logo.png" alt="Shopify" width={18} height={18} className="h-4.5 w-4.5" />,
+    icon: <Image src="/images/shopify-logo.png" alt="Shopify" width={14} height={14} className="h-3.5 w-3.5" />,
     text: 'Find niche skincare creators for product launches',
     searchQuery: 'Find niche skincare creators for product launches',
   },
@@ -140,7 +140,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
   return (
     <section
       id="hero"
-      className="relative flex min-h-[80vh] items-center justify-center overflow-hidden px-4 pt-8 pb-8 sm:pt-12 sm:pb-10 md:min-h-[85vh]"
+      className="relative flex items-center justify-center overflow-hidden px-4 pt-8 pb-8 sm:pt-12 sm:pb-10"
     >
       {/* Enhanced Gradient Mesh Background with Glass Effect */}
       <div className="absolute inset-0">
@@ -157,7 +157,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
       </div>
 
       {/* Light haze overlay for main content area */}
-      <div className="absolute inset-0 bg-white/10" />
+      {/* <div className="absolute inset-0 bg-white/10" /> */}
 
       {/* Content */}
       <div className="relative z-10 mx-auto w-full max-w-5xl px-4 text-center sm:px-6">
@@ -210,13 +210,13 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
           {/* Floating Pills and Search Section */}
           <div
             className={cn(
-              'mx-auto w-full max-w-3xl opacity-0 sm:max-w-4xl',
+              'mx-auto w-full max-w-xl opacity-0 sm:max-w-2xl md:max-w-2xl lg:max-w-2xl',
               isVisible && 'animate-fade-in-up animation-delay-400'
             )}
           >
             {/* Task Options */}
-            <div className="mb-3 rounded-[20px] border border-slate-100 bg-white p-3 shadow-[0_15px_40px_-30px_rgba(15,23,42,0.5)] sm:mb-4 sm:p-4">
-              <div className="space-y-3">
+            <div className="mb-2 rounded-[16px] border border-slate-100 bg-white p-2 shadow-[0_10px_30px_-25px_rgba(15,23,42,0.4)] sm:mb-3 sm:p-2.5">
+              <div className="space-y-2">
                 {floatingPills.map((pill, index) => (
                   <motion.div
                     key={pill.id}
@@ -225,34 +225,34 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
                     transition={{ duration: 0.2, delay: 0.05 * index }}
                     onClick={() => handlePillClick(pill)}
                     className={cn(
-                      'flex items-center justify-between rounded-xl border p-2 sm:p-3 transition-all duration-200',
+                      'flex items-center justify-between rounded-lg border p-1.5 sm:p-2 transition-all duration-200 cursor-pointer',
                       selectedPill === pill.id
                         ? 'border-slate-300 bg-slate-100 shadow-sm'
                         : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50',
                       isDemoRunning && 'cursor-not-allowed opacity-60'
                     )}
                   >
-                    <div className="flex items-center gap-2 flex-1">
+                    <div className="flex items-center gap-1.5 flex-1">
                       <div className={cn(
-                        'w-4 h-4 rounded-full border-2 bg-white flex items-center justify-center transition-all duration-200',
+                        'w-3.5 h-3.5 rounded-full border-2 bg-white flex items-center justify-center transition-all duration-200',
                         selectedPill === pill.id
                           ? 'border-gray-900 bg-gray-900'
                           : 'border-gray-400'
                       )}>
                         {selectedPill === pill.id && (
-                          <div className="w-1.5 h-1.5 rounded-full bg-white" />
+                          <div className="w-1 h-1 rounded-full bg-white" />
                         )}
                       </div>
-                      <div className="flex items-center gap-2 flex-1 min-w-0">
+                      <div className="flex items-center gap-1.5 flex-1 min-w-0">
                         <div className="flex-shrink-0">
                           {pill.icon}
                         </div>
-                        <span className="break-words text-xs leading-snug text-slate-900 sm:text-sm md:text-base">
+                        <span className="break-words text-[11px] leading-tight text-slate-900 sm:text-xs md:text-sm">
                           {pill.text}
                         </span>
                       </div>
                     </div>
-                    <span className="text-gray-500 text-xs sm:text-sm flex-shrink-0 ml-2">
+                    <span className="text-gray-500 text-[10px] sm:text-xs flex-shrink-0 ml-2">
                       3 mins
                     </span>
                   </motion.div>
@@ -261,11 +261,11 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
             </div>
 
             {/* Search Input and Magic Button */}
-            <div className="rounded-[20px] border border-slate-100 bg-white p-3 shadow-[0_15px_40px_-30px_rgba(15,23,42,0.5)] sm:p-4">
-              <div className="space-y-3">
+            <div className="rounded-[16px] border border-slate-100 bg-white p-2.5 shadow-[0_10px_30px_-25px_rgba(15,23,42,0.4)] sm:p-3">
+              <div className="space-y-2">
                 {/* Large Search Input */}
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400" />
                   <input
                     type="text"
                     value={searchQuery || (isTypingDemo ? typedText : '')}
@@ -282,13 +282,13 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
                     disabled={isDemoRunning}
                     placeholder={!isTypingDemo && !searchQuery ? "Search for creators..." : ""}
                     className={cn(
-                      'w-full rounded-xl border border-slate-200 bg-white pl-9 pr-3 text-xs leading-tight text-slate-900 shadow-inner transition sm:pl-10 sm:text-sm md:text-base',
-                      'py-2 sm:py-3 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200',
-                      'placeholder:text-slate-400 placeholder:text-xs sm:placeholder:text-sm',
+                      'w-full rounded-lg border border-slate-200 bg-white pl-8 pr-2.5 text-xs leading-tight text-slate-900 shadow-inner transition sm:pl-9 sm:text-xs md:text-sm',
+                      'py-1.5 sm:py-2 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200',
+                      'placeholder:text-slate-400 placeholder:text-[11px] sm:placeholder:text-xs',
                       isTypingDemo && 'text-slate-600',
                       isDemoRunning && 'cursor-not-allowed opacity-60'
                     )}
-                />
+                  />
                   {isTypingDemo && (
                     <div className="absolute right-3 top-1/2 -translate-y-1/2">
                       <div className="w-0.5 h-4 bg-gray-400 animate-pulse" />
@@ -299,12 +299,12 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
                 {/* Magic Button */}
                 <Button
                   onClick={handleMagicClick}
-                  disabled={!searchQuery.trim() || isDelegating || isDemoRunning}
+                  disabled={isDelegating || isDemoRunning}
                   isLoading={isDelegating}
                   variant="ghost"
                   size="lg"
                   fullWidth
-                  className="min-h-[38px] rounded-xl bg-slate-900 py-2.5 text-xs font-semibold text-white transition hover:bg-slate-800 sm:py-3 sm:text-sm md:text-base"
+                  className="min-h-[44px] rounded-lg bg-gradient-to-r from-purple-600 to-purple-700 py-3 px-6 text-xs font-semibold text-white shadow-lg transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 sm:py-3.5 sm:text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none disabled:hover:shadow-lg"
                 >
                   {isDemoRunning ? (
                     'Demo in Progress...'
