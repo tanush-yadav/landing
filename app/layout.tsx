@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Outfit, Plus_Jakarta_Sans, Fraunces } from 'next/font/google'
+import { Inter, Plus_Jakarta_Sans, Fraunces } from 'next/font/google'
 import './globals.css'
 import '@/styles/blog-mobile.css'
 import Script from 'next/script'
@@ -7,11 +7,11 @@ import { a11y } from '@/lib/design-system'
 import GARouteTracking from './ga-route-tracking'
 import PostHogAnalytics from './posthog-analytics'
 
-const outfit = Outfit({
+const inter = Inter({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700', '800', '900'],
   display: 'swap',
-  variable: '--font-outfit',
+  variable: '--font-inter',
 })
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -72,10 +72,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${outfit.variable} ${plusJakartaSans.variable} ${fraunces.variable}`}
+      className={`${inter.variable} ${plusJakartaSans.variable} ${fraunces.variable}`}
       suppressHydrationWarning
     >
-      <body className={`${outfit.className} min-h-screen`}>
+      <body className={`${inter.className} min-h-screen`}>
         {analyticsEnabled && (
           <>
             <Script
