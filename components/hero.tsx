@@ -140,7 +140,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
   return (
     <section
       id="hero"
-      className="relative flex items-center justify-center overflow-hidden px-4 pt-8 pb-8 sm:pt-12 sm:pb-10"
+      className="relative flex items-center justify-center overflow-hidden px-4 pt-28 pb-8 sm:pt-36 sm:pb-10"
     >
       {/* Enhanced Gradient Mesh Background with Glass Effect */}
       <div className="absolute inset-0">
@@ -216,7 +216,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
           >
             {/* Task Options */}
             <div className="mb-2 rounded-[16px] border border-slate-100 bg-white p-2 shadow-[0_10px_30px_-25px_rgba(15,23,42,0.4)] sm:mb-3 sm:p-2.5">
-              <div className="space-y-2">
+              <div className="space-y-4">
                 {floatingPills.map((pill, index) => (
                   <motion.div
                     key={pill.id}
@@ -262,7 +262,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
 
             {/* Search Input and Magic Button */}
             <div className="rounded-[16px] border border-slate-100 bg-white p-2.5 shadow-[0_10px_30px_-25px_rgba(15,23,42,0.4)] sm:p-3">
-              <div className="space-y-2">
+              <div className="space-y-4">
                 {/* Large Search Input */}
                 <div className="relative">
                   <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400" />
@@ -300,11 +300,9 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
                 <Button
                   onClick={handleMagicClick}
                   disabled={isDelegating || isDemoRunning}
-                  isLoading={isDelegating}
+                  loading={isDelegating}
                   variant="ghost"
-                  size="lg"
-                  fullWidth
-                  className="min-h-[44px] rounded-lg bg-gradient-to-r from-purple-600 to-purple-700 py-3 px-6 text-xs font-semibold text-white shadow-lg transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 sm:py-3.5 sm:text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none disabled:hover:shadow-lg"
+                  className="rounded-lg bg-gradient-to-r from-purple-600 to-purple-700 py-3 px-6 text-white shadow-lg transition-all hover:purple-400 hover:text-white"
                 >
                   {isDemoRunning ? (
                     'Demo in Progress...'
@@ -312,8 +310,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
                     'Finding creators...'
                   ) : (
                     <>
-                      Magic
-                      <ArrowRight className="ml-2 h-4 w-4" />
+                      See Live
                     </>
                   )}
                 </Button>

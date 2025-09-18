@@ -226,14 +226,14 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
               
                 <h2
                   id="creator-modal-heading"
-                  className="mt-1 text-2xl font-bold font-display text-gray-900 sm:text-3xl"
+                  className="mt-1 text-lg font-bold font-display text-gray-900 sm:text-2xl"
                 >
                   Get a ready-to-activate creator list in 24 hours
                 </h2>
               </div>
             </div>
 
-            <p className="mt-6 text-base leading-relaxed text-gray-600 sm:text-lg font-sans" style={{ fontDisplay: 'swap' }}>
+            <p className="mt-6 text-md leading-relaxed text-gray-600 sm:text-md font-sans">
               Paste your site, set your niche, and we will surface verified creators already moving product for audiences like yours. You get attribution-ready profiles and outreach sequences without lifting a finger.
             </p>
 
@@ -250,7 +250,7 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
                     <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
                       <span
                         aria-hidden="true"
-                        className="text-md font-medium text-gray-400"
+                        className="text-sm font-medium text-gray-400"
                       >
                         https://
                       </span>
@@ -270,7 +270,7 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
                       className={cn(
                         'w-full h-12 rounded-xl bg-gray-50 pl-20 pr-4 text-gray-900 placeholder:text-gray-400',
                         'focus:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white transition-colors',
-                        'border text-md',
+                        'border text-sm',
                         websiteHasError
                           ? 'border-red-500 focus:ring-red-500'
                           : 'border-gray-200 hover:border-gray-300 focus:border-indigo-500 focus:ring-indigo-500'
@@ -302,7 +302,7 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
                     className={cn(
                       'w-full h-12 rounded-xl bg-gray-50 px-4 text-gray-900 placeholder:text-gray-400',
                       'focus:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white transition-colors',
-                      'border text-md',
+                      'border text-sm',
                       emailHasError
                         ? 'border-red-500 focus:ring-red-500'
                         : 'border-gray-200 hover:border-gray-300 focus:border-indigo-500 focus:ring-indigo-500'
@@ -345,7 +345,7 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
                     <span className="mt-1 flex h-7 w-7 flex-none items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white shadow-md shadow-indigo-200/50">
                       <Check className="h-4 w-4" aria-hidden="true" />
                     </span>
-                    <span className="text-base leading-relaxed text-gray-600 font-sans">
+                    <span className="text-md leading-relaxed text-gray-600 font-sans">
                       {item}
                     </span>
                   </li>

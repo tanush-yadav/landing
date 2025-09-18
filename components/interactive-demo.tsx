@@ -992,7 +992,7 @@ const InteractiveDemo = memo(
                     <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
                     <span className="h-2.5 w-2.5 rounded-full bg-yellow-300" />
                     <span className="h-2.5 w-2.5 rounded-full bg-green-400" />
-                    <span className="ml-auto text-xs font-semibold uppercase tracking-[0.32em] text-gray-400">
+                    <span className="ml-auto text-xs font-semibold text-gray-400">
                       Live Search
                     </span>
                   </div>
@@ -1003,17 +1003,17 @@ const InteractiveDemo = memo(
                           <Search className="h-5 w-5" aria-hidden="true" />
                         </div>
                         <div className="flex-1 text-left">
-                          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-gray-400">
+                          <p className="text-xs font-semibold text-gray-400">
                             Searching
                           </p>
                           <div
-                            className="flex items-center min-h-[1.75rem] text-base font-medium text-gray-700 transition-colors duration-300 sm:text-lg"
+                            className="flex items-center min-h-[1.75rem] text-md font-medium text-gray-700 transition-colors duration-300 sm:text-lg"
                             aria-live="polite"
                             aria-atomic="true"
                           >
                             <span
                               className={cn(
-                                'whitespace-pre-line',
+                                'whitespace-pre-line text-md',
                                 !isTypingActive && 'text-gray-300'
                               )}
                             >
@@ -1036,7 +1036,7 @@ const InteractiveDemo = memo(
                       {searchMetrics.map((metric, index) => (
                         <motion.div
                           key={metric.label}
-                          className="rounded-xl border border-gray-100 bg-white/95 px-4 py-3 text-left shadow-sm shadow-blue-100/30"
+                          className="rounded-xl border border-gray-100 bg-white/95 px-4 py-3 text-left text-md shadow-sm shadow-blue-100/30"
                           initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{
@@ -1045,10 +1045,10 @@ const InteractiveDemo = memo(
                             ease: 'easeOut',
                           }}
                         >
-                          <div className="text-xl font-semibold text-gray-900">
+                          <div className="text-md font-semibold text-gray-900">
                             {metric.value}
                           </div>
-                          <div className="mt-1 text-xs font-semibold uppercase tracking-[0.28em] text-gray-500">
+                          <div className="mt-1 text-xs font-semibold text-gray-500">
                             {metric.label}
                           </div>
                         </motion.div>
