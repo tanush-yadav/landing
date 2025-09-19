@@ -45,7 +45,7 @@ const MovingTestimonials = ({
     >
       <section
         className={cn(
-          "relative py-6 sm:py-8 overflow-hidden",
+          "relative py-12 sm:py-16 overflow-hidden",
           className
         )}
         aria-label="Company testimonials"

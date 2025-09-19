@@ -75,7 +75,7 @@ export default function RootLayout({
       className={`${inter.variable} ${plusJakartaSans.variable} ${fraunces.variable}`}
       suppressHydrationWarning
     >
-      <body className={`${inter.className} min-h-screen`}>
+      <body className={`${inter.className}`}>
         {analyticsEnabled && (
           <>
             <Script

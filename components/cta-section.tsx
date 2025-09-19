@@ -10,7 +10,7 @@ interface CTASectionProps {
 
 export function CTASection({ onOpenModal }: CTASectionProps) {
   return (
-    <section className="relative w-full pt-8 pb-12 md:pt-10 md:pb-14 overflow-x-clip md:overflow-visible bg-gradient-to-b from-white via-purple-50/20 to-white">
+    <section className="relative w-full pt-12 pb-16 md:pt-16 md:pb-20 overflow-x-clip md:overflow-visible bg-gradient-to-b from-white via-purple-50/20 to-white">
       {/* Very subtle gradient background */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-purple-50/20 to-transparent" />

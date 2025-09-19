@@ -956,7 +956,7 @@ const InteractiveDemo = memo(
     // Handle null task gracefully
     if (!currentTask) {
       return (
-        <section className="bg-gray-50/50 py-10 relative">
+        <section className="bg-gray-50/50 py-6 sm:py-8 relative">
           <div className="max-w-7xl mx-auto px-4 text-center text-gray-600">
             <p>Demo content loading...</p>
           </div>
@@ -969,7 +969,7 @@ const InteractiveDemo = memo(
     return (
       <section
         id="demo-section"
-        className="bg-gray-50/50 py-10 relative"
+        className="bg-gray-50/50 py-6 sm:py-8 relative"
         role="region"
         aria-label="Interactive demonstration of AI automation workflow"
       >

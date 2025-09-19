@@ -735,7 +735,7 @@ export default function TeamsSection({
       overlayColor="purple-gradient"
       mask="radial"
     >
-      <section className="relative pt-20 sm:pt-24 lg:pt-28 pb-10 sm:pb-12 lg:pb-14 overflow-hidden">
+      <section className="relative pt-12 sm:pt-16 lg:pt-20 pb-12 sm:pb-16 lg:pb-20 overflow-hidden">
 
         {/* Additional animated orbs for depth */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
