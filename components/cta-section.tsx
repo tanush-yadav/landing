@@ -10,7 +10,7 @@ interface CTASectionProps {
 
 export function CTASection({ onOpenModal }: CTASectionProps) {
   return (
-    <section className="relative w-full pt-12 pb-16 md:pt-16 md:pb-20 overflow-x-clip md:overflow-visible bg-gradient-to-b from-white via-purple-50/20 to-white">
+    <section className="relative w-full py-10 sm:py-12 md:py-16 overflow-x-clip md:overflow-visible bg-gradient-to-b from-white via-purple-50/20 to-white">
       {/* Very subtle gradient background */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-purple-50/20 to-transparent" />
@@ -25,7 +25,7 @@ export function CTASection({ onOpenModal }: CTASectionProps) {
           className="max-w-4xl mx-auto"
         >
           {/* Clean CTA Card */}
-          <div className="relative isolate rounded-2xl bg-white/80 backdrop-blur-sm border border-gray-100 p-8 md:p-10 shadow-lg">
+          <div className="relative isolate rounded-2xl bg-white/80 backdrop-blur-sm border border-gray-100 p-6 sm:p-8 md:p-10 shadow-lg">
             {/* Subtle trophy decoration on the right */}
             <div className="absolute top-1/2 -translate-y-1/2 right-8 md:right-10 opacity-5 z-0 pointer-events-none select-none">
               <Trophy className="w-24 h-24 md:w-32 md:h-32 text-purple-600" />

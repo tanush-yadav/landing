@@ -133,16 +133,30 @@ const Navigation = memo(() => {
               </Link>
             </motion.div>
 
-            {/* Desktop Navigation */}
-          
+            {/* Desktop Navigation - Hidden for now since no nav items */}
+            {navItems.length > 0 && (
+              <nav className="hidden md:flex items-center gap-2">
+                {navItems.map((item) => (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className="px-3 py-2 text-sm font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-200"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </nav>
+            )}
 
-            {/* Premium Mobile Menu Button */}
+            {/* Premium Mobile Menu Button - Always visible on mobile */}
             <button
               onClick={handleMobileMenuToggle}
               className={cn(
-                'inline-flex md:hidden items-center justify-center rounded-xl p-2.5 transition-all duration-200',
+                'inline-flex items-center justify-center rounded-xl p-2.5 transition-all duration-200',
                 'hover:scale-105 focus:outline-none focus:ring-2 focus:ring-slate-900/20 focus:ring-offset-2',
-                'text-slate-700 hover:bg-slate-100/50 hover:text-slate-900'
+                'text-slate-700 hover:bg-slate-100/50 hover:text-slate-900',
+                // Show when nav items exist or always on mobile for menu access
+                navItems.length === 0 ? 'md:hidden' : 'md:hidden'
               )}
               aria-expanded={isMobileMenuOpen}
               aria-label="Toggle navigation menu"

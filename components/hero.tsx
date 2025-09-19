@@ -198,7 +198,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
     >
       <section
         id="hero"
-        className="relative flex items-center justify-center overflow-hidden px-4 pt-28 pb-8 sm:pt-32 sm:pb-10 md:pt-36 md:pb-12"
+        className="relative flex items-center justify-center overflow-hidden px-4 pt-40 pb-24 sm:pt-44 sm:pb-28 lg:pt-48 lg:pb-32"
       >
         {/* Enhanced Premium Orbs with Purple Accents */}
         <div className="absolute inset-0 overflow-hidden -z-10">
@@ -220,7 +220,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
           {/* Badge */}
           <div
             className={cn(
-              'mb-3 flex items-center justify-center opacity-0',
+              'mb-6 flex items-center justify-center opacity-0',
               isVisible && 'animate-fade-in-down'
             )}
             role="status"
@@ -241,13 +241,13 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
           {/* Main Headline */}
           <h1
             className={cn(
-              'text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold text-gray-900 mb-2 opacity-0 leading-[1.05] sm:leading-[1.08]',
+              'text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold text-gray-900 mb-4 opacity-0 leading-[1.05] sm:leading-[1.08]',
               isVisible && 'animate-fade-in-up'
             )}
             style={{ letterSpacing: '-0.02em' }}
           >
             find creators your
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-gray-800 via-gray-700 to-gray-900 mt-1">
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-gray-800 via-gray-700 to-gray-900 mt-2">
               buyers already follow
             </span>
           </h1>
@@ -255,7 +255,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
           {/* Subheadline */}
           <p
             className={cn(
-              'text-xs sm:text-sm md:text-base lg:text-lg text-gray-600 mb-3 sm:mb-4 max-w-2xl mx-auto opacity-0 px-2 sm:px-4',
+              'text-xs sm:text-sm md:text-base lg:text-lg text-gray-600 mb-8 sm:mb-10 max-w-2xl mx-auto opacity-0 px-2 sm:px-4',
               isVisible && 'animate-fade-in-up animation-delay-200'
             )}
           >
@@ -270,8 +270,8 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
             )}
           >
             {/* Task Options */}
-            <div className="mb-2 rounded-[16px] border border-slate-100 bg-white p-2 shadow-[0_10px_30px_-25px_rgba(15,23,42,0.4)] sm:mb-3 sm:p-2">
-              <div className="space-y-2.5">
+            <div className="mb-4 rounded-[16px] border border-slate-100 bg-white p-3 shadow-[0_10px_30px_-25px_rgba(15,23,42,0.4)] sm:mb-5 sm:p-4">
+              <div className="space-y-3">
                 {floatingPills.map((pill, index) => (
                   <motion.div
                     key={pill.id}
@@ -282,7 +282,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.99 }}
                     className={cn(
-                      'flex items-center justify-between rounded-xl border p-2.5 sm:p-3 transition-all duration-200 cursor-pointer group',
+                      'flex items-center justify-between rounded-xl border p-3 sm:p-4 transition-all duration-200 cursor-pointer group',
                       selectedPill === pill.id
                         ? 'border-slate-900/10 bg-slate-50/80 shadow-sm'
                         : 'border-slate-200/60 bg-white/60 hover:border-slate-300/80 hover:bg-white/80 hover:shadow-sm',
@@ -318,11 +318,11 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
             </div>
 
             {/* Search Input and Magic Button */}
-            <div className="rounded-[16px] border border-slate-100 bg-white p-2.5 shadow-[0_10px_30px_-25px_rgba(15,23,42,0.4)] sm:p-2.5">
-              <div className="space-y-3">
+            <div className="rounded-[16px] border border-slate-100 bg-white p-4 shadow-[0_10px_30px_-25px_rgba(15,23,42,0.4)] sm:p-5">
+              <div className="space-y-4">
                 {/* Large Search Input */}
                 <div className="relative">
-                  <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <input
                     type="text"
                     value={searchQuery || (isTypingDemo ? typedText : '')}
@@ -341,8 +341,8 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
                     disabled={isDemoRunning}
                     placeholder={!isTypingDemo && !searchQuery ? "Search for creators..." : ""}
                     className={cn(
-                      'w-full rounded-lg border border-slate-200 bg-white pl-8 pr-2.5 text-xs leading-tight text-slate-900 shadow-inner transition sm:pl-9 sm:text-xs md:text-sm',
-                      'py-1.5 sm:py-2 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200',
+                      'w-full rounded-lg border border-slate-200 bg-white pl-10 pr-3 text-xs leading-tight text-slate-900 shadow-inner transition sm:pl-10 sm:text-xs md:text-sm',
+                      'py-2.5 sm:py-3 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200',
                       'placeholder:text-slate-400 placeholder:text-[11px] sm:placeholder:text-xs',
                       isTypingDemo && 'text-slate-600',
                       isDemoRunning && 'cursor-not-allowed opacity-60'

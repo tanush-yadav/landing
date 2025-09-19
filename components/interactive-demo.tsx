@@ -1478,23 +1478,23 @@ const InteractiveDemo = memo(
                                 <span
                                   className={cn(
                                     'text-xs font-semibold tracking-wide uppercase',
-                                    isAgent ? 'text-purple-600' : 'text-white/85'
+                                    isAgent ? 'text-purple-600' : 'text-white'
                                   )}
                                 >
                                   {message.author}
                                 </span>
-                                <span className={cn('text-[11px]', isAgent ? 'text-purple-400' : 'text-white/60')}>
+                                <span className={cn('text-[11px]', isAgent ? 'text-purple-400' : 'text-white/70')}>
                                   {message.timestamp}
                                 </span>
                               </div>
-                              <p className="text-sm leading-5">{message.content}</p>
+                              <p className={cn('text-sm leading-5', !isAgent && 'text-white')}>{message.content}</p>
                               {message.highlights && (
                                 <ul
                                   className={cn(
                                     'mt-3 text-xs space-y-1.5 border-t pt-3',
                                     isAgent
                                       ? 'border-purple-100 text-purple-600'
-                                      : 'border-white/30 text-white/85'
+                                      : 'border-white/30 text-white'
                                   )}
                                 >
                                   {message.highlights.map((highlight, hi) => (

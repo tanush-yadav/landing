@@ -66,7 +66,7 @@ export function Footer() {
       {/* Premium gradient accent */}
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-slate-300/50 to-transparent" />
 
-      <div className="relative container mx-auto px-6 py-20">
+      <div className="relative container mx-auto px-6 py-10 sm:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-6 gap-8 lg:gap-12">
           {/* Brand Column */}
           <div className="lg:col-span-2 space-y-6">
@@ -248,7 +248,7 @@ export function Footer() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="mt-12 pt-8 border-t border-gray-200"
+          className="mt-8 pt-6 border-t border-gray-200"
         >
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             {/* Copyright */}

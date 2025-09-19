@@ -147,7 +147,7 @@ export default function Home() {
 
       <section
         data-section="interactive-demo"
-        className="mt-4 sm:mt-6 md:mt-8"
+        className="mt-2 sm:mt-3 md:mt-4"
       >
         <InteractiveDemoWrapper
           triggerDemoFromHero={demoTrigger}
@@ -161,7 +161,7 @@ export default function Home() {
 
       <section
         data-section="moving-testimonials"
-        className="mt-16 sm:mt-20 md:mt-24"
+        className="mt-10 sm:mt-12 md:mt-16"
       >
         <MovingTestimonials />
       </section>
@@ -170,20 +170,20 @@ export default function Home() {
 
       <section
         data-section="attribution-outcomes"
-        className="mt-16 sm:mt-20 md:mt-24"
+        className="mt-10 sm:mt-12 md:mt-16"
       >
         <AttributionOutcomes />
       </section>
 
       <WaveDivider variant="accent" position="bottom" />
 
-      <section data-section="teams" className="mt-16 sm:mt-20 md:mt-24">
+      <section data-section="teams" className="mt-10 sm:mt-12 md:mt-16">
         <TeamsSection onOpenModal={handleOpenModal} />
       </section>
 
       <WaveDivider variant="strong" position="top" />
 
-      <section data-section="cta-section" className="mt-16 sm:mt-20 md:mt-24">
+      <section data-section="cta-section" className="mt-10 sm:mt-12 md:mt-16">
         <CTASection onOpenModal={handleOpenModal} />
       </section>
 
