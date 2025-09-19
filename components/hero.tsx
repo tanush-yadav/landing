@@ -198,7 +198,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
     >
       <section
         id="hero"
-        className="relative flex items-center justify-center overflow-hidden px-4 pt-28 pb-8 sm:pt-36 sm:pb-10"
+        className="relative flex items-center justify-center overflow-hidden px-4 pt-20 pb-6 sm:pt-24 sm:pb-8"
       >
         {/* Enhanced Premium Orbs with Purple Accents */}
         <div className="absolute inset-0 overflow-hidden -z-10">
