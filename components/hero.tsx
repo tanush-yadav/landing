@@ -361,7 +361,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
                   disabled={isDelegating || isDemoRunning}
                   variant="ghost"
                   aria-busy={isDelegating}
-                  className="rounded-lg bg-gradient-to-r from-purple-600 to-purple-700 py-3 px-6 text-white shadow-lg transition-all hover:purple-400 hover:text-white disabled:opacity-70"
+                  className="rounded-lg bg-gradient-to-r from-purple-600 to-purple-700 py-3.5 px-8 text-white shadow-lg transition-all hover:purple-400 hover:text-white disabled:opacity-70"
                 >
                   {isDemoRunning ? (
                     'Demo in Progress...'
@@ -380,7 +380,7 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
           {/* Premium Trust Indicators */}
           <div
             className={cn(
-              'mt-8 flex flex-wrap items-center justify-center gap-6 px-4 text-sm text-slate-600 opacity-0 sm:mt-10',
+              'mt-12 flex flex-wrap items-center justify-center gap-6 px-4 text-sm text-slate-600 opacity-0 sm:mt-14 lg:mt-16',
               isVisible && 'animate-fade-up animation-delay-600'
             )}
           >
