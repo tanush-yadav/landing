@@ -194,22 +194,51 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
       id="hero"
       className="relative flex items-center justify-center overflow-hidden px-4 pt-28 pb-8 sm:pt-36 sm:pb-10"
     >
-      {/* Enhanced Gradient Mesh Background with Glass Effect */}
-      <div className="absolute inset-0">
-        {/* Primary gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white via-slate-50/50 to-white" />
+      {/* Premium Purple Wave Background - Base Layer */}
+      <div className="absolute inset-0 -z-10">
+        <Image
+          src="/images/bg.png"
+          alt=""
+          fill
+          priority
+          quality={100}
+          className="object-cover object-center scale-110"
+          sizes="100vw"
+        />
+        {/* Premium gradient overlay for depth and sophistication */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/85 to-white/95" />
+        {/* Radial gradient for focal point */}
+        <div className="absolute inset-0 bg-radial-gradient from-transparent via-white/20 to-white/60" />
       </div>
 
-      {/* Enhanced Floating orbs with glass effects */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Soft orbs */}
-        <div className="absolute -top-44 -right-24 h-64 w-64 rounded-full bg-gradient-to-br from-purple-200/25 via-pink-100/20 to-transparent blur-3xl" />
-        <div className="absolute -bottom-56 -left-24 h-72 w-72 rounded-full bg-gradient-to-tr from-blue-200/20 via-cyan-100/15 to-transparent blur-[120px]" />
-        <div className="absolute top-1/3 right-[18%] h-40 w-40 rounded-full bg-gradient-to-bl from-indigo-100/30 to-transparent blur-3xl" />
+      {/* Premium Glass Morphism Layer */}
+      <div className="absolute inset-0 -z-10">
+        {/* Subtle noise texture for premium feel */}
+        <div
+          className="absolute inset-0 opacity-[0.015]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+            backgroundRepeat: 'repeat',
+            backgroundSize: '128px 128px'
+          }}
+        />
+        {/* Premium shimmer effect */}
+        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-purple-100/5 to-transparent animate-shimmer-slow" />
       </div>
 
-      {/* Light haze overlay for main content area */}
-      {/* <div className="absolute inset-0 bg-white/10" /> */}
+      {/* Enhanced Premium Orbs with Purple Accents */}
+      <div className="absolute inset-0 overflow-hidden -z-10">
+        {/* Purple accent orbs matching the wave theme */}
+        <div className="absolute -top-44 -right-24 h-96 w-96 rounded-full bg-gradient-to-br from-purple-300/20 via-purple-200/10 to-transparent blur-[120px]" />
+        <div className="absolute -bottom-56 -left-24 h-80 w-80 rounded-full bg-gradient-to-tr from-indigo-300/15 via-purple-200/10 to-transparent blur-[100px]" />
+        <div className="absolute top-1/2 right-[15%] h-64 w-64 rounded-full bg-gradient-to-bl from-purple-200/15 to-transparent blur-[80px]" />
+        {/* Floating light particles for premium depth */}
+        <div className="absolute top-[20%] left-[10%] h-48 w-48 rounded-full bg-gradient-to-br from-white/30 to-transparent blur-3xl animate-float-slow" />
+        <div className="absolute bottom-[30%] right-[20%] h-36 w-36 rounded-full bg-gradient-to-tl from-white/25 to-transparent blur-3xl animate-float-delayed" />
+      </div>
+
+      {/* Premium content overlay for optimal readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/5 to-transparent -z-10" />
 
       {/* Content */}
       <div className="relative z-10 mx-auto w-full max-w-5xl px-4 text-center sm:px-6">

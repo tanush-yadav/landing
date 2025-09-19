@@ -211,7 +211,7 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4 py-12">
           <motion.div
-            className="absolute inset-0 bg-white/80 backdrop-blur-md"
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             variants={overlayVariants}
             initial="hidden"
             animate="visible"
@@ -225,8 +225,8 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
             aria-modal="true"
             aria-labelledby="creator-modal-heading"
             className={cn(
-              'relative z-10 w-full max-w-2xl h-3/4 overflow-y-auto rounded-3xl border border-gray-200',
-              'bg-white shadow-[0_25px_60px_-15px_rgba(0,0,0,0.15)] backdrop-blur-sm',
+              'relative z-10 w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl border-2 border-gray-100',
+              'bg-white shadow-2xl shadow-gray-900/10',
               'px-6 py-8 sm:px-10 sm:py-10 text-left'
             )}
             variants={dialogVariants}
@@ -238,79 +238,79 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
               <button
                 type="button"
                 onClick={onClose}
-                className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-200 bg-gray-50 text-gray-500 transition-all duration-200 hover:bg-gray-100 hover:text-gray-700 hover:border-gray-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-100 text-gray-500 transition-all duration-200 hover:bg-gray-200 hover:text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 aria-label="Close"
               >
                 <X className="h-4 w-4" aria-hidden="true" />
               </button>
             </div>
 
-            <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white shadow-lg shadow-indigo-200/50">
-                <svg
-                  className="h-6 w-6"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M12 3a9 9 0 100 18 9 9 0 000-18zM9.75 12a2.25 2.25 0 114.5 0 2.25 2.25 0 01-4.5 0z"
-                    fill="currentColor"
-                  />
-                  <path
-                    d="M12 5.25a6.75 6.75 0 014.144 12.022 4.5 4.5 0 00-8.288 0A6.75 6.75 0 0112 5.25z"
-                    fill="currentColor"
-                    opacity={0.65}
-                  />
-                </svg>
+            <div className="flex flex-col gap-4">
+              <div className="flex items-start gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-600 to-indigo-600 text-white shadow-xl shadow-purple-500/20">
+                  <svg
+                    className="h-6 w-6"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 3a9 9 0 100 18 9 9 0 000-18zM9.75 12a2.25 2.25 0 114.5 0 2.25 2.25 0 01-4.5 0z"
+                      fill="currentColor"
+                    />
+                    <path
+                      d="M12 5.25a6.75 6.75 0 014.144 12.022 4.5 4.5 0 00-8.288 0A6.75 6.75 0 0112 5.25z"
+                      fill="currentColor"
+                      opacity={0.7}
+                    />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h2
+                    id="creator-modal-heading"
+                    className="text-2xl font-bold text-gray-900 sm:text-3xl font-display leading-tight"
+                  >
+                    Get a ready-to-activate creator list in 24 hours
+                  </h2>
+                </div>
               </div>
-              <div>
-              
-                <h2
-                  id="creator-modal-heading"
-                  className="mt-1 text-lg font-bold font-display text-gray-900 sm:text-2xl"
-                >
-                  Get a ready-to-activate creator list in 24 hours
-                </h2>
-              </div>
+              <p className="text-base leading-relaxed text-gray-600 font-sans">
+                Paste your site, set your niche, and we'll surface verified creators already moving product for audiences like yours. You get attribution-ready profiles and outreach sequences without lifting a finger.
+              </p>
             </div>
-
-            <p className="mt-6 text-md leading-relaxed text-gray-600 sm:text-md font-sans">
-              Paste your site, set your niche, and we will surface verified creators already moving product for audiences like yours. You get attribution-ready profiles and outreach sequences without lifting a finger.
-            </p>
 
             {submissionState === 'success' ? (
               <div className="mt-8 flex flex-col gap-6">
-                <div className="flex items-center gap-3">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 via-teal-500 to-sky-500 text-white shadow-lg shadow-emerald-200/50">
-                    <Check className="h-5 w-5" aria-hidden="true" />
+                <div className="flex items-start gap-4">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 text-white shadow-xl shadow-green-500/20">
+                    <Check className="h-6 w-6" aria-hidden="true" />
                   </span>
-                  <div>
-                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-600">
-                      You&apos;re on the list
+                  <div className="flex-1">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-green-600 mb-1">
+                      Success
                     </p>
-                    <h3 className="mt-1 text-xl font-bold font-display text-gray-900 sm:text-2xl">
-                      We&apos;ll send your curated creators next
+                    <h3 className="text-xl font-bold text-gray-900 sm:text-2xl font-display">
+                      You're on the list!
                     </h3>
+                    <p className="mt-2 text-base leading-relaxed text-gray-600 font-sans">
+                      Our team is already lining up vetted partners. Expect your inbox at <span className="font-medium text-gray-900">{sanitizedEmail || 'your email'}</span> to get a personalized list with outreach scripts within 24 hours.
+                    </p>
                   </div>
                 </div>
-                <p className="text-md leading-relaxed text-gray-600 font-sans">
-                  Our team is already lining up vetted partners. Expect your inbox at {sanitizedEmail || 'your email'} to get a personalized list with outreach scripts within 24 hours.
-                </p>
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
                   <Button
                     type="button"
                     onClick={() => {
                       onClose()
                     }}
-                    className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg shadow-indigo-200/50 transition-all hover:shadow-xl hover:shadow-indigo-300/50"
+                    className="h-12 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-medium shadow-xl shadow-purple-500/25 transition-all duration-200 hover:shadow-2xl hover:shadow-purple-500/30 hover:scale-[1.02]"
                   >
                     Back to the site
                   </Button>
                   <button
                     type="button"
                     onClick={() => resetFormState({ shouldFocus: true })}
-                    className="text-sm font-medium text-gray-500 transition-colors duration-200 hover:text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                    className="h-12 px-6 text-sm font-medium text-gray-600 transition-all duration-200 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                   >
                     Submit another request
                   </button>
@@ -318,19 +318,19 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-6">
-                <div className="flex flex-col gap-5">
+                <div className="flex flex-col gap-6">
                   <div className="flex flex-col gap-2">
                     <label
                       htmlFor="modal-website"
-                      className="text-sm font-medium text-gray-700"
+                      className="text-sm font-semibold text-gray-900"
                     >
-                      Website
+                      Your Website
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
                         <span
                           aria-hidden="true"
-                          className="text-sm font-medium text-gray-400"
+                          className="text-sm font-medium text-gray-500"
                         >
                           https://
                         </span>
@@ -348,18 +348,18 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
                           setWebsite(event.target.value.replace(/^https?:\/\//i, ''))
                         }
                         className={cn(
-                          'w-full h-12 rounded-xl bg-gray-50 pl-20 pr-4 text-gray-900 placeholder:text-gray-400',
-                          'focus:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white transition-colors',
-                          'border text-sm',
+                          'w-full h-12 rounded-lg bg-white pl-20 pr-4 text-gray-900 placeholder:text-gray-400',
+                          'focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-0 transition-all duration-200',
+                          'border-2 text-base font-medium',
                           websiteHasError
-                            ? 'border-red-500 focus:ring-red-500'
-                            : 'border-gray-200 hover:border-gray-300 focus:border-indigo-500 focus:ring-indigo-500',
-                          isSubmitting ? 'pointer-events-none opacity-80' : ''
+                            ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+                            : 'border-gray-200 hover:border-gray-300 focus:border-purple-500',
+                          isSubmitting ? 'pointer-events-none opacity-60' : ''
                         )}
                         disabled={isSubmitting}
                       />
                       {websiteErrorMessage && (
-                        <p className="mt-2 text-sm text-red-600">{websiteErrorMessage}</p>
+                        <p className="mt-2 text-sm text-red-600 font-medium">{websiteErrorMessage}</p>
                       )}
                     </div>
                   </div>
@@ -367,9 +367,9 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
                   <div className="flex flex-col gap-2">
                     <label
                       htmlFor="modal-work-email"
-                      className="text-sm font-medium text-gray-700"
+                      className="text-sm font-semibold text-gray-900"
                     >
-                      Work email
+                      Work Email
                     </label>
                     <input
                       id="modal-work-email"
@@ -382,73 +382,77 @@ export const CreatorListModal: FC<CreatorListModalProps> = ({
                       value={workEmail}
                       onChange={(event) => setWorkEmail(event.target.value)}
                       className={cn(
-                        'w-full h-12 rounded-xl bg-gray-50 px-4 text-gray-900 placeholder:text-gray-400',
-                        'focus:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white transition-colors',
-                        'border text-sm',
+                        'w-full h-12 rounded-lg bg-white px-4 text-gray-900 placeholder:text-gray-400',
+                        'focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-0 transition-all duration-200',
+                        'border-2 text-base font-medium',
                         emailHasError
-                          ? 'border-red-500 focus:ring-red-500'
-                          : 'border-gray-200 hover:border-gray-300 focus:border-indigo-500 focus:ring-indigo-500',
-                        isSubmitting ? 'pointer-events-none opacity-80' : ''
+                          ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+                          : 'border-gray-200 hover:border-gray-300 focus:border-purple-500',
+                        isSubmitting ? 'pointer-events-none opacity-60' : ''
                       )}
                       disabled={isSubmitting}
                     />
                     {emailErrorMessage && (
-                      <p className="mt-2 text-sm text-red-600">{emailErrorMessage}</p>
+                      <p className="mt-2 text-sm text-red-600 font-medium">{emailErrorMessage}</p>
                     )}
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-3">
                   <Button
                     type="submit"
-                    className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg shadow-indigo-200/50 transition-all hover:shadow-xl hover:shadow-indigo-300/50 disabled:opacity-50 disabled:shadow-none"
+                    className="h-12 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-medium text-base shadow-xl shadow-purple-500/25 transition-all duration-200 hover:shadow-2xl hover:shadow-purple-500/30 hover:scale-[1.02] disabled:opacity-50 disabled:shadow-none disabled:hover:scale-100"
                     disabled={isSubmitDisabled}
                   >
                     {isSubmitting ? (
                       <span className="flex items-center justify-center gap-2">
-                        <span className="inline-flex h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" aria-hidden="true" />
-                        Sending...
+                        <span className="inline-flex h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" aria-hidden="true" />
+                        Sending your request...
                       </span>
                     ) : (
-                      'Get my creator list'
+                      'Get My Creator List'
                     )}
                   </Button>
                   <button
                     type="button"
                     onClick={onClose}
-                    className="text-sm font-medium text-gray-500 transition-colors duration-200 hover:text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                    className="h-10 text-sm font-medium text-gray-600 transition-all duration-200 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                     disabled={isSubmitting}
                   >
-                    No thanks
+                    Maybe later
                   </button>
                   {submissionState === 'error' && submissionError && (
-                    <p className="text-sm text-red-600">{submissionError}</p>
+                    <div className="mt-2 p-3 rounded-lg bg-red-50 border border-red-200">
+                      <p className="text-sm text-red-800 font-medium">{submissionError}</p>
+                    </div>
                   )}
                 </div>
               </form>
             )}
 
-            <div className="mt-10 rounded-2xl border border-gray-200 bg-gray-50/70 px-6 py-6 sm:px-8 sm:py-7">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-gray-500">
-                After you connect
+            <div className="mt-10 rounded-2xl border-2 border-gray-100 bg-gradient-to-br from-gray-50 to-white px-6 py-6 sm:px-8 sm:py-7">
+              <p className="text-xs font-semibold uppercase tracking-wider text-purple-600">
+                What You'll Receive
               </p>
-              <h3 className="mt-2 text-xl font-bold font-display text-gray-900 sm:text-2xl">
-                What lands in your inbox
+              <h3 className="mt-2 text-xl font-bold text-gray-900 sm:text-2xl font-display">
+                Your personalized creator list includes:
               </h3>
               <ul className="mt-5 space-y-4 text-left">
                 {inboxHighlights.map((item) => (
                   <li key={item} className="flex items-start gap-3">
-                    <span className="mt-1 flex h-7 w-7 flex-none items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white shadow-md shadow-indigo-200/50">
+                    <span className="mt-0.5 flex h-7 w-7 flex-none items-center justify-center rounded-lg bg-gradient-to-br from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-500/20">
                       <Check className="h-4 w-4" aria-hidden="true" />
                     </span>
-                    <span className="text-md leading-relaxed text-gray-600 font-sans">
+                    <span className="text-base leading-relaxed text-gray-700 font-sans">
                       {item}
                     </span>
                   </li>
                 ))}
               </ul>
-              <div className="mt-5 rounded-xl border border-dashed border-gray-300 bg-white/70 px-4 py-3 text-sm text-gray-600 font-sans">
-                Optional: we run outreach for you.
+              <div className="mt-6 rounded-lg border-2 border-dashed border-purple-200 bg-purple-50 px-4 py-3">
+                <p className="text-sm font-medium text-purple-900">
+                  <span className="font-semibold">Bonus:</span> Let us handle the outreach for you
+                </p>
               </div>
             </div>
           </motion.div>

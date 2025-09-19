@@ -146,6 +146,26 @@
     overflow-x: auto;
   }
 
+  /* Wave Background Animations */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0) translateX(0) rotate(0deg);
+    }
+    25% {
+      transform: translateY(-10px) translateX(5px) rotate(1deg);
+    }
+    50% {
+      transform: translateY(5px) translateX(-5px) rotate(-1deg);
+    }
+    75% {
+      transform: translateY(-5px) translateX(10px) rotate(0.5deg);
+    }
+  }
+
+  .animate-float {
+    animation: float 20s ease-in-out infinite;
+  }
+
   /* Responsive typography - more compact */
   h1 {
     @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl;
@@ -227,6 +247,46 @@
 
   .skeleton-button {
     @apply h-10 px-4 bg-gray-200 rounded-lg animate-pulse;
+  }
+
+  /* Premium background animations */
+  @keyframes shimmer-slow {
+    0% {
+      transform: translateX(-100%) translateY(-100%);
+    }
+    100% {
+      transform: translateX(100%) translateY(100%);
+    }
+  }
+
+  .animate-shimmer-slow {
+    animation: shimmer-slow 15s ease-in-out infinite;
+  }
+
+  @keyframes float-slow {
+    0%, 100% {
+      transform: translateY(0) translateX(0);
+    }
+    33% {
+      transform: translateY(-20px) translateX(10px);
+    }
+    66% {
+      transform: translateY(10px) translateX(-5px);
+    }
+  }
+
+  .animate-float-slow {
+    animation: float-slow 20s ease-in-out infinite;
+  }
+
+  .animate-float-delayed {
+    animation: float-slow 20s ease-in-out infinite;
+    animation-delay: 5s;
+  }
+
+  /* Radial gradient utility */
+  .bg-radial-gradient {
+    background: radial-gradient(ellipse at center, var(--tw-gradient-stops));
   }
 
   /* Ensure minimum touch target size on mobile */
