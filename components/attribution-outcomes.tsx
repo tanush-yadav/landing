@@ -1,12 +1,18 @@
 import { DashboardOverview } from '@/components/dashboard-overview'
 import { animations } from '@/lib/design-system/patterns'
 import { motion } from 'framer-motion'
+import { WaveBackground } from '@/components/ui/wave-background'
 
 export default function AttributionOutcomes() {
   return (
-    <section className="relative pt-12 sm:pt-16 lg:pt-20 pb-8 sm:pb-10 lg:pb-12 overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-50/50 via-white to-white pointer-events-none" />
+    <WaveBackground
+      variant="section"
+      opacity={0.06}
+      rotate={5}
+      mask="fadeBottom"
+      overlayColor="gradient"
+    >
+      <section className="relative pt-12 sm:pt-16 lg:pt-20 pb-8 sm:pb-10 lg:pb-12 overflow-hidden">
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
@@ -29,6 +35,7 @@ export default function AttributionOutcomes() {
           <DashboardOverview />
         </div>
       </div>
-    </section>
+      </section>
+    </WaveBackground>
   )
 }

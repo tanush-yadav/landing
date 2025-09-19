@@ -52,21 +52,21 @@ const socialLinks = [
 
 export function Footer() {
   return (
-    <footer className="relative bg-gradient-to-b from-gray-50 to-white border-t border-gray-200">
-      {/* Background pattern */}
-      <div className="absolute inset-0 opacity-[0.03]">
+    <footer className="relative bg-gradient-to-b from-slate-50/50 to-white border-t border-slate-200/50">
+      {/* Premium subtle pattern */}
+      <div className="absolute inset-0 opacity-[0.02]">
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.5'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.3'%3E%3Cpath d='M20 20v-2h-2v2h-2v2h2v2h2v-2h2v-2h-2zm0-20V0h-2v2h-2v2h2v2h2V4h2V2h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
           }}
         />
       </div>
 
-      {/* Gradient accent */}
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
+      {/* Premium gradient accent */}
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-slate-300/50 to-transparent" />
 
-      <div className="relative container mx-auto px-4 py-16">
+      <div className="relative container mx-auto px-6 py-20">
         <div className="grid grid-cols-1 lg:grid-cols-6 gap-8 lg:gap-12">
           {/* Brand Column */}
           <div className="lg:col-span-2 space-y-6">
@@ -76,42 +76,42 @@ export function Footer() {
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
             >
-              {/* Logo */}
-              <Link href="/" className="inline-flex items-center gap-2 group">
+              {/* Premium Logo */}
+              <Link href="/" className="inline-flex items-center gap-3 group">
                 <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg blur-md opacity-20 group-hover:opacity-30 transition-opacity" />
-                  <div className="relative bg-gradient-to-br from-blue-600 to-purple-600 text-white p-2 rounded-lg">
-                    <Sparkles className="w-6 h-6" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-slate-500 to-slate-700 rounded-xl blur-xl opacity-10 group-hover:opacity-20 transition-all duration-300" />
+                  <div className="relative bg-slate-900 text-white p-2.5 rounded-xl shadow-premium">
+                    <Sparkles className="w-5 h-5" />
                   </div>
                 </div>
-                <span className="text-2xl font-bold text-gray-900">Cintra</span>
+                <span className="text-2xl font-semibold text-slate-900 tracking-tight">Cintra</span>
               </Link>
 
-              {/* Tagline */}
-              <p className="text-gray-600 mt-4 leading-relaxed">
+              {/* Premium Tagline */}
+              <p className="text-slate-600 mt-6 leading-relaxed text-base">
                 AI employees that join your team and get work done with agentic
                 workflows.
               </p>
 
-              {/* Contact Info */}
-              <div className="space-y-3 text-sm">
+              {/* Premium Contact Info */}
+              <div className="space-y-4 text-sm">
                 <a
                   href="mailto:hello@cintra.run"
-                  className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors"
+                  className="flex items-center gap-2.5 text-slate-600 hover:text-slate-900 transition-all duration-200 group"
                 >
-                  <Mail className="w-4 h-4" />
-                  hello@cintra.run
+                  <Mail className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                  <span className="font-medium">hello@cintra.run</span>
                 </a>
                 <a
                   href="tel:+1234567890"
-                  className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors"
+                  className="flex items-center gap-2.5 text-slate-600 hover:text-slate-900 transition-all duration-200 group"
                 >
-                  <Phone className="w-4 h-4" />
-                  +1 (234) 567-890
+                  <Phone className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                  <span className="font-medium">+1 (234) 567-890</span>
                 </a>
-                <div className="flex items-start gap-2 text-gray-600">
+                <div className="flex items-start gap-2.5 text-slate-600">
                   <MapPin className="w-4 h-4 mt-0.5" />
-                  <span>
+                  <span className="leading-relaxed">
                     123 Innovation Drive
                     <br />
                     San Francisco, CA 94105

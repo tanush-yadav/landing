@@ -7,6 +7,7 @@ import Hero from '@/components/hero'
 import { CTASection } from '@/components/cta-section'
 import MovingTestimonials from '@/components/moving-testimonials'
 import { CreatorListModal } from '@/components/creator-list-modal'
+import { WaveDivider } from '@/components/ui/wave-divider'
 
 // Lazy load heavy components
 const InteractiveDemoWrapper = dynamic(
@@ -142,6 +143,8 @@ export default function Home() {
         />
       </section>
 
+      <WaveDivider variant="subtle" position="bottom" />
+
       <section
         data-section="interactive-demo"
         className="mt-8 sm:mt-10 md:mt-12"
@@ -154,12 +157,16 @@ export default function Home() {
         />
       </section>
 
+      <WaveDivider variant="accent" position="bottom" />
+
       <section
         data-section="moving-testimonials"
         className="mt-8 sm:mt-10 md:mt-12"
       >
         <MovingTestimonials />
       </section>
+
+      <WaveDivider variant="subtle" position="top" />
 
       <section
         data-section="attribution-outcomes"
@@ -168,9 +175,13 @@ export default function Home() {
         <AttributionOutcomes />
       </section>
 
+      <WaveDivider variant="accent" position="bottom" />
+
       <section data-section="teams" className="mt-8 sm:mt-10 md:mt-12">
         <TeamsSection onOpenModal={handleOpenModal} />
       </section>
+
+      <WaveDivider variant="strong" position="top" />
 
       <section data-section="cta-section" className="mt-8 sm:mt-10 md:mt-12">
         <CTASection onOpenModal={handleOpenModal} />

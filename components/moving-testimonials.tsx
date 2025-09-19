@@ -3,6 +3,7 @@
 import { useRef } from 'react'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
+import { WaveBackground } from '@/components/ui/wave-background'
 
 interface Company {
   name: string
@@ -33,15 +34,22 @@ const MovingTestimonials = ({
   const scrollRef = useRef<HTMLDivElement>(null)
 
   return (
-    <section
-      className={cn(
-        "relative py-6 sm:py-8 overflow-hidden bg-white/50 backdrop-blur-sm",
-        className
-      )}
-      aria-label="Company testimonials"
+    <WaveBackground
+      variant="testimonial"
+      opacity={0.04}
+      rotate={3}
+      blur={true}
+      mask="none"
+      overlayColor="white"
+      overlayOpacity={0.85}
     >
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-r from-slate-50/50 via-transparent to-slate-50/50" />
+      <section
+        className={cn(
+          "relative py-6 sm:py-8 overflow-hidden",
+          className
+        )}
+        aria-label="Company testimonials"
+      >
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Title */}
@@ -111,7 +119,8 @@ const MovingTestimonials = ({
         </div>
       </div>
 
-    </section>
+      </section>
+    </WaveBackground>
   )
 }
 

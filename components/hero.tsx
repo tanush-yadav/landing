@@ -6,6 +6,7 @@ import { Search } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
+import { WaveBackground } from '@/components/ui/wave-background'
 
 // Platform tasks for YouTube, TikTok Shop, and Shopify
 const floatingPills = [
@@ -190,52 +191,25 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
   ])
 
   return (
-    <section
-      id="hero"
-      className="relative flex items-center justify-center overflow-hidden px-4 pt-28 pb-8 sm:pt-36 sm:pb-10"
+    <WaveBackground
+      variant="hero"
+      overlayColor="gradient"
+      mask="fadeBottom"
     >
-      {/* Premium Purple Wave Background - Base Layer */}
-      <div className="absolute inset-0 -z-10">
-        <Image
-          src="/images/bg.png"
-          alt=""
-          fill
-          priority
-          quality={100}
-          className="object-cover object-center scale-110"
-          sizes="100vw"
-        />
-        {/* Premium gradient overlay for depth and sophistication */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/85 to-white/95" />
-        {/* Radial gradient for focal point */}
-        <div className="absolute inset-0 bg-radial-gradient from-transparent via-white/20 to-white/60" />
-      </div>
-
-      {/* Premium Glass Morphism Layer */}
-      <div className="absolute inset-0 -z-10">
-        {/* Subtle noise texture for premium feel */}
-        <div
-          className="absolute inset-0 opacity-[0.015]"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-            backgroundRepeat: 'repeat',
-            backgroundSize: '128px 128px'
-          }}
-        />
-        {/* Premium shimmer effect */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-purple-100/5 to-transparent animate-shimmer-slow" />
-      </div>
-
-      {/* Enhanced Premium Orbs with Purple Accents */}
-      <div className="absolute inset-0 overflow-hidden -z-10">
-        {/* Purple accent orbs matching the wave theme */}
-        <div className="absolute -top-44 -right-24 h-96 w-96 rounded-full bg-gradient-to-br from-purple-300/20 via-purple-200/10 to-transparent blur-[120px]" />
-        <div className="absolute -bottom-56 -left-24 h-80 w-80 rounded-full bg-gradient-to-tr from-indigo-300/15 via-purple-200/10 to-transparent blur-[100px]" />
-        <div className="absolute top-1/2 right-[15%] h-64 w-64 rounded-full bg-gradient-to-bl from-purple-200/15 to-transparent blur-[80px]" />
-        {/* Floating light particles for premium depth */}
-        <div className="absolute top-[20%] left-[10%] h-48 w-48 rounded-full bg-gradient-to-br from-white/30 to-transparent blur-3xl animate-float-slow" />
-        <div className="absolute bottom-[30%] right-[20%] h-36 w-36 rounded-full bg-gradient-to-tl from-white/25 to-transparent blur-3xl animate-float-delayed" />
-      </div>
+      <section
+        id="hero"
+        className="relative flex items-center justify-center overflow-hidden px-4 pt-28 pb-8 sm:pt-36 sm:pb-10"
+      >
+        {/* Enhanced Premium Orbs with Purple Accents */}
+        <div className="absolute inset-0 overflow-hidden -z-10">
+          {/* Purple accent orbs matching the wave theme */}
+          <div className="absolute -top-44 -right-24 h-96 w-96 rounded-full bg-gradient-to-br from-purple-300/20 via-purple-200/10 to-transparent blur-[120px]" />
+          <div className="absolute -bottom-56 -left-24 h-80 w-80 rounded-full bg-gradient-to-tr from-indigo-300/15 via-purple-200/10 to-transparent blur-[100px]" />
+          <div className="absolute top-1/2 right-[15%] h-64 w-64 rounded-full bg-gradient-to-bl from-purple-200/15 to-transparent blur-[80px]" />
+          {/* Floating light particles for premium depth */}
+          <div className="absolute top-[20%] left-[10%] h-48 w-48 rounded-full bg-gradient-to-br from-white/30 to-transparent blur-3xl animate-float-slow" />
+          <div className="absolute bottom-[30%] right-[20%] h-36 w-36 rounded-full bg-gradient-to-tl from-white/25 to-transparent blur-3xl animate-float-delayed" />
+        </div>
 
       {/* Premium content overlay for optimal readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/5 to-transparent -z-10" />
@@ -303,13 +277,15 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
                     key={pill.id}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.2, delay: 0.05 * index }}
+                    transition={{ duration: 0.3, delay: 0.08 * index, ease: [0.16, 1, 0.3, 1] }}
                     onClick={() => handlePillClick(pill)}
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
                     className={cn(
-                      'flex items-center justify-between rounded-lg border p-1.5 sm:p-2 transition-all duration-200 cursor-pointer',
+                      'flex items-center justify-between rounded-xl border p-3 sm:p-3.5 transition-all duration-200 cursor-pointer group',
                       selectedPill === pill.id
-                        ? 'border-slate-300 bg-slate-100 shadow-sm'
-                        : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50',
+                        ? 'border-slate-900/10 bg-slate-50/80 shadow-sm'
+                        : 'border-slate-200/60 bg-white/60 hover:border-slate-300/80 hover:bg-white/80 hover:shadow-sm',
                       isDemoRunning && 'cursor-not-allowed opacity-60'
                     )}
                   >
@@ -401,50 +377,56 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
             </div>
           </div>
 
-          {/* Trust Indicators */}
+          {/* Premium Trust Indicators */}
           <div
             className={cn(
-              'mt-6 flex flex-wrap items-center justify-center gap-3 px-4 text-xs text-slate-500 opacity-0 sm:mt-8 sm:gap-4',
-              isVisible && 'animate-fade-in animation-delay-600'
+              'mt-12 flex flex-wrap items-center justify-center gap-6 px-4 text-sm text-slate-600 opacity-0 sm:mt-16',
+              isVisible && 'animate-fade-up animation-delay-600'
             )}
           >
-            <div className="flex items-center gap-1.5">
-              <svg
-                className="h-4 w-4 text-emerald-500"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span>Autonomous negotiation</span>
+            <div className="flex items-center gap-2.5 group cursor-default">
+              <div className="p-2 rounded-lg bg-green-50/80 backdrop-blur-sm group-hover:bg-green-50 transition-colors">
+                <svg
+                  className="h-4 w-4 text-green-600"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+              <span className="font-medium">Autonomous negotiation</span>
             </div>
-            <div className="flex items-center gap-1.5">
-              <svg
-                className="h-4 w-4 text-blue-500"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span>Autonomous attribution</span>
+            <div className="flex items-center gap-2.5 group cursor-default">
+              <div className="p-2 rounded-lg bg-blue-50/80 backdrop-blur-sm group-hover:bg-blue-50 transition-colors">
+                <svg
+                  className="h-4 w-4 text-blue-600"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+              <span className="font-medium">Autonomous attribution</span>
             </div>
-            <div className="flex items-center gap-1.5">
-              <svg
-                className="h-4 w-4 text-purple-500"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
-              </svg>
-              <span>Autonomous management</span>
+            <div className="flex items-center gap-2.5 group cursor-default">
+              <div className="p-2 rounded-lg bg-purple-50/80 backdrop-blur-sm group-hover:bg-purple-50 transition-colors">
+                <svg
+                  className="h-4 w-4 text-purple-600"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                </svg>
+              </div>
+              <span className="font-medium">Autonomous management</span>
             </div>
           </div>
         </div>
@@ -482,7 +464,8 @@ const Hero = ({ onDemoTrigger, isDemoRunning = false, onOpenModal, onSearchQuery
           </div>
         </div>
       </div> */}
-    </section>
+      </section>
+    </WaveBackground>
   )
 }
 

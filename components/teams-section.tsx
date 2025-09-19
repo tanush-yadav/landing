@@ -4,6 +4,7 @@ import React from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { getAgentAvatar } from './agent-avatars'
+import { WaveBackground } from '@/components/ui/wave-background'
 // import { AgentCardSkeleton } from './agent-card-skeleton'
 import {
   Code2,
@@ -401,6 +402,22 @@ const TeamMemberCard = ({
           'transition-all duration-300'
         )}
       >
+        {/* Purple Wave Accent - Subtle */}
+        <div className="absolute inset-0 opacity-[0.02] pointer-events-none">
+          <Image
+            src="/images/bg.png"
+            alt=""
+            fill
+            className="object-cover scale-150"
+            style={{
+              transform: `scale(1.5) rotate(${index * 45}deg)`,
+              maskImage: 'radial-gradient(ellipse at center, black 30%, transparent 70%)',
+              WebkitMaskImage: 'radial-gradient(ellipse at center, black 30%, transparent 70%)'
+            }}
+            quality={50}
+          />
+        </div>
+
         {/* Gradient Background Accent */}
         <div
           className={cn(
@@ -711,23 +728,28 @@ export default function TeamsSection({
   }
 
   return (
-    <section className="relative pt-20 sm:pt-24 lg:pt-28 pb-10 sm:pb-12 lg:pb-14 overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-gradient-to-b from-neutral-50/50 via-white to-white pointer-events-none" />
+    <WaveBackground
+      variant="feature"
+      opacity={0.12}
+      rotate={-15}
+      overlayColor="purple-gradient"
+      mask="radial"
+    >
+      <section className="relative pt-20 sm:pt-24 lg:pt-28 pb-10 sm:pb-12 lg:pb-14 overflow-hidden">
 
-      {/* Floating Orbs for Depth */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          className="absolute top-20 left-10 w-64 h-64 bg-blue-200 rounded-full blur-3xl opacity-20"
-          animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
-          transition={{ duration: 10, repeat: Infinity }}
-        />
-        <motion.div
-          className="absolute bottom-20 right-10 w-96 h-96 bg-purple-200 rounded-full blur-3xl opacity-20"
-          animate={{ x: [0, -30, 0], y: [0, 20, 0] }}
-          transition={{ duration: 12, repeat: Infinity }}
-        />
-      </div>
+        {/* Additional animated orbs for depth */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <motion.div
+            className="absolute top-20 left-10 w-64 h-64 bg-blue-200/30 rounded-full blur-3xl"
+            animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
+            transition={{ duration: 10, repeat: Infinity }}
+          />
+          <motion.div
+            className="absolute bottom-20 right-10 w-96 h-96 bg-purple-200/30 rounded-full blur-3xl"
+            animate={{ x: [0, -30, 0], y: [0, 20, 0] }}
+            transition={{ duration: 12, repeat: Infinity }}
+          />
+        </div>
 
       <div className="relative max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">
         {/* Section Header */}
@@ -893,6 +915,7 @@ export default function TeamsSection({
           ))}
         </div>
       </div>
-    </section>
+      </section>
+    </WaveBackground>
   )
 }
