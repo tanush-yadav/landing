@@ -4,6 +4,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://cintra.run'
   const routes = [
     '',
+    '/fulfillment',
     '/pricing',
     '/pricing#request-demo',
     '/pricing#contact-sales',
