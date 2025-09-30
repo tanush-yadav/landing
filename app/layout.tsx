@@ -44,18 +44,18 @@ export const metadata: Metadata = {
     shortcut: '/images/logo.png',
   },
   openGraph: {
-    title: 'Marketing stupid easy',
+    title: 'Double Your AI Visibility in 8 Weeks | Cintra',
     description:
-      'Agentic workflows that make marketing stupid easy.',
-    url: 'https://cintra.run',
+      'Double your AI visibility in 8 weeks. Get found in ChatGPT, Perplexity, Claude, and Gemini search results with content built from your team\'s expertise.',
+    url: 'https://cintra.run/ai-visibility',
     siteName: 'Cintra',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Marketing stupid easy',
+    title: 'Double Your AI Visibility in 8 Weeks | Cintra',
     description:
-      'Agentic workflows that make marketing stupid easy.',
+      'Double your AI visibility in 8 weeks. Get found in ChatGPT, Perplexity, Claude, and Gemini search results with content built from your team\'s expertise.',
   },
 }
 
