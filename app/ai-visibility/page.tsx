@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Double Your AI Visibility in 6 weeks | Cintra',
+  title: 'Double Your AI Visibility in 6 Weeks | Cintra',
   description: 'AI search is replacing Google. Is your brand showing up, or are your competitors stealing recommendations? Get a complete AI visibility system with dashboard tracking, 12 high-intent articles per month, and measurable results across ChatGPT, Perplexity, Claude, and Gemini.',
 };
 
@@ -107,7 +107,7 @@ export default function AIVisibilityLanding() {
               <span className="text-black">Double Your AI Visibility</span>
             </h1>
             <p className="text-gray-400 text-3xl sm:text-4xl md:text-5xl font-normal mb-8 leading-[1.15]" style={{ letterSpacing: '-0.02em' }}>
-              in 6 weeks
+              in 6 Weeks
             </p>
           </ScrollReveal>
           
@@ -117,7 +117,7 @@ export default function AIVisibilityLanding() {
               or are your competitors stealing recommendations?
             </p>
           </ScrollReveal>
-
+8
           
           <ScrollReveal delay={0.4}>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-8">
@@ -358,7 +358,7 @@ export default function AIVisibilityLanding() {
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
               <p className="text-base text-gray-600 leading-relaxed">
-                in 6 weeks,  you&apos;ll see measurable results across all key AI platforms
+                in 6 Weeks,  you&apos;ll see measurable results across all key AI platforms
               </p>
             </ScrollReveal>
           </div>
