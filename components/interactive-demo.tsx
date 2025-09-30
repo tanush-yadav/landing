@@ -532,7 +532,7 @@ const InteractiveDemo = memo(
           author: agentName,
           avatar: agentAvatar,
           timestamp: '4:15 PM',
-          content: `Amazing  —  consider it booked. I’ll send the brief right after this sequence finishes and loop in our creative ops.`,
+          content: `Amazing , consider it booked. I’ll send the brief right after this sequence finishes and loop in our creative ops.`,
           delay: 900,
         },
       ]
@@ -549,7 +549,7 @@ const InteractiveDemo = memo(
         {
           id: 'email-hot',
           status: 'sent',
-          subject: '🔥 Hot leads  —  Schedule intro calls',
+          subject: '🔥 Hot leads , Schedule intro calls',
           preview: '8 buyers received the calendar link + tailored ROI snippet.',
           timestamp: formatTime(0),
           delay: 600,
@@ -557,7 +557,7 @@ const InteractiveDemo = memo(
         {
           id: 'email-warm',
           status: 'sending',
-          subject: 'Warm list  —  Campaign bundle follow up',
+          subject: 'Warm list , Campaign bundle follow up',
           preview: '21 leads queued with dynamic product highlights and case study.',
           timestamp: formatTime(2),
           delay: 700,
@@ -565,7 +565,7 @@ const InteractiveDemo = memo(
         {
           id: 'email-nurture',
           status: 'scheduled',
-          subject: 'Nurture drip  —  Webinar recap sequence',
+          subject: 'Nurture drip , Webinar recap sequence',
           preview: '14 prospects added to nurture flow with personalized CTA.',
           timestamp: 'Tomorrow 9:00 AM',
           delay: 900,

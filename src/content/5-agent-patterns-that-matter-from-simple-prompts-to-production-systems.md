@@ -14,7 +14,7 @@ featured: true
 
 # The 5 Agent Patterns That Matter: From Simple Prompts to Production Systems
 
-**I burned three weeks building an orchestration nightmare. Then I shipped 100 images in 48 hours with a for-loop.** Here's why complexity is your enemy in agent systems — and the exact pattern hierarchy that actually works.
+**I burned three weeks building an orchestration nightmare. Then I shipped 100 images in 48 hours with a for-loop.** Here's why complexity is your enemy in agent systems,and the exact pattern hierarchy that actually works.
 
 ## The Pattern Stack (Least to Most Complex)
 
@@ -24,7 +24,7 @@ featured: true
 4. **MCP wrappers** - Production-grade integration layer
 5. **Full applications** - Queues, observability, SLAs
 
-Patterns 3-5 seduce with elegance — patterns 1-2 ship products.
+Patterns 3-5 seduce with elegance,patterns 1-2 ship products.
 
 ## Pattern 1: Why Your First Agent Should Be You
 
@@ -39,7 +39,7 @@ Anchor here. Everything else builds on this foundation.
 - Generated 20 test images manually
 - Tracked acceptance rate (30% → 65%)
 - The breakthrough: switching from "professional" to "isometric" eliminated 70% of rejections
-- Stakeholders wanted consistency, not creativity — locked 4 reusable styles
+- Stakeholders wanted consistency, not creativity,locked 4 reusable styles
 
 ### Minimal Implementation
 
@@ -71,7 +71,7 @@ img = single_image(prompt)
 
 **When to use:** Repeated tasks, consistent output needs, team collaboration.
 
-Stable prompts become parameterized functions — agents wait.
+Stable prompts become parameterized functions,agents wait.
 
 ### Implementation with Tests
 
@@ -159,7 +159,7 @@ async def generate_all(themes):
 
 **When to use:** Multiple tools/teams need access, stable interface required.
 
-MCP transforms ad-hoc scripts into typed contracts. The power isn't intelligence — it's integration.
+MCP transforms ad-hoc scripts into typed contracts. The power isn't intelligence,it's integration.
 
 ### Minimal MCP Server
 
@@ -196,7 +196,7 @@ server.tool('generate_image', {
 
 **When to use:** SLAs, budgets, compliance, multiple teams.
 
-Production isn't about sophistication — it's about promises. Every component exists to keep one.
+Production isn't about sophistication,it's about promises. Every component exists to keep one.
 
 **Required components:**
 
@@ -258,9 +258,9 @@ Ask these questions in order. Ascend only when you can justify "yes."
 
 ## My 100-Image Sprint Timeline
 
-- **Hour 0-2:** Human-in-the-loop (30% → 65% acceptance — "corporate" became "isometric")
-- **Hour 3-5:** Reusable prompts (→ 85% acceptance — consistency wins)
-- **Hour 6-8:** Sub-agents (→ 92% acceptance, 68 images/min — Visual QA caught edge cases)
+- **Hour 0-2:** Human-in-the-loop (30% → 65% acceptance,"corporate" became "isometric")
+- **Hour 3-5:** Reusable prompts (→ 85% acceptance,consistency wins)
+- **Hour 6-8:** Sub-agents (→ 92% acceptance, 68 images/min,Visual QA caught edge cases)
 - **Week 2:** MCP wrapper for analytics CLI
 - **Month 1:** Full app with queues and review UI
 
@@ -287,7 +287,7 @@ Track these regardless of pattern:
 
 - **Start simple.** Most value comes from prompts and constraints.
 - **Reusable prompts with tests** solve 80% of problems.
-- **Sub-agents are surgical tools** — use when necessary.
+- **Sub-agents are surgical tools**,use when necessary.
 - **MCP/apps are about integration**, not intelligence.
 - **Earn your complexity.** Each step needs clear ROI.
 

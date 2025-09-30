@@ -17,7 +17,7 @@ linear_id: 'VOL-32'
 
 Sarah spent three hours every Monday routing 247 emails with 12 templates. Soul-crushing repetition that any algorithm could handle. When routine tasks consume **10+ hours weekly**, automation transforms from luxury to necessity.
 
-**68% of small businesses now harness AI daily** — a surge from 39% in 2024^[ref-1]. This 74% year-over-year growth signals a fundamental shift: the early adopter phase has ended. Speed now separates thriving businesses from those merely surviving.
+**68% of small businesses now harness AI daily**,a surge from 39% in 2024^[ref-1]. This 74% year-over-year growth signals a fundamental shift: the early adopter phase has ended. Speed now separates thriving businesses from those merely surviving.
 
 ## Sign #1: You Can Teach the Process in One Week
 
@@ -35,14 +35,14 @@ While documented processes provide the foundation, your existing data represents
 
 ## Sign #2: Data Hibernates in Your Systems
 
-Your QuickBooks harbors three years of purchasing patterns. Your CRM chronicles every customer touchpoint. This dormant intelligence — which **58% of small businesses now mine with AI**^[ref-2] — already contains tomorrow's strategy.
+Your QuickBooks harbors three years of purchasing patterns. Your CRM chronicles every customer touchpoint. This dormant intelligence,which **58% of small businesses now mine with AI**^[ref-2],already contains tomorrow's strategy.
 
 **Before:** 8-hour monthly reports across three systems
 **After:** 30 minutes including sanity checks
 
 Now I query: "Which clients are 45+ days late with open service tickets?" The AI surfaces the list, synthesizes email context, and ranks risk levels. **Spot-check 10% to capture 90% of value.**
 
-Sarah discovered this when her quarterly analysis shrank from a full day to a lunch break. The patterns were always there — AI just made them visible.
+Sarah discovered this when her quarterly analysis shrank from a full day to a lunch break. The patterns were always there,AI just made them visible.
 
 ## Sign #3: Your Team Says "I Wish We Had Time To..."
 
@@ -72,7 +72,7 @@ Quality elevated. Humans architected strategy while AI orchestrated production. 
 
 "Your competitor replied in an hour" transforms speed into competitive advantage.
 
-**Voice AI benchmark:** 150ms response time mimics human conversation^[ref-5]. Support satisfaction surges when first response plummets from 2 hours to 15 minutes — even with unchanged resolution times.
+**Voice AI benchmark:** 150ms response time mimics human conversation^[ref-5]. Support satisfaction surges when first response plummets from 2 hours to 15 minutes,even with unchanged resolution times.
 
 **Speed compounds because each improvement cascades through your entire operation:**
 
@@ -130,7 +130,7 @@ Premature automation triggers a cascade of failures:
 - Implementation: 30%
 - **Training/change management: 40%**^[ref-9]
 
-Skip training, sacrifice everything. Sarah learned this after her first attempt failed — she'd allocated 80% to software, 20% to implementation, zero to training.
+Skip training, sacrifice everything. Sarah learned this after her first attempt failed,she'd allocated 80% to software, 20% to implementation, zero to training.
 
 ## The 10-Hour Trigger
 
@@ -208,7 +208,7 @@ When this framework delivers 80% accuracy by Friday, automation becomes feasible
 **Month 2:** Team confidence builds, improvements surface organically
 **Month 3:** Production deployment or strategic termination crystallizes
 
-When you invest 40% in training, adoption transforms from hope to habit^[ref-9]. Sarah's team achieved 87% voluntary adoption by month four — because she prioritized understanding over implementation.
+When you invest 40% in training, adoption transforms from hope to habit^[ref-9]. Sarah's team achieved 87% voluntary adoption by month four,because she prioritized understanding over implementation.
 
 ## Managing Accuracy Expectations
 
@@ -244,7 +244,7 @@ But the metrics tell only half the story. The recovered time unleashed strategic
 
 Sarah's business grew 47% year-over-year with the same headcount. Not through working harder, but through automating the repetitive substrate that buried their potential.
 
-Your 10-hour trigger awaits. The question isn't whether to automate — it's whether you'll start with your strengths or stumble through your weaknesses.
+Your 10-hour trigger awaits. The question isn't whether to automate,it's whether you'll start with your strengths or stumble through your weaknesses.
 
 ---
 
