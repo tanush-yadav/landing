@@ -1,25 +1,31 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Metadata } from 'next';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { ScrollReveal } from '@/components/scroll-reveal';
 import { CountUp } from '@/components/count-up';
 import { ScrollProgress } from '@/components/scroll-progress';
-import { 
-  ArrowRight,  
-  CheckCircle2,  
-  XCircle,  
-  TrendingUp,  
-  Target,  
-  BarChart3, 
-  Eye, 
-  Users, 
-  Zap, 
-  FileText, 
+import {
+  ArrowRight,
+  CheckCircle2,
+  XCircle,
+  TrendingUp,
+  Target,
+  BarChart3,
+  Eye,
+  Users,
+  Zap,
+  FileText,
   LayoutDashboard
 } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: 'Double Your AI Visibility in 6 Weeks | Cintra',
+  description: 'AI search is replacing Google. Is your brand showing up, or are your competitors stealing recommendations? Get a complete AI visibility system with dashboard tracking, 12 high-intent articles per month, and measurable results across ChatGPT, Perplexity, Claude, and Gemini.',
+};
 
 export default function AIVisibilityLanding() {
   return (
@@ -31,10 +37,10 @@ export default function AIVisibilityLanding() {
         <div className="max-w-[1400px] mx-auto px-8 sm:px-16 lg:px-[20%] py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2">
-              <Image 
+              <Image
                 src="/images/logo.png" 
-                alt="Cintra" 
-                width={32} 
+                alt="Cintra"
+                width={32}
                 height={32}
                 className="w-8 h-8"
               />
@@ -89,26 +95,29 @@ export default function AIVisibilityLanding() {
               className="mb-8 border-red-500/30 text-red-600 bg-red-50/30 backdrop-blur-sm px-3 py-1 text-xs font-medium hover:bg-red-50/50 transition-all duration-200"
             >
               <span className="w-1.5 h-1.5 bg-red-500 rounded-full inline-block mr-2 animate-pulse"></span>
-              No cap
+              Hiring Now
             </Badge>
           </ScrollReveal>
           
           <ScrollReveal delay={0.1}>
-            <h1 
-              className="text-4xl sm:text-5xl md:text-6xl font-normal mb-8 leading-[1.15]" 
+            <h1
+              className="text-4xl sm:text-5xl md:text-6xl font-normal mb-4 leading-[1.15]"
               style={{ letterSpacing: '-0.02em',  fontWeight: 400 }}
             >
-              <span className="text-black">Double Your AI Visibility</span>{' '}
-              <span className="text-gray-400">in 8 Weeks</span>
+              <span className="text-black">Double Your AI Visibility</span>
             </h1>
+            <p className="text-gray-400 text-3xl sm:text-4xl md:text-5xl font-normal mb-8 leading-[1.15]" style={{ letterSpacing: '-0.02em' }}>
+              in 6 Weeks
+            </p>
           </ScrollReveal>
           
           <ScrollReveal delay={0.2}>
             <p className="text-base text-gray-600 mb-6 leading-relaxed">
-              AI search is replacing Google. Is your brand showing up, or are your competitors stealing recommendations?
+              AI search is replacing Google. Is your brand showing up,<br />
+              or are your competitors stealing recommendations?
             </p>
           </ScrollReveal>
-
+8
           
           <ScrollReveal delay={0.4}>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-8">
@@ -349,7 +358,7 @@ export default function AIVisibilityLanding() {
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
               <p className="text-base text-gray-600 leading-relaxed">
-                In 8 weeks,  you&apos;ll see measurable results across all key AI platforms
+                in 6 Weeks,  you&apos;ll see measurable results across all key AI platforms
               </p>
             </ScrollReveal>
           </div>
@@ -901,7 +910,7 @@ export default function AIVisibilityLanding() {
         <div className="max-w-[1400px] mx-auto px-8 sm:px-16 lg:px-[20%]">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
             <div>
-              <h3 className="text-sm font-semibold mb-4">AI search analytics<br />for marketing teams</h3>
+              <h3 className="text-sm font-semibold mb-4">Cintra</h3>
             </div>
             <div>
               <h4 className="text-xs font-semibold mb-4 text-gray-400">Product / Company</h4>

@@ -31,17 +31,17 @@ const fraunces = Fraunces({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://cintra.run'),
-  title: 'Marketing stupid easy',
+  title: 'Double Your AI Visibility in 8 Weeks | Cintra',
   description:
-    'Cintra builds agentic workflows that make marketing stupid easy.',
+    'Double your AI visibility in 8 weeks. Get found in ChatGPT, Perplexity, Claude, and Gemini search results with content built from your team\'s expertise. 12 articles + 2 product pages per month.',
   keywords:
-    'Cintra, agentic workflows, AI agents, automation, engineering automation, sales automation, content automation, operations automation, marketing automation',
+    'AI search visibility, ChatGPT SEO, AI content optimization, B2B SaaS marketing, AI search rankings, AI visibility dashboard, AI content strategy, AI marketing automation',
   alternates: {
-    canonical: 'https://cintra.run',
+    canonical: 'https://cintra.run/ai-visibility',
   },
   icons: {
-    icon: '/images/favicon.ico',
-    shortcut: '/images/favicon.ico',
+    icon: '/images/logo.png',
+    shortcut: '/images/logo.png',
   },
   openGraph: {
     title: 'Marketing stupid easy',
