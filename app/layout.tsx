@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter, Plus_Jakarta_Sans, Fraunces } from 'next/font/google'
+import { GeistSans } from 'geist/font/sans'
 import './globals.css'
 import '@/styles/blog-mobile.css'
 import Script from 'next/script'
@@ -72,7 +73,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${plusJakartaSans.variable} ${fraunces.variable}`}
+      className={`${GeistSans.variable} ${inter.variable} ${plusJakartaSans.variable} ${fraunces.variable}`}
       suppressHydrationWarning
     >
       <body className={`${inter.className}`}>
