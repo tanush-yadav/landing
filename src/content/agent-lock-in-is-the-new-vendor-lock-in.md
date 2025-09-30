@@ -14,9 +14,9 @@ I failed terribly at a migration recently.
 
 The task seemed straightforward: migrate from the sunsetting Assistants API to the Responses API. Change a client, update method names, ship by Monday.
 
-The reality shattered that assumption. **Thread IDs embedded throughout business logic**. **Tool payloads hardcoded to one provider's JSON format**. **Coordinator graphs imprisoned in framework-specific DSLs**. This wasn't an API migration—it was architectural surgery.
+The reality shattered that assumption. **Thread IDs embedded throughout business logic**. **Tool payloads hardcoded to one provider's JSON format**. **Coordinator graphs imprisoned in framework-specific DSLs**. This wasn't an API migration — it was architectural surgery.
 
-That's agent lock-in—a new architectural trap that compounds the complexity of traditional vendor dependencies with runtime behavior coupling.
+That's agent lock-in — a new architectural trap that compounds the complexity of traditional vendor dependencies with runtime behavior coupling.
 
 ## The Hidden Architecture Problem
 
@@ -77,9 +77,9 @@ def handle_support_ticket(ticket_id: str, model: ModelClient, state: StateStore,
     return result.final_text
 ```
 
-This architecture isolates vendor dependencies behind clean protocols. **ModelClient works with any provider**. **Tools expose standard JSON Schema**. **State lives in your infrastructure**—Postgres, Redis, S3—not vendor threads.
+This architecture isolates vendor dependencies behind clean protocols. **ModelClient works with any provider**. **Tools expose standard JSON Schema**. **State lives in your infrastructure** — Postgres, Redis, S3 — not vendor threads.
 
-The shift from trapped to portable isn't just code organization—it's reclaiming control over your application's brain.
+The shift from trapped to portable isn't just code organization — it's reclaiming control over your application's brain.
 
 ## Why Agent Lock-in Surpasses Database Lock-in
 
@@ -92,19 +92,19 @@ Database lock-in involved predictable challenges: SQL dialects, indexing strateg
 
 You're trapped.
 
-Interdependencies compound costs—agent migrations run 40-60% above traditional platform moves. Teams aren't just switching SDKs—they're untangling behavior, state, and tooling.
+Interdependencies compound costs — agent migrations run 40-60% above traditional platform moves. Teams aren't just switching SDKs — they're untangling behavior, state, and tooling.
 
-This architectural entanglement creates dependencies that dwarf traditional platform lock-in—here's what that means in production.
+This architectural entanglement creates dependencies that dwarf traditional platform lock-in — here's what that means in production.
 
 ## Real Costs in Production
 
 Industry data exposes the stakes:
 
-**[MIT's NANDA study found 95% of GenAI pilots fail](https://fortune.com/2025/08/18/mit-report-95-percent-generative-ai-pilots-at-companies-failing-cfo/)**. Projects implode at integration boundaries—state, tools, orchestration—rather than modeling challenges.
+**[MIT's NANDA study found 95% of GenAI pilots fail](https://fortune.com/2025/08/18/mit-report-95-percent-generative-ai-pilots-at-companies-failing-cfo/)**. Projects implode at integration boundaries — state, tools, orchestration — rather than modeling challenges.
 
 **[Klarna laid off 700 people for AI, then rehired](https://www.reworked.co/employee-experience/klarna-claimed-ai-was-doing-the-work-of-700-people-now-its-rehiring/)** after customers reported robotic loops and dead-ends. Agent behavior drift without escape hatches triggers customer service disasters.
 
-**[PayPal's Cosmos.AI platform demonstrates the solution](https://medium.com/paypal-tech/scaling-paypals-ai-capabilities-with-paypal-cosmos-ai-platform-e67a48e04691)**. Support for multiple frameworks—LangChain, CrewAI, MCP servers, OpenAI SDK, Vercel SDK. **Internal interfaces command the architecture**. External frameworks serve as swappable plugins.
+**[PayPal's Cosmos.AI platform demonstrates the solution](https://medium.com/paypal-tech/scaling-paypals-ai-capabilities-with-paypal-cosmos-ai-platform-e67a48e04691)**. Support for multiple frameworks — LangChain, CrewAI, MCP servers, OpenAI SDK, Vercel SDK. **Internal interfaces command the architecture**. External frameworks serve as swappable plugins.
 
 **BMW and Monkeyway's SORDI.ai** exemplifies enterprise-grade patterns. Data remains in controlled domains. Tools register behind standard schemas. Orchestration stays swappable. The architecture principle persists: **portable contracts for tools and state**, **coordinator logic severed from business logic**.
 
@@ -233,9 +233,9 @@ MCP transforms toolset registration across multiple orchestrators. **Tools becom
 
 Two emerging standards command attention:
 
-**OASF (Open Agent Schema/Foundation)**: Standardizes agent descriptors—capabilities, memory, tool contracts, event streams. Deploy as internal config target shape rather than dependency.
+**OASF (Open Agent Schema/Foundation)**: Standardizes agent descriptors — capabilities, memory, tool contracts, event streams. Deploy as internal config target shape rather than dependency.
 
-**Agent Connect Protocol**: Enables agent-to-agent federation—messaging, identity, capability negotiation. Secure envelopes for multi-agent systems across organizational boundaries.
+**Agent Connect Protocol**: Enables agent-to-agent federation — messaging, identity, capability negotiation. Secure envelopes for multi-agent systems across organizational boundaries.
 
 Design architecture seams aligned with these standards. **Tool schemas, message envelopes, capability descriptors** become interoperable as the ecosystem matures.
 
@@ -326,7 +326,7 @@ Run nightly across eval set. Ship when diffs stabilize.
 - **Coordinator portability**: Extract business logic from framework DSLs
 - **Change management**: Retrain teams, update runbooks, adapt observability
 
-The investment protects against discovering under pressure that your "agent" is your application—owned by someone else.
+The investment protects against discovering under pressure that your "agent" is your application — owned by someone else.
 
 ## Production Architecture Patterns
 
@@ -342,4 +342,4 @@ Starting fresh? Begin with four interfaces: **ModelClient, StateStore, ToolSpec/
 
 Already shipped? Execute the 90-day playbook.
 
-**Treat agent frameworks like ORMs**—useful but never the architectural center.
+**Treat agent frameworks like ORMs** — useful but never the architectural center.

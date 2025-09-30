@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
@@ -29,7 +30,16 @@ export default function AIVisibilityLanding() {
       <nav className="sticky top-0 z-40 bg-white/90 backdrop-blur-xl border-b border-gray-100/50 transition-all duration-300">
         <div className="max-w-[1400px] mx-auto px-8 sm:px-16 lg:px-[20%] py-4">
           <div className="flex items-center justify-between">
-            <div className="text-lg font-semibold" style={{ letterSpacing: '-0.01em' }}>Your Brand</div>
+            <Link href="/" className="flex items-center gap-2">
+              <Image 
+                src="/images/logo.png" 
+                alt="Cintra" 
+                width={32} 
+                height={32}
+                className="w-8 h-8"
+              />
+              <span className="text-lg font-semibold" style={{ letterSpacing: '-0.01em' }}>Cintra</span>
+            </Link>
             
             {/* Desktop Nav */}
             <div className="hidden lg:flex items-center gap-6">
@@ -70,7 +80,7 @@ export default function AIVisibilityLanding() {
         </div>
       </nav>
 
-      {/* Hero Section - Minimal & Spacious */}
+      {/* Hero Section - Minimal with Original Copy */}
       <section className="max-w-[1400px] mx-auto px-8 sm:px-16 lg:px-[20%] pt-20 pb-32">
         <div className="text-center max-w-3xl mx-auto">
           <ScrollReveal>
@@ -88,39 +98,27 @@ export default function AIVisibilityLanding() {
               className="text-4xl sm:text-5xl md:text-6xl font-normal mb-8 leading-[1.15]" 
               style={{ letterSpacing: '-0.02em', fontWeight: 400 }}
             >
-              <span className="text-black">AI search analytics</span>{' '}
-              <span className="text-gray-400">for marketing teams</span>
+              <span className="text-black">Double Your AI Visibility</span>{' '}
+              <span className="text-gray-400">in 8 Weeks</span>
             </h1>
           </ScrollReveal>
           
           <ScrollReveal delay={0.2}>
-            <p className="text-base text-gray-600 mb-3 leading-relaxed">
-              Track, analyze, and improve brand performance on AI search platforms
+            <p className="text-base text-gray-600 mb-6 leading-relaxed">
+              AI search is replacing Google. Is your brand showing up — or are your competitors stealing recommendations?
             </p>
           </ScrollReveal>
-          
-          <ScrollReveal delay={0.3}>
-            <p className="text-base text-gray-600 mb-12 leading-relaxed flex items-center justify-center gap-2 flex-wrap">
-              through key metrics like{' '}
-              <span className="inline-flex items-center gap-1.5 text-gray-800">
-                <Eye className="w-4 h-4" />
-                <span className="font-medium">Visibility</span>
-              </span>
-              ,{' '}
-              <span className="inline-flex items-center gap-1.5 text-gray-800">
-                <Target className="w-4 h-4" />
-                <span className="font-medium">Position</span>
-              </span>
-              , and{' '}
-              <span className="inline-flex items-center gap-1.5 text-gray-800">
-                <BarChart3 className="w-4 h-4" />
-                <span className="font-medium">Sentiment</span>
-              </span>
-            </p>
-          </ScrollReveal>
+
           
           <ScrollReveal delay={0.4}>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-16">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-6">
+              <Button 
+                size="default"
+                className="w-full sm:w-auto bg-black text-white hover:bg-gray-900 text-sm px-6 py-2.5 transition-all duration-200"
+              >
+                Show Me My AI Visibility Gap
+                <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
               <Button 
                 variant="outline"
                 size="default"
@@ -128,19 +126,30 @@ export default function AIVisibilityLanding() {
               >
                 Talk to Sales
               </Button>
-              <Button 
-                size="default" 
-                className="w-full sm:w-auto bg-black text-white hover:bg-gray-900 text-sm px-6 py-2.5 transition-all duration-200"
-              >
-                Start Free Trial
-              </Button>
+            </div>
+          </ScrollReveal>
+          
+          <ScrollReveal delay={0.5}>
+            <div className="flex items-center justify-center gap-3 text-xs text-gray-500">
+              <span>No cap</span>
+              <span>|</span>
+              <div className="flex items-center gap-2">
+                <span>Trusted by teams at</span>
+                <Image 
+                  src="/images/logos/y-combinator.svg" 
+                  alt="Y Combinator" 
+                  width={100} 
+                  height={28}
+                  className="opacity-60 grayscale h-5 w-auto"
+                />
+              </div>
             </div>
           </ScrollReveal>
         </div>
 
         {/* Minimal Dashboard Mockup */}
-        <ScrollReveal delay={0.5}>
-          <div className="relative">
+        <ScrollReveal delay={0.6}>
+          <div className="mt-20 relative">
             <div className="bg-white rounded-xl border border-gray-200/80 shadow-sm overflow-hidden">
               {/* Browser chrome - minimal */}
               <div className="flex items-center gap-2 px-4 py-2.5 border-b border-gray-100 bg-gray-50/50">
@@ -149,55 +158,79 @@ export default function AIVisibilityLanding() {
                   <div className="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
                   <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
                 </div>
-                <div className="ml-3 text-xs text-gray-500">Attio's Dashboard</div>
+                <div className="ml-3 text-xs text-gray-500">AI Visibility Dashboard</div>
               </div>
               
               <div className="p-6 sm:p-8 bg-white">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
                   <div>
-                    <h3 className="text-lg font-semibold mb-1" style={{ letterSpacing: '-0.01em' }}>Attio</h3>
+                    <h3 className="text-lg font-semibold mb-1" style={{ letterSpacing: '-0.01em' }}>Your Brand&apos;s Dashboard</h3>
                     <p className="text-sm text-gray-500">Track your AI search visibility in real-time</p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <button className="flex items-center gap-1.5 text-xs text-gray-600 px-2.5 py-1.5 border border-gray-200 rounded-md hover:bg-gray-50 transition-colors">
-                      <Eye className="w-3 h-3" />
-                      Last 7 days
-                    </button>
-                    <button className="text-xs text-gray-600 px-2.5 py-1.5 border border-gray-200 rounded-md hover:bg-gray-50 transition-colors">
-                      All tags
-                    </button>
-                    <button className="text-xs text-gray-600 px-2.5 py-1.5 border border-gray-200 rounded-md hover:bg-gray-50 transition-colors">
-                      All Models
-                    </button>
+                  <div className="flex flex-wrap gap-2">
+                    <Badge className="bg-gray-900 text-white text-xs border-0">ChatGPT</Badge>
+                    <Badge className="bg-purple-600 text-white text-xs border-0">Perplexity</Badge>
+                    <Badge className="bg-blue-600 text-white text-xs border-0">Claude</Badge>
+                    <Badge className="bg-pink-600 text-white text-xs border-0">Gemini</Badge>
                   </div>
                 </div>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
                   <div className="p-4 border border-gray-200/60 rounded-lg bg-gray-50/30">
-                    <div className="text-xs text-gray-500 mb-1">Visibility:</div>
-                    <div className="text-2xl font-semibold mb-0.5"><CountUp end={3} suffix="/14" /></div>
+                    <div className="text-xs text-gray-500 mb-1">Visibility</div>
+                    <div className="text-2xl font-semibold mb-0.5"><CountUp end={56} suffix="%" /></div>
                     <div className="text-xs text-green-600 flex items-center">
                       <TrendingUp className="w-3 h-3 mr-1" />
-                      trending up
+                      +46% from start
                     </div>
                   </div>
                   
                   <div className="p-4 border border-gray-200/60 rounded-lg bg-gray-50/30">
-                    <div className="text-xs text-gray-500 mb-1">Sentiment:</div>
-                    <div className="text-2xl font-semibold mb-0.5"><CountUp end={2} suffix="/14" /></div>
-                    <div className="text-xs text-gray-500">neutral</div>
+                    <div className="text-xs text-gray-500 mb-1">Traffic</div>
+                    <div className="text-2xl font-semibold mb-0.5">1.7k</div>
+                    <div className="text-xs text-green-600 flex items-center">
+                      <TrendingUp className="w-3 h-3 mr-1" />
+                      8.5x increase
+                    </div>
                   </div>
                   
                   <div className="p-4 border border-gray-200/60 rounded-lg bg-gray-50/30">
-                    <div className="text-xs text-gray-500 mb-1">Position:</div>
-                    <div className="text-2xl font-semibold mb-0.5"><CountUp end={5} suffix="/14" /></div>
-                    <div className="text-xs text-gray-500">average</div>
+                    <div className="text-xs text-gray-500 mb-1">Rankings</div>
+                    <div className="text-2xl font-semibold mb-0.5"><CountUp end={8} suffix="/10" /></div>
+                    <div className="text-xs text-gray-600">Product comparisons</div>
                   </div>
                 </div>
                 
-                {/* Simplified chart placeholder */}
-                <div className="h-48 bg-gray-50/50 rounded-lg border border-gray-200/60 flex items-center justify-center">
-                  <p className="text-sm text-gray-400">Chart: Visibility, Sentiment, Position trends</p>
+                <div className="bg-gray-50/50 rounded-lg p-4 sm:p-5">
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="text-sm font-semibold">Your competitors</h4>
+                    <span className="text-xs text-gray-500">vs your brand</span>
+                  </div>
+                  
+                  <div className="space-y-2.5">
+                    {[
+                      { name: 'Competitor A', score: 42, change: '+5%' },
+                      { name: 'Competitor B', score: 38, change: '+2%' },
+                      { name: 'Your Brand', score: 56, change: '+46%', highlight: true },
+                      { name: 'Competitor C', score: 29, change: '-3%' },
+                    ].map((item, i) => (
+                      <div key={i} className={`flex items-center justify-between p-2.5 rounded-md text-sm ${item.highlight ? 'bg-blue-50 border border-blue-200/60' : 'bg-white'}`}>
+                        <span className={`font-medium ${item.highlight ? 'text-blue-900' : 'text-gray-700'}`}>{item.name}</span>
+                        <div className="flex items-center gap-3">
+                          <div className="w-32 sm:w-40 bg-gray-200 rounded-full h-2 overflow-hidden">
+                            <div 
+                              className={`h-2 rounded-full transition-all duration-1000 ${item.highlight ? 'bg-blue-500' : 'bg-gray-400'}`}
+                              style={{ width: `${item.score}%` }}
+                            ></div>
+                          </div>
+                          <span className="text-sm font-semibold w-10">{item.score}%</span>
+                          <span className={`text-xs w-12 ${item.change.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>
+                            {item.change}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -210,41 +243,40 @@ export default function AIVisibilityLanding() {
         <div className="max-w-[1400px] mx-auto px-8 sm:px-16 lg:px-[20%]">
           <ScrollReveal>
             <p className="text-center text-xs uppercase tracking-wider text-gray-400 mb-12 font-medium">
-              Trusted by 1000+ marketing teams
+              Trusted by 100+ B2B SaaS companies
             </p>
           </ScrollReveal>
           <ScrollReveal delay={0.1}>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center">
-              {['Y Combinator', 'Company B', 'Company C', 'Company D'].map((company, i) => (
-                <div key={i} className="text-lg font-medium text-gray-300 text-center hover:text-gray-400 transition-colors duration-200">
-                  {company}
-                </div>
-              ))}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center opacity-40">
+              <div className="text-lg font-medium text-gray-400 text-center">Company A</div>
+              <div className="text-lg font-medium text-gray-400 text-center">Company B</div>
+              <div className="text-lg font-medium text-gray-400 text-center">Company C</div>
+              <div className="text-lg font-medium text-gray-400 text-center">Company D</div>
             </div>
           </ScrollReveal>
         </div>
       </section>
 
-      {/* The Problem Section - Minimal */}
+      {/* The Problem Section */}
       <section className="max-w-[1400px] mx-auto px-8 sm:px-16 lg:px-[20%] py-24">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-16">
             <ScrollReveal>
-              <h2 className="text-3xl sm:text-4xl font-normal mb-4" style={{ letterSpacing: '-0.01em' }}>
+              <h2 className="text-3xl sm:text-4xl font-normal mb-6" style={{ letterSpacing: '-0.01em' }}>
                 <span className="text-black">You Rank on Google.</span><br />
-                <span className="text-gray-400">But You're Invisible Where It Matters.</span>
+                <span className="text-gray-400">But You&apos;re Invisible Where It Matters.</span>
               </h2>
             </ScrollReveal>
             
             <ScrollReveal delay={0.1}>
-              <p className="text-base text-gray-600 leading-relaxed mt-6">
-                Your prospects aren't Googling anymore. They're asking ChatGPT, Perplexity, Claude, and Gemini 
+              <p className="text-base text-gray-600 leading-relaxed">
+                Your prospects aren&apos;t Googling anymore. They&apos;re asking ChatGPT, Perplexity, Claude, and Gemini 
                 to recommend solutions.
               </p>
             </ScrollReveal>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-6 mb-12">
+          <div className="grid md:grid-cols-2 gap-6 mb-10">
             <ScrollReveal delay={0.2}>
               <Card className="p-6 border-gray-200/60 transition-all duration-200 hover:border-gray-300">
                 <div className="flex items-center gap-3 mb-4">
@@ -259,7 +291,7 @@ export default function AIVisibilityLanding() {
                     <Badge className="bg-green-600 text-white text-xs">Position #1</Badge>
                   </div>
                   <p className="text-sm text-gray-600 mt-3 leading-relaxed">
-                    You've invested years in SEO. You rank #1 for your category keywords.
+                    You&apos;ve invested years in SEO. You rank #1 for your category keywords.
                   </p>
                 </div>
               </Card>
@@ -286,8 +318,8 @@ export default function AIVisibilityLanding() {
                     <span className="font-medium text-sm">Competitor B</span>
                     <Badge className="bg-blue-600 text-xs">#2</Badge>
                   </div>
-                  <p className="text-xs text-red-600 mt-3 leading-relaxed">
-                    Even with #1 Google ranking, you're missing in AI search—and losing recommendations to competitors.
+                  <p className="text-xs text-red-600 mt-3 leading-relaxed font-medium">
+                    Even with #1 Google ranking, you&apos;re missing in AI search — and losing recommendations to competitors.
                   </p>
                 </div>
               </Card>
@@ -296,8 +328,8 @@ export default function AIVisibilityLanding() {
           
           <ScrollReveal delay={0.4}>
             <div className="text-center">
-              <p className="text-sm text-gray-600 leading-relaxed">
-                <strong className="font-semibold">Even if you rank #1 on Google</strong>, you're not showing up in these AI search results—and 
+              <p className="text-sm text-gray-700 leading-relaxed">
+                <strong className="font-semibold">Even if you rank #1 on Google</strong>, you&apos;re not showing up in these AI search results — and 
                 your competitors are stealing recommendations.
               </p>
             </div>
@@ -305,7 +337,7 @@ export default function AIVisibilityLanding() {
         </div>
       </section>
 
-      {/* The Outcome Section - Minimal */}
+      {/* The Outcome Section */}
       <section className="bg-gray-50/30 py-24" id="metrics">
         <div className="max-w-[1400px] mx-auto px-8 sm:px-16 lg:px-[20%]">
           <div className="text-center mb-16 max-w-2xl mx-auto">
@@ -315,11 +347,11 @@ export default function AIVisibilityLanding() {
               </Badge>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
-              <h2 className="text-3xl sm:text-4xl font-normal mb-4" style={{ letterSpacing: '-0.01em' }}>Track the Metrics That Matter</h2>
+              <h2 className="text-3xl sm:text-4xl font-normal mb-6" style={{ letterSpacing: '-0.01em' }}>Track the Metrics That Matter</h2>
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
-              <p className="text-base text-gray-600 leading-relaxed mt-6">
-                In 8 weeks, you'll see measurable results across all key AI platforms
+              <p className="text-base text-gray-600 leading-relaxed">
+                In 8 weeks, you&apos;ll see measurable results across all key AI platforms
               </p>
             </ScrollReveal>
           </div>
@@ -336,7 +368,7 @@ export default function AIVisibilityLanding() {
                 </div>
                 <p className="text-sm text-gray-600 leading-relaxed">
                   Show up in 8/10 product comparison queries when prospects ask 
-                  "What's the best [your category]?"
+                  &quot;What&apos;s the best [your category]?&quot;
                 </p>
               </Card>
             </ScrollReveal>
@@ -370,7 +402,7 @@ export default function AIVisibilityLanding() {
         </div>
       </section>
 
-      {/* What You Get Section - Minimal */}
+      {/* What You Get Section */}
       <section className="py-24" id="deliverables">
         <div className="max-w-[1400px] mx-auto px-8 sm:px-16 lg:px-[20%]">
           <div className="text-center mb-16 max-w-2xl mx-auto">
@@ -378,11 +410,11 @@ export default function AIVisibilityLanding() {
               <Badge variant="outline" className="mb-6 border-gray-300/60 text-gray-600 text-xs">Key features</Badge>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
-              <h2 className="text-3xl sm:text-4xl font-normal mb-4" style={{ letterSpacing: '-0.01em' }}>Everything You Need to Win in AI Search</h2>
+              <h2 className="text-3xl sm:text-4xl font-normal mb-6" style={{ letterSpacing: '-0.01em' }}>Everything You Need to Win in AI Search</h2>
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
-              <p className="text-base text-gray-600 leading-relaxed mt-6">
-                Every month, you get a complete AI visibility system—not just content.
+              <p className="text-base text-gray-600 leading-relaxed">
+                Every month, you get a complete AI visibility system — not just content.
               </p>
             </ScrollReveal>
           </div>
@@ -403,7 +435,7 @@ export default function AIVisibilityLanding() {
                     </div>
                     <p className="text-sm text-gray-600 leading-relaxed">
                       Track your rankings across 50-100 high-intent queries in ChatGPT, Perplexity, Claude, 
-                      and Gemini. See exactly where you show up and where you don't.
+                      and Gemini. See exactly where you show up and where you don&apos;t.
                     </p>
                   </div>
                 </div>
@@ -424,7 +456,8 @@ export default function AIVisibilityLanding() {
                       <Badge className="text-xs">Per Month</Badge>
                     </div>
                     <p className="text-sm text-gray-600 leading-relaxed">
-                      Fully written articles optimized for AI retrieval. Ready to review, approve, and publish. No editing required unless you want to make changes.
+                      Fully written articles optimized for AI retrieval. Ready to review, approve, and publish. 
+                      No editing required unless you want to make changes.
                     </p>
                   </div>
                 </div>
@@ -445,7 +478,8 @@ export default function AIVisibilityLanding() {
                       <Badge className="text-xs">Per Month</Badge>
                     </div>
                     <p className="text-sm text-gray-600 leading-relaxed">
-                      Conversion-focused pages that answer the questions prospects ask AI about your product category. Designed to capture bottom-of-funnel searches.
+                      Conversion-focused pages that answer the questions prospects ask AI about your product category. 
+                      Designed to capture bottom-of-funnel searches.
                     </p>
                   </div>
                 </div>
@@ -466,7 +500,8 @@ export default function AIVisibilityLanding() {
                       <Badge className="text-xs">Automated</Badge>
                     </div>
                     <p className="text-sm text-gray-600 leading-relaxed">
-                      Automated detection of queries you should rank for but don't. I typically find 50+ opportunities in the first week alone.
+                      Automated detection of queries you should rank for but don&apos;t. I typically find 50+ opportunities 
+                      in the first week alone.
                     </p>
                   </div>
                 </div>
@@ -476,16 +511,16 @@ export default function AIVisibilityLanding() {
         </div>
       </section>
 
-      {/* How It Works Section - Minimal */}
+      {/* How It Works Section */}
       <section className="bg-gray-50/30 py-24">
         <div className="max-w-[1400px] mx-auto px-8 sm:px-16 lg:px-[20%]">
           <div className="text-center mb-16 max-w-2xl mx-auto">
             <ScrollReveal>
-              <h2 className="text-3xl sm:text-4xl font-normal mb-4" style={{ letterSpacing: '-0.01em' }}>The System</h2>
+              <h2 className="text-3xl sm:text-4xl font-normal mb-6" style={{ letterSpacing: '-0.01em' }}>The System</h2>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
-              <p className="text-base text-gray-600 leading-relaxed mt-6">
-                Most agencies write generic content and hope for the best. I build from your team's expertise—
+              <p className="text-base text-gray-600 leading-relaxed">
+                Most agencies write generic content and hope for the best. I build from your team&apos;s expertise — 
                 the knowledge only you have.
               </p>
             </ScrollReveal>
@@ -509,7 +544,7 @@ export default function AIVisibilityLanding() {
                 step: '3',
                 title: 'Context Extraction',
                 time: 'Week 2-3',
-                description: 'I pull from your meeting transcripts, product docs, Slack threads, and customer conversations—the raw material that makes content sound like your team.'
+                description: 'I pull from your meeting transcripts, product docs, Slack threads, and customer conversations — the raw material that makes content sound like your team.'
               },
               {
                 step: '4',
@@ -545,18 +580,18 @@ export default function AIVisibilityLanding() {
         </div>
       </section>
 
-      {/* What Makes This Different - Minimal */}
+      {/* What Makes This Different */}
       <section className="py-24">
         <div className="max-w-[1400px] mx-auto px-8 sm:px-16 lg:px-[20%]">
           <div className="text-center mb-16 max-w-2xl mx-auto">
             <ScrollReveal>
-              <h2 className="text-3xl sm:text-4xl font-normal mb-4" style={{ letterSpacing: '-0.01em' }}>
+              <h2 className="text-3xl sm:text-4xl font-normal mb-6" style={{ letterSpacing: '-0.01em' }}>
                 Context-Driven Content <span className="text-gray-400">vs</span> Generic Blog Posts
               </h2>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
-              <p className="text-base text-gray-600 leading-relaxed mt-6">
-                Here's why most content doesn't work for AI search: it's generic. AI tools can already generate that stuff themselves.
+              <p className="text-base text-gray-600 leading-relaxed">
+                Here&apos;s why most content doesn&apos;t work for AI search: it&apos;s generic. AI tools can already generate that stuff themselves.
               </p>
             </ScrollReveal>
           </div>
@@ -603,7 +638,7 @@ export default function AIVisibilityLanding() {
         </div>
       </section>
 
-      {/* Case Study Section - Minimal */}
+      {/* Case Study Section */}
       <section className="bg-gray-50/30 py-24" id="case-study">
         <div className="max-w-[1400px] mx-auto px-8 sm:px-16 lg:px-[20%]">
           <div className="max-w-3xl mx-auto">
@@ -619,7 +654,7 @@ export default function AIVisibilityLanding() {
             
             <ScrollReveal delay={0.2}>
               <p className="text-base text-gray-600 mb-12 leading-relaxed">
-                Hamming is a YC-backed AI startup. They ranked well on Google but were invisible in AI search results—
+                Hamming is a YC-backed AI startup. They ranked well on Google but were invisible in AI search results — 
                 even though their target buyers were using ChatGPT and Perplexity to find solutions.
               </p>
             </ScrollReveal>
@@ -671,8 +706,8 @@ export default function AIVisibilityLanding() {
                 <h3 className="text-sm font-semibold mb-3 text-blue-900">What I Did:</h3>
                 <p className="text-sm text-gray-700 leading-relaxed">
                   Analyzed their meeting transcripts and product docs. Found <strong>127 high-intent queries</strong>{' '}
-                  they should rank for. Created <strong>36 articles and 6 product pages</strong> over 12 weeks—
-                  all built from their team's expertise.
+                  they should rank for. Created <strong>36 articles and 6 product pages</strong> over 12 weeks — 
+                  all built from their team&apos;s expertise.
                 </p>
               </Card>
             </ScrollReveal>
@@ -680,11 +715,11 @@ export default function AIVisibilityLanding() {
             <ScrollReveal delay={0.6}>
               <div className="mt-10 text-center">
                 <p className="text-sm text-gray-600 mb-6">
-                  <strong className="font-semibold">Proof:</strong> Check Semrush for hamming.ai—you can verify these numbers yourself.
+                  <strong className="font-semibold">Proof:</strong> Check Semrush for hamming.ai — you can verify these numbers yourself.
                 </p>
                 <Button 
                   size="default" 
-                  className="bg-black text-white hover:bg-gray-900 text-sm px-6 transition-all duration-200"
+                  className="bg-black text-white hover:bg-gray-900 text-sm px-6 py-2.5 transition-all duration-200"
                 >
                   Want similar results? Show Me My AI Visibility Gap
                   <ArrowRight className="ml-2 w-4 h-4" />
@@ -695,7 +730,7 @@ export default function AIVisibilityLanding() {
         </div>
       </section>
 
-      {/* Who This Is For - Minimal */}
+      {/* Who This Is For */}
       <section className="py-24">
         <div className="max-w-[1400px] mx-auto px-8 sm:px-16 lg:px-[20%]">
           <div className="max-w-3xl mx-auto">
@@ -726,7 +761,7 @@ export default function AIVisibilityLanding() {
               
               <ScrollReveal delay={0.2}>
                 <Card className="p-6 border-gray-200/60 transition-all duration-200 hover:border-gray-300">
-                  <h3 className="text-base font-semibold mb-5 text-gray-700">This isn't for you if:</h3>
+                  <h3 className="text-base font-semibold mb-5 text-gray-700">This isn&apos;t for you if:</h3>
                   <ul className="space-y-3">
                     {[
                       'You\'re a consumer/DTC brand (this is built for B2B)',
@@ -747,7 +782,7 @@ export default function AIVisibilityLanding() {
         </div>
       </section>
 
-      {/* Why Now Section - Minimal */}
+      {/* Why Now Section */}
       <section className="bg-gray-900 text-white py-24">
         <div className="max-w-[1400px] mx-auto px-8 sm:px-16 lg:px-[20%] text-center">
           <div className="max-w-2xl mx-auto">
@@ -764,7 +799,7 @@ export default function AIVisibilityLanding() {
             <ScrollReveal delay={0.2}>
               <div className="bg-gray-800/50 rounded-lg p-6 mb-8 transition-all duration-200 hover:bg-gray-800/70">
                 <p className="text-sm text-gray-300 mb-4 leading-relaxed">
-                  Right now, most of your competitors are ignoring this shift. <strong className="text-white font-semibold">That's your window.</strong>
+                  Right now, most of your competitors are ignoring this shift. <strong className="text-white font-semibold">That&apos;s your window.</strong>
                 </p>
                 <p className="text-sm text-gray-300 leading-relaxed">
                   In 6 months, everyone will be optimizing for AI search. The companies that build authority now will 
@@ -796,7 +831,7 @@ export default function AIVisibilityLanding() {
         </div>
       </section>
 
-      {/* Final CTA Section - Minimal */}
+      {/* Final CTA Section */}
       <section className="py-24">
         <div className="max-w-[1400px] mx-auto px-8 sm:px-16 lg:px-[20%] text-center">
           <div className="max-w-2xl mx-auto">
@@ -806,7 +841,7 @@ export default function AIVisibilityLanding() {
             
             <ScrollReveal delay={0.1}>
               <p className="text-base text-gray-600 mb-10 leading-relaxed">
-                Book a 15-minute call and I'll show you:
+                Book a 15-minute call and I&apos;ll show you:
               </p>
             </ScrollReveal>
             
@@ -844,9 +879,22 @@ export default function AIVisibilityLanding() {
             </ScrollReveal>
             
             <ScrollReveal delay={0.5}>
-              <p className="text-xs text-gray-500">
-                No cap | Takes 15 min | Used by YC startups
-              </p>
+              <div className="flex items-center justify-center gap-3 text-xs text-gray-500">
+                <span>No cap</span>
+                <span>|</span>
+                <span>Takes 15 min</span>
+                <span>|</span>
+                <div className="flex items-center gap-2">
+                  <span>Trusted by teams at</span>
+                  <Image 
+                    src="/images/logos/y-combinator.svg" 
+                    alt="Y Combinator" 
+                    width={100} 
+                    height={28}
+                    className="opacity-60 grayscale h-5 w-auto"
+                  />
+                </div>
+              </div>
             </ScrollReveal>
           </div>
         </div>
@@ -884,7 +932,7 @@ export default function AIVisibilityLanding() {
           </div>
           
           <div className="border-t border-gray-800/50 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-gray-500">© 2025 Your Company. All rights reserved.</p>
+            <p className="text-xs text-gray-500">© 2025 Cintra. All rights reserved.</p>
             <div className="flex gap-6 text-xs text-gray-500">
               <Link href="/privacy" className="hover:text-gray-400 transition-colors">Privacy Policy</Link>
               <Link href="/terms" className="hover:text-gray-400 transition-colors">Terms of Service</Link>

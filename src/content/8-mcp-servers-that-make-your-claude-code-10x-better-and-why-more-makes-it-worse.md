@@ -1,6 +1,6 @@
 ---
 title: "8 MCP Servers That Make Your Claude Code 10x Better (And Why More Makes It Worse)"
-excerpt: "Your Claude setup is drowning. Not in complexity—in choice. At 20 MCP servers, you've built a 40% failure machine that takes 8 seconds to be wrong. Every server beyond eight is a poison pill: 15% slower responses, 12% more errors, compounding until your setup chokes."
+excerpt: "Your Claude setup is drowning. Not in complexity — in choice. At 20 MCP servers, you've built a 40% failure machine that takes 8 seconds to be wrong. Every server beyond eight is a poison pill: 15% slower responses, 12% more errors, compounding until your setup chokes."
 date: "2025-09-01"
 author: "Tanush Yadav"
 authorAvatar: "/images/team/tanush.jpg"
@@ -13,7 +13,7 @@ linear_id: "VOL-34"
 
 # 8 MCP Servers That Make Your Claude Code 10x Better (And Why More Makes It Worse)
 
-**Your Claude setup is drowning. Not in complexity—in choice.** At 20 MCP servers, you've built a 40% failure machine that takes 8 seconds to be wrong. Every server beyond eight is a poison pill: 15% slower responses, 12% more errors, compounding until your setup chokes.
+**Your Claude setup is drowning. Not in complexity — in choice.** At 20 MCP servers, you've built a 40% failure machine that takes 8 seconds to be wrong. Every server beyond eight is a poison pill: 15% slower responses, 12% more errors, compounding until your setup chokes.
 
 The metrics expose a cascading failure: Eight servers deliver 90% of the value. Everything else bleeds performance.
 
@@ -119,7 +119,7 @@ The breaking point reveals itself in the data: beyond eight servers, every addit
 - Error rate: 24%
 - Wrong-tool selection: 40%
 
-The progression isn't linear—it's exponential decay. Each server amplifies the chaos of the previous one.
+The progression isn't linear — it's exponential decay. Each server amplifies the chaos of the previous one.
 
 ## Real Numbers: Before and After
 
@@ -136,7 +136,7 @@ The progression isn't linear—it's exponential decay. Each server amplifies the
 - 14% error rate (-10pp)
 - **38% more tasks completed** with same resources
 
-The transformation isn't just speed—it's capability. Fewer servers means Claude completes more work, not less.
+The transformation isn't just speed — it's capability. Fewer servers means Claude completes more work, not less.
 
 ## Your Activation Framework
 
@@ -206,7 +206,7 @@ Retain only servers with monthly savings ≥ 10× monthly cost.
 - Before: 2-3 days
 - After: 4 minutes scaffold, 20 minutes review
 
-These aren't incremental gains—they're order-of-magnitude transformations in how you work.
+These aren't incremental gains — they're order-of-magnitude transformations in how you work.
 
 ## The Bottom Line
 
