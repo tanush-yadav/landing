@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { ArrowRight, Sparkles, Trophy } from 'lucide-react'
+import Link from 'next/link'
 // import { Button } from '@/components/ui/button'
 
 interface CTASectionProps {
@@ -86,18 +87,17 @@ export function CTASection({ onOpenModal }: CTASectionProps) {
                 transition={{ delay: 0.5, duration: 0.4 }}
                 className="pt-3"
               >
-                <button
-                  type="button"
-                  onClick={() => {
-                    onOpenModal?.()
-                  }}
-                  className="inline-flex items-center justify-center relative group bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium px-5 py-3 min-h-[40px] text-sm rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-purple-600"
-                >
-                  <span className="flex items-center gap-2">
-                  Get my creator list
-                    <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
-                  </span>
-                </button>
+                <Link href="https://cal.com/cintradotrun/15min" target="_blank" rel="noopener noreferrer">
+                  <button
+                    type="button"
+                    className="inline-flex items-center justify-center relative group bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium px-5 py-3 min-h-[40px] text-sm rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-purple-600"
+                  >
+                    <span className="flex items-center gap-2">
+                    Get my creator list
+                      <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
+                    </span>
+                  </button>
+                </Link>
               </motion.div>
 
               {/* Simple trust indicators */}

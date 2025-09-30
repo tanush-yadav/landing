@@ -58,29 +58,33 @@ export default function AIVisibilityLanding() {
               <Link href="#case-study" className="text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">
                 Case Study
               </Link>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 size="sm"
                 className="text-sm transition-all duration-200 hover:bg-gray-50"
               >
                 Log in
               </Button>
-              <Button 
-                size="sm" 
-                className="bg-black text-white hover:bg-gray-900 text-sm transition-all duration-200"
-              >
-                Sign up
-              </Button>
+              <Link href="https://cal.com/cintradotrun/15min" target="_blank" rel="noopener noreferrer">
+                <Button
+                  size="sm"
+                  className="bg-black text-white hover:bg-gray-900 text-sm transition-all duration-200"
+                >
+                  Sign up
+                </Button>
+              </Link>
             </div>
             
             {/* Mobile Nav */}
             <div className="flex lg:hidden items-center gap-3">
-              <Button 
-                size="sm" 
-                className="bg-black text-white hover:bg-gray-900 text-xs px-4"
-              >
-                Get Started
-              </Button>
+              <Link href="https://cal.com/cintradotrun/15min" target="_blank" rel="noopener noreferrer">
+                <Button
+                  size="sm"
+                  className="bg-black text-white hover:bg-gray-900 text-xs px-4"
+                >
+                  Get Started
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -121,20 +125,24 @@ export default function AIVisibilityLanding() {
           
           <ScrollReveal delay={0.4}>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-8">
-              <Button 
-                size="default"
-                className="w-full sm:w-auto bg-black text-white hover:bg-gray-900 text-sm font-medium px-8 py-3 transition-all duration-200 rounded-lg"
-              >
-                Show Me My AI Visibility Gap
-                <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-              <Button 
-                variant="outline"
-                size="default"
-                className="w-full sm:w-auto text-sm font-medium px-8 py-3 transition-all duration-200 hover:bg-gray-50 rounded-lg border-gray-300"
-              >
-                Talk to Sales
-              </Button>
+              <Link href="https://cal.com/cintradotrun/15min" target="_blank" rel="noopener noreferrer">
+                <Button
+                  size="default"
+                  className="w-full sm:w-auto bg-black text-white hover:bg-gray-900 text-sm font-medium px-8 py-3 transition-all duration-200 rounded-lg"
+                >
+                  Show Me My AI Visibility Gap
+                  <ArrowRight className="ml-2 w-4 h-4" />
+                </Button>
+              </Link>
+              <Link href="https://cal.com/cintradotrun/15min" target="_blank" rel="noopener noreferrer">
+                <Button
+                  variant="outline"
+                  size="default"
+                  className="w-full sm:w-auto text-sm font-medium px-8 py-3 transition-all duration-200 hover:bg-gray-50 rounded-lg border-gray-300"
+                >
+                  Talk to Sales
+                </Button>
+              </Link>
             </div>
           </ScrollReveal>
           
@@ -724,13 +732,15 @@ export default function AIVisibilityLanding() {
                 <p className="text-sm text-gray-600 mb-6">
                   <strong className="font-semibold">Proof:</strong> Check Semrush for hamming.ai, you can verify these numbers yourself.
                 </p>
-                <Button 
-                  size="default" 
-                  className="bg-black text-white hover:bg-gray-900 text-sm px-6 py-2.5 transition-all duration-200"
-                >
-                  Want similar results? Show Me My AI Visibility Gap
-                  <ArrowRight className="ml-2 w-4 h-4" />
-                </Button>
+                <Link href="https://cal.com/cintradotrun/15min" target="_blank" rel="noopener noreferrer">
+                  <Button
+                    size="default"
+                    className="bg-black text-white hover:bg-gray-900 text-sm px-6 py-2.5 transition-all duration-200"
+                  >
+                    Want similar results? Show Me My AI Visibility Gap
+                    <ArrowRight className="ml-2 w-4 h-4" />
+                  </Button>
+                </Link>
               </div>
             </ScrollReveal>
           </div>
@@ -876,13 +886,15 @@ export default function AIVisibilityLanding() {
             </ScrollReveal>
             
             <ScrollReveal delay={0.4}>
-              <Button 
-                size="default" 
-                className="bg-black text-white hover:bg-gray-900 font-medium px-8 py-3 text-sm mb-6 transition-all duration-200 rounded-lg"
-              >
-                Show Me My AI Visibility Gap
-                <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
+              <Link href="https://cal.com/cintradotrun/15min" target="_blank" rel="noopener noreferrer">
+                <Button
+                  size="default"
+                  className="bg-black text-white hover:bg-gray-900 font-medium px-8 py-3 text-sm mb-6 transition-all duration-200 rounded-lg"
+                >
+                  Show Me My AI Visibility Gap
+                  <ArrowRight className="ml-2 w-4 h-4" />
+                </Button>
+              </Link>
             </ScrollReveal>
             
             <ScrollReveal delay={0.5}>
