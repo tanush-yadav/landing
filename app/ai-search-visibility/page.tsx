@@ -15,8 +15,6 @@ import {
   TrendingUp,
   Target,
   BarChart3,
-  Eye,
-  Users,
   Zap,
   FileText,
   LayoutDashboard

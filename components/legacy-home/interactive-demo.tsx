@@ -391,17 +391,13 @@ const InteractiveDemo = memo(
 
     // Memoized current task from workflow
     const currentTask = useMemo(() => {
-      console.log('Selected task ID:', selectedTask)
       const workflow = getWorkflowById(selectedTask)
-      console.log('Found workflow:', workflow)
       if (workflow) {
         const config = workflowToConfig(workflow)
-        console.log('Generated config:', config)
         if (config) return config
       }
       // Fallback to first engineering workflow
       const fallbackWorkflow = getWorkflowById('fix-auth-bug')
-      console.log('Fallback workflow:', fallbackWorkflow)
       return fallbackWorkflow ? workflowToConfig(fallbackWorkflow) : null
     }, [selectedTask])
 
@@ -445,7 +441,6 @@ const InteractiveDemo = memo(
     const startDemoSequence = useCallback(async () => {
       if (isLoading) return // Prevent duplicate runs
 
-      console.log('startDemoSequence called - currentTask:', currentTask)
       setIsLoading(true)
       setError(null)
 
@@ -455,7 +450,6 @@ const InteractiveDemo = memo(
 
         // Reduced motion mode - skip animations
         if (shouldReduceMotion) {
-          console.log('Reduced motion mode - setting complete state')
           setDemoState({
             phase: 'complete',
             ticketCreated: true,
@@ -479,14 +473,12 @@ const InteractiveDemo = memo(
         }
 
         // Start the sequence without resetting to idle
-        console.log('Setting initial demo state - ticketCreated: true')
         setDemoState((prev) => {
           const newState: DemoState = {
             ...prev,
             phase: 'analyzing' as const,
             ticketCreated: true,
           }
-          console.log('New demo state:', newState)
           return newState
         })
         setIsLoading(false) // Clear loading state once demo starts
@@ -512,16 +504,11 @@ const InteractiveDemo = memo(
         }, 1600)
 
         safeSetTimeout(() => {
-          console.log('Setting slackNotified to true')
-          setDemoState((prev) => {
-            const newState: DemoState = {
-              ...prev,
-              phase: 'reviewing' as const,
-              slackNotified: true,
-            }
-            console.log('New state with slackNotified:', newState)
-            return newState
-          })
+          setDemoState((prev) => ({
+            ...prev,
+            phase: 'reviewing' as const,
+            slackNotified: true,
+          }))
         }, 2000)
 
         // Show Slack messages progressively
@@ -554,14 +541,10 @@ const InteractiveDemo = memo(
 
                 // Set complete phase AFTER all subtasks are done
                 safeSetTimeout(() => {
-                  console.log(
-                    'Setting demo to complete phase after all subtasks'
-                  )
                   setDemoState((prev) => ({
                     ...prev,
                     phase: 'complete' as const,
                   }))
-                          // Call the onDemoComplete callback if provided
                   if (onDemoComplete) {
                     onDemoComplete()
                   }
@@ -571,7 +554,6 @@ const InteractiveDemo = memo(
           }
         } else {
           // If no subtasks or empty subtasks array, complete after messages
-          console.log('No subtasks found, completing demo after messages')
           safeSetTimeout(() => {
             setDemoState((prev) => ({ ...prev, phase: 'complete' as const }))
               if (onDemoComplete) {
@@ -598,24 +580,14 @@ const InteractiveDemo = memo(
 
     // Effect for demo trigger - simplified to avoid race conditions
     useEffect(() => {
-      console.log('Demo trigger effect:', {
-        triggerDemo,
-        prevTrigger: prevTriggerRef.current,
-        isLoading,
-        phase: demoState.phase,
-        ticketCreated: demoState.ticketCreated,
-      })
-
       // Only process if trigger changed from false to true
       const triggerChanged = triggerDemo && !prevTriggerRef.current
 
       if (triggerChanged && !isLoading) {
         // Start if we're in idle state OR if we need to restart from complete state
         if (demoState.phase === 'idle' && !demoState.ticketCreated) {
-          console.log('Starting demo sequence from idle...')
           startDemoSequence()
         } else if (demoState.phase === 'complete') {
-          console.log('Restarting demo sequence from complete...')
           // Reset and restart for a fresh demo
           resetDemo()
           // Start after a brief delay to ensure state is cleared
@@ -678,13 +650,6 @@ const InteractiveDemo = memo(
         </section>
       )
     }
-
-    console.log(
-      'Rendering InteractiveDemo - demoState:',
-      demoState,
-      'currentTask:',
-      currentTask
-    )
 
     return (
       <section
