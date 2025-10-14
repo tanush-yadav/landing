@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Double Your AI Visibility in 6 Weeks | Cintra',
+  title: 'Double Your AI Visibility in 6 weeks | Cintra',
   description: 'AI search is replacing Google. Is your brand showing up, or are your competitors stealing recommendations? Get a complete AI visibility system with dashboard tracking, 12 high-intent articles per month, and measurable results across ChatGPT, Perplexity, Claude, and Gemini.',
 };
 
@@ -56,29 +56,33 @@ export default function AIVisibilityLanding() {
               <Link href="#case-study" className="text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">
                 Case Study
               </Link>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 size="sm"
                 className="text-sm transition-all duration-200 hover:bg-gray-50"
               >
                 Log in
               </Button>
-              <Button 
-                size="sm" 
-                className="bg-black text-white hover:bg-gray-900 text-sm transition-all duration-200"
-              >
-                Sign up
-              </Button>
+              <Link href="https://cal.com/cintradotrun/15min" target="_blank" rel="noopener noreferrer">
+                <Button
+                  size="sm"
+                  className="bg-black text-white hover:bg-gray-900 text-sm transition-all duration-200"
+                >
+                  Sign up
+                </Button>
+              </Link>
             </div>
             
             {/* Mobile Nav */}
             <div className="flex lg:hidden items-center gap-3">
-              <Button 
-                size="sm" 
-                className="bg-black text-white hover:bg-gray-900 text-xs px-4"
-              >
-                Get Started
-              </Button>
+              <Link href="https://cal.com/cintradotrun/15min" target="_blank" rel="noopener noreferrer">
+                <Button
+                  size="sm"
+                  className="bg-black text-white hover:bg-gray-900 text-xs px-4"
+                >
+                  Get Started
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -105,7 +109,7 @@ export default function AIVisibilityLanding() {
               <span className="text-black">Double Your AI Visibility</span>
             </h1>
             <p className="text-gray-400 text-3xl sm:text-4xl md:text-5xl font-normal mb-8 leading-[1.15]" style={{ letterSpacing: '-0.02em' }}>
-              in 6 Weeks
+              in 6 weeks
             </p>
           </ScrollReveal>
           
@@ -115,24 +119,28 @@ export default function AIVisibilityLanding() {
               or are your competitors stealing recommendations?
             </p>
           </ScrollReveal>
-8
+
           
           <ScrollReveal delay={0.4}>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-8">
-              <Button 
-                size="default"
-                className="w-full sm:w-auto bg-black text-white hover:bg-gray-900 text-sm font-medium px-8 py-3 transition-all duration-200 rounded-lg"
-              >
-                Show Me My AI Visibility Gap
-                <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-              <Button 
-                variant="outline"
-                size="default"
-                className="w-full sm:w-auto text-sm font-medium px-8 py-3 transition-all duration-200 hover:bg-gray-50 rounded-lg border-gray-300"
-              >
-                Talk to Sales
-              </Button>
+              <Link href="https://cal.com/cintradotrun/15min" target="_blank" rel="noopener noreferrer">
+                <Button
+                  size="default"
+                  className="w-full sm:w-auto bg-black text-white hover:bg-gray-900 text-sm font-medium px-8 py-3 transition-all duration-200 rounded-lg"
+                >
+                  Show Me My AI Visibility Gap
+                  <ArrowRight className="ml-2 w-4 h-4" />
+                </Button>
+              </Link>
+              <Link href="https://cal.com/cintradotrun/15min" target="_blank" rel="noopener noreferrer">
+                <Button
+                  variant="outline"
+                  size="default"
+                  className="w-full sm:w-auto text-sm font-medium px-8 py-3 transition-all duration-200 hover:bg-gray-50 rounded-lg border-gray-300"
+                >
+                  Talk to Sales
+                </Button>
+              </Link>
             </div>
           </ScrollReveal>
           
@@ -356,7 +364,7 @@ export default function AIVisibilityLanding() {
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
               <p className="text-base text-gray-600 leading-relaxed">
-                in 6 Weeks,  you&apos;ll see measurable results across all key AI platforms
+                in 6 weeks,  you&apos;ll see measurable results across all key AI platforms
               </p>
             </ScrollReveal>
           </div>
@@ -722,13 +730,15 @@ export default function AIVisibilityLanding() {
                 <p className="text-sm text-gray-600 mb-6">
                   <strong className="font-semibold">Proof:</strong> Check Semrush for hamming.ai, you can verify these numbers yourself.
                 </p>
-                <Button 
-                  size="default" 
-                  className="bg-black text-white hover:bg-gray-900 text-sm px-6 py-2.5 transition-all duration-200"
-                >
-                  Want similar results? Show Me My AI Visibility Gap
-                  <ArrowRight className="ml-2 w-4 h-4" />
-                </Button>
+                <Link href="https://cal.com/cintradotrun/15min" target="_blank" rel="noopener noreferrer">
+                  <Button
+                    size="default"
+                    className="bg-black text-white hover:bg-gray-900 text-sm px-6 py-2.5 transition-all duration-200"
+                  >
+                    Want similar results? Show Me My AI Visibility Gap
+                    <ArrowRight className="ml-2 w-4 h-4" />
+                  </Button>
+                </Link>
               </div>
             </ScrollReveal>
           </div>
@@ -874,13 +884,15 @@ export default function AIVisibilityLanding() {
             </ScrollReveal>
             
             <ScrollReveal delay={0.4}>
-              <Button 
-                size="default" 
-                className="bg-black text-white hover:bg-gray-900 font-medium px-8 py-3 text-sm mb-6 transition-all duration-200 rounded-lg"
-              >
-                Show Me My AI Visibility Gap
-                <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
+              <Link href="https://cal.com/cintradotrun/15min" target="_blank" rel="noopener noreferrer">
+                <Button
+                  size="default"
+                  className="bg-black text-white hover:bg-gray-900 font-medium px-8 py-3 text-sm mb-6 transition-all duration-200 rounded-lg"
+                >
+                  Show Me My AI Visibility Gap
+                  <ArrowRight className="ml-2 w-4 h-4" />
+                </Button>
+              </Link>
             </ScrollReveal>
             
             <ScrollReveal delay={0.5}>
