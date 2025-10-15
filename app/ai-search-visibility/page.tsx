@@ -8,16 +8,13 @@ import { Card } from '@/components/ui/card';
 import { ScrollReveal } from '@/components/scroll-reveal';
 import { CountUp } from '@/components/count-up';
 import { ScrollProgress } from '@/components/scroll-progress';
+import { InsightMetricsSection } from '@/components/insight-metrics-section';
+import { AEOFeaturesSection } from '@/components/aeo-features-section';
 import {
   ArrowRight,
   CheckCircle2,
   XCircle,
   TrendingUp,
-  Target,
-  BarChart3,
-  Zap,
-  FileText,
-  LayoutDashboard
 } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -146,8 +143,6 @@ export default function AIVisibilityLanding() {
           
           <ScrollReveal delay={0.5}>
             <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-gray-500">
-              <span>No cap</span>
-              <span className="text-gray-300">|</span>
               <span>Trusted by teams at</span>
               <Image 
                 src="/images/logos/y-combinator.svg" 
@@ -350,179 +345,52 @@ export default function AIVisibilityLanding() {
         </div>
       </section>
 
-      {/* The Outcome Section */}
-      <section className="bg-gray-50/30 py-24" id="metrics">
-        <div className="max-w-[1400px] mx-auto px-8 sm:px-16 lg:px-[20%]">
-          <div className="text-center mb-16 max-w-2xl mx-auto">
-            <ScrollReveal>
-              <Badge variant="outline" className="mb-6 border-gray-300/60 text-gray-600 bg-white/80 text-xs">
-                AI Search Metrics
-              </Badge>
-            </ScrollReveal>
-            <ScrollReveal delay={0.1}>
-              <h2 className="text-3xl sm:text-4xl font-normal mb-6" style={{ letterSpacing: '-0.01em' }}>Track the Metrics That Matter</h2>
-            </ScrollReveal>
-            <ScrollReveal delay={0.2}>
-              <p className="text-base text-gray-600 leading-relaxed">
-                in 6 weeks,  you&apos;ll see measurable results across all key AI platforms
-              </p>
-            </ScrollReveal>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <ScrollReveal delay={0.3}>
-              <Card className="p-6 bg-white border-gray-200/60 transition-all duration-200 hover:border-gray-300 hover:shadow-sm">
-                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center mb-5">
-                  <Target className="w-5 h-5 text-blue-600" />
-                </div>
-                <h3 className="text-base font-semibold mb-2">Get Recommended</h3>
-                <div className="text-3xl font-semibold mb-3 text-blue-600">
-                  <CountUp end={8} suffix="/10" />
-                </div>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  Show up in 8/10 product comparison queries when prospects ask 
-                  &quot;What&apos;s the best [your category]?&quot;
-                </p>
-              </Card>
-            </ScrollReveal>
-            
-            <ScrollReveal delay={0.4}>
-              <Card className="p-6 bg-white border-gray-200/60 transition-all duration-200 hover:border-gray-300 hover:shadow-sm">
-                <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center mb-5">
-                  <TrendingUp className="w-5 h-5 text-green-600" />
-                </div>
-                <h3 className="text-base font-semibold mb-2">Capture Traffic</h3>
-                <div className="text-3xl font-semibold mb-3 text-green-600">3-8x</div>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  Increase in organic visitors as AI tools cite your content as authoritative sources
-                </p>
-              </Card>
-            </ScrollReveal>
-            
-            <ScrollReveal delay={0.5}>
-              <Card className="p-6 bg-white border-gray-200/60 transition-all duration-200 hover:border-gray-300 hover:shadow-sm">
-                <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center mb-5">
-                  <BarChart3 className="w-5 h-5 text-purple-600" />
-                </div>
-                <h3 className="text-base font-semibold mb-2">Track Everything</h3>
-                <div className="text-3xl font-semibold mb-3 text-purple-600">Real-time</div>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  Dashboard showing exactly where you rank vs competitors across all major AI platforms
-                </p>
-              </Card>
-            </ScrollReveal>
-          </div>
-        </div>
-      </section>
+      {/* Metrics Section */}
+      <InsightMetricsSection />
 
       {/* What You Get Section */}
-      <section className="py-24" id="deliverables">
-        <div className="max-w-[1400px] mx-auto px-8 sm:px-16 lg:px-[20%]">
-          <div className="text-center mb-16 max-w-2xl mx-auto">
-            <ScrollReveal>
-              <Badge variant="outline" className="mb-6 border-gray-300/60 text-gray-600 text-xs">Key features</Badge>
-            </ScrollReveal>
-            <ScrollReveal delay={0.1}>
-              <h2 className="text-3xl sm:text-4xl font-normal mb-6" style={{ letterSpacing: '-0.01em' }}>Everything You Need to Win in AI Search</h2>
-            </ScrollReveal>
-            <ScrollReveal delay={0.2}>
-              <p className="text-base text-gray-600 leading-relaxed">
-                Every month,  you get a complete AI visibility system, not just content.
-              </p>
-            </ScrollReveal>
-          </div>
-          
-          <div className="space-y-4 max-w-3xl mx-auto">
-            <ScrollReveal delay={0}>
-              <Card className="p-5 border-gray-200/60 transition-all duration-200 hover:border-gray-300 hover:shadow-sm">
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0">
-                    <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
-                      <LayoutDashboard className="w-5 h-5 text-blue-600" />
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-base font-semibold">AI Visibility Dashboard</h3>
-                      <Badge className="text-xs">Updated Daily</Badge>
-                    </div>
-                    <p className="text-sm text-gray-600 leading-relaxed">
-                      Track your rankings across 50-100 high-intent queries in ChatGPT,  Perplexity,  Claude,  
-                      and Gemini. See exactly where you show up and where you don&apos;t.
-                    </p>
-                  </div>
-                </div>
-              </Card>
-            </ScrollReveal>
-
-            <ScrollReveal delay={0.1}>
-              <Card className="p-5 border-gray-200/60 transition-all duration-200 hover:border-gray-300 hover:shadow-sm">
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0">
-                    <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center">
-                      <FileText className="w-5 h-5 text-green-600" />
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-base font-semibold">12 High-Intent Articles</h3>
-                      <Badge className="text-xs">Per Month</Badge>
-                    </div>
-                    <p className="text-sm text-gray-600 leading-relaxed">
-                      Fully written articles optimized for AI retrieval. Ready to review,  approve,  and publish. 
-                      No editing required unless you want to make changes.
-                    </p>
-                  </div>
-                </div>
-              </Card>
-            </ScrollReveal>
-
-            <ScrollReveal delay={0.2}>
-              <Card className="p-5 border-gray-200/60 transition-all duration-200 hover:border-gray-300 hover:shadow-sm">
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0">
-                    <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center">
-                      <Target className="w-5 h-5 text-purple-600" />
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-base font-semibold">2 Product/Feature Pages</h3>
-                      <Badge className="text-xs">Per Month</Badge>
-                    </div>
-                    <p className="text-sm text-gray-600 leading-relaxed">
-                      Conversion-focused pages that answer the questions prospects ask AI about your product category. 
-                      Designed to capture bottom-of-funnel searches.
-                    </p>
-                  </div>
-                </div>
-              </Card>
-            </ScrollReveal>
-
-            <ScrollReveal delay={0.3}>
-              <Card className="p-5 border-gray-200/60 transition-all duration-200 hover:border-gray-300 hover:shadow-sm">
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0">
-                    <div className="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center">
-                      <Zap className="w-5 h-5 text-orange-600" />
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-base font-semibold">Opportunity Reports</h3>
-                      <Badge className="text-xs">Automated</Badge>
-                    </div>
-                    <p className="text-sm text-gray-600 leading-relaxed">
-                      Automated detection of queries you should rank for but don&apos;t. I typically find 50+ opportunities 
-                      in the first week alone.
-                    </p>
-                  </div>
-                </div>
-              </Card>
-            </ScrollReveal>
-          </div>
-        </div>
-      </section>
+      <AEOFeaturesSection
+        sectionTitle="A Complete System to Grow Your AI Visibility"
+        sectionSubtitle="Every month, you get more than articles - you get the insights, content, and tracking to win where buyers actually ask questions."
+        features={[
+          {
+            icon: 'scanner',
+            title: 'Insight Scanner',
+            description:
+              'Find real buyer questions across AI and social. Updated daily so you always know what prospects ask next.',
+            tag: { text: 'Updated Daily', variant: 'dark' },
+          },
+          {
+            icon: 'map',
+            title: 'Answer Map',
+            description:
+              'See who owns each question and why. Spot the gaps where you can become the default recommendation.',
+            tag: { text: 'Gap Intel', variant: 'light' },
+          },
+          {
+            icon: 'finder',
+            title: 'Opportunity Finder',
+            description:
+              'Score ideas by intent and impact. Generate a draft brief in one click to move fast on high-value prompts.',
+            tag: { text: 'Auto Briefs', variant: 'accent' },
+          },
+          {
+            icon: 'ship',
+            title: 'Ship List',
+            description:
+              'Hand your team ready outlines with visuals, sources, and internal links so publishing becomes plug-and-play.',
+            tag: { text: 'Ready to Publish', variant: 'light' },
+          },
+          {
+            icon: 'tracker',
+            title: 'Proof Tracker',
+            description:
+              'Measure visibility inside AI answers. Get alerts on what to fix next before you lose share again.',
+            tag: { text: 'Fix-Next Alerts', variant: 'dark' },
+          },
+        ]}
+        layout={{ columns: 1, cardStyle: 'bordered', iconPosition: 'left', textAlign: 'left', spacing: 'xl' }}
+      />
 
       {/* How It Works Section */}
       <section className="bg-gray-50/30 py-24">
